@@ -75,7 +75,7 @@ Below can be found the role of each member and the number of hours spent on each
 
 </table>
 
-<br>To see our meeting minutes, incluing key design decisions and architecture
-framework, head over to our wiki page and select any page titled with a date:<br> 
-<a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a>
+<br>To see our meeting minutes, including key design decisions and architecture
+framework, head over to our wiki page and select any page titled with a date:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<h2><b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a></b></h2>
 
