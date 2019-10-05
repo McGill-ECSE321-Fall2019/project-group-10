@@ -14,7 +14,66 @@ will allow students to select a course and view all available tutors, their
 hourly rates, availabilities and reviews from other students.<br>
 
 <br>**Overview Table**<br>
-TODO: names, roles, individual effort in hours separated by deliverable<br>
+Below can be found the role of each member and the number of hours spent on each sprint.
+
+<table>
+  <tr>
+    <th><b>NAME</th> 
+    <th><b>ROLE</th>
+    <th><b>SPRINT1</th>
+    <th><b>SPRINT2</th>
+    <th><b>SPRINT3</th>
+    <th><b>SPRINT4</th>
+  </tr>
+
+  <tr>
+    <td>Alex Gruenwald</td>
+    <td>Technical Lead</td>
+    <td>8</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+  </tr>
+  
+  <tr>
+    <td>Chelsea M-C</td>
+    <td>Documentation Manager</td>
+    <td>6</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+  </tr>
+  
+  <tr>
+    <td>Taylor Lynn Curtis</td>
+    <td>Software Developer</td>
+    <td>5</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+  </tr>
+  
+  <tr>
+    <td>Anas Shahid</td>
+    <td>Software Developer</td>
+    <td>5</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+  </tr>
+  
+  <tr>
+    <td>Yoan Poulmarc'k</td>
+    <td>Software Testing Lead</td>
+    <td>6</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+    <td>[tbh]</td>
+  </tr>
+  
+  
+
+</table>
 
 <br>To see our meeting minutes, incluing key design decisions and architecture
 framework, head over to our wiki page and select any page titled with a date:<br> 
