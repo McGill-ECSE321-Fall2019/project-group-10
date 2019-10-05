@@ -38,7 +38,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Chelsea M-C</td>
     <td>Documentation Manager</td>
-    <td>6</td>
+    <td>8</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -47,7 +47,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Taylor Lynn Curtis</td>
     <td>Software Developer</td>
-    <td>5</td>
+    <td>4</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -56,7 +56,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Anas Shahid</td>
     <td>Software Developer</td>
-    <td>5</td>
+    <td>3.5</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
