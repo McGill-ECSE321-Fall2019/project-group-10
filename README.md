@@ -29,7 +29,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Alex Gruenwald</td>
     <td>Technical Lead</td>
-    <td>8</td>
+    <td>11</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -38,7 +38,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Chelsea M-C</td>
     <td>Documentation Manager</td>
-    <td>8</td>
+    <td>10</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -64,8 +64,8 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Yoan Poulmarc'k</td>
-    <td>Software Testing Lead</td>
-    <td>6</td>
+    <td>Software Architecture Lead</td>
+    <td>8</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
