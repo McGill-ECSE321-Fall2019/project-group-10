@@ -29,6 +29,10 @@ task compile(type: JavaCompile) {
   sourceSets.main.java.outputDir = file('build/bin')
 }
 
+task stage () {
+    dependsOn ':project-group-10:assemble'
+}
+
 sourceSets {
   main {
     java { srcDir 'src/main/java' }
