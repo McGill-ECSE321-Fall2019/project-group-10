@@ -18,8 +18,18 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'junit:junit:4.12'
+}
+
+sourceSets {
+  main {
+    java { srcDir 'src/main/java' }
+  }
+  test {
+    java { srcDir 'src/test/java'}
+  }
 }
 
 task compile(type: JavaCompile) {
@@ -33,19 +43,10 @@ task stage () {
     dependsOn ':project-group-10:assemble'
 }
 
-sourceSets {
-  main {
-    java { srcDir 'src/main/java' }
-  }
-  test {
-    java { srcDir 'src/test/java'}
-  }
-}
-
 jar {
   destinationDir=file('distributable')
   manifest {
     // It is smart to reuse the name of the main class variable instead of hardcoding it
     attributes "Main-Class": "$mainClassName"
-  }
+	}
 }
