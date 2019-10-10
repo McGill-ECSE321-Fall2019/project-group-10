@@ -28,7 +28,7 @@ Below can be found the role of each member and the number of hours spent on each
 
   <tr>
     <td>Alex Gruenwald</td>
-    <td>Technical Lead</td>
+    <td>Technical(ly) Intern</td>
     <td>11</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -46,8 +46,8 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Taylor Lynn Curtis</td>
-    <td>Software Developer</td>
-    <td>4</td>
+    <td>Software Consulting Lead</td>
+    <td>7.5</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
