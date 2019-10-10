@@ -1,0 +1,2 @@
+heroku config:add PROCFILE=Project-Backend/Procfile --app project-group-10
+

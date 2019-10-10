@@ -1,4 +1,4 @@
-package group10;
+package ca.mcgill.ecse321.project;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.SpringApplication;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @SpringBootApplication
-public class ProjectGroup10Application {
+public class ProjectApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(ProjectGroup10Application.class, args);
+    SpringApplication.run(ProjectApplication.class, args);
   }
 
   @RequestMapping("/")
