@@ -1,2 +1,2 @@
-heroku config:add PROCFILE=Project-Backend/Procfile --app project-group-10
+web: java -jar Project-Backend/build/libs/Project-Backend-0.0.1-SNAPSHOT.jar
 
