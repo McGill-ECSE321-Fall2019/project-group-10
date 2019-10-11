@@ -1,4 +1,4 @@
-package service;
+package ca.mcgill.ecse321.project.service;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dao.*;
-import model.*;
+import ca.mcgill.ecse321.project.dao.*;
+import ca.mcgill.ecse321.project.model.*;
 
 @Service
 public class TutoringAppService {

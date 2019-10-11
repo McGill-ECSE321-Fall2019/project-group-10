@@ -1,10 +1,10 @@
-package dao;
+package ca.mcgill.ecse321.project.dao;
 
 // import CRUD from spring
 import org.springframework.data.repository.CrudRepository;
 
 // import model class
-import model.Room;
+import ca.mcgill.ecse321.project.model.Room;
 
 public interface RoomRepository extends CrudRepository<Room, Integer>{
 
