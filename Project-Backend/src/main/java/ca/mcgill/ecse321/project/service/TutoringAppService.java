@@ -35,23 +35,12 @@ public class TutoringAppService {
 	UserRepository userRepository;
 	
 	@Transactional
-	public Availability createAvailability(int date, int time, int id, String tName) {
+	public Availability createAvailability(int date, int time, int id, Tutor tutor) {
 		Availability availability = new Availability();
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
 		availability.setDate(date);
-		availability.setTutor((Tutor)roleRepository.findRoleByUsername(tName));
-		availabilityRepository.save(availability);
-		return availability;
-	}
-
-	@Transactional
-	public Availability updateAvailability(int oldID, int date, int time, int id, String tName) {
-		Availability availability = availabilityRepository.findAvailabilityByAvailabilityID(oldID);
-		availability.setAvailabilityID(id);
-		availability.setTime(time);
-		availability.setDate(date);
-		availability.setTutor((Tutor)roleRepository.findRoleByUsername(tName));
+		availability.setTutor(tutor);
 		availabilityRepository.save(availability);
 		return availability;
 	}
@@ -72,89 +61,58 @@ public class TutoringAppService {
 		Tutor tutor = (Tutor)roleRepository.findRoleByUsername(username);
 		return toList(availabilityRepository.findAvailabilityByTutor(tutor));
 	}
-	
-	@Transactional
-	public boolean deleteAvailability(int id) {
-		boolean done = false;
-		Availability a = getAvailability(id);
-		if (a != null) {
-			availabilityRepository.delete(a);
-			done = true;
-		}
-		return done;
-	}
-	
-	@Transactional
-	public boolean deleteAvailabilityByTutor(String username) {
-		boolean done = false;
-		List<Availability> availList = getAvailabilityByTutor(username);
-		for(Availability a: getAvailabilityByTutor(username)) {
-			if (a != null) {
-				availabilityRepository.delete(a);
-			}
-		}
-		done = true;
-		
-		return done;
-	}
-	
 
 	@Transactional
-	public CourseOffering createCourseOffering(int id, String term, int year, int courseID) {
+	public CourseOffering createCourseOffering(int id, String term, int year, Course course) {
 		CourseOffering courseOffering = new CourseOffering();
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
-		courseOffering.setCourse(courseRepository.findCourseByCourseID(courseID));
+		courseOffering.setCourse(course);
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
 	
 	@Transactional
-	public List<CourseOffering> getAllCourseOfferings() {
-		return toList(courseOfferingRepository.findAll());
-	}
-	
-	@Transactional
-	public Course createCourse(String description, String courseName, int id, int uniID) {
+	public Course createCourse(String description, String courseName, int id, University uni) {
 		Course course = new Course();
 		course.setDescription(description);
 		course.setCourseName(courseName);
 		course.setCourseID(id);
-		course.setUniversity(universityRepository.findUniversityByUniversityID(uniID));
+		course.setUniversity(uni);
 		courseRepository.save(course);
 		return course;
 	}
 	
 	@Transactional
-	public Text createText(int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
+	public Text createText(int id, String description, boolean isAllowed, Role reviewee, CourseOffering co) {
 		Review text = new Text();
 		text.setDescription(description);
 		text.setReviewID(id);
 		text.setIsAllowed(isAllowed);
-		text.setWrittenAbout(roleRepository.findRoleByUsername(revieweeUsername));
-		text.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		text.setWrittenAbout(reviewee);
+		text.setCourseOffering(co);
 		reviewRepository.save(text);
 		return (Text)text;
 	}
 	
 	@Transactional
-	public Rating createRating(int id, RatingValue value, String revieweeUsername, int coID) {
+	public Rating createRating(int id, RatingValue value, Role reviewee, CourseOffering co) {
 		Review rating = new Rating();
 		rating.setRatingValue(value);
 		rating.setReviewID(id);
-		rating.setWrittenAbout(roleRepository.findRoleByUsername(revieweeUsername));
-		rating.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		rating.setWrittenAbout(reviewee);
+		rating.setCourseOffering(co);
 		reviewRepository.save(rating);
 		return rating;
 	}
 	
 	@Transactional
-	public Tutor createTutor(String username, String password, String userEmail, int hourlyRate, int exp, Education level) {
+	public Tutor createTutor(String username, String password, User user, int hourlyRate, int exp, Education level) {
 		Role tutor = new Tutor();
 		tutor.setUsername(username);
 		tutor.setPassword(password);
-		tutor.setUser(userRepository.findUserByEmail(userEmail));
+		tutor.setUser(user);
 		tutor.setHourlyRate(hourlyRate);
 		tutor.setExperience(exp);
 		tutor.setEducation(level);
@@ -168,24 +126,24 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public Student createStudent(String username, String password, String userEmail) {
+	public Student createStudent(String username, String password, User user) {
 		Role student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);
-		student.setUser(userRepository.findUserByEmail(userEmail));
+		student.setUser(user);
 		roleRepository.save(student);
 		return (Student)student;
 	}
 
 	@Transactional
-	public Session createSession(CourseOffering co, int date, int time, int amountPaid, int id, String sName, String tName) {
+	public Session createSession(CourseOffering co, int date, int time, int amountPaid, int id, Student s, Tutor t) {
 		Session session = new Session();
 		session.setCourseOffering(co);
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		session.setStudent((Student)roleRepository.findRoleByUsername(sName));
-		session.setTutor((Tutor)roleRepository.findRoleByUsername(tName));
+		session.setStudent(s);
+		session.setTutor(t);
 		session.setSessionID(id);
 		sessionRepository.save(session);
 		return session;
