@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.project.service;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.*;
@@ -53,7 +54,7 @@ public class AvailabilityTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "email", 22, 5145555555);
+		service.createUser("aName", "email", 22, 5145555555.0);
 		service.createTutor("username", "password", "aName", 12, 3, Education.getHighSchool());
 	}
 
@@ -99,7 +100,7 @@ public class AvailabilityTest {
 
 
 		try {
-			a = service.updateAvailability(1, date, time, id, "username");
+			service.updateAvailability(1, date, time, id, "username");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -169,7 +170,7 @@ public class AvailabilityTest {
 	public void testCreateAvailabilityNullID() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		int date = 09102019;
+		int date = 9102019;
 		int id = (Integer) null;
 		int time = 10;
 		String error = null;
@@ -192,7 +193,7 @@ public class AvailabilityTest {
 	public void testCreateAvailabilityNullTime() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		int date = 09102019;
+		int date = 9102019;
 		int id = 1;
 		int time = (Integer) null;
 
@@ -217,7 +218,7 @@ public class AvailabilityTest {
 	public void testCreateAvailabilityNullTutor() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		int date = 09102019;
+		int date = 9102019;
 		int id = 1;
 		int time = 10;
 

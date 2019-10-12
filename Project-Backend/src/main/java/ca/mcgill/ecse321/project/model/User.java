@@ -30,12 +30,12 @@ public void setEmail(String value) {
 public String getEmail() {
     return this.email;
 }
-private int phoneNumber;
+private double phoneNumber;
 
-public void setPhoneNumber(int value) {
-    this.phoneNumber = value;
+public void setPhoneNumber(double phoneNum) {
+    this.phoneNumber = phoneNum;
 }
-public int getPhoneNumber() {
+public double getPhoneNumber() {
     return this.phoneNumber;
 }
    private Set<Role> role;

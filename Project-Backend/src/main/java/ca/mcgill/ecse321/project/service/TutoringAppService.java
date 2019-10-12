@@ -26,6 +26,10 @@ public class TutoringAppService {
 	@Autowired
 	ReviewRepository reviewRepository;
 	@Autowired
+	RatingRepository ratingRepository;
+	@Autowired
+	TextRepository textRepository;
+	@Autowired
 	RoleRepository roleRepository;
 	@Autowired
 	TutorRepository tutorRepository;
@@ -111,7 +115,7 @@ public class TutoringAppService {
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
-		courseOffering.setCourses(courseRepository.findCourseByCourseID(courseID));
+		courseOffering.setCourse(courseRepository.findCourseByCourseID(courseID));
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
@@ -122,7 +126,7 @@ public class TutoringAppService {
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
-		courseOffering.setCourses(courseRepository.findCourseByCourseID(courseID));
+		courseOffering.setCourse(courseRepository.findCourseByCourseID(courseID));
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
@@ -201,7 +205,7 @@ public class TutoringAppService {
 		text.setIsAllowed(isAllowed);
 		text.setWrittenAbout(roleRepository.findRoleByUsername(revieweeUsername));
 		text.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
-		reviewRepository.save(text);
+		textRepository.save(text);
 		return (Text)text;
 	}
 	
@@ -212,7 +216,7 @@ public class TutoringAppService {
 		rating.setReviewID(id);
 		rating.setWrittenAbout(roleRepository.findRoleByUsername(revieweeUsername));
 		rating.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
-		reviewRepository.save(rating);
+		ratingRepository.save(rating);
 		return rating;
 	}
 	
@@ -281,7 +285,7 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public User createUser(String name, String email, int age, int phoneNum) {
+	public User createUser(String name, String email, int age, double phoneNum) {
 		User user = new User();
 		user.setName(name);
 		user.setEmail(email);
