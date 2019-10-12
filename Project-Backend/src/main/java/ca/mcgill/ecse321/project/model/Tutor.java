@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 public class Tutor extends Role{
 private Education education;
 
-	@OneToOne(mappedBy="tutor")
+	@OneToOne(optional=false)
 	public Education getEducation() {
 		return this.education;
 	}
