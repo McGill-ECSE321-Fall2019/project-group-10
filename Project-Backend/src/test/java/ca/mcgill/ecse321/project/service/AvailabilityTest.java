@@ -54,7 +54,7 @@ public class AvailabilityTest {
 	@Before
 	public void setUp(){
 		service.createUser("aName", "email", 22, 5145555555);
-		service.createTutor("username", "password", "aName", 12, 3, Education.getHighSchool())
+		service.createTutor("username", "password", "aName", 12, 3, Education.getHighSchool());
 	}
 
 	@After
@@ -91,7 +91,7 @@ public class AvailabilityTest {
 		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
 		assertEquals(date, allAvailabilities.get(0).getDate());
 		assertEquals(time, allAvailabilities.get(0).getTime());
-		assertEquals("username", allAvailabilities.get(0).getTutor().getUserName());
+		assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
 
 		date = 1010;
 		id = 2;
@@ -109,7 +109,7 @@ public class AvailabilityTest {
 		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
 		assertEquals(date, allAvailabilities.get(0).getDate());
 		assertEquals(time, allAvailabilities.get(0).getTime());
-		assertEquals("username", allAvailabilities.get(0).getTutor().getUserName());
+		assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
 
 	}
 

@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -73,7 +75,7 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = courseRepository.getAllCourses();
+		List<Course> allCourses = service.getAllCourses();
 
 		assertEquals(1, allCourses.size());
 		assertEquals(id, allCourses.get(0).getCourseID());
@@ -96,7 +98,7 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = courseRepository.getAllCourses();
+		List<Course> allCourses = service.getAllCourses();
 
 		assertEquals(1, allCourses.size());
 		assertEquals(id, allCourses.get(0).getCourseID());
@@ -115,7 +117,7 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = courseRepository.getAllCourses();
+		allCourses = service.getAllCourses();
 
 		assertEquals(1, allCourses.size());
 		assertEquals(id, allCourses.get(0).getCourseID());
@@ -146,7 +148,7 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = courseRepository.getAllCourses();
+		List<Course> allCourses = service.getAllCourses();
 
 		assertEquals(0, allCourses.size());
 	}
@@ -165,7 +167,7 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = courseRepository.getAllCourses();
+		List<Course> allCourses = service.getAllCourses();
 
 		assertEquals(0, allCourses.size());
 
@@ -185,7 +187,7 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = courseRepository.getAllCourses();
+		List<Course> allCourses = service.getAllCourses();
 
 		assertEquals(0, allCourses.size());
 
@@ -196,7 +198,7 @@ public class CourseTest {
 
 		String description = "new";
 		String courseName = "COM SCI 101";
-		int id = null;
+		int id = (Integer)null;
 
 		try {
 			service.createCourse(description, courseName, id, 1);
@@ -205,7 +207,7 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = courseRepository.getAllCourses();
+		List<Course> allCourses = service.getAllCourses();
 
 		assertEquals(0, allCourses.size());
 
@@ -225,7 +227,7 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = courseRepository.getAllCourses();
+		List<Course> allCourses = service.getAllCourses();
 
 		assertEquals(0, allCourses.size());
 

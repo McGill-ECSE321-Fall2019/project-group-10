@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -115,7 +117,7 @@ public class CourseOfferingTest {
 	}
 	
 	@Test
-	public void testCreateCourseOffering() {
+	public void testUpdateCourseOffering() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
 		int id = 3;
@@ -161,7 +163,7 @@ public class CourseOfferingTest {
 	public void testCreateCourseOfferingNullID() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
-		int id = null;
+		int id = (Integer) null;
 		String term = "fall";
 		int year = 2019;
 		int courseID = 2;
@@ -205,7 +207,7 @@ public class CourseOfferingTest {
 		
 		int id = 3;
 		String term = "fall";
-		int year = null;
+		int year = (Integer) null;
 		int courseID = 2;
 
 		try {
