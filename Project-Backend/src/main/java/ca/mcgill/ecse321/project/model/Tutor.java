@@ -3,23 +3,10 @@ package ca.mcgill.ecse321.project.model;
 import javax.persistence.Entity;
 import java.util.Set;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Tutor extends Role{
-private Education education;
-
-	@OneToOne(mappedBy="tutor")
-	public Education getEducation() {
-		return this.education;
-	}
-	
-	public void setEducation(Education education) {
-		
-		this.education = education;
-		
-	}
-	private Set<Session> session1;
+private Set<Session> session1;
    
    @OneToMany(mappedBy="tutor" )
    public Set<Session> getSession1() {
@@ -30,12 +17,12 @@ private Education education;
       this.session1 = session1s;
    }
    
-   private double hourlyRate;
+   private int hourlyRate;
 
-public void setHourlyRate(double value) {
+public void setHourlyRate(int value) {
     this.hourlyRate = value;
 }
-public double getHourlyRate() {
+public int getHourlyRate() {
     return this.hourlyRate;
 }
 private int experience;

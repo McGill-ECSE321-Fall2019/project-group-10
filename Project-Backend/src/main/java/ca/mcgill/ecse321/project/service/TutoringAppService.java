@@ -63,14 +63,14 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Availability getAvailability(int id) {
-		Availability a = availabilityRepository.findAvailabilityByID(new Integer(id));
+		Availability a = availabilityRepository.findAvailabilityByAvailabilityID(new Integer(id));
 		return a;
 	}
 	
 	@Transactional
 	public List<Availability> getAvailabilityByTutor(String username) {
 		Tutor tutor = (Tutor)roleRepository.findRoleByUsername(username);
-		return toList(availabilityRepository.findAvailabiltyByTutor(tutor));
+		return toList(availabilityRepository.findAvailabilityByTutor(tutor));
 	}
 	
 	@Transactional
@@ -105,11 +105,7 @@ public class TutoringAppService {
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
-<<<<<<< HEAD
 		courseOffering.setCourse(courseRepository.findCourseByCourseID(courseID));
-=======
-		courseOffering.setCourses(course);
->>>>>>> 1e69f5501645633c158c02c846febb27941a610d
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
@@ -131,13 +127,8 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-<<<<<<< HEAD
 	public Text createText(int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
 		Review text = new Text();
-=======
-	public Text createText(int id, String description, boolean isAllowed, Role reviewee, CourseOffering co) {
-		Text text = new Text();
->>>>>>> 1e69f5501645633c158c02c846febb27941a610d
 		text.setDescription(description);
 		text.setReviewID(id);
 		text.setIsAllowed(isAllowed);
@@ -148,15 +139,9 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-<<<<<<< HEAD
 	public Rating createRating(int id, RatingValue value, String revieweeUsername, int coID) {
 		Review rating = new Rating();
 		rating.setRatingValue(value);
-=======
-	public Rating createRating(int id, int ratingValue, Role reviewee, CourseOffering co) {
-		Rating rating = new Rating();
-		rating.setRatingValue(ratingValue);
->>>>>>> 1e69f5501645633c158c02c846febb27941a610d
 		rating.setReviewID(id);
 		rating.setWrittenAbout(roleRepository.findRoleByUsername(revieweeUsername));
 		rating.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
@@ -165,13 +150,8 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-<<<<<<< HEAD
 	public Tutor createTutor(String username, String password, String userEmail, int hourlyRate, int exp, Education level) {
 		Role tutor = new Tutor();
-=======
-	public Tutor createTutor(String username, String password, User user, double hourlyRate, int exp, Education level) {
-		Tutor tutor = new Tutor();
->>>>>>> 1e69f5501645633c158c02c846febb27941a610d
 		tutor.setUsername(username);
 		tutor.setPassword(password);
 		tutor.setUser(userRepository.findUserByEmail(userEmail));
@@ -200,17 +180,12 @@ public class TutoringAppService {
 	@Transactional
 	public Session createSession(CourseOffering co, int date, int time, int amountPaid, int id, String sName, String tName) {
 		Session session = new Session();
-		session.setCourseOffering(co); //Not in the domain model
+		session.setCourseOffering(co);
 		session.setDate(date);
-		session.setTime(time); //Not in the domain model
+		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-<<<<<<< HEAD
 		session.setStudent((Student)roleRepository.findRoleByUsername(sName));
 		session.setTutor((Tutor)roleRepository.findRoleByUsername(tName));
-=======
-		session.setStudent(s); //Not in the domain model
-		session.setTutor(t);
->>>>>>> 1e69f5501645633c158c02c846febb27941a610d
 		session.setSessionID(id);
 		sessionRepository.save(session);
 		return session;
