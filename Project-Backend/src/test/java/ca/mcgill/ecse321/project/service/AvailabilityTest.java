@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.project.service;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
+import org.junit.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
