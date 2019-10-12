@@ -5,17 +5,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.*;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
@@ -48,6 +44,13 @@ public class AvailabilityTest {
 	@Autowired
 	private UserRepository userRepository;
 	
+
+	@Before
+	public void setUp(){
+		service.createUser("aName", "email", 22, 5145555555);
+		service.createTutor("username", "password", "aName", 12, 3, Education.getHighSchool())
+	}
+
 	@After
 	public void clearDatabase() {
 		sessionRepository.deleteAll();
@@ -68,11 +71,9 @@ public class AvailabilityTest {
 		int date = 1009;
 		int id = 1;
 		int time = 10;
-		
-		Tutor tutor = new Tutor();
 
 		try {
-			service.createAvailability(date, time, id, tutor);
+			service.createAvailability(date, time, id, "username");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -81,7 +82,57 @@ public class AvailabilityTest {
 		List<Availability> allAvailabilities = service.getAllAvailabilities();
 
 		assertEquals(1, allAvailabilities.size());
-		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());
+		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
+		assertEquals(date, allAvailabilities.get(0).getDate());
+		assertEquals(time, allAvailabilities.get(0).getTime());
+		assertEquals("username", allAvailabilities.get(0).getTutor().getUserName());
+
+		date = 1010;
+		id = 2;
+		time = 20;
+
+
+		try {
+			a = service.updateAvailability(1, date, time, id, "username");
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		assertEquals(1, allAvailabilities.size());
+		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
+		assertEquals(date, allAvailabilities.get(0).getDate());
+		assertEquals(time, allAvailabilities.get(0).getTime());
+		assertEquals("username", allAvailabilities.get(0).getTutor().getUserName());
+
+	}
+
+	
+	@Test
+	public void testDeleteAvailability() {
+		assertEquals(0, service.getAllAvailabilities().size());
+
+		int date = 1009;
+		int id = 1;
+		int time = 10;
+
+		try {
+			service.createAvailability(date, time, id, "username");
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		
+		try {
+			service.deleteAvailability(id);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<Availability> allAvailabilities = service.getAllAvailabilities();
+
+		assertEquals(0, allAvailabilities.size());
 	}
 	
 	@Test
@@ -92,12 +143,10 @@ public class AvailabilityTest {
 		int id = 1;
 		int time = 10;
 		
-		Tutor tutor = new Tutor();
-		
 		String error = null;
 
 		try {
-			service.createPerson(name);
+			service.createAvailability(date, time, id, "username");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -117,13 +166,10 @@ public class AvailabilityTest {
 		int date = 09102019;
 		int id = (Integer) null;
 		int time = 10;
-		
-		Tutor tutor = new Tutor();
-		
 		String error = null;
 
 		try {
-			service.createPerson(name);
+			service.createAvailability(date, time, id, "username");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -143,13 +189,12 @@ public class AvailabilityTest {
 		int date = 09102019;
 		int id = 1;
 		int time = (Integer) null;
-		
-		Tutor tutor = new Tutor();
-		
+
 		String error = null;
 
 		try {
-			service.createPerson(name);
+			service.createAvailability(date, time, id, "username");
+
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -169,13 +214,11 @@ public class AvailabilityTest {
 		int date = 09102019;
 		int id = 1;
 		int time = 10;
-		
-		Tutor tutor = null;
-		
+
 		String error = null;
 
 		try {
-			service.createPerson(name);
+			service.createAvailability(date, time, id, "unknown");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}

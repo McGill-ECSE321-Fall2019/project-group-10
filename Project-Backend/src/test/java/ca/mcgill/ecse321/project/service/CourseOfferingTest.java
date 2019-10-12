@@ -42,6 +42,12 @@ public class CourseOfferingTest {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Before
+	public void setUp(){
+		service.createUniversity("McGill", "3040 University", 1);
+		service.createCourse("Intro to Software","ECSE 321", 2, 1);
+	}
+	
 	@After
 	public void clearDatabase() {
 		sessionRepository.deleteAll();
@@ -53,5 +59,185 @@ public class CourseOfferingTest {
 		availabilityRepository.deleteAll();
 		roleRepository.deleteAll();
 		userRepository.deleteAll();
+	}
+	
+	@Test
+	public void testCreateCourseOffering() {
+		assertEquals(0, service.getAllCourseOfferings().size());
+		
+		int id = 3;
+		String term = "fall";
+		int year = 2019;
+		int courseID = 2;
+
+		try {
+			service.createCourseOffering(id, term, year, courseID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+
+		assertEquals(1, allCO.size());
+		assertEquals(id, allCO.get(0).getCourseOfferingID());
+		assertEquals(year, allCO.get(0).getYear());
+		assertEquals(term, allCO.get(0).getTerm());
+		assertEquals(courseID, allCO.get(0).getCourse().getCourseID());
+	}
+	
+	@Test
+	public void testDeleteCourseOffering() {
+		assertEquals(0, service.getAllCourseOfferings().size());
+		
+		int id = 3;
+		String term = "fall";
+		int year = 2019;
+		int courseID = 2;
+
+		try {
+			service.createCourseOffering(id, term, year, courseID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		
+		try {
+			service.deleteCourseOffering(id);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+
+		assertEquals(0, allCO.size());
+	}
+	
+	@Test
+	public void testCreateCourseOffering() {
+		assertEquals(0, service.getAllCourseOfferings().size());
+		
+		int id = 3;
+		String term = "fall";
+		int year = 2019;
+		int courseID = 2;
+
+		try {
+			service.createCourseOffering(id, term, year, courseID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+
+		assertEquals(1, allCO.size());
+		assertEquals(id, allCO.get(0).getCourseOfferingID());
+		assertEquals(year, allCO.get(0).getYear());
+		assertEquals(term, allCO.get(0).getTerm());
+		assertEquals(courseID, allCO.get(0).getCourse().getCourseID());
+		
+		id = 4;
+		term = "winter";
+		year = 2020;
+
+		try {
+			service.updateCourseOffering(3, id, term, year, courseID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		allCO = service.getAllCourseOfferings();
+
+		assertEquals(1, allCO.size());
+		assertEquals(id, allCO.get(0).getCourseOfferingID());
+		assertEquals(year, allCO.get(0).getYear());
+		assertEquals(term, allCO.get(0).getTerm());
+	}
+	
+	@Test
+	public void testCreateCourseOfferingNullID() {
+		assertEquals(0, service.getAllCourseOfferings().size());
+		
+		int id = null;
+		String term = "fall";
+		int year = 2019;
+		int courseID = 2;
+
+		try {
+			service.createCourseOffering(id, term, year, courseID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+
+		assertEquals(0, allCO.size());
+	}
+	
+	@Test
+	public void testCreateCourseOfferingNullTerm() {
+		assertEquals(0, service.getAllCourseOfferings().size());
+		
+		int id = 3;
+		String term = null;
+		int year = 2019;
+		int courseID = 2;
+
+		try {
+			service.createCourseOffering(id, term, year, courseID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+
+		assertEquals(0, allCO.size());
+	}
+	
+	@Test
+	public void testCreateCourseOfferingNullYear() {
+		assertEquals(0, service.getAllCourseOfferings().size());
+		
+		int id = 3;
+		String term = "fall";
+		int year = null;
+		int courseID = 2;
+
+		try {
+			service.createCourseOffering(id, term, year, courseID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+
+		assertEquals(0, allCO.size());
+	}
+	
+	@Test
+	public void testCreateCourseOfferingNullCourse() {
+		assertEquals(0, service.getAllCourseOfferings().size());
+		
+		int id = 3;
+		String term = "fall";
+		int year = 2019;
+		int courseID = 3;
+
+		try {
+			service.createCourseOffering(id, term, year, courseID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+
+		assertEquals(0, allCO.size());
 	}
 }
