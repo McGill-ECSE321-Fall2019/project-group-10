@@ -111,8 +111,36 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
+	public CourseOffering updateCourseOffering(int oldID, int id, String term, int year, int courseID) {
+		CoursegOfferin courseOffering = courseRepository.findCourseOfferingByCourseOfferingID(oldID);
+		courseOffering.setCourseOfferingID(id);
+		courseOffering.setYear(year);
+		courseOffering.setTerm(term);
+		courseOffering.setCourse(courseRepository.findCourseByCourseID(courseID));
+		courseOfferingRepository.save(courseOffering);
+		return courseOffering;
+	}
+	
+	@Transactional
 	public List<CourseOffering> getAllCourseOfferings() {
 		return toList(courseOfferingRepository.findAll());
+	}
+	
+	@Transactional
+	public CourseOffering getCourseOffering(int id) {
+		CourseOffering a = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(id));
+		return a;
+	}
+	
+	@Transactional
+	public boolean deleteCourseOffering(int id) {
+		boolean done = false;
+		CourseOffering a = getCourseOffering(id);
+		if (a != null) {
+			courseOfferingRepository.delete(a);
+			done = true;
+		}
+		return done;
 	}
 	
 	@Transactional
@@ -124,6 +152,39 @@ public class TutoringAppService {
 		course.setUniversity(universityRepository.findUniversityByUniversityID(uniID));
 		courseRepository.save(course);
 		return course;
+	}
+	
+	@Transactional
+	public Course updateCourse(int oldID, String description, String courseName, int id, int uniID) {
+		Course course = courseRepository.findCourseByCourseID(oldID);
+		course.setDescription(description);
+		course.setCourseName(courseName);
+		course.setCourseID(id);
+		course.setUniversity(universityRepository.findUniversityByUniversityID(uniID));
+		courseRepository.save(course);
+		return course;
+	}
+	
+	@Transactional
+	public Course getCourse(int id) {
+		Course a = courseRepository.findCourseByCourseID(new Integer(id));
+		return a;
+	}
+	
+	@Transactional
+	public List<Course> getAllCourses() {
+		return toList(courseRepository.findAll());
+	}
+	
+	@Transactional
+	public boolean deleteCourse(int id) {
+		boolean done = false;
+		Course a = getCourse(id);
+		if (a != null) {
+			courseRepository.delete(a);
+			done = true;
+		}
+		return done;
 	}
 	
 	@Transactional
@@ -178,9 +239,9 @@ public class TutoringAppService {
 	}
 
 	@Transactional
-	public Session createSession(CourseOffering co, int date, int time, int amountPaid, int id, String sName, String tName) {
+	public Session createSession(int coID, int date, int time, int amountPaid, int id, String sName, String tName) {
 		Session session = new Session();
-		session.setCourseOffering(co);
+		session.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
