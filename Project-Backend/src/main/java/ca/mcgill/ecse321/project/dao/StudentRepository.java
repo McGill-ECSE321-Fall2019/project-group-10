@@ -6,6 +6,11 @@ import org.springframework.data.repository.CrudRepository;
 //import model class
 import ca.mcgill.ecse321.project.model.*;
 
-public class StudentRepository{
+public interface StudentRepository extends CrudRepository<Student, String>{
+	
+	Student findStudentByUsername(String username);
+	
+	<List>Student findStudentByUser(User user);
 
 }
+

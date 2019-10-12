@@ -3,7 +3,9 @@ package ca.mcgill.ecse321.project.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,10 @@ public class TutoringAppService {
 	ReviewRepository reviewRepository;
 	@Autowired
 	RoleRepository roleRepository;
+	@Autowired
+	TutorRepository tutorRepository;
+	@Autowired
+	StudentRepository studentRepository;
 	@Autowired
 	RoomRepository roomRepository;
 	@Autowired
@@ -105,18 +111,18 @@ public class TutoringAppService {
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
-		courseOffering.setCourse(courseRepository.findCourseByCourseID(courseID));
+		courseOffering.setCourses(courseRepository.findCourseByCourseID(courseID));
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
 	
 	@Transactional
 	public CourseOffering updateCourseOffering(int oldID, int id, String term, int year, int courseID) {
-		CoursegOfferin courseOffering = courseRepository.findCourseOfferingByCourseOfferingID(oldID);
+		CourseOffering courseOffering = courseOfferingRepository.findCourseOfferingByCourseOfferingID(oldID);
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
-		courseOffering.setCourse(courseRepository.findCourseByCourseID(courseID));
+		courseOffering.setCourses(courseRepository.findCourseByCourseID(courseID));
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
@@ -189,7 +195,7 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Text createText(int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
-		Review text = new Text();
+		Text text = new Text();
 		text.setDescription(description);
 		text.setReviewID(id);
 		text.setIsAllowed(isAllowed);
@@ -200,9 +206,9 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public Rating createRating(int id, RatingValue value, String revieweeUsername, int coID) {
-		Review rating = new Rating();
-		rating.setRatingValue(value);
+	public Rating createRating(int id, int ratingValue, String revieweeUsername, int coID) {
+		Rating rating = new Rating();
+		rating.setRatingValue(ratingValue);
 		rating.setReviewID(id);
 		rating.setWrittenAbout(roleRepository.findRoleByUsername(revieweeUsername));
 		rating.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
@@ -211,16 +217,16 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public Tutor createTutor(String username, String password, String userEmail, int hourlyRate, int exp, Education level) {
-		Role tutor = new Tutor();
+	public Tutor createTutor(String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
+		Tutor tutor = new Tutor();
 		tutor.setUsername(username);
 		tutor.setPassword(password);
 		tutor.setUser(userRepository.findUserByEmail(userEmail));
 		tutor.setHourlyRate(hourlyRate);
 		tutor.setExperience(exp);
 		tutor.setEducation(level);
-		roleRepository.save(tutor);
-		return (Tutor)tutor;
+		tutorRepository.save(tutor);
+		return tutor;
 	}
 	
 	@Transactional
@@ -230,12 +236,12 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Student createStudent(String username, String password, String userEmail) {
-		Role student = new Student();
+		Student student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);
 		student.setUser(userRepository.findUserByEmail(userEmail));
-		roleRepository.save(student);
-		return (Student)student;
+		studentRepository.save(student);
+		return student;
 	}
 
 	@Transactional
@@ -245,8 +251,10 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		session.setStudent((Student)roleRepository.findRoleByUsername(sName));
-		session.setTutor((Tutor)roleRepository.findRoleByUsername(tName));
+		Set<Student> student = new HashSet<Student>();
+		student.add(studentRepository.findStudentByUsername(sName));
+		session.setStudent(student);
+		session.setTutor(tutorRepository.findTutorByUsername(tName));
 		session.setSessionID(id);
 		sessionRepository.save(session);
 		return session;

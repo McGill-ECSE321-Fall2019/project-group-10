@@ -8,12 +8,19 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Session{
    private int date;
+   private int time;
 
 public void setDate(int value) {
     this.date = value;
 }
 public int getDate() {
     return this.date;
+}
+public void setTime(int value) {
+    this.time = value;
+}
+public int getTime() {
+    return this.time;
 }
 private int amountPaid;
 
@@ -52,6 +59,18 @@ public int getSessionID() {
    public void setTutor(Tutor tutor) {
       this.tutor = tutor;
    }
+   
+   private CourseOffering co;
+   
+   @ManyToOne(optional=false)
+   public CourseOffering getCourseOffering() {
+      return this.co;
+   }
+   
+   public void setCourseOffering(CourseOffering co2) {
+      this.co = co2;
+   }
+   
    
    private Room room;
    
