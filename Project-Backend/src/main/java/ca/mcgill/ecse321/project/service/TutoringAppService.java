@@ -52,14 +52,14 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Availability getAvailability(int id) {
-		Availability a = availabilityRepository.findAvailabilityByAvailabilityID(new Integer(id));
+		Availability a = availabilityRepository.findAvailabilityByID(new Integer(id));
 		return a;
 	}
 	
 	@Transactional
 	public List<Availability> getAvailabilityByTutor(String username) {
 		Tutor tutor = (Tutor)roleRepository.findRoleByUsername(username);
-		return toList(availabilityRepository.findAvailabilityByTutor(tutor));
+		return toList(availabilityRepository.findByTutor(tutor));
 	}
 
 	@Transactional
@@ -68,7 +68,7 @@ public class TutoringAppService {
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
-		courseOffering.setCourse(course);
+		courseOffering.setCourses(course);
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
@@ -86,7 +86,7 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Text createText(int id, String description, boolean isAllowed, Role reviewee, CourseOffering co) {
-		Review text = new Text();
+		Text text = new Text();
 		text.setDescription(description);
 		text.setReviewID(id);
 		text.setIsAllowed(isAllowed);
@@ -97,9 +97,9 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public Rating createRating(int id, RatingValue value, Role reviewee, CourseOffering co) {
-		Review rating = new Rating();
-		rating.setRatingValue(value);
+	public Rating createRating(int id, int ratingValue, Role reviewee, CourseOffering co) {
+		Rating rating = new Rating();
+		rating.setRatingValue(ratingValue);
 		rating.setReviewID(id);
 		rating.setWrittenAbout(reviewee);
 		rating.setCourseOffering(co);
@@ -108,8 +108,8 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public Tutor createTutor(String username, String password, User user, int hourlyRate, int exp, Education level) {
-		Role tutor = new Tutor();
+	public Tutor createTutor(String username, String password, User user, double hourlyRate, int exp, Education level) {
+		Tutor tutor = new Tutor();
 		tutor.setUsername(username);
 		tutor.setPassword(password);
 		tutor.setUser(user);
@@ -138,11 +138,11 @@ public class TutoringAppService {
 	@Transactional
 	public Session createSession(CourseOffering co, int date, int time, int amountPaid, int id, Student s, Tutor t) {
 		Session session = new Session();
-		session.setCourseOffering(co);
+		session.setCourseOffering(co); //Not in the domain model
 		session.setDate(date);
-		session.setTime(time);
+		session.setTime(time); //Not in the domain model
 		session.setAmountPaid(amountPaid);
-		session.setStudent(s);
+		session.setStudent(s); //Not in the domain model
 		session.setTutor(t);
 		session.setSessionID(id);
 		sessionRepository.save(session);
