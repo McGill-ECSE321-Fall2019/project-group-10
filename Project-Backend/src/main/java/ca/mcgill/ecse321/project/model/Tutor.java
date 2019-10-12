@@ -6,7 +6,21 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Tutor extends Role{
-private Set<Session> session1;
+
+private Education education;
+
+	@OneToOne(optional=false)
+	public Education getEducation() {
+		return this.education;
+	}
+	
+	public void setEducation(Education education) {
+		
+		this.education = education;
+		
+	}
+	private Set<Session> session1;
+
    
    @OneToMany(mappedBy="tutor" )
    public Set<Session> getSession1() {
