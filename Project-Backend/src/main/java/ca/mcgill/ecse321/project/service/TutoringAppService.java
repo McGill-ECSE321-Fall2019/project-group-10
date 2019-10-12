@@ -47,7 +47,7 @@ public class TutoringAppService {
 	
 	@Transactional
 	public List<Availability> getAllAvailabilities() {
-		return toList(availabilitytRepository.findAll());
+		return toList(availabilityRepository.findAll());
 	}
 	
 	@Transactional
@@ -93,7 +93,7 @@ public class TutoringAppService {
 		text.setWrittenAbout(reviewee);
 		text.setCourseOffering(co);
 		reviewRepository.save(text);
-		return text;
+		return (Text)text;
 	}
 	
 	@Transactional
@@ -117,7 +117,7 @@ public class TutoringAppService {
 		tutor.setExperience(exp);
 		tutor.setEducation(level);
 		roleRepository.save(tutor);
-		return tutor;
+		return (Tutor)tutor;
 	}
 	
 	@Transactional
@@ -132,7 +132,7 @@ public class TutoringAppService {
 		student.setPassword(password);
 		student.setUser(user);
 		roleRepository.save(student);
-		return student;
+		return (Student)student;
 	}
 
 	@Transactional
@@ -173,7 +173,7 @@ public class TutoringAppService {
 	public User createUser(String name, String email, int age, int phoneNum) {
 		User user = new User();
 		user.setName(name);
-		user.setEmail(email)
+		user.setEmail(email);
 		user.setAge(age);
 		user.setPhoneNumber(phoneNum);
 		userRepository.save(user);

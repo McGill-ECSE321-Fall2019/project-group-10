@@ -4,7 +4,7 @@ package ca.mcgill.ecse321.project.dao;
 import org.springframework.data.repository.CrudRepository;
 
 //import model class
-import ca.mcgill.ecse321.project.model.TutorRepository;
+import ca.mcgill.ecse321.project.model.*;
 
 public class TutorRepository {
 

@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 
 
 @Entity
-public enum Education{
+public class Education{
    private String highschool;
    
    public void setHighschool(String value) {

@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.project.model;
 import javax.persistence.Entity;
 
 @Entity
-public enum RatingValue{
+public class RatingValue{
    private int one;
 
 public void setOne(int value) {

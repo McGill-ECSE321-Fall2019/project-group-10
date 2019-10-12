@@ -4,7 +4,7 @@ package ca.mcgill.ecse321.project.dao;
 import org.springframework.data.repository.CrudRepository;
 
 // import model class
-import model.University;
+import ca.mcgill.ecse321.project.model.*;
 
 public interface UniversityRepository extends CrudRepository<University, Integer>{
 

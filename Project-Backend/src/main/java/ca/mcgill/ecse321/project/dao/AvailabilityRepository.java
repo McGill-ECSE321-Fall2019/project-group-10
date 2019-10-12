@@ -4,7 +4,7 @@ package ca.mcgill.ecse321.project.dao;
 import org.springframework.data.repository.CrudRepository;
 
 // import model class
-import ca.mcgill.ecse321.project.model.Availability;
+import ca.mcgill.ecse321.project.model.*;
 
 import java.util.List;
 
