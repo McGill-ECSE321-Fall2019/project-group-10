@@ -168,12 +168,14 @@ public class CourseOfferingTest {
 		String term = "fall";
 		int year = 2019;
 		int courseID = 2;
+		
+		String error = null;
 
 		try {
 			service.createCourseOffering(id, term, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
-			fail();
+			error = e.getMessage();
 		}
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
@@ -189,12 +191,14 @@ public class CourseOfferingTest {
 		String term = null;
 		int year = 2019;
 		int courseID = 2;
+		
+		String error = null;
 
 		try {
 			service.createCourseOffering(id, term, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
-			fail();
+			error = e.getMessage();
 		}
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
@@ -210,12 +214,14 @@ public class CourseOfferingTest {
 		String term = "fall";
 		int year = (Integer) null;
 		int courseID = 2;
+		
+		String error = null;
 
 		try {
 			service.createCourseOffering(id, term, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
-			fail();
+			error = e.getMessage();
 		}
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
@@ -231,12 +237,14 @@ public class CourseOfferingTest {
 		String term = "fall";
 		int year = 2019;
 		int courseID = 3;
+		
+		String error = null;
 
 		try {
 			service.createCourseOffering(id, term, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
-			fail();
+			error = e.getMessage();
 		}
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();

@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+
+import java.util.List;
 import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -38,14 +40,14 @@ public void setSessionID(int value) {
 public int getSessionID() {
     return this.sessionID;
 }
-   private Set<Student> student;
+   private List<Student> student;
    
    @ManyToMany
-   public Set<Student> getStudent() {
+   public List<Student> getStudent() {
       return this.student;
    }
    
-   public void setStudent(Set<Student> students) {
+   public void setStudent(List<Student> students) {
       this.student = students;
    }
    

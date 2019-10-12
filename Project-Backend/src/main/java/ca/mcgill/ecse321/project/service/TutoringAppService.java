@@ -182,11 +182,6 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public List<Course> getAllCourses() {
-		return toList(courseRepository.findAll());
-	}
-	
-	@Transactional
 	public boolean deleteCourse(int id) {
 		boolean done = false;
 		Course a = getCourse(id);
@@ -195,6 +190,11 @@ public class TutoringAppService {
 			done = true;
 		}
 		return done;
+	}
+	
+	@Transactional
+	public List<Course> getAllCourses() {
+		return toList(courseRepository.findAll());
 	}
 	
 	@Transactional
@@ -234,8 +234,43 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public List<Role> getAllRoles() {
-		return toList(roleRepository.findAll());
+	public Tutor createTutor(String oldUsername, String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
+		Tutor tutor = tutorRepository.findTutorByUsername(oldUsername);
+		tutor.setUsername(username);
+		tutor.setPassword(password);
+		tutor.setUser(userRepository.findUserByEmail(userEmail));
+		tutor.setHourlyRate(hourlyRate);
+		tutor.setExperience(exp);
+		tutor.setEducation(level);
+		tutorRepository.save(tutor);
+		return tutor;
+	}
+	
+	@Transactional
+	public Tutor getTutor(String username) {
+		Tutor a = tutorRepository.findTutorByUsername(username);
+		return a;
+	}
+	
+	@Transactional
+	public boolean deleteTutor(String username) {
+		boolean done = false;
+		Tutor a = getTutor(username);
+		if (a != null) {
+			tutorRepository.delete(a);
+			done = true;
+		}
+		return done;
+	}
+	
+	@Transactional
+	public List<Student> getAllStudents() {
+		return toList(studentRepository.findAll());
+	}
+	
+	@Transactional
+	public List<Tutor> getAllTutors() {
+		return toList(tutorRepository.findAll());
 	}
 	
 	@Transactional
@@ -247,6 +282,33 @@ public class TutoringAppService {
 		studentRepository.save(student);
 		return student;
 	}
+	
+	@Transactional
+	public Student updateStudent(String oldUsername, String username, String password, String userEmail) {
+		Student student = studentRepository.findStudentByUsername(oldUsername);
+		student.setUsername(username);
+		student.setPassword(password);
+		student.setUser(userRepository.findUserByEmail(userEmail));
+		studentRepository.save(student);
+		return student;
+	}
+	
+	@Transactional
+	public Student getStudent(String username) {
+		Student a = studentRepository.findStudentByUsername(username);
+		return a;
+	}
+	
+	@Transactional
+	public boolean deleteStudent(String username) {
+		boolean done = false;
+		Student a = getStudent(username);
+		if (a != null) {
+			studentRepository.delete(a);
+			done = true;
+		}
+		return done;
+	}
 
 	@Transactional
 	public Session createSession(int coID, int date, int time, int amountPaid, int id, String sName, String tName) {
@@ -255,7 +317,23 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		Set<Student> student = new HashSet<Student>();
+		List<Student> student = new ArrayList<Student>();
+		student.add(studentRepository.findStudentByUsername(sName));
+		session.setStudent(student);
+		session.setTutor(tutorRepository.findTutorByUsername(tName));
+		session.setSessionID(id);
+		sessionRepository.save(session);
+		return session;
+	}
+	
+	@Transactional
+	public Session updateSession(int oldID, int coID, int date, int time, int amountPaid, int id, String sName, String tName) {
+		Session session = sessionRepository.findSessionBySessionID(oldID);
+		session.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		session.setDate(date);
+		session.setTime(time);
+		session.setAmountPaid(amountPaid);
+		List<Student> student = new ArrayList<Student>();
 		student.add(studentRepository.findStudentByUsername(sName));
 		session.setStudent(student);
 		session.setTutor(tutorRepository.findTutorByUsername(tName));
@@ -267,6 +345,23 @@ public class TutoringAppService {
 	@Transactional
 	public List<Session> getAllSessions() {
 		return toList(sessionRepository.findAll());
+	}
+	
+	@Transactional
+	public Session getSession(int id) {
+		Session a = sessionRepository.findSessionBySessionID(new Integer(id));
+		return a;
+	}
+	
+	@Transactional
+	public boolean deleteSession(int id) {
+		boolean done = false;
+		Session a = getSession(id);
+		if (a != null) {
+			sessionRepository.delete(a);
+			done = true;
+		}
+		return done;
 	}
 	
 	@Transactional
