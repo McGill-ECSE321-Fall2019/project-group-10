@@ -27,12 +27,12 @@ public void setTime(Time value) {
 public Time getTime() {
     return this.time;
 }
-private int amountPaid;
+private double amountPaid;
 
-public void setAmountPaid(int value) {
+public void setAmountPaid(Double value) {
     this.amountPaid = value;
 }
-public int getAmountPaid() {
+public double getAmountPaid() {
     return this.amountPaid;
 }
 private int sessionID;

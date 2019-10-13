@@ -46,6 +46,17 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Availability createAvailability(Date date, Time time, int id, String tName) {
+				
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the availability...");
+		}
+		if(tName == null || tName.equals("")){
+			throw new IllegalArgumentException("Invalid name...");
+		}
+		if(date == null || time == null){
+			throw new IllegalArgumentException("Invalid time parameters...");
+		}
+				
 		Availability availability = new Availability();
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
@@ -57,6 +68,16 @@ public class TutoringAppService {
 
 	@Transactional
 	public Availability updateAvailability(int oldID, Date date, Time time, int id, String tName) {
+		if(id < 0 || oldID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the availability...");
+		}
+		if(tName == null || tName.equals("")){
+			throw new IllegalArgumentException("Invalid name...");
+		}
+		if(date == null || time == null){
+			throw new IllegalArgumentException("Invalid time parameters...");
+		}
+		
 		Availability availability = availabilityRepository.findAvailabilityByAvailabilityID(oldID);
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
@@ -73,6 +94,10 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Availability getAvailability(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the availability...");
+		}
+				
 		Availability a = availabilityRepository.findAvailabilityByAvailabilityID(new Integer(id));
 		return a;
 	}
@@ -85,6 +110,10 @@ public class TutoringAppService {
 	
 	@Transactional
 	public boolean deleteAvailability(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("You are searching for an invalid id...");
+		}
+
 		boolean done = false;
 		Availability a = getAvailability(id);
 		if (a != null) {
@@ -96,6 +125,10 @@ public class TutoringAppService {
 	
 	@Transactional
 	public boolean deleteAvailabilityByTutor(String username) {
+		if(username == null || username.equals("")){
+			throw new IllegalArgumentException("You are searching for an invalid username...");
+		}
+
 		boolean done = false;
 		List<Availability> availList = getAvailabilityByTutor(username);
 		for(Availability a: getAvailabilityByTutor(username)) {
@@ -111,6 +144,19 @@ public class TutoringAppService {
 
 	@Transactional
 	public CourseOffering createCourseOffering(int id, String term, int year, int courseID) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course offering...");
+		}
+		if(year < 1900){
+			throw new IllegalArgumentException("That is far too long ago...");
+		}
+		if(courseID < 0){
+			throw new IllegalArgumentException("Invalid courseID...");
+		}
+		if(!(term.equals("winter") || term.equals("summer") || term.equals("fall"))){
+			throw new IllegalArgumentException("Invalid term choice...");
+		}
+		
 		CourseOffering courseOffering = new CourseOffering();
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
@@ -122,6 +168,19 @@ public class TutoringAppService {
 	
 	@Transactional
 	public CourseOffering updateCourseOffering(int oldID, int id, String term, int year, int courseID) {
+		if(id < 0 || oldID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course offering...");
+		}
+		if(year < 1900){
+			throw new IllegalArgumentException("That is far too long ago...");
+		}
+		if(courseID < 0){
+			throw new IllegalArgumentException("Invalid courseID...");
+		}
+		if(!(term.equals("winter") || term.equals("summer") || term.equals("fall"))){
+			throw new IllegalArgumentException("Invalid term choice...");
+		}
+		
 		CourseOffering courseOffering = courseOfferingRepository.findCourseOfferingByCourseOfferingID(oldID);
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
@@ -138,12 +197,18 @@ public class TutoringAppService {
 	
 	@Transactional
 	public CourseOffering getCourseOffering(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course offering...");
+		}
 		CourseOffering a = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(id));
 		return a;
 	}
 	
 	@Transactional
 	public boolean deleteCourseOffering(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course offering...");
+		}
 		boolean done = false;
 		CourseOffering a = getCourseOffering(id);
 		if (a != null) {
@@ -155,6 +220,16 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Course createCourse(String description, String courseName, int id, int uniID) {
+		if(id < 0 || uniID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course creation...");
+		}
+		if(courseName == null || courseName.equals("")){
+			throw new IllegalArgumentException("Please insert a course name to search...");
+		}
+		if(description == null || description.equals("")){
+			throw new IllegalArgumentException("Please insert a brief description...");
+		}
+		
 		Course course = new Course();
 		course.setDescription(description);
 		course.setCourseName(courseName);
@@ -166,6 +241,15 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Course updateCourse(int oldID, String description, String courseName, int id, int uniID) {
+		if(id < 0 || uniID < 0 || oldID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course update...");
+		}
+		if(courseName == null || courseName.equals("")){
+			throw new IllegalArgumentException("Please insert a course name to search...");
+		}
+		if(description == null || description.equals("")){
+			throw new IllegalArgumentException("Please insert a brief description...");
+		}
 		Course course = courseRepository.findCourseByCourseID(oldID);
 		course.setDescription(description);
 		course.setCourseName(courseName);
@@ -177,12 +261,18 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Course getCourse(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course request...");
+		}
 		Course a = courseRepository.findCourseByCourseID(new Integer(id));
 		return a;
 	}
 	
 	@Transactional
 	public boolean deleteCourse(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course search...");
+		}
 		boolean done = false;
 		Course a = getCourse(id);
 		if (a != null) {
@@ -199,6 +289,16 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Text createText(int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
+		if(id < 0 || coID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course update...");
+		}
+		if(revieweeUsername == null || revieweeUsername.equals("")){
+			throw new IllegalArgumentException("Please insert a reviewee username...");
+		}
+		if(description == null || description.equals("")){
+			throw new IllegalArgumentException("Please insert a brief description...");
+		}
+		
 		Text text = new Text();
 		text.setDescription(description);
 		text.setReviewID(id);
@@ -214,6 +314,16 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Text updateText(int oldID, int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
+		if(id < 0 || coID < 0 || oldID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the course update...");
+		}
+		if(revieweeUsername == null || revieweeUsername.equals("")){
+			throw new IllegalArgumentException("Please insert a reviewee username...");
+		}
+		if(description == null || description.equals("")){
+			throw new IllegalArgumentException("Please insert a brief description...");
+		}
+		
 		Text text = textRepository.findTextByReviewID(oldID);
 		text.setDescription(description);
 		text.setReviewID(id);
@@ -234,12 +344,20 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Text getText(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the text request...");
+		}
+
 		Text a = textRepository.findTextByReviewID(id);
 		return a;
 	}
 	
 	@Transactional
 	public boolean deleteText(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the text deletion...");
+		}
+
 		boolean done = false;
 		Text a = getText(id);
 		if (a != null) {
@@ -251,6 +369,16 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Rating createRating(int id, int ratingValue, String revieweeUsername, int coID) {
+		if(id < 0 || coID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the rating creation...");
+		}
+		if(revieweeUsername == null || revieweeUsername.equals("")){
+			throw new IllegalArgumentException("Please insert a reviewee username...");
+		}
+		if(ratingValue < 0){
+			throw new IllegalArgumentException("You can't give your tutor a negative rating...");
+		}
+		
 		Rating rating = new Rating();
 		rating.setRatingValue(ratingValue);
 		rating.setReviewID(id);
@@ -265,6 +393,15 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Rating updateRating(int oldID, int id, int ratingValue, String revieweeUsername, int coID) {
+		if(id < 0 || coID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the rating update...");
+		}
+		if(revieweeUsername == null || revieweeUsername.equals("")){
+			throw new IllegalArgumentException("Please insert a reviewee username...");
+		}
+		if(ratingValue < 0){
+			throw new IllegalArgumentException("You can't give your tutor a negative rating...");
+		}
 		Rating rating = ratingRepository.findRatingByReviewID(oldID);
 		rating.setRatingValue(ratingValue);
 		rating.setReviewID(id);
@@ -284,12 +421,20 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Rating getRating(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the rating search...");
+		}
+		
 		Rating a = ratingRepository.findRatingByReviewID(id);
 		return a;
 	}
 	
 	@Transactional
 	public boolean deleteRating(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the rating deletion...");
+		}
+		
 		boolean done = false;
 		Rating a = getRating(id);
 		if (a != null) {
@@ -301,6 +446,24 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Tutor createTutor(String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
+		if(username.equals("") || username == null){
+			throw new IllegalArgumentException("Please insert a username...");
+		}
+		if(password.equals("") || password == null){
+			throw new IllegalArgumentException("Please insert a password...");
+		}
+		if(userEmail.equals("") || userEmail == null){
+			throw new IllegalArgumentException("Please insert a user email...");
+		}
+		if(hourlyRate < 0){
+			throw new IllegalArgumentException("Don't think you want to pay the student for your session...");
+		}
+		if(exp < 0){
+			throw new IllegalArgumentException("Please input a valid number of years for your experience...");
+		}
+		if(level == null){
+			throw new IllegalArgumentException("Please provide your education level...");
+		}
 		Tutor tutor = new Tutor();
 		tutor.setUsername(username);
 		tutor.setPassword(password);
@@ -314,6 +477,27 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Tutor updateTutor(String oldUsername, String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
+		if(username.equals("") || username == null){
+			throw new IllegalArgumentException("Please insert a username...");
+		}
+		if(oldUsername.equals("") || oldUsername == null){
+			throw new IllegalArgumentException("Please insert a proper username...");
+		}
+		if(password.equals("") || password == null){
+			throw new IllegalArgumentException("Please insert a password...");
+		}
+		if(userEmail.equals("") || userEmail == null){
+			throw new IllegalArgumentException("Please insert a user email...");
+		}
+		if(hourlyRate < 0){
+			throw new IllegalArgumentException("Don't think you want to pay the student for your session...");
+		}
+		if(exp < 0){
+			throw new IllegalArgumentException("Please input a valid number of years for your experience...");
+		}
+		if(level == null){
+			throw new IllegalArgumentException("Please provide your education level...");
+		}
 		Tutor tutor = tutorRepository.findTutorByUsername(oldUsername);
 		tutor.setUsername(username);
 		tutor.setPassword(password);
@@ -327,12 +511,18 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Tutor getTutor(String username) {
+		if(username.equals("") || username == null){
+			throw new IllegalArgumentException("Please insert a username...");
+		}
 		Tutor a = tutorRepository.findTutorByUsername(username);
 		return a;
 	}
 	
 	@Transactional
 	public boolean deleteTutor(String username) {
+		if(username.equals("") || username == null){
+			throw new IllegalArgumentException("Please insert a username...");
+		}
 		boolean done = false;
 		Tutor a = getTutor(username);
 		if (a != null) {
@@ -354,6 +544,15 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Student createStudent(String username, String password, String userEmail) {
+		if(username.equals("") || username == null){
+			throw new IllegalArgumentException("Please insert a username...");
+		}
+		if(password.equals("") || password == null){
+			throw new IllegalArgumentException("Please insert a password...");
+		}
+		if(userEmail.equals("") || userEmail == null){
+			throw new IllegalArgumentException("Please insert a user email...");
+		}
 		Student student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);
@@ -364,6 +563,18 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Student updateStudent(String oldUsername, String username, String password, String userEmail) {
+		if(username.equals("") || username == null){
+			throw new IllegalArgumentException("Please insert a better username...");
+		}
+		if(oldUsername.equals("") || oldUsername == null){
+			throw new IllegalArgumentException("Please insert a username...");
+		}
+		if(password.equals("") || password == null){
+			throw new IllegalArgumentException("Please insert a password...");
+		}
+		if(userEmail.equals("") || userEmail == null){
+			throw new IllegalArgumentException("Please insert a user email...");
+		}
 		Student student = studentRepository.findStudentByUsername(oldUsername);
 		student.setUsername(username);
 		student.setPassword(password);
@@ -374,12 +585,18 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Student getStudent(String username) {
+		if(username.equals("") || username == null){
+			throw new IllegalArgumentException("Please insert a username...");
+		}
 		Student a = studentRepository.findStudentByUsername(username);
 		return a;
 	}
 	
 	@Transactional
 	public boolean deleteStudent(String username) {
+		if(username.equals("") || username == null){
+			throw new IllegalArgumentException("Please insert a username...");
+		}
 		boolean done = false;
 		Student a = getStudent(username);
 		if (a != null) {
@@ -390,7 +607,24 @@ public class TutoringAppService {
 	}
 
 	@Transactional
-	public Session createSession(int coID, Date date, Time time, int amountPaid, int id, String sName, String tName) {
+	public Session createSession(int coID, Date date, Time time, Double amountPaid, int id, String sName, String tName) {
+			
+		if(id < 0 || coID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the session creation...");
+		}
+		if(tName == null || tName.equals("")){
+			throw new IllegalArgumentException("Invalid name...");
+		}
+		if(sName == null || sName.equals("")){
+			throw new IllegalArgumentException("Invalid name...");
+		}
+		if(date == null || time == null){
+			throw new IllegalArgumentException("Invalid time parameters...");
+		}
+		if(amountPaid < 0){
+			throw new IllegalArgumentException("So your student is paying you?? Please provide positive amount paid...");
+		}
+
 		Session session = new Session();
 		session.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
 		session.setDate(date);
@@ -406,7 +640,23 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public Session updateSession(int oldID, int coID, Date date, Time time, int amountPaid, int id, String sName, String tName) {
+	public Session updateSession(int oldID, int coID, Date date, Time time, Double amountPaid, int id, String sName, String tName) {
+		
+		if(id < 0 || coID < 0 || oldID < 0){
+			throw new IllegalArgumentException("Incorrect id value for the session update...");
+		}
+		if(tName == null || tName.equals("")){
+			throw new IllegalArgumentException("Invalid name...");
+		}
+		if(sName == null || sName.equals("")){
+			throw new IllegalArgumentException("Invalid name...");
+		}
+		if(date == null || time == null){
+			throw new IllegalArgumentException("Invalid time parameters...");
+		}
+		if(amountPaid < 0){
+			throw new IllegalArgumentException("So your student is paying you?? Please provide positive amount paid...");
+		}
 		Session session = sessionRepository.findSessionBySessionID(oldID);
 		session.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
 		session.setDate(date);
@@ -428,12 +678,18 @@ public class TutoringAppService {
 	
 	@Transactional
 	public Session getSession(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the session search...");
+		}
 		Session a = sessionRepository.findSessionBySessionID(new Integer(id));
 		return a;
 	}
 	
 	@Transactional
 	public boolean deleteSession(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the session deletion...");
+		}
 		boolean done = false;
 		Session a = getSession(id);
 		if (a != null) {
@@ -445,6 +701,16 @@ public class TutoringAppService {
 	
 	@Transactional
 	public University createUniversity(String name, String addr, int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the university creation...");
+		}
+		if(name == null || name.equals("")){
+			throw new IllegalArgumentException("Invalid name...");
+		}
+		if(addr == null || addr.equals("")){
+			throw new IllegalArgumentException("Invalid address...");
+		}
+		
 		University uni = new University();
 		uni.setName(name);
 		uni.setAddress(addr);
@@ -460,6 +726,21 @@ public class TutoringAppService {
 	
 	@Transactional
 	public User createUser(String name, String email, int age, double phoneNum) {
+		if(age < 12){
+			throw new IllegalArgumentException("Must be above the age of 12 for this tutoring service...");
+		}
+		if(name == null || name.equals("")){
+			throw new IllegalArgumentException("Invalid name...");
+		}
+		if(email == null || email.equals("")){
+			throw new IllegalArgumentException("Invalid email...");
+		}
+		
+		//Special phone number check.
+		if(!Double.toString(phoneNum).matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
+			throw new IllegalArgumentException("Invalid phone number...");
+		}
+		
 		User user = new User();
 		user.setName(name);
 		user.setEmail(email);

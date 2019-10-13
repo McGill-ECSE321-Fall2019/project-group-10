@@ -78,7 +78,7 @@ public class SessionTest {
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
-		int amountPaid = 23;
+		double amountPaid = 23;
 		int id = 4;
 
 		try {
@@ -107,7 +107,7 @@ public class SessionTest {
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
-		int amountPaid = 23;
+		double amountPaid = 23;
 		int id = 4;
 
 		try {
@@ -160,7 +160,7 @@ public class SessionTest {
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
-		int amountPaid = 23;
+		double amountPaid = 23;
 		int id = 4;
 
 		try {
@@ -192,7 +192,7 @@ public class SessionTest {
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
-		int amountPaid = 23;
+		double amountPaid = 23;
 		int id = 4;
 
 		String error = null;
@@ -218,7 +218,7 @@ public class SessionTest {
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
-		int amountPaid = 23;
+		double amountPaid = 23;
 		int id = 4;
 
 		String error = null;
@@ -244,7 +244,7 @@ public class SessionTest {
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
-		int amountPaid = 23;
+		double amountPaid = 23;
 		int id = 4;
 
 		String error = null;
