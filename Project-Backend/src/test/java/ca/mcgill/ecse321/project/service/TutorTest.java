@@ -19,7 +19,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
+ 
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
@@ -31,7 +31,6 @@ public class TutorTest {
 	
 	@Autowired
 	private TutoringAppService service;
-
 	@Autowired 
 	private AvailabilityRepository availabilityRepository;
 	@Autowired
@@ -54,7 +53,7 @@ public class TutorTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "email", 22, 5145555555.0);
+		service.createUser("aName", "test.tester@mcgill.ca", 22, 5145555555.0);
 	}
 
 	@After
@@ -225,5 +224,25 @@ public class TutorTest {
 
 		assertEquals(0, allTutors.size());
 	}
-	
+	@Test
+	public void testCreateTutorWrongEmail() {
+
+		String username = "email";
+		String password = "test";
+		double hr  = 12;
+		int exp = 3;
+		
+		String error = null;
+
+		try {
+			service.createTutor(username, password, "emailwrong", hr, exp, Education.masters);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		List<Tutor> allTutors = service.getAllTutors();
+
+		assertEquals(0, allTutors.size());
+	}
 }

@@ -54,8 +54,8 @@ public class RatingTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "email", 22, 5145555555.0);
-		service.createTutor("cmc", "dogs", "email", 12, 3, Education.bachelor);
+		service.createUser("aName", "test.tester@mcgill.ca", 22, 5145555555.0);
+		service.createTutor("cmc", "dogs", "test.tester@mcgill.ca", 12, 3, Education.bachelor);
 		service.createUniversity("McGill", "3040 University", 1);
 		service.createCourse("Intro to Software","ECSE 321", 2, 1);
 		service.createCourseOffering(3, "fall", 2019, 2);

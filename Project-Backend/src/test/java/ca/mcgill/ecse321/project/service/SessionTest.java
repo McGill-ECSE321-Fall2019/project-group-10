@@ -52,10 +52,10 @@ public class SessionTest {
 		service.createUniversity("McGill", "3040 University", 1);
 		service.createCourse("Intro to Software","ECSE 321", 2, 1);
 		service.createCourseOffering(3, "fall", 2019, 2);
-		service.createUser("aName", "email", 22, 5145555555.0);
-		service.createUser("aName_student", "email_student", 22, 5145555555.0);
+		service.createUser("aName", "test.tester@mcgill.ca", 22, 5145555555.0);
+		service.createUser("aName_student", "test.tester@mcgill.ca", 22, 5145555555.0);
 		service.createTutor("username", "password", "aName", 12, 3, Education.highschool);
-		service.createStudent("studentUser", "password2", "email_student");
+		service.createStudent("studentUser", "password2", "test.tester@mcgill.ca");
 	}
 	
 	@After

@@ -54,7 +54,7 @@ public class AvailabilityTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "email", 22, 5145555555.0);
+		service.createUser("aName", "test.object@mcgill.ca", 22, 5145555555.0);
 		service.createTutor("username", "password", "aName", 12, 3, Education.highschool);
 	}
 
@@ -247,5 +247,4 @@ public class AvailabilityTest {
 		assertEquals(0, service.getAllAvailabilities().size());
 
 	}
-
 }
