@@ -27,7 +27,7 @@ import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class StudentTest {
+public class RatingTest {
 	
 	@Autowired
 	private TutoringAppService service;
@@ -55,6 +55,10 @@ public class StudentTest {
 	@Before
 	public void setUp(){
 		service.createUser("aName", "email", 22, 5145555555.0);
+		service.createTutor("cmc", "dogs", "email", 12, 3, Education.bachelor);
+		service.createUniversity("McGill", "3040 University", 1);
+		service.createCourse("Intro to Software","ECSE 321", 2, 1);
+		service.createCourseOffering(3, "fall", 2019, 2);
 	}
 
 	@After
@@ -71,140 +75,155 @@ public class StudentTest {
 	}
 	
 	@Test
-	public void testCreateStudent() {
+	public void testCreateRating() {
 
-		String username = "cmc";
-		String password = "dogs";
+		int id = 5;
+		int ratingValue = 1;
+		String revieweeUsername = "cmc";
+		int coID = 3;		
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createRating(id, ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Student> allStudents = service.getAllStudents();
+		List<Rating> allRatings = service.getAllRatings();
 
-		assertEquals(1, allStudents.size());
-		assertEquals(username, allStudents.get(0).getUsername());
-		assertEquals(password, allStudents.get(0).getPassword());
-		assertEquals("email", allStudents.get(0).getUser().getEmail());
+		assertEquals(1, allRatings.size());
+		assertEquals(id, allRatings.get(0).getReviewID());
+		assertEquals(ratingValue, allRatings.get(0).getRatingValue());
+		assertEquals(revieweeUsername, allRatings.get(0).getWrittenAbout().getUsername());
+		assertEquals(coID, allRatings.get(0).getCourseOffering().getCourseOfferingID());
 	}
 	
 	@Test
-	public void testUpdateStudent() {
+	public void testUpdateRating() {
 
-		String username = "cmc";
-		String password = "dogs";
+		int id = 5;
+		int ratingValue = 1;
+		String revieweeUsername = "cmc";
+		int coID = 3;	
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createRating(id, ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Student> allStudents = service.getAllStudents();
+		List<Rating> allRatings = service.getAllRatings();
 
-		assertEquals(1, allStudents.size());
+		assertEquals(1, allRatings.size());
 		
-		username = "amc";
-		password = "cats";
+		id = 6;
+		ratingValue = 2;
 		
 		try {
-			service.updateStudent("cmc", username, password, "email");
+			service.updateRating(5, id, ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 		
-		assertEquals(username, allStudents.get(0).getUsername());
-		assertEquals(password, allStudents.get(0).getPassword());
+		assertEquals(1, allRatings.size());
+		assertEquals(id, allRatings.get(0).getReviewID());
+		assertEquals(ratingValue, allRatings.get(0).getRatingValue());
 	}
 	
 	@Test
-	public void testDeleteStudent() {
+	public void testDeleteRating() {
 
-		String username = "cmc";
-		String password = "dogs";
+		int id = 5;
+		int ratingValue = 1;
+		String revieweeUsername = "cmc";
+		int coID = 3;
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createRating(id, ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 		
 		try {
-			service.deleteStudent(username);
+			service.deleteRating(id);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Student> allStudents = service.getAllStudents();
+		List<Rating> allRatings = service.getAllRatings();
 
-		assertEquals(0, allStudents.size());
+		assertEquals(0, allRatings.size());
 	}
 	
 	@Test
-	public void testCreateStudentNullUsername() {
+	public void testCreateRatingNullUsername() {
 
-		String username = null;
-		String password = "dogs";
+		int id = 5;
+		int ratingValue = 1;
+		String revieweeUsername = null;
+		int coID = 3;
 		
 		String error = null;
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createRating(id, ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 
-		List<Student> allStudents = service.getAllStudents();
+		List<Rating> allRatings = service.getAllRatings();
 
-		assertEquals(0, allStudents.size());
+		assertEquals(0, allRatings.size());
 	}
 	
 	@Test
-	public void testCreateStudentNullPassword() {
+	public void testCreateRatingNullCourseOffering() {
 
-		String username = "cmc";
-		String password = null;
+		int id = 5;
+		int ratingValue = 1;
+		String revieweeUsername = "cmc";
+		int coID = 4;
 		
 		String error = null;
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createRating(id, ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 
-		List<Student> allStudents = service.getAllStudents();
+		List<Rating> allRatings = service.getAllRatings();
 
-		assertEquals(0, allStudents.size());
+		assertEquals(0, allRatings.size());
 	}
 	
 	@Test
-	public void testCreateStudentNullUser() {
+	public void testCreateRatingOutOfBounds() {
 
-		String username = "cmc";
-		String password = "dogs";
+		int id = 5;
+		int ratingValue = -1;
+		String revieweeUsername = "cmc";
+		int coID = 3;
 		
 		String error = null;
 
 		try {
-			service.createStudent(username, password, "emailwrong");
+			service.createRating(id, ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 
-		List<Student> allStudents = service.getAllStudents();
+		//assertEquals(error, "Rating value must be between 1 and 5");
+		List<Rating> allRatings = service.getAllRatings();
 
-		assertEquals(0, allStudents.size());
+		assertEquals(0, allRatings.size());
 	}
 	
 }

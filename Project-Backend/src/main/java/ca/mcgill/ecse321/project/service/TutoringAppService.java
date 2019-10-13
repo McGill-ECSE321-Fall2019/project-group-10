@@ -203,10 +203,50 @@ public class TutoringAppService {
 		text.setDescription(description);
 		text.setReviewID(id);
 		text.setIsAllowed(isAllowed);
-		text.setWrittenAbout(roleRepository.findRoleByUsername(revieweeUsername));
+		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
+			text.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
+		else
+			text.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
 		text.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
 		textRepository.save(text);
 		return (Text)text;
+	}
+	
+	@Transactional
+	public Text updateText(int oldID, int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
+		Text text = textRepository.findTextByReviewID(oldID);
+		text.setDescription(description);
+		text.setReviewID(id);
+		text.setIsAllowed(isAllowed);
+		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
+			text.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
+		else
+			text.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
+		text.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		textRepository.save(text);
+		return (Text)text;
+	}
+	
+	@Transactional
+	public List<Text> getAllTexts() {
+		return toList(textRepository.findAll());
+	}
+	
+	@Transactional
+	public Text getText(int id) {
+		Text a = textRepository.findTextByReviewID(id);
+		return a;
+	}
+	
+	@Transactional
+	public boolean deleteText(int id) {
+		boolean done = false;
+		Text a = getText(id);
+		if (a != null) {
+			textRepository.delete(a);
+			done = true;
+		}
+		return done;
 	}
 	
 	@Transactional
@@ -214,10 +254,49 @@ public class TutoringAppService {
 		Rating rating = new Rating();
 		rating.setRatingValue(ratingValue);
 		rating.setReviewID(id);
-		rating.setWrittenAbout(roleRepository.findRoleByUsername(revieweeUsername));
+		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
+			rating.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
+		else
+			rating.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
 		rating.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
 		ratingRepository.save(rating);
 		return rating;
+	}
+	
+	@Transactional
+	public Rating updateRating(int oldID, int id, int ratingValue, String revieweeUsername, int coID) {
+		Rating rating = ratingRepository.findRatingByReviewID(oldID);
+		rating.setRatingValue(ratingValue);
+		rating.setReviewID(id);
+		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
+			rating.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
+		else
+			rating.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
+		rating.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		ratingRepository.save(rating);
+		return rating;
+	}
+	
+	@Transactional
+	public List<Rating> getAllRatings() {
+		return toList(ratingRepository.findAll());
+	}
+	
+	@Transactional
+	public Rating getRating(int id) {
+		Rating a = ratingRepository.findRatingByReviewID(id);
+		return a;
+	}
+	
+	@Transactional
+	public boolean deleteRating(int id) {
+		boolean done = false;
+		Rating a = getRating(id);
+		if (a != null) {
+			ratingRepository.delete(a);
+			done = true;
+		}
+		return done;
 	}
 	
 	@Transactional
@@ -234,7 +313,7 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public Tutor createTutor(String oldUsername, String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
+	public Tutor updateTutor(String oldUsername, String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
 		Tutor tutor = tutorRepository.findTutorByUsername(oldUsername);
 		tutor.setUsername(username);
 		tutor.setPassword(password);

@@ -49,6 +49,7 @@ public class CourseOfferingTest {
 	public void setUp(){
 		service.createUniversity("McGill", "3040 University", 1);
 		service.createCourse("Intro to Software","ECSE 321", 2, 1);
+		service.createCourseOffering(3, "fall", 2019, 2);
 	}
 	
 	@After
