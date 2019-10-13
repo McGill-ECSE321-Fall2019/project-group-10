@@ -10,6 +10,7 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.sql.Date;
+import java.sql.Time;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -76,7 +77,7 @@ public class SessionTest {
 		
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
-		int time = 11;
+		Time time = new java.sql.Time(millis);
 		int amountPaid = 23;
 		int id = 4;
 
@@ -105,7 +106,7 @@ public class SessionTest {
 		
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
-		int time = 11;
+		Time time = new java.sql.Time(millis);
 		int amountPaid = 23;
 		int id = 4;
 
@@ -128,7 +129,7 @@ public class SessionTest {
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
 		date = new java.sql.Date(millis-20);
-		time = 12;
+		time = Time.valueOf("10:10:10");
 		amountPaid = 24;
 		id = 5;
 		
@@ -158,7 +159,7 @@ public class SessionTest {
 		
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
-		int time = 11;
+		Time time = new java.sql.Time(millis);
 		int amountPaid = 23;
 		int id = 4;
 
@@ -190,7 +191,7 @@ public class SessionTest {
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
-		int time = 11;
+		Time time = new java.sql.Time(millis);
 		int amountPaid = 23;
 		int id = 4;
 
@@ -216,7 +217,7 @@ public class SessionTest {
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
-		int time = 11;
+		Time time = new java.sql.Time(millis);
 		int amountPaid = 23;
 		int id = 4;
 
@@ -242,7 +243,7 @@ public class SessionTest {
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
-		int time = 11;
+		Time time = new java.sql.Time(millis);
 		int amountPaid = 23;
 		int id = 4;
 

@@ -77,8 +77,9 @@ public class AvailabilityTest {
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
+		Time time = new java.sql.Time(millis);
 		int id = 1;
-		int time = 10;
+		
 
 		try {
 			service.createAvailability(date, time, id, "username");
@@ -95,9 +96,9 @@ public class AvailabilityTest {
 		assertEquals(time, allAvailabilities.get(0).getTime());
 		assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
 
-		date = new java.sql.Date(millis-50);
+		date = Date.valueOf("2010-09-10");
 		id = 2;
-		time = 20;
+		time = Time.valueOf("10:10:10");
 
 
 		try {
@@ -123,7 +124,7 @@ public class AvailabilityTest {
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		int id = 1;
-		int time = 10;
+		Time time = new java.sql.Time(millis);
 
 		try {
 			service.createAvailability(date, time, id, "username");
@@ -150,8 +151,9 @@ public class AvailabilityTest {
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
+		Time time = new java.sql.Time(millis);
 		int id = 1;
-		int time = 10;
+	
 		
 		String error = null;
 
@@ -175,8 +177,9 @@ public class AvailabilityTest {
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
+		Time time = new java.sql.Time(millis);
 		int id = (Integer) null;
-		int time = 10;
+		
 		String error = null;
 
 		try {
@@ -199,8 +202,9 @@ public class AvailabilityTest {
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
+		Time time = Time.valueOf("");
 		int id = 1;
-		int time = (Integer) null;
+		
 
 		String error = null;
 
@@ -226,7 +230,7 @@ public class AvailabilityTest {
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		int id = 1;
-		int time = 10;
+		Time time = new java.sql.Time(millis);
 
 		String error = null;
 

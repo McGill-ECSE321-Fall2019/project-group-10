@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 import java.sql.Date;
+import java.sql.Time;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -13,12 +14,12 @@ public void setDate(Date value) {
 public Date getDate() {
     return this.date;
 }
-private int time;
+private Time time;
 
-public void setTime(int value) {
+public void setTime(Time value) {
     this.time = value;
 }
-public int getTime() {
+public Time getTime() {
     return this.time;
 }
 private Tutor tutor;

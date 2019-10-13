@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.project.model;
 import javax.persistence.Entity;
 
 import java.sql.Date;
+import java.sql.Time;
+
 import java.util.List;
 import java.util.Set;
 import javax.persistence.ManyToMany;
@@ -11,7 +13,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Session{
    private Date date;
-   private int time;
+   private Time time;
 
 public void setDate(Date value) {
     this.date = value;
@@ -19,10 +21,10 @@ public void setDate(Date value) {
 public Date getDate() {
     return this.date;
 }
-public void setTime(int value) {
+public void setTime(Time value) {
     this.time = value;
 }
-public int getTime() {
+public Time getTime() {
     return this.time;
 }
 private int amountPaid;
