@@ -752,6 +752,19 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
+	public User updateUser(String name, String oldEmail,String newEmail, int age,double phoneNum) {
+		User user = userRepository.findUserByEmail(oldEmail);
+		user.setAge(age);
+		user.setEmail(newEmail);
+		user.setName(name);
+		user.setPhoneNumber(phoneNum);
+		userRepository.save(user);
+		return user;
+	}
+	
+	
+	
+	@Transactional
 	public List<User> getAllUsers() {
 		return toList(userRepository.findAll());
 	}
@@ -763,4 +776,80 @@ public class TutoringAppService {
 		}
 		return resultList;
 	}
+
+
+
+
+	//	<----Room Bookings---->
+
+	@Transactional
+	public List<Room> getAllRooms() {
+		return toList(roomRepository.findAll());
+	}
+
+	@Transactional
+	public Room createRoom(int RoomNumber) {
+		Room room = new Room();
+		room.setRoomNumber(RoomNumber);
+		roomRepository.save(room);
+		return room;
+	}
+
+	@Transactional
+	public Room getRoom(int roomNumber) {
+		Room a = roomRepository.findRoomByRoomNumber(roomNumber);
+		return a;
+	}
+
+	@Transactional
+	public boolean deleteRoom(int id) {
+		boolean done = false;
+		Room a = getRoom(id);
+		if (a != null) {
+			roomRepository.delete(a);
+			done = true;
+		}
+		return done;
+	}
+
+	@Transactional
+	public Room updateRoom(int oldRoomNumber, int roomNumber) {
+		Room room = roomRepository.findRoomByRoomNumber(oldRoomNumber);
+		room.setRoomNumber(roomNumber);
+		roomRepository.save(room);
+		return room;
+	}
+
+	//
+
+//	 <----University---->
+
+	@Transactional
+	public University updateUniversity(String newName, String newAddress,int id) {
+		University university = universityRepository.findUniversityByUniversityID(id);
+		university.setUniversityID(id);
+		university.setAddress(newAddress);
+		university.setName(newName);
+		universityRepository.save(university);
+		return university;
+	}
+
+	@Transactional
+	public boolean deleteUniversity(int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("You are searching for an invalid id...");
+		}
+		boolean done = false;
+		Availability a = getAvailability(id);
+		if (a != null) {
+			universityRepository.deleteById(id);
+			done = true;
+		}
+		return done;
+	}
+
+	
+//										Reviews
+
+	
 }

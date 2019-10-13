@@ -21,8 +21,7 @@ import ca.mcgill.ecse321.project.service.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 
-public class RoomTest {
-	
+public class UserTest {
 	@Autowired
 	private TutoringAppService service;
 
@@ -63,101 +62,67 @@ public class RoomTest {
 		userRepository.deleteAll();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
-	public void testCreateRoom() {
+	public void testCreateUser() {
 
-		int roomNumber = 1;
+		String name = "cmc";
+		String email = "alpha.gamma@mail.mcgill.ca";
+		double phoneNum = 2143945876;
+		int age = 18;
 
 		try {
-			service.createRoom(roomNumber);
+			service.createUser(name, email, age,phoneNum);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Room> allRooms = service.getAllRooms();
+		List<User> allUsers = service.getAllUsers();
 
-		assertEquals(1, allRooms.size());
-		assertEquals(roomNumber, allRooms.get(0).getRoomNumber());
-		}
-	
-	
-	@Test
-	public void testDeleteRoom() {
-		assertEquals(0, service.getAllCourseOfferings().size());
-		
-		int roomNumber = 1;
-		
-		try {
-			service.deleteRoom(roomNumber);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			fail();
-		}
-		
-		try {
-			service.deleteRoom(roomNumber);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			fail();
-		}
-
-		List<Room> allRooms = service.getAllRooms();
-		assertEquals(0, allRooms.size());
+		assertEquals(1, allUsers.size());
+		assertEquals(name, allUsers.get(0).getName());
+		assertEquals(email, allUsers.get(0).getEmail());
+		assertEquals(age, allUsers.get(0).getAge());
+		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber());
 	}
 	
 	@Test
-	public void testUpdateRoom() {
-		assertEquals(0, service.getAllCourseOfferings().size());
-		
-		int roomNumber = 1;
-		
+	public void testUpdateStudent() {
+
+		String name = "cmc";
+		String email = "alpha.gamma@mail.mcgill.ca";
+		double phoneNum = 2143945876;
+		int age = 18;
 
 		try {
-			service.createRoom(roomNumber);
+			service.createUser(name, email, age,phoneNum);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Room> allRooms = service.getAllRooms();
+		List<User> allUsers = service.getAllUsers();
 
-		assertEquals(1, allRooms.size());
-		assertEquals(roomNumber, allRooms.get(0).getRoomNumber());
-		int newRoomNumber  = 2;
+		assertEquals(1, allUsers.size());
+		
+		name = "amc";
+		String newEmail = "cats.dogs@mail.mcgill.ca";
+		phoneNum = 2143945000;
+		age = 20;
 		
 		try {
-			service.updateRoom(roomNumber, newRoomNumber);
+			service.updateUser(name, email, newEmail, age,phoneNum);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
-
-		allRooms = service.getAllRooms();
-		assertEquals(1, allRooms.size());
-		assertEquals(newRoomNumber, allRooms.get(0).getRoomNumber());
-		}
-	
-	
-	@Test
-	public void testCreateRoomNullID() {
-
-		int roomNumber = (Integer)null;
-	
-		String error = null;
-
-		try {
-			service.createRoom(roomNumber);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			error = e.getMessage();
-		}
-
-		List<Room> allRooms = service.getAllRooms();
-
-		assertEquals(0, allRooms.size());
-
+		
+		assertEquals(1, allUsers.size());
+		assertEquals(name, allUsers.get(0).getName());
+		assertEquals(newEmail, allUsers.get(0).getEmail());
+		assertEquals(age, allUsers.get(0).getAge());
+		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber());
 	}
-	
 	
 }

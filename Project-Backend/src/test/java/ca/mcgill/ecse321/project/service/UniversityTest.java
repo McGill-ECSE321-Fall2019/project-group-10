@@ -21,7 +21,7 @@ import ca.mcgill.ecse321.project.service.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 
-public class RoomTest {
+public class UniversityTest {
 	
 	@Autowired
 	private TutoringAppService service;
@@ -64,100 +64,95 @@ public class RoomTest {
 	}
 	
 	@Test
-	public void testCreateRoom() {
+	public void testCreateUniversity() {
 
-		int roomNumber = 1;
+		int id = 1;
+		String address="65 Sherbrooke St. East";
+		String name= "McGill University";
+		
 
 		try {
-			service.createRoom(roomNumber);
+			service.createUniversity(name, address, id);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Room> allRooms = service.getAllRooms();
+		List<University> allUniversities = service.getAllUniversities();
 
-		assertEquals(1, allRooms.size());
-		assertEquals(roomNumber, allRooms.get(0).getRoomNumber());
+		assertEquals(1, allUniversities.size());
+		assertEquals(id, allUniversities.get(0).getUniversityID());
+		assertEquals(name,allUniversities.get(0).getName());
+		assertEquals(address, allUniversities.get(0).getAddress());
+		
 		}
 	
 	
 	@Test
-	public void testDeleteRoom() {
-		assertEquals(0, service.getAllCourseOfferings().size());
+	public void testUpdateUniversity() {
+
 		
-		int roomNumber = 1;
 		
-		try {
-			service.deleteRoom(roomNumber);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			fail();
-		}
+		String name = "McGill University";
+		String address = "65 Sherbrooke St East";
+		int id = 1;
 		
 		try {
-			service.deleteRoom(roomNumber);
+			service.createUniversity(name, address, id);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Room> allRooms = service.getAllRooms();
-		assertEquals(0, allRooms.size());
+		List<University> allUniversities = service.getAllUniversities();
+
+		assertEquals(1, allUniversities.size());
+		
+		name = "Concordia University";
+		address = "8080 Sherbrooke St West";
+		id = 2;
+		try {
+			service.updateUniversity(name, address, id);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		
+		assertEquals(1, allUniversities.size());
+		assertEquals(name, allUniversities.get(0).getName());
+		assertEquals(address, allUniversities.get(0).getAddress());
+		assertEquals(id, allUniversities.get(0).getUniversityID());
 	}
 	
+	
+	
 	@Test
-	public void testUpdateRoom() {
-		assertEquals(0, service.getAllCourseOfferings().size());
+	public void testDeleteSession() {
+		assertEquals(0, service.getAllUniversities().size());
 		
-		int roomNumber = 1;
+		String name = "McGill University";
+		String address = "65 Sherbrooke St East";
+		int id = 1;
 		
-
 		try {
-			service.createRoom(roomNumber);
+			service.createUniversity(name, address, id);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		
+		List<University> allUniversities = service.getAllUniversities();
+		assertEquals(1, allUniversities.size());
+		
+		try {
+			service.deleteUniversity(id);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Room> allRooms = service.getAllRooms();
-
-		assertEquals(1, allRooms.size());
-		assertEquals(roomNumber, allRooms.get(0).getRoomNumber());
-		int newRoomNumber  = 2;
-		
-		try {
-			service.updateRoom(roomNumber, newRoomNumber);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			fail();
-		}
-
-		allRooms = service.getAllRooms();
-		assertEquals(1, allRooms.size());
-		assertEquals(newRoomNumber, allRooms.get(0).getRoomNumber());
-		}
-	
-	
-	@Test
-	public void testCreateRoomNullID() {
-
-		int roomNumber = (Integer)null;
-	
-		String error = null;
-
-		try {
-			service.createRoom(roomNumber);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			error = e.getMessage();
-		}
-
-		List<Room> allRooms = service.getAllRooms();
-
-		assertEquals(0, allRooms.size());
-
+		 allUniversities = service.getAllUniversities();
+		 assertEquals(0, allUniversities.size());
 	}
-	
 	
 }
