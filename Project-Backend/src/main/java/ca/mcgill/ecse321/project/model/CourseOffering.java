@@ -1,7 +1,10 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
 
@@ -64,4 +67,16 @@ public void setCourseOfferingID(int value) {
 public int getCourseOfferingID() {
     return this.courseOfferingID;
 }
+
+private List<Tutor> tutors;
+
+@ManyToMany
+public List<Tutor> getTutors(){
+	   return this.tutors;
+}
+
+public void setTutors(List<Tutor> tutors) {
+	   this.tutors = tutors;
+}
+
 }

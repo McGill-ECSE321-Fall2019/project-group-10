@@ -1,9 +1,12 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+
+import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Tutor extends Role{
@@ -71,4 +74,15 @@ public int getExperience() {
       this.session = sessions;
    }
    
+   private List<CourseOffering> courseOfferings;
+   
+   @ManyToMany
+   public List<CourseOffering> getCourseOfferings(){
+	   return this.courseOfferings;
    }
+   
+   public void setCourseOfferings(List<CourseOffering> courseOfferings) {
+	   this.courseOfferings = courseOfferings;
+   }
+   
+ }
