@@ -64,7 +64,7 @@ public class UserTest {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 
 		try {
@@ -88,7 +88,7 @@ public class UserTest {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 
 		try {
@@ -104,7 +104,7 @@ public class UserTest {
 		
 		name = "amc";
 		String newEmail = "cats.dogs@mail.mcgill.ca";
-		phoneNum = 2143945000;
+		phoneNum = "2143945000";
 		age = 20;
 		
 		try {
@@ -125,7 +125,7 @@ public class UserTest {
 	public void deleteUser() {
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 
 		try {
@@ -155,7 +155,7 @@ public class UserTest {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 11;
 		
 
@@ -178,7 +178,7 @@ public class UserTest {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143-89;
+		String phoneNum = "2143-89";
 		int age = 18;
 		
 
@@ -201,7 +201,7 @@ public class UserTest {
 
 		String name = null;
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 		
 
@@ -224,7 +224,7 @@ public class UserTest {
 
 		String name = "cmc";
 		String email = null;
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 		
 
@@ -247,7 +247,7 @@ public class UserTest {
 
 		String name = "cmc";
 		String email = "alpha";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 		
 

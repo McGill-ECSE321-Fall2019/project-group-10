@@ -54,7 +54,7 @@ public class TextTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "email", 22, 5145555555.0);
+		service.createUser("aName", "email", 22, "5145555555");
 		service.createTutor("cmc", "dogs", "email", 12, 3, Education.bachelor);
 		service.createUniversity("McGill", "3040 University", 1);
 		service.createCourse("Intro to Software","ECSE 321", 2, 1);

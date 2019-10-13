@@ -34,12 +34,12 @@ public void setEmail(String value) {
 public String getEmail() {
     return this.email;
 }
-private double phoneNumber;
+private String phoneNumber;
 
-public void setPhoneNumber(double phoneNum) {
+public void setPhoneNumber(String phoneNum) {
     this.phoneNumber = phoneNum;
 }
-public double getPhoneNumber() {
+public String getPhoneNumber() {
     return this.phoneNumber;
 }
    private Set<Role> role;
