@@ -55,7 +55,7 @@ public class AvailabilityTest {
 	@Before
 	public void setUp(){
 		service.createUser("aName", "email", 22, 5145555555.0);
-		service.createTutor("username", "password", "aName", 12, 3, Education.getHighSchool());
+		service.createTutor("username", "password", "aName", 12, 3, Education.highschool);
 	}
 
 	@After

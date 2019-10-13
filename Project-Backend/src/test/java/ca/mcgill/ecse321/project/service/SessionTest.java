@@ -52,7 +52,7 @@ public class SessionTest {
 		service.createCourseOffering(3, "fall", 2019, 2);
 		service.createUser("aName", "email", 22, 5145555555.0);
 		service.createUser("aName_student", "email_student", 22, 5145555555.0);
-		service.createTutor("username", "password", "aName", 12, 3, Education.getHighschool());
+		service.createTutor("username", "password", "aName", 12, 3, Education.highschool);
 		service.createStudent("studentUser", "password2", "email_student");
 	}
 	
