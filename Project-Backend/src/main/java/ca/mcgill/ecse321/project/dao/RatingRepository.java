@@ -9,7 +9,5 @@ import ca.mcgill.ecse321.project.model.*;
 public interface RatingRepository extends CrudRepository<Rating, Integer>{
 
 	Rating findRatingByReviewID(Integer reviewID);
-	
-	<List>Rating findRatingbyRole(Role role);
 
 }

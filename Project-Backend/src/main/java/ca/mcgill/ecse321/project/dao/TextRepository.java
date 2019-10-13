@@ -9,7 +9,4 @@ import ca.mcgill.ecse321.project.model.*;
 public interface TextRepository extends CrudRepository<Text, Integer>{
 
 	Text findTextByReviewID(Integer reviewID);
-	
-	<List>Text findTextbyRole(Role role);
-
 }
