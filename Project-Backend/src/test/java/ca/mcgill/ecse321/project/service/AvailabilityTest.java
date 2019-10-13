@@ -75,7 +75,8 @@ public class AvailabilityTest {
 	public void testCreateAvailability() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		int date = 1009;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int id = 1;
 		int time = 10;
 
@@ -94,7 +95,7 @@ public class AvailabilityTest {
 		assertEquals(time, allAvailabilities.get(0).getTime());
 		assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
 
-		date = 1010;
+		date = new java.sql.Date(millis-50);
 		id = 2;
 		time = 20;
 
@@ -119,7 +120,8 @@ public class AvailabilityTest {
 	public void testDeleteAvailability() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		int date = 1009;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int id = 1;
 		int time = 10;
 
@@ -146,7 +148,8 @@ public class AvailabilityTest {
 	public void testCreateAvailabilityNullDate() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		int date = (Integer) null;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int id = 1;
 		int time = 10;
 		
@@ -170,7 +173,8 @@ public class AvailabilityTest {
 	public void testCreateAvailabilityNullID() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		int date = 9102019;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int id = (Integer) null;
 		int time = 10;
 		String error = null;
@@ -193,7 +197,8 @@ public class AvailabilityTest {
 	public void testCreateAvailabilityNullTime() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		int date = 9102019;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int id = 1;
 		int time = (Integer) null;
 
@@ -218,7 +223,8 @@ public class AvailabilityTest {
 	public void testCreateAvailabilityNullTutor() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		int date = 9102019;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int id = 1;
 		int time = 10;
 

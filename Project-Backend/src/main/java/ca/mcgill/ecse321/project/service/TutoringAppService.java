@@ -45,7 +45,7 @@ public class TutoringAppService {
 	UserRepository userRepository;
 	
 	@Transactional
-	public Availability createAvailability(int date, int time, int id, String tName) {
+	public Availability createAvailability(Date date, int time, int id, String tName) {
 		Availability availability = new Availability();
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
@@ -56,7 +56,7 @@ public class TutoringAppService {
 	}
 
 	@Transactional
-	public Availability updateAvailability(int oldID, int date, int time, int id, String tName) {
+	public Availability updateAvailability(int oldID, Date date, int time, int id, String tName) {
 		Availability availability = availabilityRepository.findAvailabilityByAvailabilityID(oldID);
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
@@ -311,7 +311,7 @@ public class TutoringAppService {
 	}
 
 	@Transactional
-	public Session createSession(int coID, int date, int time, int amountPaid, int id, String sName, String tName) {
+	public Session createSession(int coID, Date date, int time, int amountPaid, int id, String sName, String tName) {
 		Session session = new Session();
 		session.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
 		session.setDate(date);
@@ -327,7 +327,7 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public Session updateSession(int oldID, int coID, int date, int time, int amountPaid, int id, String sName, String tName) {
+	public Session updateSession(int oldID, int coID, Date date, int time, int amountPaid, int id, String sName, String tName) {
 		Session session = sessionRepository.findSessionBySessionID(oldID);
 		session.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
 		session.setDate(date);

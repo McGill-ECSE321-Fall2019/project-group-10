@@ -79,7 +79,7 @@ public class TutorTest {
 		int exp = 3;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.MASTERS);
+			service.createTutor(username, password, "email", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -92,7 +92,7 @@ public class TutorTest {
 		assertEquals(password, allTutors.get(0).getPassword());
 		assertEquals(hr, allTutors.get(0).getHourlyRate(), 0.05);
 		assertEquals(exp, allTutors.get(0).getExperience());
-		assertEquals(Education.MASTERS, allTutors.get(0).getEducation());
+		assertEquals(Education.masters, allTutors.get(0).getEducation());
 		assertEquals("email", allTutors.get(0).getUser().getEmail());
 	}
 	
@@ -105,7 +105,7 @@ public class TutorTest {
 		int exp = 3;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.MASTERS);
+			service.createTutor(username, password, "email", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -121,7 +121,7 @@ public class TutorTest {
 		exp = 4;
 		
 		try {
-			service.updateTutor("cmc", username, password, "email", hr, exp, Education.MASTERS);
+			service.updateTutor("cmc", username, password, "email", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -142,7 +142,7 @@ public class TutorTest {
 		int exp = 3;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.MASTERS);
+			service.createTutor(username, password, "email", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -171,7 +171,7 @@ public class TutorTest {
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.MASTERS);
+			service.createTutor(username, password, "email", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -193,7 +193,7 @@ public class TutorTest {
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.MASTERS);
+			service.createTutor(username, password, "email", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -215,7 +215,7 @@ public class TutorTest {
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "emailwrong", hr, exp, Education.MASTERS);
+			service.createTutor(username, password, "emailwrong", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
