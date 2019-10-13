@@ -54,7 +54,7 @@ public class StudentTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "test.tester@mcgill.ca", 22, 5145555555.0);
+		service.createUser("aName", "test.tester@mcgill.ca", 22, "5145555555");
 	}
 
 	@After

@@ -814,7 +814,7 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public User createUser(String name, String email, int age, double phoneNum) {
+	public User createUser(String name, String email, int age, String phoneNum) {
 		if(age < 12){
 			throw new IllegalArgumentException("Must be above the age of 12 for this tutoring service...");
 		}
@@ -828,7 +828,7 @@ public class TutoringAppService {
 		}
 		
 		//Special phone number check.
-		if(!Double.toString(phoneNum).matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
+		if(!phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
 			throw new IllegalArgumentException("Invalid phone number...");
 		}
 
@@ -842,7 +842,7 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public User updateUser(String name, String oldEmail,String newEmail, int age,double phoneNum) {
+	public User updateUser(String name, String oldEmail,String newEmail, int age, String phoneNum) {
 		User user = userRepository.findUserByEmail(oldEmail);
 		user.setAge(age);
 		user.setEmail(newEmail);
