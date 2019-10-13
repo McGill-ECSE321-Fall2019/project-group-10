@@ -1,7 +1,10 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
 
@@ -23,15 +26,15 @@ public void setYear(int value) {
 public int getYear() {
     return this.year;
 }
-private Course courses;
+private Course course;
 
 @ManyToOne(optional=false)
-public Course getCourses() {
-   return this.courses;
+public Course getCourse() {
+   return this.course;
 }
 
-public void setCourses(Course courses) {
-   this.courses = courses;
+public void setCourse(Course course) {
+   this.course = course;
 }
 
 private Set<String/*No type specified*/> session;
@@ -64,4 +67,16 @@ public void setCourseOfferingID(int value) {
 public int getCourseOfferingID() {
     return this.courseOfferingID;
 }
+
+private List<Tutor> tutors;
+
+@ManyToMany
+public List<Tutor> getTutors(){
+	   return this.tutors;
+}
+
+public void setTutors(List<Tutor> tutors) {
+	   this.tutors = tutors;
+}
+
 }

@@ -1,26 +1,38 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+
+import java.sql.Date;
+import java.sql.Time;
+
+import java.util.List;
 import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Session{
-   private int date;
+   private Date date;
+   private Time time;
 
-public void setDate(int value) {
+public void setDate(Date value) {
     this.date = value;
 }
-public int getDate() {
+public Date getDate() {
     return this.date;
 }
-private int amountPaid;
+public void setTime(Time value) {
+    this.time = value;
+}
+public Time getTime() {
+    return this.time;
+}
+private double amountPaid;
 
-public void setAmountPaid(int value) {
+public void setAmountPaid(Double value) {
     this.amountPaid = value;
 }
-public int getAmountPaid() {
+public double getAmountPaid() {
     return this.amountPaid;
 }
 private int sessionID;
@@ -31,14 +43,14 @@ public void setSessionID(int value) {
 public int getSessionID() {
     return this.sessionID;
 }
-   private Set<Student> student;
+   private List<Student> student;
    
    @ManyToMany
-   public Set<Student> getStudent() {
+   public List<Student> getStudent() {
       return this.student;
    }
    
-   public void setStudent(Set<Student> students) {
+   public void setStudent(List<Student> students) {
       this.student = students;
    }
    
@@ -52,6 +64,18 @@ public int getSessionID() {
    public void setTutor(Tutor tutor) {
       this.tutor = tutor;
    }
+   
+   private CourseOffering co;
+   
+   @ManyToOne(optional=false)
+   public CourseOffering getCourseOffering() {
+      return this.co;
+   }
+   
+   public void setCourseOffering(CourseOffering co2) {
+      this.co = co2;
+   }
+   
    
    private Room room;
    
