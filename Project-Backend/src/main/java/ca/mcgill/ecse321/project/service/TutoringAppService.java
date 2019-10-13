@@ -452,8 +452,9 @@ public class TutoringAppService {
 		if(password.equals("") || password == null){
 			throw new IllegalArgumentException("Please insert a password...");
 		}
-		if(userEmail.equals("") || userEmail == null){
-			throw new IllegalArgumentException("Please insert a user email...");
+		//Regex check for email
+		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
+			throw new IllegalArgumentException("Please insert a proper email...");
 		}
 		if(hourlyRate < 0){
 			throw new IllegalArgumentException("Don't think you want to pay the student for your session...");
@@ -486,8 +487,8 @@ public class TutoringAppService {
 		if(password.equals("") || password == null){
 			throw new IllegalArgumentException("Please insert a password...");
 		}
-		if(userEmail.equals("") || userEmail == null){
-			throw new IllegalArgumentException("Please insert a user email...");
+		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
+			throw new IllegalArgumentException("Please insert a proper email...");
 		}
 		if(hourlyRate < 0){
 			throw new IllegalArgumentException("Don't think you want to pay the student for your session...");
@@ -550,8 +551,8 @@ public class TutoringAppService {
 		if(password.equals("") || password == null){
 			throw new IllegalArgumentException("Please insert a password...");
 		}
-		if(userEmail.equals("") || userEmail == null){
-			throw new IllegalArgumentException("Please insert a user email...");
+		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
+			throw new IllegalArgumentException("Please insert a proper email...");
 		}
 		Student student = new Student();
 		student.setUsername(username);
@@ -572,8 +573,8 @@ public class TutoringAppService {
 		if(password.equals("") || password == null){
 			throw new IllegalArgumentException("Please insert a password...");
 		}
-		if(userEmail.equals("") || userEmail == null){
-			throw new IllegalArgumentException("Please insert a user email...");
+		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
+			throw new IllegalArgumentException("Please insert a proper email...");
 		}
 		Student student = studentRepository.findStudentByUsername(oldUsername);
 		student.setUsername(username);
@@ -732,15 +733,15 @@ public class TutoringAppService {
 		if(name == null || name.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
 		}
-		if(email == null || email.equals("")){
-			throw new IllegalArgumentException("Invalid email...");
+		if(!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
+			throw new IllegalArgumentException("Please insert a proper email...");
 		}
 		
 		//Special phone number check.
 		if(!Double.toString(phoneNum).matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
 			throw new IllegalArgumentException("Invalid phone number...");
 		}
-		
+
 		User user = new User();
 		user.setName(name);
 		user.setEmail(email);
