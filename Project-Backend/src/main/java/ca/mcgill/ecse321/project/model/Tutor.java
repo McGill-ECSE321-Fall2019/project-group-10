@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import java.util.List;
 import java.util.Set;
@@ -11,9 +13,9 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Tutor extends Role{
 
+	@Enumerated(EnumType.STRING)
 	private Education education;
 
-	@OneToOne(mappedBy="tutor")
 	public Education getEducation() {
 		return this.education;
 	}
@@ -23,17 +25,16 @@ public class Tutor extends Role{
 		this.education = education;
 		
 	}
-
-	private Set<Session> session1;
-
+	
+	private Set<Session> session;
    
    @OneToMany(mappedBy="tutor" )
-   public Set<Session> getSession1() {
-      return this.session1;
+   public Set<Session> getSession() {
+      return this.session;
    }
    
-   public void setSession1(Set<Session> session1s) {
-      this.session1 = session1s;
+   public void setSession(Set<Session> session1s) {
+      this.session = session1s;
    }
    
    private double hourlyRate;
@@ -63,20 +64,9 @@ public int getExperience() {
       this.availability = availabilitys;
    }
    
-   private Set<String/*No type specified*/> session;
-   
-   @OneToMany
-   public Set<String/*No type specified*/> getSession() {
-      return this.session;
-   }
-   
-   public void setSession(Set<String/*No type specified*/> sessions) {
-      this.session = sessions;
-   }
-   
    private List<CourseOffering> courseOfferings;
    
-   @ManyToMany
+   @ManyToMany(mappedBy="tutors" )
    public List<CourseOffering> getCourseOfferings(){
 	   return this.courseOfferings;
    }
