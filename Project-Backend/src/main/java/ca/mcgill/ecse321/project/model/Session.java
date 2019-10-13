@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.ManyToMany;
@@ -9,13 +10,13 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Session{
-   private int date;
+   private Date date;
    private int time;
 
-public void setDate(int value) {
+public void setDate(Date value) {
     this.date = value;
 }
-public int getDate() {
+public Date getDate() {
     return this.date;
 }
 public void setTime(int value) {

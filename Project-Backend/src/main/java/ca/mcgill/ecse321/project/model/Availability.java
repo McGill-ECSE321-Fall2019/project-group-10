@@ -1,16 +1,16 @@
 package ca.mcgill.ecse321.project.model;
-
+import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Availability{
-   private int date;
+   private Date date;
 
-public void setDate(int value) {
+public void setDate(Date value) {
     this.date = value;
 }
-public int getDate() {
+public Date getDate() {
     return this.date;
 }
 private int time;

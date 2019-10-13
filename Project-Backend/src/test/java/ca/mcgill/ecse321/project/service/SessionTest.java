@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -73,7 +74,8 @@ public class SessionTest {
 	public void testCreateSession() {
 		assertEquals(0, service.getAllSessions().size());
 		
-		int date = 9102019;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int time = 11;
 		int amountPaid = 23;
 		int id = 4;
@@ -101,7 +103,8 @@ public class SessionTest {
 	public void testUpdateSession() {
 		assertEquals(0, service.getAllSessions().size());
 		
-		int date = 9102019;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int time = 11;
 		int amountPaid = 23;
 		int id = 4;
@@ -124,7 +127,7 @@ public class SessionTest {
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
-		date = 9112019;
+		date = new java.sql.Date(millis-20);
 		time = 12;
 		amountPaid = 24;
 		id = 5;
@@ -153,7 +156,8 @@ public class SessionTest {
 	public void testDeleteSession() {
 		assertEquals(0, service.getAllSessions().size());
 		
-		int date = 9102019;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int time = 11;
 		int amountPaid = 23;
 		int id = 4;
@@ -184,7 +188,8 @@ public class SessionTest {
 	public void testCreateAvailabilityNullCourseOffering() {
 		assertEquals(0, service.getAllSessions().size());
 
-		int date = 9102019;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int time = 11;
 		int amountPaid = 23;
 		int id = 4;
@@ -209,7 +214,8 @@ public class SessionTest {
 	public void testCreateAvailabilityNullTutor() {
 		assertEquals(0, service.getAllSessions().size());
 
-		int date = 9102019;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int time = 11;
 		int amountPaid = 23;
 		int id = 4;
@@ -234,7 +240,8 @@ public class SessionTest {
 	public void testCreateAvailabilityNullStudent() {
 		assertEquals(0, service.getAllSessions().size());
 
-		int date = 9102019;
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		int time = 11;
 		int amountPaid = 23;
 		int id = 4;
@@ -252,7 +259,6 @@ public class SessionTest {
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());
-
 	}
 	
 }
