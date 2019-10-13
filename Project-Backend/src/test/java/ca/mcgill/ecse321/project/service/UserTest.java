@@ -80,7 +80,7 @@ public class UserTest {
 		assertEquals(name, allUsers.get(0).getName());
 		assertEquals(email, allUsers.get(0).getEmail());
 		assertEquals(age, allUsers.get(0).getAge());
-		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber(), 0.05);
+		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber());
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class UserTest {
 		assertEquals(name, allUsers.get(0).getName());
 		assertEquals(newEmail, allUsers.get(0).getEmail());
 		assertEquals(age, allUsers.get(0).getAge());
-		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber(), 0.05);
+		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber());
 	}
 	
 	@Test
