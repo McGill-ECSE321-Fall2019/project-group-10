@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -40,6 +42,9 @@ private int sessionID;
 public void setSessionID(int value) {
     this.sessionID = value;
 }
+
+@Id
+@GeneratedValue
 public int getSessionID() {
     return this.sessionID;
 }

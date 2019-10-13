@@ -2,11 +2,24 @@ package ca.mcgill.ecse321.project.model;
 import java.sql.Date;
 import java.sql.Time;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Availability{
-   private Date date;
+    private int id;
+    public void setId(int value){
+        this.id = value;
+    } 
+    
+    @Id
+    @GeneratedValue
+    public int getId(){
+        return this.id;
+    }
+
+private Date date;
 
 public void setDate(Date value) {
     this.date = value;

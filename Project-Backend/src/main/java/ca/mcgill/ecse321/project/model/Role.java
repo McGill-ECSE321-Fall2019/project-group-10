@@ -1,6 +1,9 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import ca.mcgill.ecse321.project.model.User;
 import javax.persistence.ManyToOne;
 import java.util.Set;
@@ -13,7 +16,8 @@ public abstract class Role{
    public void setUsername(String value) {
       this.username = value;
    }
-   
+   @Id
+   @GeneratedValue
    public String getUsername() {
       return this.username;
    }

@@ -1,6 +1,9 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
@@ -28,6 +31,8 @@ private int universityID;
 public void setUniversityID(int value) {
     this.universityID = value;
 }
+@Id
+@GeneratedValue
 public int getUniversityID() {
     return this.universityID;
 }

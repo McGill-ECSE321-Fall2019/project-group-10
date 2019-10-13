@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import java.util.Set;
 import javax.persistence.OneToMany;
 
@@ -22,6 +24,8 @@ private Set<Session> session1;
 public void setRoomNumber(int value) {
     this.roomNumber = value;
 }
+
+@Id
 public int getRoomNumber() {
     return this.roomNumber;
 }

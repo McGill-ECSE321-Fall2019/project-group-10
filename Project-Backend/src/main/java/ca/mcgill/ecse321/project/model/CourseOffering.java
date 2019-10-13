@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -64,6 +66,9 @@ private int courseOfferingID;
 public void setCourseOfferingID(int value) {
     this.courseOfferingID = value;
 }
+
+@Id
+@GeneratedValue
 public int getCourseOfferingID() {
     return this.courseOfferingID;
 }

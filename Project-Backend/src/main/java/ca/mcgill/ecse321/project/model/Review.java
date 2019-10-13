@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -10,7 +12,8 @@ public abstract class Review{
    public void setReviewID(int value) {
       this.reviewID = value;
    }
-   
+   @Id
+   @GeneratedValue
    public int getReviewID() {
       return this.reviewID;
    }
