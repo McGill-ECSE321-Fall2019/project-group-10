@@ -56,7 +56,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Anas Shahid</td>
     <td>Software Developer</td>
-    <td>4</td>
+    <td>7</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
