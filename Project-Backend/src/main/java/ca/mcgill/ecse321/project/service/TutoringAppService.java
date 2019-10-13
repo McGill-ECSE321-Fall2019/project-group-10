@@ -53,7 +53,10 @@ public class TutoringAppService {
 		if(tName == null || tName.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
 		}
-		if(date == null || time == null){
+		if(date == null){
+			throw new IllegalArgumentException("Invalid date parameters...");
+		}
+		if(time == null){
 			throw new IllegalArgumentException("Invalid time parameters...");
 		}
 				
@@ -61,7 +64,7 @@ public class TutoringAppService {
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
 		availability.setDate(date);
-		availability.setTutor((Tutor)roleRepository.findRoleByUsername(tName));
+		availability.setTutor(tutorRepository.findTutorByUsername(tName));
 		availabilityRepository.save(availability);
 		return availability;
 	}
@@ -74,7 +77,10 @@ public class TutoringAppService {
 		if(tName == null || tName.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
 		}
-		if(date == null || time == null){
+		if(date == null){
+			throw new IllegalArgumentException("Invalid date parameters...");
+		}
+		if(time == null){
 			throw new IllegalArgumentException("Invalid time parameters...");
 		}
 		
@@ -82,7 +88,10 @@ public class TutoringAppService {
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
 		availability.setDate(date);
-		availability.setTutor((Tutor)roleRepository.findRoleByUsername(tName));
+		Tutor t = tutorRepository.findTutorByUsername(tName);
+		if( t == null)
+			throw new IllegalArgumentException("Please specify a valid Tutor");
+		availability.setTutor(t);
 		availabilityRepository.save(availability);
 		return availability;
 	}
@@ -153,7 +162,7 @@ public class TutoringAppService {
 		if(courseID < 0){
 			throw new IllegalArgumentException("Invalid courseID...");
 		}
-		if(!(term.equals("winter") || term.equals("summer") || term.equals("fall"))){
+		if(!(term.equals("winter") || term.equals("summer") || term.equals("fall")) || term == null){
 			throw new IllegalArgumentException("Invalid term choice...");
 		}
 		
@@ -161,7 +170,10 @@ public class TutoringAppService {
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
-		courseOffering.setCourse(courseRepository.findCourseByCourseID(courseID));
+		Course c = courseRepository.findCourseByCourseID(courseID);
+		if( c == null)
+			throw new IllegalArgumentException("Please specify a valid Course");
+		courseOffering.setCourse(c);
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
@@ -180,12 +192,16 @@ public class TutoringAppService {
 		if(!(term.equals("winter") || term.equals("summer") || term.equals("fall"))){
 			throw new IllegalArgumentException("Invalid term choice...");
 		}
-		
 		CourseOffering courseOffering = courseOfferingRepository.findCourseOfferingByCourseOfferingID(oldID);
+		if(courseOffering== null)
+			throw new IllegalArgumentException("Please specify a valid Course Offering to Update");
 		courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
-		courseOffering.setCourse(courseRepository.findCourseByCourseID(courseID));
+		Course c = courseRepository.findCourseByCourseID(courseID);
+		if( c == null)
+			throw new IllegalArgumentException("Please specify a valid Course");
+		courseOffering.setCourse(c);
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
@@ -234,7 +250,10 @@ public class TutoringAppService {
 		course.setDescription(description);
 		course.setCourseName(courseName);
 		course.setCourseID(id);
-		course.setUniversity(universityRepository.findUniversityByUniversityID(uniID));
+		University u = universityRepository.findUniversityByUniversityID(uniID);
+		if( u == null)
+			throw new IllegalArgumentException("Please specify a valid University");
+		course.setUniversity(u);
 		courseRepository.save(course);
 		return course;
 	}
@@ -251,10 +270,15 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Please insert a brief description...");
 		}
 		Course course = courseRepository.findCourseByCourseID(oldID);
+		if( course == null)
+			throw new IllegalArgumentException("Please specify a valid Course");
 		course.setDescription(description);
 		course.setCourseName(courseName);
 		course.setCourseID(id);
-		course.setUniversity(universityRepository.findUniversityByUniversityID(uniID));
+		University u = universityRepository.findUniversityByUniversityID(uniID);
+		if( u == null)
+			throw new IllegalArgumentException("Please specify a valid University");
+		course.setUniversity(u);
 		courseRepository.save(course);
 		return course;
 	}
@@ -290,7 +314,7 @@ public class TutoringAppService {
 	@Transactional
 	public Text createText(int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
 		if(id < 0 || coID < 0){
-			throw new IllegalArgumentException("Incorrect id value for the course update...");
+			throw new IllegalArgumentException("Incorrect id value");
 		}
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException("Please insert a reviewee username...");
@@ -305,9 +329,14 @@ public class TutoringAppService {
 		text.setIsAllowed(isAllowed);
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
-		else
+		else if (studentRepository.findStudentByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
-		text.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		else 
+			throw new IllegalArgumentException("Please enter a valid Reviewee");
+		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
+		if(c == null)
+			throw new IllegalArgumentException("Please enter a valid Course Offering");
+		text.setCourseOffering(c);
 		textRepository.save(text);
 		return (Text)text;
 	}
@@ -315,7 +344,7 @@ public class TutoringAppService {
 	@Transactional
 	public Text updateText(int oldID, int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
 		if(id < 0 || coID < 0 || oldID < 0){
-			throw new IllegalArgumentException("Incorrect id value for the course update...");
+			throw new IllegalArgumentException("Incorrect id value");
 		}
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException("Please insert a reviewee username...");
@@ -325,14 +354,21 @@ public class TutoringAppService {
 		}
 		
 		Text text = textRepository.findTextByReviewID(oldID);
+		if(text == null)
+			throw new IllegalArgumentException("Please enter a valid Text Review to update");
 		text.setDescription(description);
 		text.setReviewID(id);
 		text.setIsAllowed(isAllowed);
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
-		else
+		else if (studentRepository.findStudentByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
-		text.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		else 
+			throw new IllegalArgumentException("Please enter a valid Reviewee");
+		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
+		if(c == null)
+			throw new IllegalArgumentException("Please enter a valid Course Offering");
+		text.setCourseOffering(c);
 		textRepository.save(text);
 		return (Text)text;
 	}
@@ -370,7 +406,7 @@ public class TutoringAppService {
 	@Transactional
 	public Rating createRating(int id, int ratingValue, String revieweeUsername, int coID) {
 		if(id < 0 || coID < 0){
-			throw new IllegalArgumentException("Incorrect id value for the rating creation...");
+			throw new IllegalArgumentException("Incorrect id value");
 		}
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException("Please insert a reviewee username...");
@@ -380,13 +416,24 @@ public class TutoringAppService {
 		}
 		
 		Rating rating = new Rating();
+		
+		try {
 		rating.setRatingValue(ratingValue);
+		} catch(RuntimeException e) {
+			throw new IllegalArgumentException("Rating value must be between 1 and 5");
+		}
+		
 		rating.setReviewID(id);
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
 			rating.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
-		else
+		else if (studentRepository.findStudentByUsername(revieweeUsername) != null)
 			rating.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
-		rating.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		else 
+			throw new IllegalArgumentException("Please enter a valid Reviewee");
+		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
+		if(c == null)
+			throw new IllegalArgumentException("Please enter a valid Course Offering");
+		rating.setCourseOffering(c);
 		ratingRepository.save(rating);
 		return rating;
 	}
@@ -394,7 +441,7 @@ public class TutoringAppService {
 	@Transactional
 	public Rating updateRating(int oldID, int id, int ratingValue, String revieweeUsername, int coID) {
 		if(id < 0 || coID < 0){
-			throw new IllegalArgumentException("Incorrect id value for the rating update...");
+			throw new IllegalArgumentException("Incorrect id value");
 		}
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException("Please insert a reviewee username...");
@@ -403,12 +450,20 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("You can't give your tutor a negative rating...");
 		}
 		Rating rating = ratingRepository.findRatingByReviewID(oldID);
+		if(rating == null)
+			throw new IllegalArgumentException("Please enter a valid Rating Review to update");
+		try {
 		rating.setRatingValue(ratingValue);
+		} catch(RuntimeException e) {
+			throw new IllegalArgumentException("Rating value must be between 1 and 5");
+		}
 		rating.setReviewID(id);
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
 			rating.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
-		else
+		else if (studentRepository.findStudentByUsername(revieweeUsername) != null)
 			rating.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
+		else 
+			throw new IllegalArgumentException("Please enter a valid Reviewee");
 		rating.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
 		ratingRepository.save(rating);
 		return rating;
@@ -468,7 +523,10 @@ public class TutoringAppService {
 		Tutor tutor = new Tutor();
 		tutor.setUsername(username);
 		tutor.setPassword(password);
-		tutor.setUser(userRepository.findUserByEmail(userEmail));
+		User u = userRepository.findUserByEmail(userEmail);
+		if (u == null)
+			throw new IllegalArgumentException("Please input a valid user");
+		tutor.setUser(u);
 		tutor.setHourlyRate(hourlyRate);
 		tutor.setExperience(exp);
 		tutor.setEducation(level);
@@ -500,9 +558,14 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Please provide your education level...");
 		}
 		Tutor tutor = tutorRepository.findTutorByUsername(oldUsername);
+		if(tutor == null)
+			throw new IllegalArgumentException("Please input a valid tutor to update");
 		tutor.setUsername(username);
 		tutor.setPassword(password);
-		tutor.setUser(userRepository.findUserByEmail(userEmail));
+		User u = userRepository.findUserByEmail(userEmail);
+		if (u == null)
+			throw new IllegalArgumentException("Please input a valid user");
+		tutor.setUser(u);
 		tutor.setHourlyRate(hourlyRate);
 		tutor.setExperience(exp);
 		tutor.setEducation(level);
@@ -557,7 +620,10 @@ public class TutoringAppService {
 		Student student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);
-		student.setUser(userRepository.findUserByEmail(userEmail));
+		User u = userRepository.findUserByEmail(userEmail);
+		if (u == null)
+			throw new IllegalArgumentException("Please input a valid user");
+		student.setUser(u);
 		studentRepository.save(student);
 		return student;
 	}
@@ -577,9 +643,14 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Please insert a proper email...");
 		}
 		Student student = studentRepository.findStudentByUsername(oldUsername);
+		if(student == null)
+			throw new IllegalArgumentException("Please input a valid student");
 		student.setUsername(username);
 		student.setPassword(password);
-		student.setUser(userRepository.findUserByEmail(userEmail));
+		User u = userRepository.findUserByEmail(userEmail);
+		if (u == null)
+			throw new IllegalArgumentException("Please input a valid user");
+		student.setUser(u);
 		studentRepository.save(student);
 		return student;
 	}
@@ -627,14 +698,22 @@ public class TutoringAppService {
 		}
 
 		Session session = new Session();
-		session.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
+		if (co == null)
+			throw new IllegalArgumentException("Please input a valid course offering");
+		session.setCourseOffering(co);
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
 		List<Student> student = new ArrayList<Student>();
+		if(studentRepository.findStudentByUsername(sName) == null)
+			throw new IllegalArgumentException("Please input a valid student");
 		student.add(studentRepository.findStudentByUsername(sName));
 		session.setStudent(student);
-		session.setTutor(tutorRepository.findTutorByUsername(tName));
+		Tutor t = tutorRepository.findTutorByUsername(tName);
+		if (t == null)
+			throw new IllegalArgumentException("Please input a valid tutor");
+		session.setTutor(t);
 		session.setSessionID(id);
 		sessionRepository.save(session);
 		return session;
@@ -659,14 +738,23 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("So your student is paying you?? Please provide positive amount paid...");
 		}
 		Session session = sessionRepository.findSessionBySessionID(oldID);
-		session.setCourseOffering(courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)));
+		if(session == null)
+			throw new IllegalArgumentException("Please input a valid session");
+		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
+		if (co == null)
+			throw new IllegalArgumentException("Please input a valid course offering");
+		session.setCourseOffering(co);
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
 		List<Student> student = new ArrayList<Student>();
+		if(studentRepository.findStudentByUsername(sName) == null)
+			throw new IllegalArgumentException("Please input a valid student");
 		student.add(studentRepository.findStudentByUsername(sName));
 		session.setStudent(student);
-		session.setTutor(tutorRepository.findTutorByUsername(tName));
+		Tutor t = tutorRepository.findTutorByUsername(tName);
+		if (t == null)
+			throw new IllegalArgumentException("Please input a valid tutor");
 		session.setSessionID(id);
 		sessionRepository.save(session);
 		return session;
@@ -733,6 +821,8 @@ public class TutoringAppService {
 		if(name == null || name.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
 		}
+		if(email == null)
+			throw new IllegalArgumentException("Please insert a proper email...");
 		if(!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
 			throw new IllegalArgumentException("Please insert a proper email...");
 		}
@@ -762,7 +852,22 @@ public class TutoringAppService {
 		return user;
 	}
 	
+	@Transactional
+	public User getUser(String email) {
+		User a = userRepository.findUserByEmail(email);
+		return a;
+	}
 	
+	@Transactional
+	public boolean deleteUser(String email) {
+		boolean done = false;
+		User a = getUser(email);
+		if (a != null) {
+			userRepository.delete(a);
+			done = true;
+		}
+		return done;
+	}
 	
 	@Transactional
 	public List<User> getAllUsers() {
@@ -789,6 +894,9 @@ public class TutoringAppService {
 
 	@Transactional
 	public Room createRoom(int RoomNumber) {
+		if(RoomNumber < 0){
+			throw new IllegalArgumentException("Room number cannot be negative");
+		}
 		Room room = new Room();
 		room.setRoomNumber(RoomNumber);
 		roomRepository.save(room);
@@ -814,6 +922,9 @@ public class TutoringAppService {
 
 	@Transactional
 	public Room updateRoom(int oldRoomNumber, int roomNumber) {
+		if(roomNumber < 0){
+			throw new IllegalArgumentException("Room number cannot be negative");
+		}
 		Room room = roomRepository.findRoomByRoomNumber(oldRoomNumber);
 		room.setRoomNumber(roomNumber);
 		roomRepository.save(room);
@@ -825,8 +936,17 @@ public class TutoringAppService {
 //	 <----University---->
 
 	@Transactional
-	public University updateUniversity(String newName, String newAddress,int id) {
-		University university = universityRepository.findUniversityByUniversityID(id);
+	public University updateUniversity(int oldID, String newName, String newAddress,int id) {
+		if(id < 0){
+			throw new IllegalArgumentException("Incorrect id value for the university creation...");
+		}
+		if(newName == null || newName.equals("")){
+			throw new IllegalArgumentException("Invalid name...");
+		}
+		if(newAddress == null || newAddress.equals("")){
+			throw new IllegalArgumentException("Invalid address...");
+		}
+		University university = universityRepository.findUniversityByUniversityID(oldID);
 		university.setUniversityID(id);
 		university.setAddress(newAddress);
 		university.setName(newName);

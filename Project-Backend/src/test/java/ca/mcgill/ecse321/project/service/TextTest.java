@@ -182,6 +182,8 @@ public class TextTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		// check error
+		assertEquals("Please insert a reviewee username...", error);
 
 		List<Text> allTexts = service.getAllTexts();
 
@@ -206,8 +208,9 @@ public class TextTest {
 			error = e.getMessage();
 		}
 
+		// check error
+		assertEquals("Please enter a valid Course Offering", error);
 		List<Text> allTexts = service.getAllTexts();
-
 		assertEquals(0, allTexts.size());
 	}
 	
@@ -229,10 +232,33 @@ public class TextTest {
 			error = e.getMessage();
 		}
 
-		//assertEquals(error, "Text value must be between 1 and 5");
+		assertEquals(error, "Please insert a brief description...");
 		List<Text> allTexts = service.getAllTexts();
 
 		assertEquals(0, allTexts.size());
 	}
 	
+	@Test
+	public void testCreateTextInvalidID() {
+
+		int id = -5;
+		String description = "great session";
+		boolean isAllowed = true;
+		String revieweeUsername = "cmc";
+		int coID = 3;
+		
+		String error = null;
+
+		try {
+			service.createText(id, description, isAllowed, revieweeUsername, coID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals(error, "Incorrect id value");
+		List<Text> allTexts = service.getAllTexts();
+
+		assertEquals(0, allTexts.size());
+	}
 }

@@ -45,11 +45,6 @@ public class RoomTest {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Before
-	public void setUp(){
-		service.createUniversity("McGill", "3040 University", 1);
-	}
-	
 	@After
 	public void clearDatabase() {
 		sessionRepository.deleteAll();
@@ -89,7 +84,7 @@ public class RoomTest {
 		int roomNumber = 1;
 		
 		try {
-			service.deleteRoom(roomNumber);
+			service.createRoom(roomNumber);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -142,7 +137,7 @@ public class RoomTest {
 	@Test
 	public void testCreateRoomNullID() {
 
-		int roomNumber = (Integer)null;
+		int roomNumber = -1;
 	
 		String error = null;
 
@@ -153,6 +148,7 @@ public class RoomTest {
 			error = e.getMessage();
 		}
 
+		assertEquals("Room number cannot be negative", error);
 		List<Room> allRooms = service.getAllRooms();
 
 		assertEquals(0, allRooms.size());

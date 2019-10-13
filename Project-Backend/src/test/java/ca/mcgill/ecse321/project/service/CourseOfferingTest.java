@@ -161,10 +161,10 @@ public class CourseOfferingTest {
 	}
 	
 	@Test
-	public void testCreateCourseOfferingNullID() {
+	public void testCreateCourseOfferingInvalidID() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
-		int id = (Integer) null;
+		int id = -1;
 		String term = "fall";
 		int year = 2019;
 		int courseID = 2;
@@ -178,6 +178,9 @@ public class CourseOfferingTest {
 			error = e.getMessage();
 		}
 
+		// check error
+		assertEquals("Incorrect id value for the course offering...", error);
+				
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
 
 		assertEquals(0, allCO.size());
@@ -201,18 +204,20 @@ public class CourseOfferingTest {
 			error = e.getMessage();
 		}
 
+		// check error
+		assertEquals("Invalid term choice...", error);
+				
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
-
 		assertEquals(0, allCO.size());
 	}
 	
 	@Test
-	public void testCreateCourseOfferingNullYear() {
+	public void testCreateCourseOfferingInvalidYear() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
 		int id = 3;
 		String term = "fall";
-		int year = (Integer) null;
+		int year = 1800;
 		int courseID = 2;
 		
 		String error = null;
@@ -223,6 +228,9 @@ public class CourseOfferingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		
+		// check error
+		assertEquals("That is far too long ago...", error);
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
 
@@ -246,9 +254,38 @@ public class CourseOfferingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		
+		// check error
+		assertEquals("Please specify a valid Course", error);
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
 
 		assertEquals(0, allCO.size());
 	}
+	
+	@Test
+	public void testCreateCourseOfferingInvalidTerm() {
+		assertEquals(0, service.getAllCourseOfferings().size());
+		
+		int id = 3;
+		String term = "autumn";
+		int year = 2019;
+		int courseID = 2;
+		
+		String error = null;
+
+		try {
+			service.createCourseOffering(id, term, year, courseID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Invalid term choice...", error);
+				
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+		assertEquals(0, allCO.size());
+	}
+	
 }

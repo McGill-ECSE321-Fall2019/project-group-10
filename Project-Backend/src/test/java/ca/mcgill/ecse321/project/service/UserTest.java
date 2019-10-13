@@ -44,10 +44,6 @@ public class UserTest {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Before
-	public void setUp(){
-		service.createUniversity("McGill", "3040 University", 1);
-	}
 	
 	@After
 	public void clearDatabase() {
@@ -84,11 +80,11 @@ public class UserTest {
 		assertEquals(name, allUsers.get(0).getName());
 		assertEquals(email, allUsers.get(0).getEmail());
 		assertEquals(age, allUsers.get(0).getAge());
-		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber());
+		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber(), 0.05);
 	}
 	
 	@Test
-	public void testUpdateStudent() {
+	public void testUpdateUser() {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
@@ -122,7 +118,151 @@ public class UserTest {
 		assertEquals(name, allUsers.get(0).getName());
 		assertEquals(newEmail, allUsers.get(0).getEmail());
 		assertEquals(age, allUsers.get(0).getAge());
-		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber());
+		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber(), 0.05);
 	}
+	
+	@Test
+	public void deleteUser() {
+		String name = "cmc";
+		String email = "alpha.gamma@mail.mcgill.ca";
+		double phoneNum = 2143945876;
+		int age = 18;
+
+		try {
+			service.createUser(name, email, age,phoneNum);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<User> allUsers = service.getAllUsers();
+
+		assertEquals(1, allUsers.size());
+		
+		try {
+			service.deleteUser(email);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		allUsers = service.getAllUsers();
+
+		assertEquals(0, allUsers.size());
+	}
+	
+	@Test
+	public void testCreateUniversityInvalidAge() {
+
+		String name = "cmc";
+		String email = "alpha.gamma@mail.mcgill.ca";
+		double phoneNum = 2143945876;
+		int age = 11;
+		
+
+		String error = null;
+		try {
+			service.createUser(name, email, age,phoneNum);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Must be above the age of 12 for this tutoring service...", error);
+		List<User> allUsers = service.getAllUsers();
+		assertEquals(0, allUsers.size());
+		
+		}
+	
+	@Test
+	public void testCreateUniversityInvalidPhoneNum() {
+
+		String name = "cmc";
+		String email = "alpha.gamma@mail.mcgill.ca";
+		double phoneNum = 2143-89;
+		int age = 18;
+		
+
+		String error = null;
+		try {
+			service.createUser(name, email, age,phoneNum);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Invalid phone number...", error);
+		List<User> allUsers = service.getAllUsers();
+		assertEquals(0, allUsers.size());
+		
+		}
+	
+	@Test
+	public void testCreateUniversityNullName() {
+
+		String name = null;
+		String email = "alpha.gamma@mail.mcgill.ca";
+		double phoneNum = 2143945876;
+		int age = 18;
+		
+
+		String error = null;
+		try {
+			service.createUser(name, email, age,phoneNum);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Invalid name...", error);
+		List<User> allUsers = service.getAllUsers();
+		assertEquals(0, allUsers.size());
+		
+		}
+	
+	@Test
+	public void testCreateUserNullEmail() {
+
+		String name = "cmc";
+		String email = null;
+		double phoneNum = 2143945876;
+		int age = 18;
+		
+
+		String error = null;
+		try {
+			service.createUser(name, email, age,phoneNum);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Please insert a proper email...", error);
+		List<User> allUsers = service.getAllUsers();
+		assertEquals(0, allUsers.size());
+		
+		}
+	
+	@Test
+	public void testCreateUserInvalidEmail() {
+
+		String name = "cmc";
+		String email = "alpha";
+		double phoneNum = 2143945876;
+		int age = 18;
+		
+
+		String error = null;
+		try {
+			service.createUser(name, email, age,phoneNum);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Please insert a proper email...", error);
+		List<User> allUsers = service.getAllUsers();
+		assertEquals(0, allUsers.size());
+		
+		}
 	
 }

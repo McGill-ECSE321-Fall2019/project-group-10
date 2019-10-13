@@ -54,7 +54,7 @@ public class StudentTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "email", 22, 5145555555.0);
+		service.createUser("aName", "test.tester@mcgill.ca", 22, 5145555555.0);
 	}
 
 	@After
@@ -77,7 +77,7 @@ public class StudentTest {
 		String password = "dogs";
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createStudent(username, password, "test.tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -98,7 +98,7 @@ public class StudentTest {
 		String password = "dogs";
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createStudent(username, password, "test.tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -112,7 +112,7 @@ public class StudentTest {
 		password = "cats";
 		
 		try {
-			service.updateStudent("cmc", username, password, "email");
+			service.updateStudent("cmc", username, password, "test.tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -129,7 +129,7 @@ public class StudentTest {
 		String password = "dogs";
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createStudent(username, password, "test.tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -156,12 +156,13 @@ public class StudentTest {
 		String error = null;
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createStudent(username, password, "test.tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 
+		assertEquals("Please insert a username...", error);
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
@@ -176,12 +177,13 @@ public class StudentTest {
 		String error = null;
 
 		try {
-			service.createStudent(username, password, "email");
+			service.createStudent(username, password, "test.tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 
+		assertEquals("Please insert a password...", error);
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
@@ -196,12 +198,33 @@ public class StudentTest {
 		String error = null;
 
 		try {
-			service.createStudent(username, password, "emailwrong");
+			service.createStudent(username, password, "tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 
+		assertEquals("Please input a valid user", error);
+		List<Student> allStudents = service.getAllStudents();
+
+		assertEquals(0, allStudents.size());
+	}
+	@Test
+	public void testCreateStudentWrongEmail() {
+
+		String username = "cmc";
+		String password = null;
+		
+		String error = null;
+
+		try {
+			service.createStudent(username, password, "test");
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Please insert a proper email...", error);
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());

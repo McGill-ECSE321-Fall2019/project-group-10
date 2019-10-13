@@ -170,8 +170,8 @@ public class CourseTest {
 			error = e.getMessage();
 		}
 
+		assertEquals("Please insert a brief description...", error);
 		List<Course> allCourses = service.getAllCourses();
-
 		assertEquals(0, allCourses.size());
 
 	}
@@ -192,8 +192,8 @@ public class CourseTest {
 			error = e.getMessage();
 		}
 
+		assertEquals("Please insert a course name to search...", error);
 		List<Course> allCourses = service.getAllCourses();
-
 		assertEquals(0, allCourses.size());
 
 	}
@@ -203,7 +203,7 @@ public class CourseTest {
 
 		String description = "new";
 		String courseName = "COM SCI 101";
-		int id = (Integer)null;
+		int id = -1;
 		
 		String error = null;
 
@@ -214,8 +214,8 @@ public class CourseTest {
 			error = e.getMessage();
 		}
 
+		assertEquals("Incorrect id value for the course creation...", error);
 		List<Course> allCourses = service.getAllCourses();
-
 		assertEquals(0, allCourses.size());
 
 	}
@@ -235,9 +235,9 @@ public class CourseTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		
+		assertEquals("Please specify a valid University", error);
 		List<Course> allCourses = service.getAllCourses();
-
 		assertEquals(0, allCourses.size());
 
 	}

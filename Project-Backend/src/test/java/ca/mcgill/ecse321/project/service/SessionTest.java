@@ -52,10 +52,10 @@ public class SessionTest {
 		service.createUniversity("McGill", "3040 University", 1);
 		service.createCourse("Intro to Software","ECSE 321", 2, 1);
 		service.createCourseOffering(3, "fall", 2019, 2);
-		service.createUser("aName", "test.tester@mcgill.ca", 22, 5145555555.0);
-		service.createUser("aName_student", "test.tester@mcgill.ca", 22, 5145555555.0);
-		service.createTutor("username", "password", "aName", 12, 3, Education.highschool);
-		service.createStudent("studentUser", "password2", "test.tester@mcgill.ca");
+		service.createUser("aName", "tutor.tester@mcgill.ca", 22, 5145555555.0);
+		service.createUser("aName_student", "student.tester@mcgill.ca", 22, 5145555555.0);
+		service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
+		service.createStudent("studentUser", "password2", "student.tester@mcgill.ca");
 	}
 	
 	@After
@@ -93,7 +93,7 @@ public class SessionTest {
 		assertEquals(1, allSessions.size());
 		assertEquals(id, allSessions.get(0).getSessionID());
 		assertEquals(time, allSessions.get(0).getTime());
-		assertEquals(amountPaid, allSessions.get(0).getAmountPaid());
+		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
 		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
@@ -122,7 +122,7 @@ public class SessionTest {
 		assertEquals(1, allSessions.size());
 		assertEquals(id, allSessions.get(0).getSessionID());
 		assertEquals(time, allSessions.get(0).getTime());
-		assertEquals(amountPaid, allSessions.get(0).getAmountPaid());
+		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
 		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
@@ -145,7 +145,7 @@ public class SessionTest {
 		assertEquals(1, allSessions.size());
 		assertEquals(id, allSessions.get(0).getSessionID());
 		assertEquals(time, allSessions.get(0).getTime());
-		assertEquals(amountPaid, allSessions.get(0).getAmountPaid());
+		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
 		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
@@ -204,7 +204,7 @@ public class SessionTest {
 		}
 
 		// check error
-		// assertEquals("Session course offering cannot be empty!", error);
+		assertEquals("Please input a valid course offering", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());
@@ -230,7 +230,7 @@ public class SessionTest {
 		}
 
 		// check error
-		// assertEquals("Session course offering cannot be empty!", error);
+		assertEquals("Please input a valid tutor", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());
@@ -256,7 +256,107 @@ public class SessionTest {
 		}
 
 		// check error
-		// assertEquals("Session course offering cannot be empty!", error);
+		assertEquals("Please input a valid student", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllSessions().size());
+	}
+	
+	@Test
+	public void testCreateAvailabilityInvalidID() {
+		assertEquals(0, service.getAllSessions().size());
+
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
+		Time time = new java.sql.Time(millis);
+		double amountPaid = 23;
+		int id = -4;
+
+		String error = null;
+
+		try {
+			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Incorrect id value for the session update...", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllSessions().size());
+	}
+	
+	@Test
+	public void testCreateAvailabilityInvalidAmountPaid() {
+		assertEquals(0, service.getAllSessions().size());
+
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
+		Time time = new java.sql.Time(millis);
+		double amountPaid = -23;
+		int id = 4;
+
+		String error = null;
+
+		try {
+			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("So your student is paying you?? Please provide positive amount paid...", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllSessions().size());
+	}
+	
+	@Test
+	public void testCreateAvailabilityNullTime() {
+		assertEquals(0, service.getAllSessions().size());
+
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
+		Time time = null;
+		double amountPaid = 23;
+		int id = 4;
+
+		String error = null;
+
+		try {
+			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Invalid time parameters...", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllSessions().size());
+	}
+	
+	@Test
+	public void testCreateAvailabilityNullDate() {
+		assertEquals(0, service.getAllSessions().size());
+
+		long millis=System.currentTimeMillis();  		
+		Date date = null;
+		Time time = new java.sql.Time(millis);
+		double amountPaid = 23;
+		int id = 4;
+
+		String error = null;
+
+		try {
+			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Invalid time parameters...", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());

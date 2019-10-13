@@ -78,7 +78,7 @@ public class TutorTest {
 		int exp = 3;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.masters);
+			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -104,7 +104,7 @@ public class TutorTest {
 		int exp = 3;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.masters);
+			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -120,7 +120,7 @@ public class TutorTest {
 		exp = 4;
 		
 		try {
-			service.updateTutor("cmc", username, password, "email", hr, exp, Education.masters);
+			service.updateTutor("cmc", username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -141,7 +141,7 @@ public class TutorTest {
 		int exp = 3;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.masters);
+			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -170,12 +170,13 @@ public class TutorTest {
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.masters);
+			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 
+		assertEquals("Please insert a username...", error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -192,12 +193,13 @@ public class TutorTest {
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "email", hr, exp, Education.masters);
+			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 
+		assertEquals("Please insert a password...", error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -214,20 +216,23 @@ public class TutorTest {
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "emailwrong", hr, exp, Education.masters);
+			service.createTutor(username, password, "emailwrong@email.ca", hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 
+
+		assertEquals("Please input a valid user", error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
 	}
+	
 	@Test
 	public void testCreateTutorWrongEmail() {
 
-		String username = "email";
+		String username = "cmc";
 		String password = "test";
 		double hr  = 12;
 		int exp = 3;
@@ -241,6 +246,76 @@ public class TutorTest {
 			error = e.getMessage();
 		}
 
+		assertEquals("Please insert a proper email...", error);
+		List<Tutor> allTutors = service.getAllTutors();
+
+		assertEquals(0, allTutors.size());
+	}
+	
+	@Test
+	public void testCreateTutorInvalidHR() {
+
+		String username = "cmc";
+		String password = "dogs";
+		double hr  = -12;
+		int exp = 3;
+		
+		String error = null;
+
+		try {
+			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Don't think you want to pay the student for your session...", error);
+		List<Tutor> allTutors = service.getAllTutors();
+
+		assertEquals(0, allTutors.size());
+	}
+	
+	@Test
+	public void testCreateTutorInvalidExp() {
+
+		String username = "cmc";
+		String password = null;
+		double hr  = 12;
+		int exp = -3;
+		
+		String error = null;
+
+		try {
+			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Please input a valid number of years for your experience...", error);
+		List<Tutor> allTutors = service.getAllTutors();
+
+		assertEquals(0, allTutors.size());
+	}
+	
+	@Test
+	public void testCreateTutorInvalidEducation() {
+
+		String username = "cmc";
+		String password = null;
+		double hr  = 12;
+		int exp = 3;
+		
+		String error = null;
+
+		try {
+			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, null);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Please provide your education level...", error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());

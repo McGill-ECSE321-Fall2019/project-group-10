@@ -45,10 +45,6 @@ public class UniversityTest {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Before
-	public void setUp(){
-		service.createUniversity("McGill", "3040 University", 1);
-	}
 	
 	@After
 	public void clearDatabase() {
@@ -112,7 +108,7 @@ public class UniversityTest {
 		address = "8080 Sherbrooke St West";
 		id = 2;
 		try {
-			service.updateUniversity(name, address, id);
+			service.updateUniversity(1, name, address, id);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -127,7 +123,7 @@ public class UniversityTest {
 	
 	
 	@Test
-	public void testDeleteSession() {
+	public void testDeleteUniversity() {
 		assertEquals(0, service.getAllUniversities().size());
 		
 		String name = "McGill University";
@@ -154,5 +150,71 @@ public class UniversityTest {
 		 allUniversities = service.getAllUniversities();
 		 assertEquals(0, allUniversities.size());
 	}
+	
+	@Test
+	public void testCreateUniversityNullName() {
+
+		int id = 1;
+		String address="65 Sherbrooke St. East";
+		String name= null;
+		
+
+		String error = null;
+		try {
+			service.createUniversity(name, address, id);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Invalid name...", error);
+		List<University> allUniversities = service.getAllUniversities();
+		assertEquals(0, allUniversities.size());
+		
+		}
+	
+	@Test
+	public void testCreateUniversityNullAddress() {
+
+		int id = 1;
+		String address=null;
+		String name= "McGill University";
+		
+
+		String error = null;
+		try {
+			service.createUniversity(name, address, id);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Invalid address...", error);
+		List<University> allUniversities = service.getAllUniversities();
+		assertEquals(0, allUniversities.size());
+		
+		}
+	
+	@Test
+	public void testCreateUniversityInvalidID() {
+
+		int id = -1;
+		String address="65 Sherbrooke St. East";
+		String name= "McGill University";
+		
+
+		String error = null;
+		try {
+			service.createUniversity(name, address, id);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals("Incorrect id value for the university creation...", error);
+		List<University> allUniversities = service.getAllUniversities();
+		assertEquals(0, allUniversities.size());
+		
+		}
 	
 }

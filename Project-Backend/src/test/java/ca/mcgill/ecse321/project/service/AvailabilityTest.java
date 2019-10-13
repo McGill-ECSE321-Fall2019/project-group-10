@@ -150,7 +150,7 @@ public class AvailabilityTest {
 		assertEquals(0, service.getAllAvailabilities().size());
 
 		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
+		Date date = null;
 		Time time = new java.sql.Time(millis);
 		int id = 1;
 	
@@ -164,32 +164,7 @@ public class AvailabilityTest {
 		}
 
 		// check error
-		// assertEquals("Availability date cannot be empty!", error);
-
-		// check no change in memory
-		assertEquals(0, service.getAllAvailabilities().size());
-
-	}
-	
-	@Test
-	public void testCreateAvailabilityNullID() {
-		assertEquals(0, service.getAllAvailabilities().size());
-
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
-		int id = (Integer) null;
-		
-		String error = null;
-
-		try {
-			service.createAvailability(date, time, id, "username");
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		}
-
-		// check error
-		// assertEquals("Availability id cannot be empty!", error);
+		assertEquals("Invalid date parameters...", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllAvailabilities().size());
@@ -202,8 +177,33 @@ public class AvailabilityTest {
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
+		Time time = null;
+		int id = 2;
+		
+		String error = null;
+
+		try {
+			service.createAvailability(date, time, id, "username");
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Invalid time parameters...", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllAvailabilities().size());
+
+	}
+	
+	@Test
+	public void testCreateAvailabilityInvalidID() {
+		assertEquals(0, service.getAllAvailabilities().size());
+
+		long millis=System.currentTimeMillis();  		
+		Date date = new java.sql.Date(millis);
 		Time time = Time.valueOf("");
-		int id = 1;
+		int id = -1;
 		
 
 		String error = null;
@@ -216,7 +216,7 @@ public class AvailabilityTest {
 		}
 
 		// check error
-		// assertEquals("Availability time cannot be empty!", error);
+		assertEquals("Incorrect id value for the availability...", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllAvailabilities().size());
@@ -241,7 +241,7 @@ public class AvailabilityTest {
 		}
 
 		// check error
-		// assertEquals("Availability tutor cannot be empty!", error);
+		assertEquals("Please specify a valid Tutor", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllAvailabilities().size());

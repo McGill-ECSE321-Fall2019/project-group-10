@@ -176,6 +176,7 @@ public class RatingTest {
 			error = e.getMessage();
 		}
 
+		assertEquals(error, "Please insert a reviewee username...");
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());
@@ -198,6 +199,7 @@ public class RatingTest {
 			error = e.getMessage();
 		}
 
+		assertEquals(error, "Please enter a valid Course Offering");
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());
@@ -220,7 +222,30 @@ public class RatingTest {
 			error = e.getMessage();
 		}
 
-		//assertEquals(error, "Rating value must be between 1 and 5");
+		assertEquals(error, "Rating value must be between 1 and 5");
+		List<Rating> allRatings = service.getAllRatings();
+
+		assertEquals(0, allRatings.size());
+	}
+	
+	@Test
+	public void testCreateRatingInvalidID() {
+
+		int id = -5;
+		int ratingValue = 1;
+		String revieweeUsername = "cmc";
+		int coID = 3;
+		
+		String error = null;
+
+		try {
+			service.createRating(id, ratingValue, revieweeUsername, coID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+
+		assertEquals(error, "Incorrect id value");
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());
