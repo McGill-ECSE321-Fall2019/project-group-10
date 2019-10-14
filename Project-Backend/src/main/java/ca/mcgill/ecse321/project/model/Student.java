@@ -8,11 +8,12 @@ import javax.persistence.ManyToMany;
 public class Student extends Role{
    private Set<Session> session;
    
-   @ManyToMany(mappedBy="student" )
+   
    public Set<Session> getSession() {
       return this.session;
    }
    
+   @ManyToMany(mappedBy="student")
    public void setSession(Set<Session> sessions) {
       this.session = sessions;
    }

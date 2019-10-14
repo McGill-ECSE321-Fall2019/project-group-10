@@ -8,8 +8,10 @@ import ca.mcgill.ecse321.project.model.User;
 import javax.persistence.ManyToOne;
 import java.util.Set;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table
 public abstract class Role{
    private String username;
    

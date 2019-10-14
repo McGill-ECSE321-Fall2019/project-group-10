@@ -7,8 +7,10 @@ import javax.persistence.Id;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table
 public class University{
    private String name;
 
