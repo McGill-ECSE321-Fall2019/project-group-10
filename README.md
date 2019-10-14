@@ -28,7 +28,7 @@ Below can be found the role of each member and the number of hours spent on each
 
   <tr>
     <td>Alex Gruenwald</td>
-    <td>Technical(ly) Intern</td>
+    <td>Technical(ly) Intern: Responsible for UML Lab modelling and generating of model code. Proofreading expert.</td>
     <td>19</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -37,7 +37,7 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Chelsea M-C</td>
-    <td>Documentation Manager</td>
+    <td>Documentation Manager: Responsible for meeting minutes and writing tests.</td>
     <td>20</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -46,7 +46,7 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Taylor Lynn Curtis</td>
-    <td>Software Consulting Lead</td>
+    <td>Software Consulting Lead: Responsible for dependecny injections and writing JPA Tag code</td>
     <td>19</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -55,7 +55,7 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Anas Shahid</td>
-    <td>Software Developer</td>
+    <td>Software Developer: Responsible for writing tests and fixing bugs.</td>
     <td>11</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -64,7 +64,7 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Yoan Poulmarc'k</td>
-    <td>Software Architecture Lead</td>
+    <td>Software Architecture Lead: Set up database and connected other applications together.</td>
     <td>17</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -86,3 +86,8 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <li>Once in the folder, type and enter - "gradle build". <br>
 <li>This should automatically start running and testing all tests written in the test directory.
 </ol>
+
+<h2>Asking Heroku</h2><br>
+<ol>
+<li>All the Heroku information is set in the "resource" directory, in the "application.properties" folder.
+<ol>
