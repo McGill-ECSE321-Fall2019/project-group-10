@@ -29,7 +29,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Alex Gruenwald</td>
     <td>Technical(ly) Intern</td>
-    <td>11</td>
+    <td>19</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -38,7 +38,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Chelsea M-C</td>
     <td>Documentation Manager</td>
-    <td>10</td>
+    <td>20</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -47,7 +47,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Taylor Lynn Curtis</td>
     <td>Software Consulting Lead</td>
-    <td>7.5</td>
+    <td>19</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -56,7 +56,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Anas Shahid</td>
     <td>Software Developer</td>
-    <td>7</td>
+    <td>11</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -65,7 +65,7 @@ Below can be found the role of each member and the number of hours spent on each
   <tr>
     <td>Yoan Poulmarc'k</td>
     <td>Software Architecture Lead</td>
-    <td>8</td>
+    <td>17</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -79,3 +79,10 @@ Below can be found the role of each member and the number of hours spent on each
 framework, head over to our wiki page and select any page titled with a date:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<h2><b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a></b></h2>
 
+<h2>Instructions for setting up the tests</h2><br>
+<ol>
+<li>Once you have successfully cloned the repository, make your way into the project folder.<br>
+<li>In the terminal, enter the "Project-Backend" folder by typing in - cd Project-Backend/ <br>
+<li>Once in the folder, type and enter - "gradle build". <br>
+<li>This should automatically start running and testing all tests written in the test directory.
+</ol>
