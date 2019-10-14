@@ -87,7 +87,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <li>This should automatically start running and testing all tests written in the test directory.
 </ol>
 
-<h2>Asking Heroku</h2><br>
+<h2>Heroku Setup</h2><br>
 <ol>
 <li>All the Heroku information is set in the "resource" directory, in the "application.properties" folder.
 <ol>
