@@ -11,10 +11,8 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table
 public class Session{
 	   private Date date;
 	   private Time time;

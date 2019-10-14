@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.ManyToMany;
 
 @Entity
-@Table
 public class Tutor extends Role{
 
 	@Enumerated(EnumType.STRING)
@@ -30,10 +28,11 @@ public class Tutor extends Role{
 	
 	private Set<Session> session;
    
+   @OneToMany(mappedBy="tutor" )
    public Set<Session> getSession() {
       return this.session;
    }
-   @OneToMany(mappedBy="tutor")
+   
    public void setSession(Set<Session> session1s) {
       this.session = session1s;
    }

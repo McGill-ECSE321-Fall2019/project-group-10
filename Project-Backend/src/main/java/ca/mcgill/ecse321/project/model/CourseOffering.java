@@ -9,10 +9,8 @@ import javax.persistence.ManyToOne;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
-@Table
 public class CourseOffering{
 	private String term;
 	
