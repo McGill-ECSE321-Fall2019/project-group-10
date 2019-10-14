@@ -77,7 +77,7 @@ public class CourseTest {
 		}
 
 		List<Course> allCourses = service.getAllCourses();
-
+		// check that all the attributes are correct
 		assertEquals(1, allCourses.size());
 		assertEquals(id, allCourses.get(0).getCourseID());
 		assertEquals(description, allCourses.get(0).getDescription());

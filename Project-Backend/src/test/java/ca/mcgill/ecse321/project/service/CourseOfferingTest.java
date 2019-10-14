@@ -80,7 +80,7 @@ public class CourseOfferingTest {
 		}
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
-
+		// check that all the attributes are correct
 		assertEquals(1, allCO.size());
 		assertEquals(id, allCO.get(0).getCourseOfferingID());
 		assertEquals(year, allCO.get(0).getYear());
