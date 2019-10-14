@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -22,26 +23,26 @@ import ca.mcgill.ecse321.project.service.*;
 @SpringBootTest
 public class CourseTest {
 	
-	@Autowired
+	@Mock
 	private TutoringAppService service;
 
-	@Autowired 
+	@Mock 
 	private AvailabilityRepository availabilityRepository;
-	@Autowired
+	@Mock
 	private CourseOfferingRepository courseOfferingRepository;  
-	@Autowired
+	@Mock
 	private CourseRepository courseRepository;
-	@Autowired
+	@Mock
 	private ReviewRepository reviewRepository;  
-	@Autowired
+	@Mock
 	private RoleRepository roleRepository; 
-	@Autowired
+	@Mock
 	private RoomRepository roomRepository; 
-	@Autowired
+	@Mock
 	private SessionRepository sessionRepository; 
-	@Autowired
+	@Mock
 	private UniversityRepository universityRepository; 
-	@Autowired
+	@Mock
 	private UserRepository userRepository;
 	
 	@Before
