@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.junit.*;
 
 import java.sql.Date;
@@ -30,26 +29,26 @@ import ca.mcgill.ecse321.project.service.*;
 @SpringBootTest
 public class TextTest {
 	
-	@Mock
+	@Autowired
 	private TutoringAppService service;
 
-	@Mock 
+	@Autowired 
 	private AvailabilityRepository availabilityRepository;
-	@Mock
+	@Autowired
 	private CourseOfferingRepository courseOfferingRepository;  
-	@Mock
+	@Autowired
 	private CourseRepository courseRepository;
-	@Mock
+	@Autowired
 	private ReviewRepository reviewRepository;  
-	@Mock
+	@Autowired
 	private RoleRepository roleRepository; 
-	@Mock
+	@Autowired
 	private RoomRepository roomRepository; 
-	@Mock
+	@Autowired
 	private SessionRepository sessionRepository; 
-	@Mock
+	@Autowired
 	private UniversityRepository universityRepository; 
-	@Mock
+	@Autowired
 	private UserRepository userRepository;
 	
 
