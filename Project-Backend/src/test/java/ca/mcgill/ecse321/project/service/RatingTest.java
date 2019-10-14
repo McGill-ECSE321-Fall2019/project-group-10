@@ -4,11 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.*;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
 
 
 import static org.junit.Assert.assertEquals;
@@ -23,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
+//import needed for tutoring app service 
 import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)

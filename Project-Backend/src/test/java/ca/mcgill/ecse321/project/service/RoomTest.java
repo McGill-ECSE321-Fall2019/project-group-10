@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.project.service;
 
 import org.junit.After; 
 import org.junit.Test;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
@@ -16,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
+//import needed for tutoring app service 
 import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)
@@ -72,6 +72,7 @@ public class RoomTest {
 
 		List<Room> allRooms = service.getAllRooms();
 
+		// check that it was created and all the attributes are correct
 		assertEquals(1, allRooms.size());
 		assertEquals(roomNumber, allRooms.get(0).getRoomNumber());
 		}
