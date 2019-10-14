@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.project.service;
 
 import org.junit.After; 
 import org.junit.Test;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.service.*;
+import ca.mcgill.ecse321.project.service.TutoringAppService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -58,7 +57,6 @@ public class UserTest {
 		userRepository.deleteAll();
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testCreateUser() {
 
@@ -151,7 +149,7 @@ public class UserTest {
 	}
 	
 	@Test
-	public void testCreateUniversityInvalidAge() {
+	public void testCreateUserInvalidAge() {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
@@ -174,7 +172,7 @@ public class UserTest {
 		}
 	
 	@Test
-	public void testCreateUniversityInvalidPhoneNum() {
+	public void testCreateUserInvalidPhoneNum() {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
@@ -197,7 +195,7 @@ public class UserTest {
 		}
 	
 	@Test
-	public void testCreateUniversityNullName() {
+	public void testCreateUserNullName() {
 
 		String name = null;
 		String email = "alpha.gamma@mail.mcgill.ca";
