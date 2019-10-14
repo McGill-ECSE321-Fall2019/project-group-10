@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.service.*;
+import ca.mcgill.ecse321.project.service.TutoringAppService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -77,7 +77,7 @@ public class CourseTest {
 		}
 
 		List<Course> allCourses = service.getAllCourses();
-
+		// check that all the attributes are correct
 		assertEquals(1, allCourses.size());
 		assertEquals(id, allCourses.get(0).getCourseID());
 		assertEquals(description, allCourses.get(0).getDescription());
@@ -166,10 +166,10 @@ public class CourseTest {
 		try {
 			service.createCourse(description, courseName, id, 1);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a brief description...", error);
 		List<Course> allCourses = service.getAllCourses();
 		assertEquals(0, allCourses.size());
@@ -188,10 +188,10 @@ public class CourseTest {
 		try {
 			service.createCourse(description, courseName, id, 1);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a course name to search...", error);
 		List<Course> allCourses = service.getAllCourses();
 		assertEquals(0, allCourses.size());
@@ -210,10 +210,10 @@ public class CourseTest {
 		try {
 			service.createCourse(description, courseName, id, 1);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Incorrect id value for the course creation...", error);
 		List<Course> allCourses = service.getAllCourses();
 		assertEquals(0, allCourses.size());
@@ -235,7 +235,7 @@ public class CourseTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-		
+		// check that the correct error was generated
 		assertEquals("Please specify a valid University", error);
 		List<Course> allCourses = service.getAllCourses();
 		assertEquals(0, allCourses.size());

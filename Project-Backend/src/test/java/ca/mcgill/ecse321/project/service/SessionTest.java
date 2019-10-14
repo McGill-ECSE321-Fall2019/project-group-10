@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -49,11 +48,12 @@ public class SessionTest {
 	
 	@Before
 	public void setUp(){
+		// create the necessary objects for session creation
 		service.createUniversity("McGill", "3040 University", 1);
 		service.createCourse("Intro to Software","ECSE 321", 2, 1);
 		service.createCourseOffering(3, "fall", 2019, 2);
-		service.createUser("aName", "tutor.tester@mcgill.ca", 22, 5145555555.0);
-		service.createUser("aName_student", "student.tester@mcgill.ca", 22, 5145555555.0);
+		service.createUser("aName", "tutor.tester@mcgill.ca", 22, "5145555555");
+		service.createUser("aName_student", "student.tester@mcgill.ca", 22, "5145555555");
 		service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
 		service.createStudent("studentUser", "password2", "student.tester@mcgill.ca");
 	}

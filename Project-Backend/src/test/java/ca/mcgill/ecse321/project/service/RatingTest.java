@@ -4,11 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.*;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
 
 
 import static org.junit.Assert.assertEquals;
@@ -23,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
+//import needed for tutoring app service 
 import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)
@@ -54,7 +50,8 @@ public class RatingTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "test.tester@mcgill.ca", 22, 5145555555.0);
+		// needed objects for a rating to be created 
+		service.createUser("aName", "test.tester@mcgill.ca", 22, "5145555555");
 		service.createTutor("cmc", "dogs", "test.tester@mcgill.ca", 12, 3, Education.bachelor);
 		service.createUniversity("McGill", "3040 University", 1);
 		service.createCourse("Intro to Software","ECSE 321", 2, 1);
@@ -63,6 +60,7 @@ public class RatingTest {
 
 	@After
 	public void clearDatabase() {
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -90,7 +88,7 @@ public class RatingTest {
 		}
 
 		List<Rating> allRatings = service.getAllRatings();
-
+		// check that all the attributes are correct
 		assertEquals(1, allRatings.size());
 		assertEquals(id, allRatings.get(0).getReviewID());
 		assertEquals(ratingValue, allRatings.get(0).getRatingValue());
@@ -172,10 +170,10 @@ public class RatingTest {
 		try {
 			service.createRating(id, ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that  error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Please insert a reviewee username...");
 		List<Rating> allRatings = service.getAllRatings();
 
@@ -198,7 +196,7 @@ public class RatingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Please enter a valid Course Offering");
 		List<Rating> allRatings = service.getAllRatings();
 
@@ -221,7 +219,7 @@ public class RatingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Rating value must be between 1 and 5");
 		List<Rating> allRatings = service.getAllRatings();
 
@@ -244,7 +242,7 @@ public class RatingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Incorrect id value");
 		List<Rating> allRatings = service.getAllRatings();
 

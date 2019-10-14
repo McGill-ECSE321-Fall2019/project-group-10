@@ -4,11 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.*;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
 
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -54,7 +48,7 @@ public class StudentTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "test.tester@mcgill.ca", 22, 5145555555.0);
+		service.createUser("aName", "test.tester@mcgill.ca", 22, "5145555555");
 	}
 
 	@After
@@ -141,7 +135,7 @@ public class StudentTest {
 			// Check that no error occurred
 			fail();
 		}
-
+		// check that the correct error was generated
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
@@ -158,10 +152,10 @@ public class StudentTest {
 		try {
 			service.createStudent(username, password, "test.tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a username...", error);
 		List<Student> allStudents = service.getAllStudents();
 
@@ -182,7 +176,7 @@ public class StudentTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a password...", error);
 		List<Student> allStudents = service.getAllStudents();
 
@@ -200,10 +194,10 @@ public class StudentTest {
 		try {
 			service.createStudent(username, password, "tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please input a valid user", error);
 		List<Student> allStudents = service.getAllStudents();
 
@@ -220,10 +214,10 @@ public class StudentTest {
 		try {
 			service.createStudent(username, password, "test");
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a proper email...", error);
 		List<Student> allStudents = service.getAllStudents();
 

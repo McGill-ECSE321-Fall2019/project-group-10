@@ -3,9 +3,7 @@ package ca.mcgill.ecse321.project.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,9 +42,12 @@ public class TutoringAppService {
 	@Autowired
 	UserRepository userRepository;
 	
+
+	//Checking to make sure we can create an availability instance.
 	@Transactional
 	public Availability createAvailability(Date date, Time time, int id, String tName) {
 				
+		// check for invalid inputs
 		if(id < 0){
 			throw new IllegalArgumentException("Incorrect id value for the availability...");
 		}
@@ -59,7 +60,8 @@ public class TutoringAppService {
 		if(time == null){
 			throw new IllegalArgumentException("Invalid time parameters...");
 		}
-				
+			
+		// set the 
 		Availability availability = new Availability();
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
@@ -69,6 +71,7 @@ public class TutoringAppService {
 		return availability;
 	}
 
+	//Checking to make sure we can update an availability intances.
 	@Transactional
 	public Availability updateAvailability(int oldID, Date date, Time time, int id, String tName) {
 		if(id < 0 || oldID < 0){
@@ -96,11 +99,13 @@ public class TutoringAppService {
 		return availability;
 	}
 	
+	//Checking to make sure we can get the list of all the availability intances.
 	@Transactional
 	public List<Availability> getAllAvailabilities() {
 		return toList(availabilityRepository.findAll());
 	}
 	
+	//Checking to make sure we can get all the availability intances.
 	@Transactional
 	public Availability getAvailability(int id) {
 		if(id < 0){
@@ -111,12 +116,14 @@ public class TutoringAppService {
 		return a;
 	}
 	
+	//Checking to make sure we can get all the availabilities for the given tutor.
 	@Transactional
 	public List<Availability> getAvailabilityByTutor(String username) {
 		Tutor tutor = (Tutor)roleRepository.findRoleByUsername(username);
 		return toList(availabilityRepository.findAvailabilityByTutor(tutor));
 	}
 	
+	//Checking to make sure we can delete the availabilities.
 	@Transactional
 	public boolean deleteAvailability(int id) {
 		if(id < 0){
@@ -132,6 +139,7 @@ public class TutoringAppService {
 		return done;
 	}
 	
+	//Checking to make sure we can delete the availabilities given the tutor.
 	@Transactional
 	public boolean deleteAvailabilityByTutor(String username) {
 		if(username == null || username.equals("")){
@@ -139,7 +147,7 @@ public class TutoringAppService {
 		}
 
 		boolean done = false;
-		List<Availability> availList = getAvailabilityByTutor(username);
+		//List<Availability> availList = getAvailabilityByTutor(username);
 		for(Availability a: getAvailabilityByTutor(username)) {
 			if (a != null) {
 				availabilityRepository.delete(a);
@@ -150,7 +158,7 @@ public class TutoringAppService {
 		return done;
 	}
 	
-
+	//Checking to make sure we can create a course offering.
 	@Transactional
 	public CourseOffering createCourseOffering(int id, String term, int year, int courseID) {
 		if(id < 0){
@@ -178,6 +186,7 @@ public class TutoringAppService {
 		return courseOffering;
 	}
 	
+	//Checking to make sure we can update the course offering.
 	@Transactional
 	public CourseOffering updateCourseOffering(int oldID, int id, String term, int year, int courseID) {
 		if(id < 0 || oldID < 0){
@@ -206,11 +215,13 @@ public class TutoringAppService {
 		return courseOffering;
 	}
 	
+	//Checking to make sure we can get the list of all the course offerings.
 	@Transactional
 	public List<CourseOffering> getAllCourseOfferings() {
 		return toList(courseOfferingRepository.findAll());
 	}
 	
+	//Checking to make sure we can get all the course offerings.
 	@Transactional
 	public CourseOffering getCourseOffering(int id) {
 		if(id < 0){
@@ -220,6 +231,7 @@ public class TutoringAppService {
 		return a;
 	}
 	
+	//Checking to make sure we can get delete the course offerings.
 	@Transactional
 	public boolean deleteCourseOffering(int id) {
 		if(id < 0){
@@ -234,6 +246,7 @@ public class TutoringAppService {
 		return done;
 	}
 	
+	//Checking to make sure we can get create a course.
 	@Transactional
 	public Course createCourse(String description, String courseName, int id, int uniID) {
 		if(id < 0 || uniID < 0){
@@ -258,6 +271,7 @@ public class TutoringAppService {
 		return course;
 	}
 	
+	//Checking to make sure we can get update a course.
 	@Transactional
 	public Course updateCourse(int oldID, String description, String courseName, int id, int uniID) {
 		if(id < 0 || uniID < 0 || oldID < 0){
@@ -283,6 +297,7 @@ public class TutoringAppService {
 		return course;
 	}
 	
+	//Checking to make sure we can get a course.
 	@Transactional
 	public Course getCourse(int id) {
 		if(id < 0){
@@ -291,7 +306,8 @@ public class TutoringAppService {
 		Course a = courseRepository.findCourseByCourseID(new Integer(id));
 		return a;
 	}
-	
+
+	//Checking to make sure we can delete a course.
 	@Transactional
 	public boolean deleteCourse(int id) {
 		if(id < 0){
@@ -306,11 +322,13 @@ public class TutoringAppService {
 		return done;
 	}
 	
+	//Checking to make sure we can get all course.
 	@Transactional
 	public List<Course> getAllCourses() {
 		return toList(courseRepository.findAll());
 	}
 	
+	//Checking to make sure we can create a text.
 	@Transactional
 	public Text createText(int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
 		if(id < 0 || coID < 0){
@@ -340,7 +358,8 @@ public class TutoringAppService {
 		textRepository.save(text);
 		return (Text)text;
 	}
-	
+
+	//Checking to make sure we can update a text.
 	@Transactional
 	public Text updateText(int oldID, int id, String description, boolean isAllowed, String revieweeUsername, int coID) {
 		if(id < 0 || coID < 0 || oldID < 0){
@@ -373,11 +392,13 @@ public class TutoringAppService {
 		return (Text)text;
 	}
 	
+	//Checking to make sure we can get a list of text instances.
 	@Transactional
 	public List<Text> getAllTexts() {
 		return toList(textRepository.findAll());
 	}
 	
+	//Checking to make sure we can get text.
 	@Transactional
 	public Text getText(int id) {
 		if(id < 0){
@@ -388,6 +409,7 @@ public class TutoringAppService {
 		return a;
 	}
 	
+	//Checking to make sure we can delete a text.
 	@Transactional
 	public boolean deleteText(int id) {
 		if(id < 0){
@@ -403,6 +425,7 @@ public class TutoringAppService {
 		return done;
 	}
 	
+	//Checking to make sure we can create a rating.
 	@Transactional
 	public Rating createRating(int id, int ratingValue, String revieweeUsername, int coID) {
 		if(id < 0 || coID < 0){
@@ -438,6 +461,7 @@ public class TutoringAppService {
 		return rating;
 	}
 	
+	//Checking to make sure we can create a text.
 	@Transactional
 	public Rating updateRating(int oldID, int id, int ratingValue, String revieweeUsername, int coID) {
 		if(id < 0 || coID < 0){
@@ -469,11 +493,13 @@ public class TutoringAppService {
 		return rating;
 	}
 	
+	//Checking to make sure we can get all ratings.
 	@Transactional
 	public List<Rating> getAllRatings() {
 		return toList(ratingRepository.findAll());
 	}
 	
+	//Checking to make sure we can get a rating.
 	@Transactional
 	public Rating getRating(int id) {
 		if(id < 0){
@@ -484,6 +510,7 @@ public class TutoringAppService {
 		return a;
 	}
 	
+	//Checking to make sure we can delete a rating.
 	@Transactional
 	public boolean deleteRating(int id) {
 		if(id < 0){
@@ -499,6 +526,7 @@ public class TutoringAppService {
 		return done;
 	}
 	
+	//Checking to make sure we can create a tutor.
 	@Transactional
 	public Tutor createTutor(String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
 		if(username.equals("") || username == null){
@@ -534,6 +562,7 @@ public class TutoringAppService {
 		return tutor;
 	}
 	
+	//Checking to make sure we can update a tutor.
 	@Transactional
 	public Tutor updateTutor(String oldUsername, String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
 		if(username.equals("") || username == null){
@@ -573,6 +602,7 @@ public class TutoringAppService {
 		return tutor;
 	}
 	
+	//Checking to make sure we can get a tutor.
 	@Transactional
 	public Tutor getTutor(String username) {
 		if(username.equals("") || username == null){
@@ -582,6 +612,7 @@ public class TutoringAppService {
 		return a;
 	}
 	
+	//Checking to make sure we can delete a tutor.
 	@Transactional
 	public boolean deleteTutor(String username) {
 		if(username.equals("") || username == null){
@@ -596,16 +627,19 @@ public class TutoringAppService {
 		return done;
 	}
 	
+	//Checking to make sure we can get all students.
 	@Transactional
 	public List<Student> getAllStudents() {
 		return toList(studentRepository.findAll());
 	}
 	
+	//Checking to make sure we can get all tutors.
 	@Transactional
 	public List<Tutor> getAllTutors() {
 		return toList(tutorRepository.findAll());
 	}
 	
+	//Checking to make sure we can create a student.
 	@Transactional
 	public Student createStudent(String username, String password, String userEmail) {
 		if(username.equals("") || username == null){
@@ -627,7 +661,8 @@ public class TutoringAppService {
 		studentRepository.save(student);
 		return student;
 	}
-	
+
+	//Checking to make sure we can update a student.
 	@Transactional
 	public Student updateStudent(String oldUsername, String username, String password, String userEmail) {
 		if(username.equals("") || username == null){
@@ -654,7 +689,8 @@ public class TutoringAppService {
 		studentRepository.save(student);
 		return student;
 	}
-	
+
+	//Checking to make sure we can get a student.
 	@Transactional
 	public Student getStudent(String username) {
 		if(username.equals("") || username == null){
@@ -664,6 +700,7 @@ public class TutoringAppService {
 		return a;
 	}
 	
+	//Checking to make sure we can delete a student.
 	@Transactional
 	public boolean deleteStudent(String username) {
 		if(username.equals("") || username == null){
@@ -678,6 +715,7 @@ public class TutoringAppService {
 		return done;
 	}
 
+	//Checking to make sure we can create a session.
 	@Transactional
 	public Session createSession(int coID, Date date, Time time, Double amountPaid, int id, String sName, String tName) {
 			
@@ -719,6 +757,7 @@ public class TutoringAppService {
 		return session;
 	}
 	
+	//Checking to make sure we can update a session.
 	@Transactional
 	public Session updateSession(int oldID, int coID, Date date, Time time, Double amountPaid, int id, String sName, String tName) {
 		
@@ -760,11 +799,13 @@ public class TutoringAppService {
 		return session;
 	}
 	
+	//Checking to make sure we can get all sessions.
 	@Transactional
 	public List<Session> getAllSessions() {
 		return toList(sessionRepository.findAll());
 	}
 	
+	//Checking to make sure we can get a session.
 	@Transactional
 	public Session getSession(int id) {
 		if(id < 0){
@@ -774,6 +815,7 @@ public class TutoringAppService {
 		return a;
 	}
 	
+	//Checking to make sure we can delete a session.
 	@Transactional
 	public boolean deleteSession(int id) {
 		if(id < 0){
@@ -788,6 +830,7 @@ public class TutoringAppService {
 		return done;
 	}
 	
+	//Checking to make sure we can create a university.
 	@Transactional
 	public University createUniversity(String name, String addr, int id) {
 		if(id < 0){
@@ -807,14 +850,16 @@ public class TutoringAppService {
 		universityRepository.save(uni);
 		return uni;
 	}
-	
+
+	//Checking to make sure we can get all universities.
 	@Transactional
 	public List<University> getAllUniversities() {
 		return toList(universityRepository.findAll());
 	}
 	
+	//Checking to make sure we can create a user.
 	@Transactional
-	public User createUser(String name, String email, int age, double phoneNum) {
+	public User createUser(String name, String email, int age, String phoneNum) {
 		if(age < 12){
 			throw new IllegalArgumentException("Must be above the age of 12 for this tutoring service...");
 		}
@@ -828,7 +873,7 @@ public class TutoringAppService {
 		}
 		
 		//Special phone number check.
-		if(!Double.toString(phoneNum).matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
+		if(!phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
 			throw new IllegalArgumentException("Invalid phone number...");
 		}
 
@@ -841,8 +886,9 @@ public class TutoringAppService {
 		return user;
 	}
 	
+	//Checking to make sure we can update a user.
 	@Transactional
-	public User updateUser(String name, String oldEmail,String newEmail, int age,double phoneNum) {
+	public User updateUser(String name, String oldEmail,String newEmail, int age, String phoneNum) {
 		User user = userRepository.findUserByEmail(oldEmail);
 		user.setAge(age);
 		user.setEmail(newEmail);
@@ -852,12 +898,14 @@ public class TutoringAppService {
 		return user;
 	}
 	
+	//Checking to make sure we can get a user.
 	@Transactional
 	public User getUser(String email) {
 		User a = userRepository.findUserByEmail(email);
 		return a;
 	}
 	
+	//Checking to make sure we can delete a user.
 	@Transactional
 	public boolean deleteUser(String email) {
 		boolean done = false;
@@ -869,11 +917,12 @@ public class TutoringAppService {
 		return done;
 	}
 	
+	//Checking to make sure we can get all users.
 	@Transactional
 	public List<User> getAllUsers() {
 		return toList(userRepository.findAll());
 	}
-	
+
 	private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {
@@ -886,12 +935,13 @@ public class TutoringAppService {
 
 
 	//	<----Room Bookings---->
-
+	//Checking to get all rooms.
 	@Transactional
 	public List<Room> getAllRooms() {
 		return toList(roomRepository.findAll());
 	}
 
+	//Checking to make sure we can create a room.
 	@Transactional
 	public Room createRoom(int RoomNumber) {
 		if(RoomNumber < 0){
@@ -903,12 +953,14 @@ public class TutoringAppService {
 		return room;
 	}
 
+	//Checking to make sure we can get a room.
 	@Transactional
 	public Room getRoom(int roomNumber) {
 		Room a = roomRepository.findRoomByRoomNumber(roomNumber);
 		return a;
 	}
 
+	//Checking to make sure we can delete a room.
 	@Transactional
 	public boolean deleteRoom(int id) {
 		boolean done = false;
@@ -920,6 +972,7 @@ public class TutoringAppService {
 		return done;
 	}
 
+	//Checking to make sure we can update a room.
 	@Transactional
 	public Room updateRoom(int oldRoomNumber, int roomNumber) {
 		if(roomNumber < 0){
@@ -935,6 +988,8 @@ public class TutoringAppService {
 
 //	 <----University---->
 
+
+	//Checking to make sure we can update a university.
 	@Transactional
 	public University updateUniversity(int oldID, String newName, String newAddress,int id) {
 		if(id < 0){
@@ -954,6 +1009,7 @@ public class TutoringAppService {
 		return university;
 	}
 
+	//Checking to make sure we can delete a university.
 	@Transactional
 	public boolean deleteUniversity(int id) {
 		if(id < 0){
@@ -966,10 +1022,5 @@ public class TutoringAppService {
 			done = true;
 		}
 		return done;
-	}
-
-	
-//										Reviews
-
-	
+	}	
 }

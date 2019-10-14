@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -81,7 +80,7 @@ public class CourseOfferingTest {
 		}
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
-
+		// check that all the attributes are correct
 		assertEquals(1, allCO.size());
 		assertEquals(id, allCO.get(0).getCourseOfferingID());
 		assertEquals(year, allCO.get(0).getYear());
@@ -259,7 +258,7 @@ public class CourseOfferingTest {
 		assertEquals("Please specify a valid Course", error);
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
-
+		// check no change in database
 		assertEquals(0, allCO.size());
 	}
 	
@@ -283,7 +282,7 @@ public class CourseOfferingTest {
 
 		// check error
 		assertEquals("Invalid term choice...", error);
-				
+		// check no change in database
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
 		assertEquals(0, allCO.size());
 	}

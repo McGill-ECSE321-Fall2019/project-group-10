@@ -4,12 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.*;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
-
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -23,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -54,7 +47,7 @@ public class TextTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "email", 22, 5145555555.0);
+		service.createUser("aName", "email", 22, "5145555555");
 		service.createTutor("cmc", "dogs", "email", 12, 3, Education.bachelor);
 		service.createUniversity("McGill", "3040 University", 1);
 		service.createCourse("Intro to Software","ECSE 321", 2, 1);
@@ -231,7 +224,7 @@ public class TextTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Please insert a brief description...");
 		List<Text> allTexts = service.getAllTexts();
 
@@ -255,7 +248,7 @@ public class TextTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Incorrect id value");
 		List<Text> allTexts = service.getAllTexts();
 

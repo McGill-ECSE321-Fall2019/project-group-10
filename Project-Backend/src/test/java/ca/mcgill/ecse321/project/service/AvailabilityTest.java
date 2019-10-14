@@ -4,11 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.*;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.ArrayList;
 
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -54,12 +51,14 @@ public class AvailabilityTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "test.object@mcgill.ca", 22, 5145555555.0);
+		// user necessary to create a tutor which is needed for availabilities
+		service.createUser("aName", "test.object@mcgill.ca", 22, "5145555555");
 		service.createTutor("username", "password", "aName", 12, 3, Education.highschool);
 	}
 
 	@After
 	public void clearDatabase() {
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -80,7 +79,6 @@ public class AvailabilityTest {
 		Time time = new java.sql.Time(millis);
 		int id = 1;
 		
-
 		try {
 			service.createAvailability(date, time, id, "username");
 		} catch (IllegalArgumentException e) {
@@ -90,6 +88,7 @@ public class AvailabilityTest {
 
 		List<Availability> allAvailabilities = service.getAllAvailabilities();
 
+		// check that it was created and all the attributes are correct
 		assertEquals(1, allAvailabilities.size());
 		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
 		assertEquals(date, allAvailabilities.get(0).getDate());
@@ -108,6 +107,7 @@ public class AvailabilityTest {
 			fail();
 		}
 
+		// check that all the attributes are correct
 		assertEquals(1, allAvailabilities.size());
 		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
 		assertEquals(date, allAvailabilities.get(0).getDate());

@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.project.service;
 
 import org.junit.After; 
 import org.junit.Test;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.service.*;
+import ca.mcgill.ecse321.project.service.TutoringAppService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -58,13 +57,13 @@ public class UserTest {
 		userRepository.deleteAll();
 	}
 	
-	@SuppressWarnings("deprecation")
+	// test to create a new user
 	@Test
 	public void testCreateUser() {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 
 		try {
@@ -76,19 +75,21 @@ public class UserTest {
 
 		List<User> allUsers = service.getAllUsers();
 
+		// check that all the attributes are correct
 		assertEquals(1, allUsers.size());
 		assertEquals(name, allUsers.get(0).getName());
 		assertEquals(email, allUsers.get(0).getEmail());
 		assertEquals(age, allUsers.get(0).getAge());
-		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber(), 0.05);
+		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber());
 	}
 	
+	// update a user attributes
 	@Test
 	public void testUpdateUser() {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 
 		try {
@@ -104,7 +105,7 @@ public class UserTest {
 		
 		name = "amc";
 		String newEmail = "cats.dogs@mail.mcgill.ca";
-		phoneNum = 2143945000;
+		phoneNum = "2143945000";
 		age = 20;
 		
 		try {
@@ -114,18 +115,20 @@ public class UserTest {
 			fail();
 		}
 		
+		// check that the attributes have been updated
 		assertEquals(1, allUsers.size());
 		assertEquals(name, allUsers.get(0).getName());
 		assertEquals(newEmail, allUsers.get(0).getEmail());
 		assertEquals(age, allUsers.get(0).getAge());
-		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber(), 0.05);
+		assertEquals(phoneNum,allUsers.get(0).getPhoneNumber());
 	}
 	
+	// check to delete a user
 	@Test
 	public void deleteUser() {
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 
 		try {
@@ -135,6 +138,7 @@ public class UserTest {
 			fail();
 		}
 
+		// check that the user was created
 		List<User> allUsers = service.getAllUsers();
 
 		assertEquals(1, allUsers.size());
@@ -147,15 +151,16 @@ public class UserTest {
 		}
 		allUsers = service.getAllUsers();
 
+		// check that there is no user
 		assertEquals(0, allUsers.size());
 	}
 	
 	@Test
-	public void testCreateUniversityInvalidAge() {
+	public void testCreateUserInvalidAge() {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 11;
 		
 
@@ -167,6 +172,7 @@ public class UserTest {
 			error = e.getMessage();
 		}
 
+		// check that the correct error was generated
 		assertEquals("Must be above the age of 12 for this tutoring service...", error);
 		List<User> allUsers = service.getAllUsers();
 		assertEquals(0, allUsers.size());
@@ -174,11 +180,11 @@ public class UserTest {
 		}
 	
 	@Test
-	public void testCreateUniversityInvalidPhoneNum() {
+	public void testCreateUserInvalidPhoneNum() {
 
 		String name = "cmc";
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143-89;
+		String phoneNum = "2143-89";
 		int age = 18;
 		
 
@@ -189,6 +195,7 @@ public class UserTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		// check that the correct error was generated
 
 		assertEquals("Invalid phone number...", error);
 		List<User> allUsers = service.getAllUsers();
@@ -197,11 +204,11 @@ public class UserTest {
 		}
 	
 	@Test
-	public void testCreateUniversityNullName() {
+	public void testCreateUserNullName() {
 
 		String name = null;
 		String email = "alpha.gamma@mail.mcgill.ca";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 		
 
@@ -212,6 +219,7 @@ public class UserTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		// check that the correct error was generated
 
 		assertEquals("Invalid name...", error);
 		List<User> allUsers = service.getAllUsers();
@@ -224,7 +232,7 @@ public class UserTest {
 
 		String name = "cmc";
 		String email = null;
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 		
 
@@ -235,6 +243,7 @@ public class UserTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		// check that the correct error was generated
 
 		assertEquals("Please insert a proper email...", error);
 		List<User> allUsers = service.getAllUsers();
@@ -247,7 +256,7 @@ public class UserTest {
 
 		String name = "cmc";
 		String email = "alpha";
-		double phoneNum = 2143945876;
+		String phoneNum = "2143945876";
 		int age = 18;
 		
 
@@ -258,6 +267,7 @@ public class UserTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		// check that the correct error was generated
 
 		assertEquals("Please insert a proper email...", error);
 		List<User> allUsers = service.getAllUsers();

@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -26,9 +28,13 @@ private int courseID;
 public void setCourseID(int value) {
     this.courseID = value;
 }
+
+@Id
+@GeneratedValue
 public int getCourseID() {
     return this.courseID;
 }
+
    private University university;
    
    @ManyToOne(optional=false)

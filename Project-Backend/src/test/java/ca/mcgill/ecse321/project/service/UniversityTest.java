@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.project.service;
 
 import org.junit.After; 
 import org.junit.Test;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.service.*;
+import ca.mcgill.ecse321.project.service.TutoringAppService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -59,6 +58,7 @@ public class UniversityTest {
 		userRepository.deleteAll();
 	}
 	
+	// try to create a new university
 	@Test
 	public void testCreateUniversity() {
 
@@ -74,6 +74,7 @@ public class UniversityTest {
 			fail();
 		}
 
+		// check that all the attributes are correct
 		List<University> allUniversities = service.getAllUniversities();
 
 		assertEquals(1, allUniversities.size());
@@ -84,11 +85,10 @@ public class UniversityTest {
 		}
 	
 	
+	// try to update a university case
 	@Test
 	public void testUpdateUniversity() {
 
-		
-		
 		String name = "McGill University";
 		String address = "65 Sherbrooke St East";
 		int id = 1;
@@ -100,6 +100,7 @@ public class UniversityTest {
 			fail();
 		}
 
+		// check that there is one university in the repo
 		List<University> allUniversities = service.getAllUniversities();
 
 		assertEquals(1, allUniversities.size());
@@ -114,6 +115,7 @@ public class UniversityTest {
 			fail();
 		}
 		
+		// check that all there is only one university still
 		assertEquals(1, allUniversities.size());
 		assertEquals(name, allUniversities.get(0).getName());
 		assertEquals(address, allUniversities.get(0).getAddress());
@@ -121,7 +123,7 @@ public class UniversityTest {
 	}
 	
 	
-	
+	// try to delete a university
 	@Test
 	public void testDeleteUniversity() {
 		assertEquals(0, service.getAllUniversities().size());
@@ -130,6 +132,7 @@ public class UniversityTest {
 		String address = "65 Sherbrooke St East";
 		int id = 1;
 		
+		// create a university to delete
 		try {
 			service.createUniversity(name, address, id);
 		} catch (IllegalArgumentException e) {
@@ -147,10 +150,12 @@ public class UniversityTest {
 			fail();
 		}
 
+		// check that is was deleted
 		 allUniversities = service.getAllUniversities();
 		 assertEquals(0, allUniversities.size());
 	}
 	
+	// create a university with a null name
 	@Test
 	public void testCreateUniversityNullName() {
 
@@ -158,7 +163,6 @@ public class UniversityTest {
 		String address="65 Sherbrooke St. East";
 		String name= null;
 		
-
 		String error = null;
 		try {
 			service.createUniversity(name, address, id);
@@ -166,13 +170,14 @@ public class UniversityTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check the correct error
 		assertEquals("Invalid name...", error);
 		List<University> allUniversities = service.getAllUniversities();
 		assertEquals(0, allUniversities.size());
 		
 		}
 	
+	// create a university with a null address
 	@Test
 	public void testCreateUniversityNullAddress() {
 
@@ -188,13 +193,14 @@ public class UniversityTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check the correct error
 		assertEquals("Invalid address...", error);
 		List<University> allUniversities = service.getAllUniversities();
 		assertEquals(0, allUniversities.size());
 		
 		}
 	
+	// create a university with an invalid id
 	@Test
 	public void testCreateUniversityInvalidID() {
 
@@ -211,6 +217,7 @@ public class UniversityTest {
 			error = e.getMessage();
 		}
 
+		// check the correct error
 		assertEquals("Incorrect id value for the university creation...", error);
 		List<University> allUniversities = service.getAllUniversities();
 		assertEquals(0, allUniversities.size());
