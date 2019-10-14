@@ -166,10 +166,10 @@ public class CourseTest {
 		try {
 			service.createCourse(description, courseName, id, 1);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a brief description...", error);
 		List<Course> allCourses = service.getAllCourses();
 		assertEquals(0, allCourses.size());
@@ -188,10 +188,10 @@ public class CourseTest {
 		try {
 			service.createCourse(description, courseName, id, 1);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a course name to search...", error);
 		List<Course> allCourses = service.getAllCourses();
 		assertEquals(0, allCourses.size());
@@ -210,10 +210,10 @@ public class CourseTest {
 		try {
 			service.createCourse(description, courseName, id, 1);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Incorrect id value for the course creation...", error);
 		List<Course> allCourses = service.getAllCourses();
 		assertEquals(0, allCourses.size());
@@ -235,7 +235,7 @@ public class CourseTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-		
+		// check that the correct error was generated
 		assertEquals("Please specify a valid University", error);
 		List<Course> allCourses = service.getAllCourses();
 		assertEquals(0, allCourses.size());

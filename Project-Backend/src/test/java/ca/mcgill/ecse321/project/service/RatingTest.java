@@ -50,6 +50,7 @@ public class RatingTest {
 
 	@Before
 	public void setUp(){
+		// needed objects for a rating to be created 
 		service.createUser("aName", "test.tester@mcgill.ca", 22, "5145555555");
 		service.createTutor("cmc", "dogs", "test.tester@mcgill.ca", 12, 3, Education.bachelor);
 		service.createUniversity("McGill", "3040 University", 1);
@@ -59,6 +60,7 @@ public class RatingTest {
 
 	@After
 	public void clearDatabase() {
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -86,7 +88,7 @@ public class RatingTest {
 		}
 
 		List<Rating> allRatings = service.getAllRatings();
-
+		// check that all the attributes are correct
 		assertEquals(1, allRatings.size());
 		assertEquals(id, allRatings.get(0).getReviewID());
 		assertEquals(ratingValue, allRatings.get(0).getRatingValue());
@@ -168,10 +170,10 @@ public class RatingTest {
 		try {
 			service.createRating(id, ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that  error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Please insert a reviewee username...");
 		List<Rating> allRatings = service.getAllRatings();
 
@@ -194,7 +196,7 @@ public class RatingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Please enter a valid Course Offering");
 		List<Rating> allRatings = service.getAllRatings();
 
@@ -217,7 +219,7 @@ public class RatingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Rating value must be between 1 and 5");
 		List<Rating> allRatings = service.getAllRatings();
 
@@ -240,7 +242,7 @@ public class RatingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Incorrect id value");
 		List<Rating> allRatings = service.getAllRatings();
 

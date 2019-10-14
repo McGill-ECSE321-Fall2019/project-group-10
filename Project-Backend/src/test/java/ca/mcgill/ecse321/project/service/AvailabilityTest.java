@@ -51,12 +51,14 @@ public class AvailabilityTest {
 
 	@Before
 	public void setUp(){
+		// user necessary to create a tutor which is needed for availabilities
 		service.createUser("aName", "test.object@mcgill.ca", 22, "5145555555");
 		service.createTutor("username", "password", "aName", 12, 3, Education.highschool);
 	}
 
 	@After
 	public void clearDatabase() {
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -105,6 +107,7 @@ public class AvailabilityTest {
 			fail();
 		}
 
+		// check that all the attributes are correct
 		assertEquals(1, allAvailabilities.size());
 		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
 		assertEquals(date, allAvailabilities.get(0).getDate());

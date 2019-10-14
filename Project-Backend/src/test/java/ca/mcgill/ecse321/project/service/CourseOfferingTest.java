@@ -258,7 +258,7 @@ public class CourseOfferingTest {
 		assertEquals("Please specify a valid Course", error);
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
-
+		// check no change in database
 		assertEquals(0, allCO.size());
 	}
 	
@@ -282,7 +282,7 @@ public class CourseOfferingTest {
 
 		// check error
 		assertEquals("Invalid term choice...", error);
-				
+		// check no change in database
 		List<CourseOffering> allCO = service.getAllCourseOfferings();
 		assertEquals(0, allCO.size());
 	}

@@ -224,7 +224,7 @@ public class TextTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Please insert a brief description...");
 		List<Text> allTexts = service.getAllTexts();
 
@@ -248,7 +248,7 @@ public class TextTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals(error, "Incorrect id value");
 		List<Text> allTexts = service.getAllTexts();
 

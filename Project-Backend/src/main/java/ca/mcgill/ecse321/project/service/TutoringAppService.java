@@ -44,9 +44,11 @@ public class TutoringAppService {
 	@Autowired
 	UserRepository userRepository;
 	
+	// create a new availability
 	@Transactional
 	public Availability createAvailability(Date date, Time time, int id, String tName) {
 				
+		// check for invalid inputs
 		if(id < 0){
 			throw new IllegalArgumentException("Incorrect id value for the availability...");
 		}
@@ -59,7 +61,8 @@ public class TutoringAppService {
 		if(time == null){
 			throw new IllegalArgumentException("Invalid time parameters...");
 		}
-				
+			
+		// set the 
 		Availability availability = new Availability();
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
@@ -69,6 +72,7 @@ public class TutoringAppService {
 		return availability;
 	}
 
+	// update an existing availability
 	@Transactional
 	public Availability updateAvailability(int oldID, Date date, Time time, int id, String tName) {
 		if(id < 0 || oldID < 0){

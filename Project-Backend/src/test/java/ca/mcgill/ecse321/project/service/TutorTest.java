@@ -146,7 +146,7 @@ public class TutorTest {
 			// Check that no error occurred
 			fail();
 		}
-
+		// check that the tutor was deleted
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -168,7 +168,7 @@ public class TutorTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a username...", error);
 		List<Tutor> allTutors = service.getAllTutors();
 
@@ -191,7 +191,7 @@ public class TutorTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a password...", error);
 		List<Tutor> allTutors = service.getAllTutors();
 
@@ -215,6 +215,7 @@ public class TutorTest {
 			error = e.getMessage();
 		}
 
+		// check that the correct error was generated
 
 		assertEquals("Please input a valid user", error);
 		List<Tutor> allTutors = service.getAllTutors();
@@ -238,6 +239,7 @@ public class TutorTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		// check that the correct error was generated
 
 		assertEquals("Please insert a proper email...", error);
 		List<Tutor> allTutors = service.getAllTutors();
@@ -261,6 +263,7 @@ public class TutorTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		// check that the correct error was generated
 
 		assertEquals("Don't think you want to pay the student for your session...", error);
 		List<Tutor> allTutors = service.getAllTutors();
@@ -284,6 +287,7 @@ public class TutorTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		// check that the correct error was generated
 
 		assertEquals("Please input a valid number of years for your experience...", error);
 		List<Tutor> allTutors = service.getAllTutors();
@@ -307,6 +311,7 @@ public class TutorTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		// check that the correct error was generated
 
 		assertEquals("Please provide your education level...", error);
 		List<Tutor> allTutors = service.getAllTutors();

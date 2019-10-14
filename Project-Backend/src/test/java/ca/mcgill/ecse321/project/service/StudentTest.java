@@ -135,7 +135,7 @@ public class StudentTest {
 			// Check that no error occurred
 			fail();
 		}
-
+		// check that the correct error was generated
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
@@ -152,10 +152,10 @@ public class StudentTest {
 		try {
 			service.createStudent(username, password, "test.tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a username...", error);
 		List<Student> allStudents = service.getAllStudents();
 
@@ -176,7 +176,7 @@ public class StudentTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a password...", error);
 		List<Student> allStudents = service.getAllStudents();
 
@@ -194,10 +194,10 @@ public class StudentTest {
 		try {
 			service.createStudent(username, password, "tester@mcgill.ca");
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please input a valid user", error);
 		List<Student> allStudents = service.getAllStudents();
 
@@ -214,10 +214,10 @@ public class StudentTest {
 		try {
 			service.createStudent(username, password, "test");
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// Check that error occurred
 			error = e.getMessage();
 		}
-
+		// check that the correct error was generated
 		assertEquals("Please insert a proper email...", error);
 		List<Student> allStudents = service.getAllStudents();
 

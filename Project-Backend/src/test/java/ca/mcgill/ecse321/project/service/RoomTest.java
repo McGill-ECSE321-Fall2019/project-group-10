@@ -47,6 +47,7 @@ public class RoomTest {
 	
 	@After
 	public void clearDatabase() {
+		// clear the databases in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -97,7 +98,7 @@ public class RoomTest {
 			// Check that no error occurred
 			fail();
 		}
-
+		// check that the correct error was generated
 		List<Room> allRooms = service.getAllRooms();
 		assertEquals(0, allRooms.size());
 	}
@@ -128,7 +129,7 @@ public class RoomTest {
 			// Check that no error occurred
 			fail();
 		}
-
+		// check that the correct error was generated
 		allRooms = service.getAllRooms();
 		assertEquals(1, allRooms.size());
 		assertEquals(newRoomNumber, allRooms.get(0).getRoomNumber());
@@ -149,6 +150,7 @@ public class RoomTest {
 			error = e.getMessage();
 		}
 
+		// check that the correct error was generated
 		assertEquals("Room number cannot be negative", error);
 		List<Room> allRooms = service.getAllRooms();
 
