@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.Set;
 import javax.persistence.ManyToMany;

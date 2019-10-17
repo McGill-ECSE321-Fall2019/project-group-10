@@ -12,6 +12,6 @@ public interface AvailabilityRepository extends CrudRepository<Availability, Int
 
 	Availability findAvailabilityByAvailabilityID(Integer id);
 	
-	List<Availability> findAvailabilityByTutor(Tutor tutor);
+	//List<Availability> findAvailabilityByTutor(Tutor tutor);
 
 }

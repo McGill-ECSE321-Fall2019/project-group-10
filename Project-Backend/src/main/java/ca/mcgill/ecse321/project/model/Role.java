@@ -1,11 +1,16 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 import ca.mcgill.ecse321.project.model.User;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+
 import java.util.Set;
 import javax.persistence.OneToMany;
 

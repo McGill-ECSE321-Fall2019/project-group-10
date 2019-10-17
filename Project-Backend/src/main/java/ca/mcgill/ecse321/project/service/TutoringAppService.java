@@ -66,7 +66,7 @@ public class TutoringAppService {
 		availability.setAvailabilityID(id);
 		availability.setTime(time);
 		availability.setDate(date);
-		availability.setTutor(tutorRepository.findTutorByUsername(tName));
+//		availability.setTutor(tutorRepository.findTutorByUsername(tName));
 		availabilityRepository.save(availability);
 		return availability;
 	}
@@ -94,7 +94,7 @@ public class TutoringAppService {
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if( t == null)
 			throw new IllegalArgumentException("Please specify a valid Tutor");
-		availability.setTutor(t);
+//		availability.setTutor(t);
 		availabilityRepository.save(availability);
 		return availability;
 	}
@@ -117,13 +117,13 @@ public class TutoringAppService {
 	}
 	
 	//Checking to make sure we can get all the availabilities for the given tutor.
-	@Transactional
-	public List<Availability> getAvailabilityByTutor(String username) {
-		Tutor tutor = (Tutor)roleRepository.findRoleByUsername(username);
-		return toList(availabilityRepository.findAvailabilityByTutor(tutor));
-	}
-	
-	//Checking to make sure we can delete the availabilities.
+//	@Transactional
+//	public List<Availability> getAvailabilityByTutor(String username) {
+//		Tutor tutor = tutorRepository.findTutorByUsername(username);
+////		return toList(availabilityRepository.findAvailabilityByTutor(tutor));
+//	}
+//	
+//	//Checking to make sure we can delete the availabilities.
 	@Transactional
 	public boolean deleteAvailability(int id) {
 		if(id < 0){
@@ -140,23 +140,23 @@ public class TutoringAppService {
 	}
 	
 	//Checking to make sure we can delete the availabilities given the tutor.
-	@Transactional
-	public boolean deleteAvailabilityByTutor(String username) {
-		if(username == null || username.equals("")){
-			throw new IllegalArgumentException("You are searching for an invalid username...");
-		}
-
-		boolean done = false;
-		//List<Availability> availList = getAvailabilityByTutor(username);
-		for(Availability a: getAvailabilityByTutor(username)) {
-			if (a != null) {
-				availabilityRepository.delete(a);
-			}
-		}
-		done = true;
-		
-		return done;
-	}
+//	@Transactional
+//	public boolean deleteAvailabilityByTutor(String username) {
+//		if(username == null || username.equals("")){
+//			throw new IllegalArgumentException("You are searching for an invalid username...");
+//		}
+//
+//		boolean done = false;
+//		//List<Availability> availList = getAvailabilityByTutor(username);
+//		for(Availability a: getAvailabilityByTutor(username)) {
+//			if (a != null) {
+//				availabilityRepository.delete(a);
+//			}
+//		}
+//		done = true;
+//		
+//		return done;
+//	}
 	
 	//Checking to make sure we can create a course offering.
 	@Transactional

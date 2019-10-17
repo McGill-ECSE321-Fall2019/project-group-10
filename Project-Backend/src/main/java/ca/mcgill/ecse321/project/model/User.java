@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import java.util.Set;
@@ -30,6 +31,7 @@ public void setEmail(String value) {
     this.email = value;
 }
 
+
 @Id
 public String getEmail() {
     return this.email;
@@ -53,4 +55,4 @@ public String getPhoneNumber() {
       this.role = roles;
    }
    
-   }
+}

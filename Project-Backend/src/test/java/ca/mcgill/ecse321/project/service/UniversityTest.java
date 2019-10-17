@@ -61,6 +61,16 @@ public class UniversityTest {
 	// try to create a new university
 	@Test
 	public void testCreateUniversity() {
+		
+		sessionRepository.deleteAll();
+		roomRepository.deleteAll();
+		reviewRepository.deleteAll();
+		courseOfferingRepository.deleteAll();
+		courseRepository.deleteAll();
+		universityRepository.deleteAll();
+		availabilityRepository.deleteAll();
+		roleRepository.deleteAll();
+		userRepository.deleteAll();
 
 		int id = 1;
 		String address="65 Sherbrooke St. East";
