@@ -170,7 +170,7 @@ public class TutoringAppService {
 		if(courseID < 0){
 			throw new IllegalArgumentException("Invalid courseID...");
 		}
-		if(!(term.equals("winter") || term.equals("summer") || term.equals("fall")) || term == null){
+		if(term == null || !(term.equals("winter") || term.equals("summer") || term.equals("fall"))){
 			throw new IllegalArgumentException("Invalid term choice...");
 		}
 		
@@ -204,7 +204,7 @@ public class TutoringAppService {
 		CourseOffering courseOffering = courseOfferingRepository.findCourseOfferingByCourseOfferingID(oldID);
 		if(courseOffering== null)
 			throw new IllegalArgumentException("Please specify a valid Course Offering to Update");
-		courseOffering.setCourseOfferingID(id);
+		//courseOffering.setCourseOfferingID(id);
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
 		Course c = courseRepository.findCourseByCourseID(courseID);
@@ -227,7 +227,7 @@ public class TutoringAppService {
 		if(id < 0){
 			throw new IllegalArgumentException("Incorrect id value for the course offering...");
 		}
-		CourseOffering a = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(id));
+		CourseOffering a = courseOfferingRepository.findCourseOfferingByCourseOfferingID(id);
 		return a;
 	}
 	
