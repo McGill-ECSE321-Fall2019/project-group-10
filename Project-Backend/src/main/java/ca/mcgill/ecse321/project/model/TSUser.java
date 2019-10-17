@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.persistence.OneToMany;
 
 @Entity
-public class User{
+public class TSUser{
    private int age;
 
 public void setAge(int value) {

@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
-import ca.mcgill.ecse321.project.model.User;
+import ca.mcgill.ecse321.project.model.TSUser;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
@@ -37,14 +37,14 @@ public abstract class Role{
       return this.password;
    }
    
-   private User user;
+   private TSUser user;
    
    @ManyToOne(optional=false)
-   public User getUser() {
+   public TSUser getUser() {
       return this.user;
    }
    
-   public void setUser(User user) {
+   public void setUser(TSUser user) {
       this.user = user;
    }
    

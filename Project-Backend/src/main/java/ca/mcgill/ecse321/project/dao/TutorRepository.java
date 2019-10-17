@@ -10,6 +10,6 @@ public interface TutorRepository extends CrudRepository<Tutor, String>{
 	
 	Tutor findTutorByUsername(String username);
 	
-	<List>Tutor findTutorByUser(User user);
+	<List>Tutor findTutorByUser(TSUser user);
 
 }

@@ -10,6 +10,6 @@ public interface RoleRepository extends CrudRepository<Role, String>{
 
 	Role findRoleByUsername(String username);
 	
-	<List>Role findRoleByUser(User user);
+	<List>Role findRoleByUser(TSUser user);
 
 }

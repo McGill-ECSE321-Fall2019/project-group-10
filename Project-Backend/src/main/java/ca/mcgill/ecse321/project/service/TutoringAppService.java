@@ -551,7 +551,7 @@ public class TutoringAppService {
 		Tutor tutor = new Tutor();
 		tutor.setUsername(username);
 		tutor.setPassword(password);
-		User u = userRepository.findUserByEmail(userEmail);
+		TSUser u = userRepository.findUserByEmail(userEmail);
 		if (u == null)
 			throw new IllegalArgumentException("Please input a valid user");
 		tutor.setUser(u);
@@ -591,7 +591,7 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Please input a valid tutor to update");
 		tutor.setUsername(username);
 		tutor.setPassword(password);
-		User u = userRepository.findUserByEmail(userEmail);
+		TSUser u = userRepository.findUserByEmail(userEmail);
 		if (u == null)
 			throw new IllegalArgumentException("Please input a valid user");
 		tutor.setUser(u);
@@ -654,7 +654,7 @@ public class TutoringAppService {
 		Student student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);
-		User u = userRepository.findUserByEmail(userEmail);
+		TSUser u = userRepository.findUserByEmail(userEmail);
 		if (u == null)
 			throw new IllegalArgumentException("Please input a valid user");
 		student.setUser(u);
@@ -682,7 +682,7 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Please input a valid student");
 		student.setUsername(username);
 		student.setPassword(password);
-		User u = userRepository.findUserByEmail(userEmail);
+		TSUser u = userRepository.findUserByEmail(userEmail);
 		if (u == null)
 			throw new IllegalArgumentException("Please input a valid user");
 		student.setUser(u);
@@ -846,7 +846,7 @@ public class TutoringAppService {
 		University uni = new University();
 		uni.setName(name);
 		uni.setAddress(addr);
-		uni.setUniversityID(id);
+		//uni.setUniversityID(id);
 		universityRepository.save(uni);
 		return uni;
 	}
@@ -859,7 +859,7 @@ public class TutoringAppService {
 	
 	//Checking to make sure we can create a user.
 	@Transactional
-	public User createUser(String name, String email, int age, String phoneNum) {
+	public TSUser createUser(String name, String email, int age, String phoneNum) {
 		if(age < 12){
 			throw new IllegalArgumentException("Must be above the age of 12 for this tutoring service...");
 		}
@@ -877,7 +877,7 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Invalid phone number...");
 		}
 
-		User user = new User();
+		TSUser user = new TSUser();
 		user.setName(name);
 		user.setEmail(email);
 		user.setAge(age);
@@ -888,8 +888,8 @@ public class TutoringAppService {
 	
 	//Checking to make sure we can update a user.
 	@Transactional
-	public User updateUser(String name, String oldEmail,String newEmail, int age, String phoneNum) {
-		User user = userRepository.findUserByEmail(oldEmail);
+	public TSUser updateUser(String name, String oldEmail,String newEmail, int age, String phoneNum) {
+		TSUser user = userRepository.findUserByEmail(oldEmail);
 		user.setAge(age);
 		user.setEmail(newEmail);
 		user.setName(name);
@@ -900,8 +900,8 @@ public class TutoringAppService {
 	
 	//Checking to make sure we can get a user.
 	@Transactional
-	public User getUser(String email) {
-		User a = userRepository.findUserByEmail(email);
+	public TSUser getUser(String email) {
+		TSUser a = userRepository.findUserByEmail(email);
 		return a;
 	}
 	
@@ -909,7 +909,7 @@ public class TutoringAppService {
 	@Transactional
 	public boolean deleteUser(String email) {
 		boolean done = false;
-		User a = getUser(email);
+		TSUser a = getUser(email);
 		if (a != null) {
 			userRepository.delete(a);
 			done = true;
@@ -919,7 +919,7 @@ public class TutoringAppService {
 	
 	//Checking to make sure we can get all users.
 	@Transactional
-	public List<User> getAllUsers() {
+	public List<TSUser> getAllUsers() {
 		return toList(userRepository.findAll());
 	}
 
@@ -1002,7 +1002,7 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Invalid address...");
 		}
 		University university = universityRepository.findUniversityByUniversityID(oldID);
-		university.setUniversityID(id);
+		//university.setUniversityID(id);
 		university.setAddress(newAddress);
 		university.setName(newName);
 		universityRepository.save(university);
@@ -1016,7 +1016,7 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("You are searching for an invalid id...");
 		}
 		boolean done = false;
-		Availability a = getAvailability(id);
+		University a = universityRepository.findUniversityByUniversityID(id);
 		if (a != null) {
 			universityRepository.deleteById(id);
 			done = true;

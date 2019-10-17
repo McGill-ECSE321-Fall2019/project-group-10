@@ -10,7 +10,7 @@ public interface StudentRepository extends CrudRepository<Student, String>{
 	
 	Student findStudentByUsername(String username);
 	
-	<List>Student findStudentByUser(User user);
+	<List>Student findStudentByUser(TSUser user);
 
 }
 
