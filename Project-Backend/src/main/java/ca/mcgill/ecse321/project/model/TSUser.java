@@ -25,7 +25,7 @@ public void setName(String value) {
 public String getName() {
     return this.name;
 }
-private String email;
+private java.lang.String email;
 
 public void setEmail(String value) {
     this.email = value;
@@ -33,7 +33,7 @@ public void setEmail(String value) {
 
 
 @Id
-public String getEmail() {
+public java.lang.String getEmail() {
     return this.email;
 }
 private String phoneNumber;

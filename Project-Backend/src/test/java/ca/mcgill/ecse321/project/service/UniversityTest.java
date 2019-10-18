@@ -62,13 +62,12 @@ public class UniversityTest {
 	@Test
 	public void testCreateUniversity() {
 
-		int id = 1;
 		String address="65 Sherbrooke St. East";
 		String name= "McGill University";
 		
 
 		try {
-			service.createUniversity(name, address, id);
+			service.createUniversity(name, address);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -91,10 +90,9 @@ public class UniversityTest {
 
 		String name = "McGill University";
 		String address = "65 Sherbrooke St East";
-		int id = 1;
 		
 		try {
-			service.createUniversity(name, address, id);
+			service.createUniversity(name, address);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -109,7 +107,7 @@ public class UniversityTest {
 		address = "8080 Sherbrooke St West";
 
 		try {
-			service.updateUniversity(allUniversities.get(0).getUniversityID(), name, address, id);
+			service.updateUniversity(allUniversities.get(0).getUniversityID(), name, address);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -130,11 +128,10 @@ public class UniversityTest {
 		
 		String name = "McGill University";
 		String address = "65 Sherbrooke St East";
-		int id = 1;
 		
 		// create a university to delete
 		try {
-			service.createUniversity(name, address, id);
+			service.createUniversity(name, address);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -159,13 +156,12 @@ public class UniversityTest {
 	@Test
 	public void testCreateUniversityNullName() {
 
-		int id = 1;
 		String address="65 Sherbrooke St. East";
 		String name= null;
 		
 		String error = null;
 		try {
-			service.createUniversity(name, address, id);
+			service.createUniversity(name, address);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -181,44 +177,19 @@ public class UniversityTest {
 	@Test
 	public void testCreateUniversityNullAddress() {
 
-		int id = 1;
 		String address=null;
 		String name= "McGill University";
 		
 
 		String error = null;
 		try {
-			service.createUniversity(name, address, id);
+			service.createUniversity(name, address);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 		// check the correct error
 		assertEquals("Invalid address...", error);
-		List<University> allUniversities = service.getAllUniversities();
-		assertEquals(0, allUniversities.size());
-		
-		}
-	
-	// create a university with an invalid id
-	@Test
-	public void testCreateUniversityInvalidID() {
-
-		int id = -1;
-		String address="65 Sherbrooke St. East";
-		String name= "McGill University";
-		
-
-		String error = null;
-		try {
-			service.createUniversity(name, address, id);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			error = e.getMessage();
-		}
-
-		// check the correct error
-		assertEquals("Incorrect id value for the university creation...", error);
 		List<University> allUniversities = service.getAllUniversities();
 		assertEquals(0, allUniversities.size());
 		

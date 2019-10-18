@@ -47,11 +47,11 @@ public class TextTest {
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "email", 22, "5145555555");
-		service.createTutor("cmc", "dogs", "email", 12, 3, Education.bachelor);
-		service.createUniversity("McGill", "3040 University", 1);
-		service.createCourse("Intro to Software","ECSE 321", 2, 1);
-		service.createCourseOffering(3, "fall", 2019, 2);
+		service.createUser("aName", "email@mcgill.ca", 22, "5145555555");
+		service.createTutor("cmc", "dogs", "email@mcgill.ca", 12, 3, Education.bachelor);
+		service.createUniversity("McGill", "3040 University");
+		service.createCourse("Intro to Software","ECSE 321", service.getAllUniversities().get(0).getUniversityID());
+		service.createCourseOffering(3, "fall", 2019, service.getAllCourses().get(0).getCourseID());
 	}
 
 	@After
@@ -74,7 +74,7 @@ public class TextTest {
 		String description = "great tutor";
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
-		int coID = 3;		
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();		
 
 		try {
 			service.createText(id, description, isAllowed, revieweeUsername, coID);
@@ -100,7 +100,7 @@ public class TextTest {
 		String description = "great tutor";
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
-		int coID = 3;	
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();	
 
 		try {
 			service.createText(id, description, isAllowed, revieweeUsername, coID);
@@ -113,12 +113,12 @@ public class TextTest {
 
 		assertEquals(1, allTexts.size());
 		
-		id = 6;
+		id = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 		description = "horrible tutor";
 		isAllowed = false;
 		
 		try {
-			service.updateText(5, id, description, isAllowed, revieweeUsername, coID);
+			service.updateText(service.getAllCourseOfferings().get(0).getCourseOfferingID(), id, description, isAllowed, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -137,7 +137,7 @@ public class TextTest {
 		String description = "great tutor";
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
-		int coID = 3;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		try {
 			service.createText(id, description, isAllowed, revieweeUsername, coID);
@@ -165,7 +165,7 @@ public class TextTest {
 		String description = "great tutor";
 		boolean isAllowed = true;
 		String revieweeUsername = null;
-		int coID = 3;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 		
 		String error = null;
 
@@ -214,7 +214,7 @@ public class TextTest {
 		String description = null;
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
-		int coID = 3;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 		
 		String error = null;
 
@@ -238,7 +238,7 @@ public class TextTest {
 		String description = "great session";
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
-		int coID = 3;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 		
 		String error = null;
 

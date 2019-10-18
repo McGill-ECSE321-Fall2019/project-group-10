@@ -46,8 +46,8 @@ public class CourseOfferingTest {
 	
 	@Before
 	public void setUp(){
-		service.createUniversity("McGill", "3040 University", 1);
-		service.createCourse("Intro to Software","ECSE 321", 2, service.getAllUniversities().get(0).getUniversityID());
+		service.createUniversity("McGill", "3040 University");
+		service.createCourse("Intro to Software","ECSE 321", service.getAllUniversities().get(0).getUniversityID());
 	}
 	
 	@After

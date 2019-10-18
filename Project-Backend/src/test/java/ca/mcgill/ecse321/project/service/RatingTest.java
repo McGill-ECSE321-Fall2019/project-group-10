@@ -53,9 +53,9 @@ public class RatingTest {
 		// needed objects for a rating to be created 
 		service.createUser("aName", "test.tester@mcgill.ca", 22, "5145555555");
 		service.createTutor("cmc", "dogs", "test.tester@mcgill.ca", 12, 3, Education.bachelor);
-		service.createUniversity("McGill", "3040 University", 1);
-		service.createCourse("Intro to Software","ECSE 321", 2, 1);
-		service.createCourseOffering(3, "fall", 2019, 2);
+		service.createUniversity("McGill", "3040 University");
+		service.createCourse("Intro to Software","ECSE 321", service.getAllUniversities().get(0).getUniversityID());
+		service.createCourseOffering(3, "fall", 2019, service.getAllCourses().get(0).getCourseID());
 	}
 
 	@After

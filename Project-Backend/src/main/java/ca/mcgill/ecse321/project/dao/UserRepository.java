@@ -8,6 +8,6 @@ import ca.mcgill.ecse321.project.model.TSUser;
 
 public interface UserRepository extends CrudRepository<TSUser, String>{
 
-	TSUser findUserByEmail(String email);
+	TSUser findUserByEmail(java.lang.String email);
 
 }

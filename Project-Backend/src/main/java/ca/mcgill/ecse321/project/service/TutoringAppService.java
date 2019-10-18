@@ -248,24 +248,20 @@ public class TutoringAppService {
 	
 	//Checking to make sure we can get create a course.
 	@Transactional
-	public Course createCourse(String description, String courseName, int id, int uniID) {
-		if(id < 0 || uniID < 0){
-			throw new IllegalArgumentException("Incorrect id value for the course creation...");
-		}
+	public Course createCourse(String description, String courseName, int uniID) {
 		if(courseName == null || courseName.equals("")){
 			throw new IllegalArgumentException("Please insert a course name to search...");
 		}
 		if(description == null || description.equals("")){
 			throw new IllegalArgumentException("Please insert a brief description...");
 		}
-		
-		Course course = new Course();
-		course.setDescription(description);
-		course.setCourseName(courseName);
-		course.setCourseID(id);
 		University u = universityRepository.findUniversityByUniversityID(uniID);
 		if( u == null)
 			throw new IllegalArgumentException("Please specify a valid University");
+	
+		Course course = new Course();
+		course.setDescription(description);
+		course.setCourseName(courseName);
 		course.setUniversity(u);
 		courseRepository.save(course);
 		return course;
@@ -273,10 +269,7 @@ public class TutoringAppService {
 	
 	//Checking to make sure we can get update a course.
 	@Transactional
-	public Course updateCourse(int oldID, String description, String courseName, int id, int uniID) {
-		if(id < 0 || uniID < 0 || oldID < 0){
-			throw new IllegalArgumentException("Incorrect id value for the course update...");
-		}
+	public Course updateCourse(int oldID, String description, String courseName, int uniID) {
 		if(courseName == null || courseName.equals("")){
 			throw new IllegalArgumentException("Please insert a course name to search...");
 		}
@@ -286,12 +279,11 @@ public class TutoringAppService {
 		Course course = courseRepository.findCourseByCourseID(oldID);
 		if( course == null)
 			throw new IllegalArgumentException("Please specify a valid Course");
-		course.setDescription(description);
-		course.setCourseName(courseName);
-		course.setCourseID(id);
 		University u = universityRepository.findUniversityByUniversityID(uniID);
 		if( u == null)
 			throw new IllegalArgumentException("Please specify a valid University");
+		course.setDescription(description);
+		course.setCourseName(courseName);
 		course.setUniversity(u);
 		courseRepository.save(course);
 		return course;
@@ -832,10 +824,8 @@ public class TutoringAppService {
 	
 	//Checking to make sure we can create a university.
 	@Transactional
-	public University createUniversity(String name, String addr, int id) {
-		if(id < 0){
-			throw new IllegalArgumentException("Incorrect id value for the university creation...");
-		}
+	public University createUniversity(String name, String addr) {
+
 		if(name == null || name.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
 		}
@@ -991,10 +981,7 @@ public class TutoringAppService {
 
 	//Checking to make sure we can update a university.
 	@Transactional
-	public University updateUniversity(int oldID, String newName, String newAddress,int id) {
-		if(id < 0){
-			throw new IllegalArgumentException("Incorrect id value for the university creation...");
-		}
+	public University updateUniversity(int oldID, String newName, String newAddress) {
 		if(newName == null || newName.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
 		}
@@ -1002,7 +989,6 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Invalid address...");
 		}
 		University university = universityRepository.findUniversityByUniversityID(oldID);
-		//university.setUniversityID(id);
 		university.setAddress(newAddress);
 		university.setName(newName);
 		universityRepository.save(university);
