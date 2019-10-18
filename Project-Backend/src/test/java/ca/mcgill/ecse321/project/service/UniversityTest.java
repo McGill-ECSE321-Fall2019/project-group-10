@@ -113,11 +113,12 @@ public class UniversityTest {
 			fail();
 		}
 		
+		allUniversities = service.getAllUniversities();
+		
 		// check that all there is only one university still
 		assertEquals(1, allUniversities.size());
 		assertEquals(name, allUniversities.get(0).getName());
 		assertEquals(address, allUniversities.get(0).getAddress());
-		//assertEquals(id, allUniversities.get(0).getUniversityID());
 	}
 	
 	
