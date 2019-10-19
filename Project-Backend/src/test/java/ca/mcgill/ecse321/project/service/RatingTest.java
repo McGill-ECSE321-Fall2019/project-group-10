@@ -55,7 +55,7 @@ public class RatingTest {
 		service.createTutor("cmc", "dogs", "test.tester@mcgill.ca", 12, 3, Education.bachelor);
 		service.createUniversity("McGill", "3040 University");
 		service.createCourse("Intro to Software","ECSE 321", service.getAllUniversities().get(0).getUniversityID());
-		service.createCourseOffering(3, "fall", 2019, service.getAllCourses().get(0).getCourseID());
+		service.createCourseOffering("fall", 2019, service.getAllCourses().get(0).getCourseID());
 	}
 
 	@After
@@ -75,13 +75,12 @@ public class RatingTest {
 	@Test
 	public void testCreateRating() {
 
-		int id = 5;
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
-		int coID = 3;		
+		int coID = service.getAllCourses().get(0).getCourseID();		
 
 		try {
-			service.createRating(id, ratingValue, revieweeUsername, coID);
+			service.createRating(ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -90,7 +89,6 @@ public class RatingTest {
 		List<Rating> allRatings = service.getAllRatings();
 		// check that all the attributes are correct
 		assertEquals(1, allRatings.size());
-		assertEquals(id, allRatings.get(0).getReviewID());
 		assertEquals(ratingValue, allRatings.get(0).getRatingValue());
 		assertEquals(revieweeUsername, allRatings.get(0).getWrittenAbout().getUsername());
 		assertEquals(coID, allRatings.get(0).getCourseOffering().getCourseOfferingID());
@@ -99,13 +97,12 @@ public class RatingTest {
 	@Test
 	public void testUpdateRating() {
 
-		int id = 5;
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
-		int coID = 3;	
+		int coID = service.getAllCourses().get(0).getCourseID();	
 
 		try {
-			service.createRating(id, ratingValue, revieweeUsername, coID);
+			service.createRating(ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -115,44 +112,45 @@ public class RatingTest {
 
 		assertEquals(1, allRatings.size());
 		
-		id = 6;
 		ratingValue = 2;
 		
 		try {
-			service.updateRating(5, id, ratingValue, revieweeUsername, coID);
+			service.updateRating(allRatings.get(0).getReviewID(), ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 		
+		allRatings = service.getAllRatings();
+		
 		assertEquals(1, allRatings.size());
-		assertEquals(id, allRatings.get(0).getReviewID());
 		assertEquals(ratingValue, allRatings.get(0).getRatingValue());
 	}
 	
 	@Test
 	public void testDeleteRating() {
 
-		int id = 5;
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
-		int coID = 3;
+		int coID = service.getAllCourses().get(0).getCourseID();
 
 		try {
-			service.createRating(id, ratingValue, revieweeUsername, coID);
+			service.createRating(ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 		
+		List<Rating> allRatings = service.getAllRatings();
+		
 		try {
-			service.deleteRating(id);
+			service.deleteRating(allRatings.get(0).getReviewID());
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Rating> allRatings = service.getAllRatings();
+		allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());
 	}
@@ -160,15 +158,14 @@ public class RatingTest {
 	@Test
 	public void testCreateRatingNullUsername() {
 
-		int id = 5;
 		int ratingValue = 1;
 		String revieweeUsername = null;
-		int coID = 3;
+		int coID = service.getAllCourses().get(0).getCourseID();
 		
 		String error = null;
 
 		try {
-			service.createRating(id, ratingValue, revieweeUsername, coID);
+			service.createRating(ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that  error occurred
 			error = e.getMessage();
@@ -183,7 +180,6 @@ public class RatingTest {
 	@Test
 	public void testCreateRatingNullCourseOffering() {
 
-		int id = 5;
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
 		int coID = 4;
@@ -191,7 +187,7 @@ public class RatingTest {
 		String error = null;
 
 		try {
-			service.createRating(id, ratingValue, revieweeUsername, coID);
+			service.createRating(ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -206,15 +202,14 @@ public class RatingTest {
 	@Test
 	public void testCreateRatingOutOfBounds() {
 
-		int id = 5;
 		int ratingValue = -1;
 		String revieweeUsername = "cmc";
-		int coID = 3;
+		int coID = service.getAllCourses().get(0).getCourseID();
 		
 		String error = null;
 
 		try {
-			service.createRating(id, ratingValue, revieweeUsername, coID);
+			service.createRating(ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -229,7 +224,6 @@ public class RatingTest {
 	@Test
 	public void testCreateRatingInvalidID() {
 
-		int id = -5;
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
 		int coID = 3;
@@ -237,7 +231,7 @@ public class RatingTest {
 		String error = null;
 
 		try {
-			service.createRating(id, ratingValue, revieweeUsername, coID);
+			service.createRating(ratingValue, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();

@@ -25,15 +25,14 @@ public void setName(String value) {
 public String getName() {
     return this.name;
 }
-private java.lang.String email;
+private String email;
 
 public void setEmail(String value) {
     this.email = value;
 }
 
-
 @Id
-public java.lang.String getEmail() {
+public String getEmail() {
     return this.email;
 }
 private String phoneNumber;
