@@ -19,6 +19,7 @@ public class Availability{
     } 
     
     @Id
+    @GeneratedValue
     public int getId(){
         return this.id;
     }
