@@ -95,7 +95,9 @@ public class SessionTest {
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
 		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
-		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
+		Student[] studentsArray = new Student[allSessions.get(0).getStudent().size()];
+		allSessions.get(0).getStudent().toArray(studentsArray);
+		assertEquals("studentUser", (studentsArray[0].getUsername()));
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 	}
 	
@@ -123,7 +125,9 @@ public class SessionTest {
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
 		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
-		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
+		Student[] studentsArray = new Student[allSessions.get(0).getStudent().size()];
+		allSessions.get(0).getStudent().toArray(studentsArray);
+		assertEquals("studentUser", (studentsArray[0].getUsername()));
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
 		date = new java.sql.Date(millis-20);
@@ -144,7 +148,8 @@ public class SessionTest {
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
 		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
-		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
+		allSessions.get(0).getStudent().toArray(studentsArray);
+		assertEquals("studentUser", (studentsArray[0].getUsername()));
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
 	}

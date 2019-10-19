@@ -48,49 +48,49 @@ public class Session{
 	public int getSessionID() {
 		return this.sessionID;
 	}
-	private List<Student> student;
+	   private Set<Student> student;
 
-	@ManyToMany
-	public List<Student> getStudent() {
-		return this.student;
-	}
+	   @ManyToMany
+	   public Set<Student> getStudent() {
+	      return this.student;
+	   }
 
-	public void setStudent(List<Student> students) {
-		this.student = students;
-	}
+	   public void setStudent(Set<Student> students) {
+	      this.student = students;
+	   }
 
-	private Tutor tutor;
+	   private Tutor tutor;
 
-	@ManyToOne(optional=false)
-	public Tutor getTutor() {
-		return this.tutor;
-	}
+	   @ManyToOne(optional=false)
+	   public Tutor getTutor() {
+	      return this.tutor;
+	   }
 
-	public void setTutor(Tutor tutor) {
-		this.tutor = tutor;
-	}
+	   public void setTutor(Tutor tutor) {
+	      this.tutor = tutor;
+	   }
 
-	private CourseOffering courseOffering;
+	   private CourseOffering courseOffering;
 
-	@ManyToOne(optional=false)
-	public CourseOffering getCourseOffering() {
-		return this.courseOffering;
-	}
+	   @ManyToOne(optional=false)
+	   public CourseOffering getCourseOffering() {
+	      return this.courseOffering;
+	   }
 
-	public void setCourseOffering(CourseOffering co2) {
-		this.courseOffering = co2;
-	}
+	   public void setCourseOffering(CourseOffering co2) {
+	      this.courseOffering = co2;
+	   }
 
 
-	private Room room;
+	   private Room room;
 
-	@ManyToOne
-	public Room getRoom() {
-		return this.room;
-	}
-
-	public void setRoom(Room room) {
-		this.room = room;
-	}
-
-}
+	   @ManyToOne(optional=false)
+	   public Room getRoom() {
+	      return this.room;
+	   }
+	   
+	   public void setRoom(Room room) {
+	      this.room = room;
+	   }
+   
+   }

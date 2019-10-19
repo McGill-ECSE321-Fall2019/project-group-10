@@ -37,15 +37,15 @@ public class Availability{
 		return this.time;
 	}
 
-	//private Tutor tutor;
-	//
-	//@ManyToOne(optional=false)
-	//public Tutor getTutor() {
-	//   return this.tutor;
-	//}
-	//
-	//public void setTutor(Tutor tutor) {
-	//   this.tutor = tutor;
-	//}
+private Tutor tutor;
+
+@ManyToOne(optional=false)
+public Tutor getTutor() {
+   return this.tutor;
+}
+
+public void setTutor(Tutor tutor) {
+   this.tutor = tutor;
+}
 
 }

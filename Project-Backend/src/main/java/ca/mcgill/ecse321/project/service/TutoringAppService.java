@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,7 @@ public class TutoringAppService {
 
 		// set the 
 		Availability availability = new Availability();
-		availability.setAvailabilityID(id);
+		availability.setId(id);
 		availability.setTime(time);
 		availability.setDate(date);
 		//		availability.setTutor(tutorRepository.findTutorByUsername(tName));
@@ -86,9 +87,9 @@ public class TutoringAppService {
 		if(time == null){
 			throw new IllegalArgumentException("Invalid time parameters...");
 		}
-
-		Availability availability = availabilityRepository.findAvailabilityByAvailabilityID(oldID);
-		availability.setAvailabilityID(id);
+		
+		Availability availability = availabilityRepository.findAvailabilityById(oldID);
+		availability.setId(id);
 		availability.setTime(time);
 		availability.setDate(date);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
@@ -111,8 +112,8 @@ public class TutoringAppService {
 		if(id < 0){
 			throw new IllegalArgumentException("Incorrect id value for the availability...");
 		}
-
-		Availability a = availabilityRepository.findAvailabilityByAvailabilityID(new Integer(id));
+				
+		Availability a = availabilityRepository.findAvailabilityById(new Integer(id));
 		return a;
 	}
 
@@ -122,7 +123,7 @@ public class TutoringAppService {
 	//		Tutor tutor = tutorRepository.findTutorByUsername(username);
 	////		return toList(availabilityRepository.findAvailabilityByTutor(tutor));
 	//	}
-	//	
+	//
 	//	//Checking to make sure we can delete the availabilities.
 	@Transactional
 	public boolean deleteAvailability(int id) {
@@ -154,7 +155,7 @@ public class TutoringAppService {
 	//			}
 	//		}
 	//		done = true;
-	//		
+	//
 	//		return done;
 	//	}
 
@@ -719,10 +720,11 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		List<Student> student = new ArrayList<Student>();
-		if(studentRepository.findStudentByUsername(sName) == null)
+		Set<Student> student = session.getStudent();
+		Student target = studentRepository.findStudentByUsername(sName);
+		if(target == null)
 			throw new IllegalArgumentException("Please input a valid student");
-		student.add(studentRepository.findStudentByUsername(sName));
+		student.add(target);
 		session.setStudent(student);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null)
@@ -758,11 +760,11 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		List<Student> student = new ArrayList<Student>();
+		Set<Student> students = session.getStudent();
 		if(studentRepository.findStudentByUsername(sName) == null)
 			throw new IllegalArgumentException("Please input a valid student");
-		student.add(studentRepository.findStudentByUsername(sName));
-		session.setStudent(student);
+		students.add(studentRepository.findStudentByUsername(sName));
+		session.setStudent(students);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null)
 			throw new IllegalArgumentException("Please input a valid tutor");
