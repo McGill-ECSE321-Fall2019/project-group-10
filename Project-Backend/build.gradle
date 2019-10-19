@@ -20,6 +20,9 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'junit:junit:4.12'
+        
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+
 }
 
 task compile(type: JavaCompile) {
