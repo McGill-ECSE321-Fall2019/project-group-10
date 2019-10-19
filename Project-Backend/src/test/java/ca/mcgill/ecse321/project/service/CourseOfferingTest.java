@@ -67,12 +67,11 @@ public class CourseOfferingTest {
 	public void testCreateCourseOffering() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
-		String term = "fall";
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
 
 		try {
-			service.createCourseOffering(term, year, courseID);
+			service.createCourseOffering(Term.Fall, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -82,7 +81,7 @@ public class CourseOfferingTest {
 		// check that all the attributes are correct
 		assertEquals(1, allCO.size());
 		assertEquals(year, allCO.get(0).getYear());
-		assertEquals(term, allCO.get(0).getTerm());
+		assertEquals(Term.Fall, allCO.get(0).getTerm());
 		assertEquals(courseID, allCO.get(0).getCourse().getCourseID());
 	}
 	
@@ -90,12 +89,11 @@ public class CourseOfferingTest {
 	public void testDeleteCourseOffering() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
-		String term = "fall";
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
 
 		try {
-			service.createCourseOffering(term, year, courseID);
+			service.createCourseOffering(Term.Summer, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -119,12 +117,11 @@ public class CourseOfferingTest {
 	public void testUpdateCourseOffering() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
-		String term = "fall";
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
 
 		try {
-			service.createCourseOffering(term, year, courseID);
+			service.createCourseOffering(Term.Summer, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -135,14 +132,13 @@ public class CourseOfferingTest {
 		assertEquals(1, allCO.size());
 		//assertEquals(id, allCO.get(0).getCourseOfferingID());
 		assertEquals(year, allCO.get(0).getYear());
-		assertEquals(term, allCO.get(0).getTerm());
+		assertEquals(Term.Summer, allCO.get(0).getTerm());
 		assertEquals(courseID, allCO.get(0).getCourse().getCourseID());
 		
-		term = "winter";
 		year = 2020;
 
 		try {
-			service.updateCourseOffering(allCO.get(0).getCourseOfferingID(), term, year, courseID);
+			service.updateCourseOffering(allCO.get(0).getCourseOfferingID(), Term.Fall, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -152,21 +148,20 @@ public class CourseOfferingTest {
 
 		assertEquals(1, allCO.size());
 		assertEquals(year, allCO.get(0).getYear());
-		assertEquals(term, allCO.get(0).getTerm());
+		assertEquals(Term.Fall, allCO.get(0).getTerm());
 	}
 	
 	@Test
 	public void testCreateCourseOfferingNullTerm() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
-		String term = null;
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
 		
 		String error = null;
 
 		try {
-			service.createCourseOffering(term, year, courseID);
+			service.createCourseOffering(Term.Summer, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -183,14 +178,13 @@ public class CourseOfferingTest {
 	public void testCreateCourseOfferingInvalidYear() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
-		String term = "fall";
 		int year = 1800;
 		int courseID = service.getAllCourses().get(0).getCourseID();
 		
 		String error = null;
 
 		try {
-			service.createCourseOffering(term, year, courseID);
+			service.createCourseOffering(Term.Summer, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -208,14 +202,13 @@ public class CourseOfferingTest {
 	public void testCreateCourseOfferingNullCourse() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 	
-		String term = "fall";
 		int year = 2019;
 		int courseID = 3;
 		
 		String error = null;
 
 		try {
-			service.createCourseOffering(term, year, courseID);
+			service.createCourseOffering(Term.Winter, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -233,14 +226,13 @@ public class CourseOfferingTest {
 	public void testCreateCourseOfferingInvalidTerm() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
-		String term = "autumn";
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
 		
 		String error = null;
 
 		try {
-			service.createCourseOffering(term, year, courseID);
+			service.createCourseOffering(Term.Fall, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();

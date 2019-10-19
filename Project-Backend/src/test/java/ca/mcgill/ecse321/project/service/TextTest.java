@@ -51,7 +51,7 @@ public class TextTest {
 		service.createTutor("cmc", "dogs", "email@mcgill.ca", 12, 3, Education.bachelor);
 		service.createUniversity("McGill", "3040 University");
 		service.createCourse("Intro to Software","ECSE 321", service.getAllUniversities().get(0).getUniversityID());
-		service.createCourseOffering("fall", 2019, service.getAllCourses().get(0).getCourseID());
+		service.createCourseOffering(Term.Fall, 2019, service.getAllCourses().get(0).getCourseID());
 	}
 
 	@After

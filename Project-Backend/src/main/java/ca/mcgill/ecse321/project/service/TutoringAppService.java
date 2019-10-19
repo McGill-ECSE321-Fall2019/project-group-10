@@ -160,7 +160,7 @@ public class TutoringAppService {
 	
 	//Checking to make sure we can create a course offering.
 	@Transactional
-	public CourseOffering createCourseOffering(String term, int year, int courseID) {
+	public CourseOffering createCourseOffering(Term term, int year, int courseID) {
 		if(year < 1900){
 			throw new IllegalArgumentException("That is far too long ago...");
 		}
@@ -184,7 +184,7 @@ public class TutoringAppService {
 	
 	//Checking to make sure we can update the course offering.
 	@Transactional
-	public CourseOffering updateCourseOffering(int oldID, String term, int year, int courseID) {
+	public CourseOffering updateCourseOffering(int oldID, Term term, int year, int courseID) {
 		if(year < 1900){
 			throw new IllegalArgumentException("That is far too long ago...");
 		}

@@ -26,7 +26,7 @@ import ca.mcgill.ecse321.project.service.*;
 @CrossOrigin(origins = "*")
 @RestController
 public class TutoringServiceRestController {
-	
+
 	@Autowired
 	TutoringAppService service;
 	
@@ -64,5 +64,4 @@ public class TutoringServiceRestController {
 		UniversityDTO uDTO = new UniversityDTO(u.getName(), u.getAddress());
 		return uDTO;
 	}
-
 }
