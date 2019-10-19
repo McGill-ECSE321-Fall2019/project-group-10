@@ -14,83 +14,83 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Session{
-	   private Date date;
-	   private Time time;
-	
+	private Date date;
+	private Time time;
+
 	public void setDate(Date value) {
-	    this.date = value;
+		this.date = value;
 	}
 	public Date getDate() {
-	    return this.date;
+		return this.date;
 	}
 	public void setTime(Time value) {
-	    this.time = value;
+		this.time = value;
 	}
 	public Time getTime() {
-	    return this.time;
+		return this.time;
 	}
 	private double amountPaid;
-	
+
 	public void setAmountPaid(Double value) {
-	    this.amountPaid = value;
+		this.amountPaid = value;
 	}
 	public double getAmountPaid() {
-	    return this.amountPaid;
+		return this.amountPaid;
 	}
 	private int sessionID;
-	
+
 	public void setSessionID(int value) {
-	    this.sessionID = value;
+		this.sessionID = value;
 	}
-	
+
 	@Id
 	@GeneratedValue
 	public int getSessionID() {
-	    return this.sessionID;
+		return this.sessionID;
 	}
-	   private List<Student> student;
-	   
-	   @ManyToMany
-	   public List<Student> getStudent() {
-	      return this.student;
-	   }
-	   
-	   public void setStudent(List<Student> students) {
-	      this.student = students;
-	   }
-	   
-	   private Tutor tutor;
-	   
-	   @ManyToOne(optional=false)
-	   public Tutor getTutor() {
-	      return this.tutor;
-	   }
-	   
-	   public void setTutor(Tutor tutor) {
-	      this.tutor = tutor;
-	   }
-	   
-	   private CourseOffering courseOffering;
-	   
-	   @ManyToOne(optional=false)
-	   public CourseOffering getCourseOffering() {
-	      return this.courseOffering;
-	   }
-	   
-	   public void setCourseOffering(CourseOffering co2) {
-	      this.courseOffering = co2;
-	   }
-	   
-	   
-	   private Room room;
-	   
-	   @ManyToOne
-	   public Room getRoom() {
-	      return this.room;
-	   }
-	   
-	   public void setRoom(Room room) {
-	      this.room = room;
-	   }
-   
-   }
+	private List<Student> student;
+
+	@ManyToMany
+	public List<Student> getStudent() {
+		return this.student;
+	}
+
+	public void setStudent(List<Student> students) {
+		this.student = students;
+	}
+
+	private Tutor tutor;
+
+	@ManyToOne(optional=false)
+	public Tutor getTutor() {
+		return this.tutor;
+	}
+
+	public void setTutor(Tutor tutor) {
+		this.tutor = tutor;
+	}
+
+	private CourseOffering courseOffering;
+
+	@ManyToOne(optional=false)
+	public CourseOffering getCourseOffering() {
+		return this.courseOffering;
+	}
+
+	public void setCourseOffering(CourseOffering co2) {
+		this.courseOffering = co2;
+	}
+
+
+	private Room room;
+
+	@ManyToOne
+	public Room getRoom() {
+		return this.room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+}
