@@ -48,14 +48,14 @@ public class Session{
 	public int getSessionID() {
 	    return this.sessionID;
 	}
-	   private List<Student> student;
+	   private Set<Student> student;
 	   
 	   @ManyToMany
-	   public List<Student> getStudent() {
+	   public Set<Student> getStudent() {
 	      return this.student;
 	   }
 	   
-	   public void setStudent(List<Student> students) {
+	   public void setStudent(Set<Student> students) {
 	      this.student = students;
 	   }
 	   
@@ -84,7 +84,7 @@ public class Session{
 	   
 	   private Room room;
 	   
-	   @ManyToOne
+	   @ManyToOne(optional=false)
 	   public Room getRoom() {
 	      return this.room;
 	   }

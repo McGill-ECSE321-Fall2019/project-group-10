@@ -11,12 +11,14 @@ import javax.persistence.Table;
 
 @Entity
 public class Availability{
-    @Id
+    
     private int id;
+    
     public void setId(int value){
         this.id = value;
     } 
-
+    
+    @Id
     public int getId(){
         return this.id;
     }
@@ -49,12 +51,4 @@ public void setTutor(Tutor tutor) {
    this.tutor = tutor;
 }
 
-private int availabilityID;
-
-public void setAvailabilityID(int value) {
-    this.availabilityID = value;
-}
-public int getAvailabilityID() {
-    return this.availabilityID;
-}
 }

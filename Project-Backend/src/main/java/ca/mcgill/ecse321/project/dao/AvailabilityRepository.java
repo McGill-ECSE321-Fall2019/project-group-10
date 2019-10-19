@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface AvailabilityRepository extends CrudRepository<Availability, Integer>{
 
-	Availability findAvailabilityByAvailabilityID(Integer id);
+	Availability findAvailabilityById(Integer id);
 	
 	//List<Availability> findAvailabilityByTutor(Tutor tutor);
 

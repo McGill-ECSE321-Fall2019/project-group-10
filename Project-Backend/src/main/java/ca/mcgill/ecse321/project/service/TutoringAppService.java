@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,7 @@ public class TutoringAppService {
 			
 		// set the 
 		Availability availability = new Availability();
-		availability.setAvailabilityID(id);
+		availability.setId(id);
 		availability.setTime(time);
 		availability.setDate(date);
 //		availability.setTutor(tutorRepository.findTutorByUsername(tName));
@@ -87,8 +88,8 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Invalid time parameters...");
 		}
 		
-		Availability availability = availabilityRepository.findAvailabilityByAvailabilityID(oldID);
-		availability.setAvailabilityID(id);
+		Availability availability = availabilityRepository.findAvailabilityById(oldID);
+		availability.setId(id);
 		availability.setTime(time);
 		availability.setDate(date);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
@@ -112,7 +113,7 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Incorrect id value for the availability...");
 		}
 				
-		Availability a = availabilityRepository.findAvailabilityByAvailabilityID(new Integer(id));
+		Availability a = availabilityRepository.findAvailabilityById(new Integer(id));
 		return a;
 	}
 	
@@ -719,7 +720,7 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		List<Student> student = new ArrayList<Student>();
+		Set<Student> student = (Set<Student>) new ArrayList<Student>();
 		if(studentRepository.findStudentByUsername(sName) == null)
 			throw new IllegalArgumentException("Please input a valid student");
 		student.add(studentRepository.findStudentByUsername(sName));
@@ -762,7 +763,7 @@ public class TutoringAppService {
 		if(studentRepository.findStudentByUsername(sName) == null)
 			throw new IllegalArgumentException("Please input a valid student");
 		student.add(studentRepository.findStudentByUsername(sName));
-		session.setStudent(student);
+		session.setStudent((Set<Student>) student);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null)
 			throw new IllegalArgumentException("Please input a valid tutor");

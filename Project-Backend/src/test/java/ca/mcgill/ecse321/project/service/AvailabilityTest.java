@@ -90,7 +90,7 @@ public class AvailabilityTest {
 
 		// check that it was created and all the attributes are correct
 		assertEquals(1, allAvailabilities.size());
-		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
+		assertEquals(id, allAvailabilities.get(0).getId());	
 		assertEquals(date, allAvailabilities.get(0).getDate());
 		assertEquals(time, allAvailabilities.get(0).getTime());
 		//assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
@@ -109,7 +109,7 @@ public class AvailabilityTest {
 
 		// check that all the attributes are correct
 		assertEquals(1, allAvailabilities.size());
-		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
+		assertEquals(id, allAvailabilities.get(0).getId());	
 		assertEquals(date, allAvailabilities.get(0).getDate());
 		assertEquals(time, allAvailabilities.get(0).getTime());
 		//assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());

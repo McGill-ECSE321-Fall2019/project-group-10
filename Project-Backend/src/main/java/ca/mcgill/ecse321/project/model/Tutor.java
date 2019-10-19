@@ -16,7 +16,19 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Tutor extends Role{
+	
+    private int id;
+    
+    @Id
+	@GeneratedValue
+    public void setId(int value){
+        this.id = value;
+    } 
 
+    public int getId(){
+        return this.id;
+    }
+	
 	@Enumerated(EnumType.STRING)
 	private Education education;
 

@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import java.util.Set;
 import javax.persistence.OneToMany;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED )
 public abstract class Role{
 	private int id;
 	public void setId(int id) {
@@ -22,6 +24,7 @@ public abstract class Role{
 	public int getId() {
 		return this.id;
 	}
+	
 	
    private String username;
    
