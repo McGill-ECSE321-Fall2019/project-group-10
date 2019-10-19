@@ -116,6 +116,8 @@ public class TutorTest {
 			fail();
 		}
 		
+		allTutors = service.getAllTutors();
+
 		assertEquals(username, allTutors.get(0).getUsername());
 		assertEquals(password, allTutors.get(0).getPassword());
 		assertEquals(hr, allTutors.get(0).getHourlyRate(), 0.05);

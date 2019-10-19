@@ -4,10 +4,11 @@ package ca.mcgill.ecse321.project.dao;
 import org.springframework.data.repository.CrudRepository;
 
 // import model class
-import ca.mcgill.ecse321.project.model.User;
+import ca.mcgill.ecse321.project.model.TSUser;
 
-public interface UserRepository extends CrudRepository<User, String>{
+public interface UserRepository extends CrudRepository<TSUser, Integer>{
 
-	User findUserByEmail(String email);
+	TSUser findTSuserById(Integer id);
+	TSUser findTSuserByEmail(String email);
 
 }

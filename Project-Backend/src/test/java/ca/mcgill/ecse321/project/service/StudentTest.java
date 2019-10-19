@@ -112,6 +112,8 @@ public class StudentTest {
 			fail();
 		}
 		
+		allStudents = service.getAllStudents();
+
 		assertEquals(username, allStudents.get(0).getUsername());
 		assertEquals(password, allStudents.get(0).getPassword());
 	}
