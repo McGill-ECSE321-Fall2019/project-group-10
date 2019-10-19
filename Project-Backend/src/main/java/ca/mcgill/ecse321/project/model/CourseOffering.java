@@ -13,75 +13,75 @@ import javax.persistence.OneToMany;
 @Entity
 public class CourseOffering{
 	private String term;
-	
+
 	public void setTerm(String value) {
-	    this.term = value;
+		this.term = value;
 	}
 	public String getTerm() {
-	    return this.term;
+		return this.term;
 	}
 	private int year;
-	
+
 	public void setYear(int value) {
-	    this.year = value;
+		this.year = value;
 	}
 	public int getYear() {
-	    return this.year;
+		return this.year;
 	}
 	private Course course;
-	
+
 	@ManyToOne(optional=false)
 	public Course getCourse() {
-	   return this.course;
+		return this.course;
 	}
-	
+
 	public void setCourse(Course course) {
-	   this.course = course;
+		this.course = course;
 	}
-	
+
 	private List<Session> session;
-	
+
 	@OneToMany(mappedBy="courseOffering" )
 	public List<Session> getSession() {
-	   return this.session;
+		return this.session;
 	}
-	
+
 	public void setSession(List<Session> sessions) {
-	   this.session = sessions;
+		this.session = sessions;
 	}
-	
+
 	private Set<Review> review;
-	
+
 	@OneToMany(mappedBy="courseOffering" )
 	public Set<Review> getReview() {
-	   return this.review;
+		return this.review;
 	}
-	
+
 	public void setReview(Set<Review> reviews) {
-	   this.review = reviews;
+		this.review = reviews;
 	}
-	
+
 	private int courseOfferingID;
-	
+
 	public void setCourseOfferingID(int value) {
-	    this.courseOfferingID = value;
+		this.courseOfferingID = value;
 	}
-	
+
 	@Id
 	@GeneratedValue
 	public int getCourseOfferingID() {
-	    return this.courseOfferingID;
+		return this.courseOfferingID;
 	}
-	
+
 	private List<Tutor> tutors;
-	
+
 	@ManyToMany
 	public List<Tutor> getTutors(){
-		   return this.tutors;
+		return this.tutors;
 	}
-	
+
 	public void setTutors(List<Tutor> tutors) {
-		   this.tutors = tutors;
+		this.tutors = tutors;
 	}
 
 }

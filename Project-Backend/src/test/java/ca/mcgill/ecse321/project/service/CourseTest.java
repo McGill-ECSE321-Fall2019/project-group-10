@@ -24,7 +24,6 @@ public class CourseTest {
 	
 	@Autowired
 	private TutoringAppService service;
-
 	@Autowired 
 	private AvailabilityRepository availabilityRepository;
 	@Autowired
@@ -62,6 +61,7 @@ public class CourseTest {
 		userRepository.deleteAll();
 	}
 	
+//	test to create a course
 	@Test
 	public void testCreateCourse() {
 
@@ -75,14 +75,15 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = service.getAllCourses();
+		List<Course> allCourses = service.getAllCourses(); //gets the list of all the courses 
 		// check that all the attributes are correct
-		assertEquals(1, allCourses.size());
-		assertEquals(description, allCourses.get(0).getDescription());
-		assertEquals(courseName, allCourses.get(0).getCourseName());
-		assertEquals("McGill", allCourses.get(0).getUniversity().getName());
+		assertEquals(1, allCourses.size()); //checks the size of the list
+		assertEquals(description, allCourses.get(0).getDescription()); //checks the description of the course
+		assertEquals(courseName, allCourses.get(0).getCourseName()); //checks the names of the course
+		assertEquals("McGill", allCourses.get(0).getUniversity().getName()); //checks the name of the university
 	}
 	
+//	creates a test to update the courses
 	@Test
 	public void testUpdateCourse() {
 
@@ -96,12 +97,12 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = service.getAllCourses();
+		List<Course> allCourses = service.getAllCourses(); //gets the list of all the courses
 
-		assertEquals(1, allCourses.size());
-		assertEquals(description, allCourses.get(0).getDescription());
-		assertEquals(courseName, allCourses.get(0).getCourseName());
-		assertEquals("McGill", allCourses.get(0).getUniversity().getName());
+		assertEquals(1, allCourses.size()); //checks the size of the list
+		assertEquals(description, allCourses.get(0).getDescription());//checks the description of the course
+		assertEquals(courseName, allCourses.get(0).getCourseName());//checks the names of the course
+		assertEquals("McGill", allCourses.get(0).getUniversity().getName());//checks the name of the university
 		
 		description = "updated";
 		courseName = "COM SCI 102";
@@ -114,18 +115,19 @@ public class CourseTest {
 			fail();
 		}
 
-		allCourses = service.getAllCourses();
+		allCourses = service.getAllCourses(); 
 
-		assertEquals(1, allCourses.size());
-		assertEquals(description, allCourses.get(0).getDescription());
-		assertEquals(courseName, allCourses.get(0).getCourseName());
-		assertEquals("McGill", allCourses.get(0).getUniversity().getName());
+		assertEquals(1, allCourses.size()); //gets the size of the list
+		assertEquals(description, allCourses.get(0).getDescription()); //checks the description of the courses
+		assertEquals(courseName, allCourses.get(0).getCourseName()); //checks the name of the course
+		assertEquals("McGill", allCourses.get(0).getUniversity().getName()); //checks the name of the university
 	}
 	
+//	delete a course
 	@Test
 	public void testDeleteCourse() {
 		assertEquals(0, service.getAllCourses().size());
-
+//		information to create a course
 		String description = "new";
 		String courseName = "COM SCI 101";
 
@@ -136,7 +138,7 @@ public class CourseTest {
 			fail();
 		}
 
-		List<Course> allCourses = service.getAllCourses();
+		List<Course> allCourses = service.getAllCourses(); //gets the list of all the courses
 		
 		try {
 			service.deleteCourse(allCourses.get(0).getCourseID());
@@ -147,12 +149,14 @@ public class CourseTest {
 
 		allCourses = service.getAllCourses();
 
-		assertEquals(0, allCourses.size());
+		assertEquals(0, allCourses.size()); //checks if the deleted course is not in the list
 	}
 	
+	
+//	test to create a course with Null description
 	@Test
 	public void testCreateCourseNullDescription() {
-
+//		information to create a course
 		String description = null;
 		String courseName = "COM SCI 101";
 		
@@ -165,15 +169,17 @@ public class CourseTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals("Please insert a brief description...", error);
-		List<Course> allCourses = service.getAllCourses();
-		assertEquals(0, allCourses.size());
+		assertEquals("Please insert a brief description...", error); 
+		List<Course> allCourses = service.getAllCourses(); //get the list of all the courses
+		assertEquals(0, allCourses.size()); //checks the size of the list
 
 	}
 	
+	
+//	test to create a course with Null name
 	@Test
 	public void testCreateCourseNullCourseName() {
-
+//		creates a course
 		String description = "new";
 		String courseName = null;
 
@@ -187,14 +193,15 @@ public class CourseTest {
 		}
 		// check that the correct error was generated
 		assertEquals("Please insert a course name to search...", error);
-		List<Course> allCourses = service.getAllCourses();
-		assertEquals(0, allCourses.size());
+		List<Course> allCourses = service.getAllCourses(); //gets the list of all the courses
+		assertEquals(0, allCourses.size()); // checks the size of the list
 
 	}
 
+	// creates a course without a university
 	@Test
 	public void testCreateCourseNoUniversity() {
-
+//		set up information for creating a university
 		String description = "new";
 		String courseName = "COM SCI 101";
 		
@@ -208,8 +215,8 @@ public class CourseTest {
 		}
 		// check that the correct error was generated
 		assertEquals("Please specify a valid University", error);
-		List<Course> allCourses = service.getAllCourses();
-		assertEquals(0, allCourses.size());
+		List<Course> allCourses = service.getAllCourses(); //gets the list of all the courses
+		assertEquals(0, allCourses.size()); //checks the size of the list
 
 	}
 }

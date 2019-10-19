@@ -10,21 +10,21 @@ import javax.persistence.ManyToMany;
 
 @Entity
 public class Student extends Role{
-   
+
     private int id;
-    
+
     @Id
     @GeneratedValue
     public void setId(int value){
         this.id = value;
-    } 
+    }
 
     public int getId(){
         return this.id;
     }
-	
+
 	private Set<Session> session;
-   
+
    @ManyToMany(mappedBy="student")
    public Set<Session> getSession() {
       return this.session;
