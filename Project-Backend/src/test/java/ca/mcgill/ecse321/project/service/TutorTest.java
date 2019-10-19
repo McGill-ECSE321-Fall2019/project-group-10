@@ -85,7 +85,7 @@ public class TutorTest {
 		assertEquals(hr, allTutors.get(0).getHourlyRate(), 0.05);
 		assertEquals(exp, allTutors.get(0).getExperience());
 		assertEquals(Education.masters, allTutors.get(0).getEducation());
-		assertEquals("email", allTutors.get(0).getUser().getEmail());
+		assertEquals("test.tester@mcgill.ca", allTutors.get(0).getUser().getEmail());
 	}
 	
 	@Test
@@ -118,6 +118,8 @@ public class TutorTest {
 			// Check that no error occurred
 			fail();
 		}
+		
+		allTutors = service.getAllTutors();
 		
 		assertEquals(username, allTutors.get(0).getUsername());
 		assertEquals(password, allTutors.get(0).getPassword());
@@ -275,7 +277,7 @@ public class TutorTest {
 	public void testCreateTutorInvalidExp() {
 
 		String username = "cmc";
-		String password = null;
+		String password = "dogs";
 		double hr  = 12;
 		int exp = -3;
 		
@@ -299,7 +301,7 @@ public class TutorTest {
 	public void testCreateTutorInvalidEducation() {
 
 		String username = "cmc";
-		String password = null;
+		String password = "dogs";
 		double hr  = 12;
 		int exp = 3;
 		

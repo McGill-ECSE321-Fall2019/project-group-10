@@ -82,7 +82,7 @@ public class StudentTest {
 		assertEquals(1, allStudents.size());
 		assertEquals(username, allStudents.get(0).getUsername());
 		assertEquals(password, allStudents.get(0).getPassword());
-		assertEquals("email", allStudents.get(0).getUser().getEmail());
+		assertEquals("test.tester@mcgill.ca", allStudents.get(0).getUser().getEmail());
 	}
 	
 	@Test
@@ -111,6 +111,8 @@ public class StudentTest {
 			// Check that no error occurred
 			fail();
 		}
+		
+		allStudents = service.getAllStudents();
 		
 		assertEquals(username, allStudents.get(0).getUsername());
 		assertEquals(password, allStudents.get(0).getPassword());
@@ -203,25 +205,4 @@ public class StudentTest {
 
 		assertEquals(0, allStudents.size());
 	}
-	@Test
-	public void testCreateStudentBadEmail() {
-
-		String username = "cmc";
-		String password = null;
-		
-		String error = null;
-
-		try {
-			service.createStudent(username, password, "test");
-		} catch (IllegalArgumentException e) {
-			// Check that error occurred
-			error = e.getMessage();
-		}
-		// check that the correct error was generated
-		assertEquals("Please insert a proper email...", error);
-		List<Student> allStudents = service.getAllStudents();
-
-		assertEquals(0, allStudents.size());
-	}
-	
 }

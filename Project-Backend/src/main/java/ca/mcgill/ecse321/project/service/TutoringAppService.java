@@ -507,10 +507,10 @@ public class TutoringAppService {
 	//Checking to make sure we can create a tutor.
 	@Transactional
 	public Tutor createTutor(String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
-		if(username.equals("") || username == null){
+		if(username == null || username.equals("")){
 			throw new IllegalArgumentException("Please insert a username...");
 		}
-		if(password.equals("") || password == null){
+		if(password == null  || password.equals("")){
 			throw new IllegalArgumentException("Please insert a password...");
 		}
 		//Regex check for email
@@ -543,13 +543,13 @@ public class TutoringAppService {
 	//Checking to make sure we can update a tutor.
 	@Transactional
 	public Tutor updateTutor(String oldUsername, String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
-		if(username.equals("") || username == null){
+		if(username == null || username.equals("")){
 			throw new IllegalArgumentException("Please insert a username...");
 		}
-		if(oldUsername.equals("") || oldUsername == null){
+		if(oldUsername == null || oldUsername.equals("")) {
 			throw new IllegalArgumentException("Please insert a proper username...");
 		}
-		if(password.equals("") || password == null){
+		if(password == null  || password.equals("")){
 			throw new IllegalArgumentException("Please insert a password...");
 		}
 		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
@@ -620,10 +620,10 @@ public class TutoringAppService {
 	//Checking to make sure we can create a student.
 	@Transactional
 	public Student createStudent(String username, String password, String userEmail) {
-		if(username.equals("") || username == null){
+		if(username == null || username.equals("")){
 			throw new IllegalArgumentException("Please insert a username...");
 		}
-		if(password.equals("") || password == null){
+		if(password == null  || password.equals("")){
 			throw new IllegalArgumentException("Please insert a password...");
 		}
 		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
@@ -644,13 +644,13 @@ public class TutoringAppService {
 	//Checking to make sure we can update a student.
 	@Transactional
 	public Student updateStudent(String oldUsername, String username, String password, String userEmail) {
-		if(username.equals("") || username == null){
-			throw new IllegalArgumentException("Please insert a better username...");
-		}
-		if(oldUsername.equals("") || oldUsername == null){
+		if(username == null || username.equals("")){
 			throw new IllegalArgumentException("Please insert a username...");
 		}
-		if(password.equals("") || password == null){
+		if(oldUsername == null || oldUsername.equals("")) {
+			throw new IllegalArgumentException("Please insert a username...");
+		}
+		if(password == null  || password.equals("")){
 			throw new IllegalArgumentException("Please insert a password...");
 		}
 		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
