@@ -15,10 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.eventregistration.dto.EventDto;
-import ca.mcgill.ecse321.eventregistration.dto.PersonDto;
-import ca.mcgill.ecse321.eventregistration.model.Event;
-import ca.mcgill.ecse321.eventregistration.model.Person;
 import ca.mcgill.ecse321.project.dto.*;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.service.*;
@@ -31,7 +27,7 @@ public class TutoringServiceRestController {
 	TutoringAppService service;
 	
 	// Get all the schools offered by the application
-	@GetMapping(value = { "/events", "/events/" })
+	@GetMapping(value = { "/universities", "/universities/" })
 	public List<UniversityDTO> getAllUniversities() {
 		List<UniversityDTO> universityDtos = new ArrayList<>();
 		
@@ -44,22 +40,34 @@ public class TutoringServiceRestController {
 	}
 	
 	// Get all the schools offered by the application
-	@GetMapping(value = { "/events", "/events/" })
-	public List<UniversityDTO> getAllUniversities() {
-		List<UniversityDTO> universityDtos = new ArrayList<>();
+	@GetMapping(value = { "/courses", "/courses/" })
+	public List<CourseDto> getAllCourses() {
+		List<CourseDto> cDTOs = new ArrayList<>();
 		
 		// get universities from the tutoring service
-		for (University university : service.getAllUniversities()) {
+		for (Course c : service.getAllCourses()) {
 			// convert model class to a data transfer object
-			universityDtos.add(convertToDto(university));
+			cDTOs.add(convertToDto(c));
 		}
-		return universityDtos;
+		return cDTOs;
+	}
+	
+	
+	// ********** Convert Model to DTO Class ********** //
+	
+	// Convert the model university to a DTO object
+	private CourseDto convertToDto(Course c) {
+		if (c == null) {
+			throw new IllegalArgumentException("There is no such Course!");
+		}
+		CourseDto cDTO = new CourseDto(c.getCourseName(), c.getDescription(), c.getUniversity().getName());
+		return cDTO;
 	}
 	
 	// Convert the model university to a DTO object
 	private UniversityDTO convertToDto(University u) {
 		if (u == null) {
-			throw new IllegalArgumentException("There is no such Person!");
+			throw new IllegalArgumentException("There is no such University!");
 		}
 		UniversityDTO uDTO = new UniversityDTO(u.getName(), u.getAddress());
 		return uDTO;
