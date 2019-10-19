@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import java.util.Set;
@@ -25,9 +26,20 @@ public class Room{
 	    this.roomNumber = value;
 	}
 	
-	@Id
+	//@Id
 	public int getRoomNumber() {
 	    return this.roomNumber;
+	}
+	
+	private int id;
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return this.id;
 	}
    
   }

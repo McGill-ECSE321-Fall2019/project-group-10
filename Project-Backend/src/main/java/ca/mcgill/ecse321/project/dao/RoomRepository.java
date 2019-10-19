@@ -9,5 +9,7 @@ import ca.mcgill.ecse321.project.model.*;
 public interface RoomRepository extends CrudRepository<Room, Integer>{
 
 	Room findRoomByRoomNumber(Integer roomNum);
+	
+	Room findRoomById(Integer id);
 
 }
