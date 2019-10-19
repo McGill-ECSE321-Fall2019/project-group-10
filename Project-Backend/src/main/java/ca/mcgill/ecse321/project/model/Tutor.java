@@ -60,7 +60,7 @@ public int getExperience() {
 
    private Set<Availability> availability;
    
-   @OneToMany
+   @OneToMany(mappedBy="tutor")
    public Set<Availability> getAvailability() {
       return this.availability;
    }
