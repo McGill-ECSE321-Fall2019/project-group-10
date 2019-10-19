@@ -84,7 +84,7 @@ public class StudentTest {
 		assertEquals(1, allStudents.size());
 		assertEquals(USERNAME, allStudents.get(0).getUsername());
 		assertEquals(PASSWORD, allStudents.get(0).getPassword());
-		assertEquals("email", allStudents.get(0).getUser().getEmail());
+		assertEquals(EMAIL, allStudents.get(0).getUser().getEmail());
 	}
 	
 	@Test
