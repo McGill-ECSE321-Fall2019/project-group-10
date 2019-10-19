@@ -14,7 +14,7 @@ public class Student extends Role{
     private int id;
     
     @Id
-	@GeneratedValue
+    @GeneratedValue
     public void setId(int value){
         this.id = value;
     } 

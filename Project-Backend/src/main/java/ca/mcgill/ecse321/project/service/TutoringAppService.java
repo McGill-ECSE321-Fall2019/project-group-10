@@ -720,10 +720,11 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		Set<Student> student = (Set<Student>) new ArrayList<Student>();
-		if(studentRepository.findStudentByUsername(sName) == null)
+		Set<Student> student = session.getStudent();
+		Student target = studentRepository.findStudentByUsername(sName);
+		if(target == null)
 			throw new IllegalArgumentException("Please input a valid student");
-		student.add(studentRepository.findStudentByUsername(sName));
+		student.add(target);
 		session.setStudent(student);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null)
@@ -759,11 +760,11 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		List<Student> student = new ArrayList<Student>();
+		Set<Student> students = session.getStudent();
 		if(studentRepository.findStudentByUsername(sName) == null)
 			throw new IllegalArgumentException("Please input a valid student");
-		student.add(studentRepository.findStudentByUsername(sName));
-		session.setStudent((Set<Student>) student);
+		students.add(studentRepository.findStudentByUsername(sName));
+		session.setStudent(students);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null)
 			throw new IllegalArgumentException("Please input a valid tutor");
