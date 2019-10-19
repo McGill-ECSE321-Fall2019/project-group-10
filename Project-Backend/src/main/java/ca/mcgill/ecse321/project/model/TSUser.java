@@ -9,6 +9,18 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class TSUser{
+	
+	private int id;
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return this.id;
+	}
+	
    private int age;
 
 public void setAge(int value) {
@@ -31,7 +43,7 @@ public void setEmail(String value) {
     this.email = value;
 }
 
-@Id
+//@Id
 public String getEmail() {
     return this.email;
 }

@@ -527,11 +527,11 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Please provide your education level...");
 		}
 		Tutor tutor = new Tutor();
-		tutor.setUsername(username);
-		tutor.setPassword(password);
-		TSUser u = userRepository.findUserByEmail(userEmail);
+		TSUser u = userRepository.findTSuserByEmail(userEmail);
 		if (u == null)
 			throw new IllegalArgumentException("Please input a valid user");
+		tutor.setUsername(username);
+		tutor.setPassword(password);
 		tutor.setUser(u);
 		tutor.setHourlyRate(hourlyRate);
 		tutor.setExperience(exp);
@@ -567,11 +567,11 @@ public class TutoringAppService {
 		Tutor tutor = tutorRepository.findTutorByUsername(oldUsername);
 		if(tutor == null)
 			throw new IllegalArgumentException("Please input a valid tutor to update");
-		tutor.setUsername(username);
-		tutor.setPassword(password);
-		TSUser u = userRepository.findUserByEmail(userEmail);
+		TSUser u = userRepository.findTSuserByEmail(userEmail);
 		if (u == null)
 			throw new IllegalArgumentException("Please input a valid user");
+		tutor.setUsername(username);
+		tutor.setPassword(password);
 		tutor.setUser(u);
 		tutor.setHourlyRate(hourlyRate);
 		tutor.setExperience(exp);
@@ -629,12 +629,13 @@ public class TutoringAppService {
 		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
 			throw new IllegalArgumentException("Please insert a proper email...");
 		}
+		TSUser u = userRepository.findTSuserByEmail(userEmail);
+		if (u == null)
+			throw new IllegalArgumentException("Please input a valid user");
+		
 		Student student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);
-		TSUser u = userRepository.findUserByEmail(userEmail);
-		if (u == null)
-			throw new IllegalArgumentException("Please input a valid user");
 		student.setUser(u);
 		studentRepository.save(student);
 		return student;
@@ -660,7 +661,7 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Please input a valid student");
 		student.setUsername(username);
 		student.setPassword(password);
-		TSUser u = userRepository.findUserByEmail(userEmail);
+		TSUser u = userRepository.findTSuserByEmail(userEmail);
 		if (u == null)
 			throw new IllegalArgumentException("Please input a valid user");
 		student.setUser(u);
@@ -857,7 +858,7 @@ public class TutoringAppService {
 	//Checking to make sure we can update a user.
 	@Transactional
 	public TSUser updateUser(String name, String oldEmail,String newEmail, int age, String phoneNum) {
-		TSUser user = userRepository.findUserByEmail(oldEmail);
+		TSUser user = userRepository.findTSuserByEmail(oldEmail);
 		user.setAge(age);
 		user.setEmail(newEmail);
 		user.setName(name);
@@ -869,7 +870,7 @@ public class TutoringAppService {
 	//Checking to make sure we can get a user.
 	@Transactional
 	public TSUser getUser(String email) {
-		TSUser a = userRepository.findUserByEmail(email);
+		TSUser a = userRepository.findTSuserByEmail(email);
 		return a;
 	}
 	

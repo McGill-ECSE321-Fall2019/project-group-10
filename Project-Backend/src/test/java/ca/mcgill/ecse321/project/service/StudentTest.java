@@ -204,7 +204,7 @@ public class StudentTest {
 		assertEquals(0, allStudents.size());
 	}
 	@Test
-	public void testCreateStudentWrongEmail() {
+	public void testCreateStudentBadEmail() {
 
 		String username = "cmc";
 		String password = null;

@@ -26,7 +26,6 @@ public class Room{
 	    this.roomNumber = value;
 	}
 	
-	//@Id
 	public int getRoomNumber() {
 	    return this.roomNumber;
 	}
