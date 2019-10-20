@@ -39,6 +39,37 @@ public class TutoringServiceRestController {
 		return universityDtos;
 	}
 	
+	@PostMapping(value = { "/{universityname}", "/{universityname}/" })
+	public List<CourseDto> getCoursesforUni(@PathVariable("universityname") String name) throws IllegalArgumentException {
+		// @formatter:on
+		List<CourseDto> cDTOs = new ArrayList<>();
+
+		// get courses by university from the tutoring service
+		List<Course> courses = service.getAllCoursesByUniversity(name);
+				
+		for (Course c : courses) {
+			// convert model class to a data transfer object
+			cDTOs.add(convertToDto(c));
+		}
+		return cDTOs;
+	}
+	
+	@PostMapping(value = { "/{universityname}/{coursename}", "/{universityname}/{coursename}/" })
+	public List<CourseOfferingDTO> getCOforCourseforUni(@PathVariable("universityname") String name, 
+			@PathVariable("coursename") String cname) throws IllegalArgumentException {
+		// @formatter:on
+		List<CourseOfferingDTO> coDTOs = new ArrayList<>();
+
+		// get course offerings by course by university from the tutoring service
+		List<CourseOffering> courseOs = service.getAllCourseOfferingsByCourse(cname, name);
+				
+		for (CourseOffering c : courseOs) {
+			// convert model class to a data transfer object
+			coDTOs.add(convertToDto(c));
+		}
+		return coDTOs;
+	}
+	
 	// Get all the schools offered by the application
 	@GetMapping(value = { "/courses", "/courses/" })
 	public List<CourseDto> getAllCourses() {
@@ -52,10 +83,33 @@ public class TutoringServiceRestController {
 		return cDTOs;
 	}
 	
+//	// Get all the tutors signed up for a course offering
+//	@PostMapping(value = { "/{universityname}/{coursename}/{courseOffering}", "/{universityname}/{coursename}/{courseOffering}/" })
+//	public List<TutorDTO> getTutorsByCO() {
+//		List<TutorDTO> tutorDTOs = new ArrayList<>();
+//		
+//		// get universities from the tutoring service
+//		for (Tutor t : service.getAllUniversities()) {
+//			// convert model class to a data transfer object
+//			tutorDTOs.add(convertToDto(t));
+//		}
+//		return tutorDTOs;
+//	}
+	
 	
 	// ********** Convert Model to DTO Class ********** //
 	
-	// Convert the model university to a DTO object
+	// Convert the model course to a DTO object
+	private CourseOfferingDTO convertToDto(CourseOffering co) {
+		if (co == null) {
+			throw new IllegalArgumentException("There is no such CourseOffering!");
+		}
+		CourseOfferingDTO coDTO = new CourseOfferingDTO(co.getTerm(), co.getYear(), 
+				co.getCourse().getCourseName(), co.getCourse().getUniversity().getName());
+		return coDTO;
+	}
+	
+	// Convert the model course to a DTO object
 	private CourseDto convertToDto(Course c) {
 		if (c == null) {
 			throw new IllegalArgumentException("There is no such Course!");

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.project.dao.*;
+import ca.mcgill.ecse321.project.dto.CourseDto;
 import ca.mcgill.ecse321.project.model.*;
 
 @Service
@@ -987,5 +988,52 @@ public class TutoringAppService {
 			done = true;
 		}
 		return done;
-	}	
+	}
+
+	// get courses from specified university name
+	@Transactional
+	public List<Course> getAllCoursesByUniversity(String name) throws IllegalArgumentException {
+		List<Course> courses = new ArrayList<>();
+		
+		// get all courses
+		List<Course> allcourses = getAllCourses();
+		if(allcourses == null)
+			throw new IllegalArgumentException("No courses offered for this university");
+		
+		// filter by university name
+		for(Course c : getAllCourses()) {
+			if(c.getUniversity().getName() == name)
+				courses.add(c);
+		}
+		
+		return courses;
+	}
+
+	// get course offerings from specified course from associated university
+	public List<CourseOffering> getAllCourseOfferingsByCourse(String cname, String uniName) {
+		List<CourseOffering> courseOs = new ArrayList<>();
+		
+		// get all course offerings
+		for(CourseOffering co : getAllCourseOfferings()) {
+			// check name and university names that they are what we are looking for
+			if(co.getCourse().getCourseName().equals(cname) 
+					&& co.getCourse().getUniversity().getName().equals(uniName))
+				courseOs.add(co);
+		}
+		return courseOs;
+	}
+	
+//	// get course offerings from specified course from associated university
+//	public List<CourseOffering> getAllTutorsByCourseOffering(String cname, String uniName, String coname) {
+//		List<CourseOffering> courseOs = getAllCourseOfferingsByCourse(cname, coname);
+//		
+//		// get all tutors
+//		for(Tutor t : getAllTutors()) {
+//			// check name and university names that they are what we are looking for
+//			if(getCourse().getCourseName().equals(cname) 
+//					&& co.getCourse().getUniversity().getName().equals(uniName))
+//				courseOs.add(co);
+//		}
+//		return courseOs;
+//	}
 }
