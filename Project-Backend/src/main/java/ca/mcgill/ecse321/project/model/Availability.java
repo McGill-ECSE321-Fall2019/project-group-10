@@ -11,45 +11,50 @@ import javax.persistence.Table;
 
 @Entity
 public class Availability{
-    
-    private int id;
-    
-    public void setId(int value){
-        this.id = value;
-    } 
-    
-    @Id
-    @GeneratedValue
-    public int getId(){
-        return this.id;
-    }
-private Date date;
+	@Id
+	private int id;
+	public void setId(int value){
+		this.id = value;
+	} 
 
-public void setDate(Date value) {
-    this.date = value;
-}
-public Date getDate() {
-    return this.date;
-}
+	public int getId(){
+		return this.id;
+	}
+	private Date date;
 
-private Time time;
+	public void setDate(Date value) {
+		this.date = value;
+	}
+	public Date getDate() {
+		return this.date;
+	}
 
-public void setTime(Time value) {
-    this.time = value;
-}
-public Time getTime() {
-    return this.time;
-}
+	private Time time;
 
-private Tutor tutor;
+	public void setTime(Time value) {
+		this.time = value;
+	}
+	public Time getTime() {
+		return this.time;
+	}
 
-@ManyToOne(optional=false)
-public Tutor getTutor() {
-   return this.tutor;
-}
+	//private Tutor tutor;
+	//
+	//@ManyToOne(optional=false)
+	//public Tutor getTutor() {
+	//   return this.tutor;
+	//}
+	//
+	//public void setTutor(Tutor tutor) {
+	//   this.tutor = tutor;
+	//}
 
-public void setTutor(Tutor tutor) {
-   this.tutor = tutor;
-}
+	private int availabilityID;
 
+	public void setAvailabilityID(int value) {
+		this.availabilityID = value;
+	}
+	public int getAvailabilityID() {
+		return this.availabilityID;
+	}
 }

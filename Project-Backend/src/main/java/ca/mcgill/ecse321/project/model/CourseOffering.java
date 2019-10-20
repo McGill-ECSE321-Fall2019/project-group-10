@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 
+import ca.mcgill.ecse321.project.model.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,12 +13,14 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class CourseOffering{
-	private String term;
 
-	public void setTerm(String value) {
+	private Term term;
+
+	public void setTerm(Term value) {
 		this.term = value;
 	}
-	public String getTerm() {
+	public Term getTerm() {
+
 		return this.term;
 	}
 	private int year;

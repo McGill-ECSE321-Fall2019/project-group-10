@@ -51,7 +51,7 @@ public class SessionTest {
 		// create the necessary objects for session creation
 		service.createUniversity("McGill", "3040 University");
 		service.createCourse("Intro to Software","ECSE 321", service.getAllUniversities().get(0).getUniversityID());
-		service.createCourseOffering("fall", 2019, service.getAllCourses().get(0).getCourseID());
+		service.createCourseOffering(Term.Fall, 2019, service.getAllCourses().get(0).getCourseID());
 		service.createUser("aName", "tutor.tester@mcgill.ca", 22, "5145555555");
 		service.createUser("aName_student", "student.tester@mcgill.ca", 22, "5145555555");
 		service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
@@ -73,16 +73,18 @@ public class SessionTest {
 	
 	@Test
 	public void testCreateSession() {
-		assertEquals(0, service.getAllSessions().size());
-		
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
+		 		
+		Date date = Date.valueOf("2018-02-01");
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
+		
+		String studentUser = service.getAllStudents().get(0).getUsername();
+		String tutorUser = service.getAllTutors().get(0).getUsername();
+		
 
 		try {
-			service.createSession(coID, date, time, amountPaid, "studentUser", "username");
+			service.createSession(coID, date, time, amountPaid, studentUser, tutorUser);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -94,20 +96,17 @@ public class SessionTest {
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
-		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
-		Student[] studentsArray = new Student[allSessions.get(0).getStudent().size()];
-		allSessions.get(0).getStudent().toArray(studentsArray);
-		assertEquals("studentUser", (studentsArray[0].getUsername()));
+		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
+		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 	}
 	
 	@Test
 	public void testUpdateSession() {
-		assertEquals(0, service.getAllSessions().size());
-		
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
+		//assertEquals(0, service.getAllSessions().size());
+				
+		Date date = Date.valueOf("2019-02-01");
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
@@ -124,13 +123,11 @@ public class SessionTest {
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
-		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
-		Student[] studentsArray = new Student[allSessions.get(0).getStudent().size()];
-		allSessions.get(0).getStudent().toArray(studentsArray);
-		assertEquals("studentUser", (studentsArray[0].getUsername()));
+		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
+		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
-		date = new java.sql.Date(millis-20);
+		date = Date.valueOf("2019-02-01");
 		time = Time.valueOf("10:10:10");
 		amountPaid = 24;
 		
@@ -147,9 +144,8 @@ public class SessionTest {
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
-		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
-		allSessions.get(0).getStudent().toArray(studentsArray);
-		assertEquals("studentUser", (studentsArray[0].getUsername()));
+		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
+		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
 	}
@@ -160,7 +156,7 @@ public class SessionTest {
 		
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
