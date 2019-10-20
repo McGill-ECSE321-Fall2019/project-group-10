@@ -106,7 +106,7 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Incorrect id value for the availability...");
 		}
 				
-		Availability a = availabilityRepository.findAvailabilityByAvailabilityID(new Integer(id));
+		Availability a = availabilityRepository.findAvailabilityById(new Integer(id));
 		return a;
 	}
 	
