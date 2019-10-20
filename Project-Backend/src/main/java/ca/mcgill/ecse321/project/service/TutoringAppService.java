@@ -46,12 +46,10 @@ public class TutoringAppService {
 
 	//Checking to make sure we can create an availability instance.
 	@Transactional
-	public Availability createAvailability(Date date, Time time, int id, String tName) {
+	public Availability createAvailability(Date date, Time time, String tName) {
 				
 		// check for invalid inputs
-		if(id < 0){
-			throw new IllegalArgumentException("Incorrect id value for the availability...");
-		}
+		
 		if(tName == null || tName.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
 		}
@@ -64,10 +62,9 @@ public class TutoringAppService {
 			
 		// set the 
 		Availability availability = new Availability();
-		availability.setId(id);
 		availability.setTime(time);
 		availability.setDate(date);
-//		availability.setTutor(tutorRepository.findTutorByUsername(tName));
+		availability.setTutor(tutorRepository.findTutorByUsername(tName));
 		availabilityRepository.save(availability);
 		return availability;
 	}
@@ -626,6 +623,9 @@ public class TutoringAppService {
 		}
 		if(password == null  || password.equals("")){
 			throw new IllegalArgumentException("Please insert a password...");
+		}
+		if(userEmail == null) {
+			throw new IllegalArgumentException("Please insert a proper email...");
 		}
 		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
 			throw new IllegalArgumentException("Please insert a proper email...");

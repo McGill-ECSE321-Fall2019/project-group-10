@@ -205,7 +205,7 @@ public class StudentTest {
 		String error = null;
 
 		try {
-			service.createStudent(USERNAME, null, "test");
+			service.createStudent(USERNAME, "test", null);
 		} catch (IllegalArgumentException e) {
 			// Check that error occurred
 			error = e.getMessage();

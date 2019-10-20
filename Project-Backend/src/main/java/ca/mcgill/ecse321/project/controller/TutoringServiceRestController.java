@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,4 +24,78 @@ import ca.mcgill.ecse321.project.service.*;
 @RestController
 public class TutoringServiceRestController {
 
+// ******************************************** GET MAPPINGS ********************************************** \\
+	
+	@Autowired
+	TutoringAppService service;
+	
+	// Get all the schools offered by the application
+	@GetMapping(value = { "/universities", "/universities/" })
+	public List<UniversityDTO> getAllUniversities() {
+		List<UniversityDTO> universityDtos = new ArrayList<>();
+		
+		// get universities from the tutoring service
+		for (University university : service.getAllUniversities()) {
+			// convert model class to a data transfer object
+			universityDtos.add(convertToDto(university));
+		}
+		return universityDtos;
+	}
+	
+	// Get all the schools offered by the application
+	@GetMapping(value = { "/courses", "/courses/" })
+	public List<CourseDto> getAllCourses() {
+		List<CourseDto> cDTOs = new ArrayList<>();
+		
+		// get universities from the tutoring service
+		for (Course c : service.getAllCourses()) {
+			// convert model class to a data transfer object
+			cDTOs.add(convertToDto(c));
+		}
+		return cDTOs;
+	}
+	
+	
+// ******************************************** POST MAPPINGS ********************************************** \\
+	
+	
+	//Uses request parameter to get the username and courseoffering id. RequestBody sends the descprion.
+	@PostMapping(value = { "/text", "/text/" })
+	public TextDTO createReview(@PathVariable("text") String name, @RequestParam String tutorUsername, @RequestParam int coID, @RequestBody String description, @RequestBody boolean isAllowed) throws IllegalArgumentException {
+		Text text = service.createText(description, isAllowed, tutorUsername, coID);
+		return convertToDto(text);
+	}
+
+	
+// ********************************************* Course DTO ************************************************ \\
+	
+	
+	// Convert the model university to a DTO object
+	private CourseDto convertToDto(Course c) {
+		if (c == null) {
+			throw new IllegalArgumentException("There is no such Course!");
+		}
+		CourseDto cDTO = new CourseDto(c.getCourseName(), c.getDescription(), c.getUniversity().getName());
+		return cDTO;
+	}
+	
+	// Convert the model university to a DTO object
+	private UniversityDTO convertToDto(University u) {
+		if (u == null) {
+			throw new IllegalArgumentException("There is no such University!");
+		}
+		UniversityDTO uDTO = new UniversityDTO(u.getName(), u.getAddress());
+		return uDTO;
+	}
+	
+	//Convert the model text into a DTO of the text object.
+	private TextDTO convertToDto(Text t) {
+		if(t == null){
+			throw new IllegalArgumentException("There is no such Text!");
+		}
+		TextDTO tDTO = new TextDTO(t.getIsAllowed(), t.getDescription());
+		return tDTO;
+	}	
 }
+
+
