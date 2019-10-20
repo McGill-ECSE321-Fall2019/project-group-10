@@ -77,7 +77,7 @@ public class RatingTest {
 
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
-		int coID = service.getAllCourses().get(0).getCourseID();		
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();		
 
 		try {
 			service.createRating(ratingValue, revieweeUsername, coID);
@@ -99,7 +99,7 @@ public class RatingTest {
 
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
-		int coID = service.getAllCourses().get(0).getCourseID();	
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		try {
 			service.createRating(ratingValue, revieweeUsername, coID);
@@ -132,7 +132,7 @@ public class RatingTest {
 
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
-		int coID = service.getAllCourses().get(0).getCourseID();
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();	
 
 		try {
 			service.createRating(ratingValue, revieweeUsername, coID);
@@ -160,7 +160,7 @@ public class RatingTest {
 
 		int ratingValue = 1;
 		String revieweeUsername = null;
-		int coID = service.getAllCourses().get(0).getCourseID();
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();	
 		
 		String error = null;
 
@@ -182,7 +182,7 @@ public class RatingTest {
 
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
-		int coID = 4;
+		int coID = service.getAllCourses().get(0).getCourseID();;
 		
 		String error = null;
 
@@ -193,7 +193,7 @@ public class RatingTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals(error, "Please enter a valid Course Offering");
+		assertEquals(error, "Please enter a valid course offering...");
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());
@@ -204,7 +204,7 @@ public class RatingTest {
 
 		int ratingValue = -1;
 		String revieweeUsername = "cmc";
-		int coID = service.getAllCourses().get(0).getCourseID();
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();	
 		
 		String error = null;
 
@@ -214,8 +214,9 @@ public class RatingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+
 		// check that the correct error was generated
-		assertEquals(error, "Rating value must be between 1 and 5");
+		assertEquals(error, "You can't give your tutor a negative rating... [1,5]");
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());
@@ -226,7 +227,8 @@ public class RatingTest {
 
 		int ratingValue = 1;
 		String revieweeUsername = "cmc";
-		int coID = 3;
+		//Incorrect value sent with this query.
+		Integer coID = 3;
 		
 		String error = null;
 
@@ -236,8 +238,9 @@ public class RatingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		
 		// check that the correct error was generated
-		assertEquals(error, "Incorrect id value");
+		assertEquals(error, "Please enter a valid course offering...");
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());

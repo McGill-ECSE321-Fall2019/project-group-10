@@ -316,6 +316,7 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Please insert a brief description...");
 		}
 		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
+		
 		if(c == null)
 			throw new IllegalArgumentException("Please enter a valid Course Offering");
 		
@@ -403,9 +404,6 @@ public class TutoringAppService {
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException("Please insert a reviewee username...");
 		}
-		if(ratingValue < 0){
-			throw new IllegalArgumentException("You can't give your tutor a negative rating...");
-		}
 		
 		Rating rating = new Rating();
 		
@@ -415,14 +413,16 @@ public class TutoringAppService {
 			rating.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
 		else 
 			throw new IllegalArgumentException("Please enter a valid Reviewee");
-		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
+
+		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)); 
+		
 		if(c == null)
-			throw new IllegalArgumentException("Please enter a valid Course Offering");
+			throw new IllegalArgumentException("Please enter a valid course offering...");
 		
 		try {
-		rating.setRatingValue(ratingValue);
+			rating.setRatingValue(ratingValue);
 		} catch(RuntimeException e) {
-			throw new IllegalArgumentException("Rating value must be between 1 and 5");
+			throw new IllegalArgumentException("You can't give your tutor a negative rating... [1,5]");
 		}
 		
 		rating.setCourseOffering(c);
@@ -436,9 +436,7 @@ public class TutoringAppService {
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException("Please insert a reviewee username...");
 		}
-		if(ratingValue < 0){
-			throw new IllegalArgumentException("You can't give your tutor a negative rating...");
-		}
+		
 		Rating rating = ratingRepository.findRatingByReviewID(oldID);
 		if(rating == null)
 			throw new IllegalArgumentException("Please enter a valid Rating Review to update");
