@@ -161,7 +161,7 @@ public class TutoringAppService {
 		if(courseID < 0){
 			throw new IllegalArgumentException("Invalid courseID...");
 		}
-		if(term == null || !(term.equals("winter") || term.equals("summer") || term.equals("fall"))){
+		if(term == null){
 			throw new IllegalArgumentException("Invalid term choice...");
 		}
 		
@@ -185,7 +185,7 @@ public class TutoringAppService {
 		if(courseID < 0){
 			throw new IllegalArgumentException("Invalid courseID...");
 		}
-		if(!(term.equals("winter") || term.equals("summer") || term.equals("fall"))){
+		if(term == null){
 			throw new IllegalArgumentException("Invalid term choice...");
 		}
 		CourseOffering courseOffering = courseOfferingRepository.findCourseOfferingByCourseOfferingID(oldID);

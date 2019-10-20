@@ -117,6 +117,7 @@ public class CourseOfferingTest {
 	@Test
 	public void testUpdateCourseOffering() {
 		assertEquals(0, service.getAllCourseOfferings().size());
+		
 //		sets up information for the course
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
@@ -162,7 +163,7 @@ public class CourseOfferingTest {
 
 		try {
       // change term to null
-			service.createCourseOffering(Term.Summer, year, courseID);
+			service.createCourseOffering(null, year, courseID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -221,31 +222,6 @@ public class CourseOfferingTest {
 		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all the courses
 		// check no change in database
 		assertEquals(0, allCO.size()); //checks if the list is not being populated
-	}
-
-	
-//	creates a course offering with an invalid term 
-	@Test
-	public void testCreateCourseOfferingInvalidTerm() {
-		assertEquals(0, service.getAllCourseOfferings().size());
-		
-		int year = 2019;
-		int courseID = service.getAllCourses().get(0).getCourseID();
-
-		String error = null;
-
-		try {
-			service.createCourseOffering(Term.Fall, year, courseID);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			error = e.getMessage();
-		}
-
-		// check error
-		assertEquals("Invalid term choice...", error);
-		// check no change in database
-		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all courses
-		assertEquals(0, allCO.size()); //check if the list is being populated with invalid parameters
 	}
 
 }
