@@ -46,12 +46,10 @@ public class TutoringAppService {
 
 	//Checking to make sure we can create an availability instance.
 	@Transactional
-	public Availability createAvailability(Date date, Time time, int id, String tName) {
+	public Availability createAvailability(Date date, Time time, String tName) {
 
 		// check for invalid inputs
-		if(id < 0){
-			throw new IllegalArgumentException("Incorrect id value for the availability...");
-		}
+
 		if(tName == null || tName.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
 		}
@@ -64,7 +62,6 @@ public class TutoringAppService {
 
 		// set the 
 		Availability availability = new Availability();
-		availability.setId(id);
 		availability.setTime(time);
 		availability.setDate(date);
 		//		availability.setTutor(tutorRepository.findTutorByUsername(tName));
@@ -74,10 +71,7 @@ public class TutoringAppService {
 
 	//Checking to make sure we can update an availability intances.
 	@Transactional
-	public Availability updateAvailability(int oldID, Date date, Time time, int id, String tName) {
-		if(id < 0 || oldID < 0){
-			throw new IllegalArgumentException("Incorrect id value for the availability...");
-		}
+	public Availability updateAvailability(int oldID, Date date, Time time,String tName) {
 		if(tName == null || tName.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
 		}
@@ -89,7 +83,6 @@ public class TutoringAppService {
 		}
 		
 		Availability availability = availabilityRepository.findAvailabilityById(oldID);
-		availability.setId(id);
 		availability.setTime(time);
 		availability.setDate(date);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
@@ -626,6 +619,10 @@ public class TutoringAppService {
 		}
 		if(password == null  || password.equals("")){
 			throw new IllegalArgumentException("Please insert a password...");
+		}
+		if(userEmail == null) {
+			
+			throw new IllegalArgumentException("Please insert a proper email...");
 		}
 		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
 			throw new IllegalArgumentException("Please insert a proper email...");

@@ -100,7 +100,7 @@ public class AvailabilityTest {
 
 
 		try {
-			service.updateAvailability(1, date, time, id, "username");
+			service.updateAvailability(1, date, time, "username");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();

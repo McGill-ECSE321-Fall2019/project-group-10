@@ -11,31 +11,35 @@ import javax.persistence.Table;
 
 @Entity
 public class Availability{
-	@Id
-	@GeneratedValue
-	private int availabilityID;
+    
+    private int id;
+    
+    public void setId(int value){
+        this.id = value;
+    } 
+    
+    @Id
+    @GeneratedValue
+    public int getId(){
+        return this.id;
+    }
+private Date date;
 
-	public int getAvailabilityID() {
-		return this.availabilityID;
-	}
+public void setDate(Date value) {
+    this.date = value;
+}
+public Date getDate() {
+    return this.date;
+}
 
-	private Date date;
+private Time time;
 
-	public void setDate(Date value) {
-		this.date = value;
-	}
-	public Date getDate() {
-		return this.date;
-	}
-
-	private Time time;
-
-	public void setTime(Time value) {
-		this.time = value;
-	}
-	public Time getTime() {
-		return this.time;
-	}
+public void setTime(Time value) {
+    this.time = value;
+}
+public Time getTime() {
+    return this.time;
+}
 
 private Tutor tutor;
 
