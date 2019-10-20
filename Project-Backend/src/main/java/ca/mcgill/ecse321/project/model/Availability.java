@@ -12,14 +12,13 @@ import javax.persistence.Table;
 @Entity
 public class Availability{
 	@Id
-	private int id;
-	public void setId(int value){
-		this.id = value;
-	} 
+	@GeneratedValue
+	private int availabilityID;
 
-	public int getId(){
-		return this.id;
+	public int getAvailabilityID() {
+		return this.availabilityID;
 	}
+
 	private Date date;
 
 	public void setDate(Date value) {
@@ -38,23 +37,15 @@ public class Availability{
 		return this.time;
 	}
 
-	//private Tutor tutor;
-	//
-	//@ManyToOne(optional=false)
-	//public Tutor getTutor() {
-	//   return this.tutor;
-	//}
-	//
-	//public void setTutor(Tutor tutor) {
-	//   this.tutor = tutor;
-	//}
+private Tutor tutor;
 
-	private int availabilityID;
+@ManyToOne(optional=false)
+public Tutor getTutor() {
+   return this.tutor;
+}
 
-	public void setAvailabilityID(int value) {
-		this.availabilityID = value;
-	}
-	public int getAvailabilityID() {
-		return this.availabilityID;
-	}
+public void setTutor(Tutor tutor) {
+   this.tutor = tutor;
+}
+
 }

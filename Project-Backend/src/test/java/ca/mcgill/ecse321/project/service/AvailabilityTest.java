@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
 
@@ -80,7 +79,7 @@ public class AvailabilityTest {
 		int id = 1;
 		
 		try {
-			service.createAvailability(date, time, id, "username");
+			service.createAvailability(date, time, "username");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -90,7 +89,7 @@ public class AvailabilityTest {
 
 		// check that it was created and all the attributes are correct
 		assertEquals(1, allAvailabilities.size());
-		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
+		assertEquals(id, allAvailabilities.get(0).getId());	
 		assertEquals(date, allAvailabilities.get(0).getDate());
 		assertEquals(time, allAvailabilities.get(0).getTime());
 		//assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
@@ -109,7 +108,7 @@ public class AvailabilityTest {
 
 		// check that all the attributes are correct
 		assertEquals(1, allAvailabilities.size());
-		assertEquals(id, allAvailabilities.get(0).getAvailabilityID());	
+		assertEquals(id, allAvailabilities.get(0).getId());	
 		assertEquals(date, allAvailabilities.get(0).getDate());
 		assertEquals(time, allAvailabilities.get(0).getTime());
 		//assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
@@ -127,7 +126,7 @@ public class AvailabilityTest {
 		Time time = new java.sql.Time(millis);
 
 		try {
-			service.createAvailability(date, time, id, "username");
+			service.createAvailability(date, time, "username");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -158,7 +157,7 @@ public class AvailabilityTest {
 		String error = null;
 
 		try {
-			service.createAvailability(date, time, id, "username");
+			service.createAvailability(date, time, "username");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -183,7 +182,7 @@ public class AvailabilityTest {
 		String error = null;
 
 		try {
-			service.createAvailability(date, time, id, "username");
+			service.createAvailability(date, time, "username");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -209,7 +208,7 @@ public class AvailabilityTest {
 		String error = null;
 
 		try {
-			service.createAvailability(date, time, id, "username");
+			service.createAvailability(date, time, "username");
 
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
@@ -235,7 +234,7 @@ public class AvailabilityTest {
 		String error = null;
 
 		try {
-			service.createAvailability(date, time, id, "unknown");
+			service.createAvailability(date, time, "unknown");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
