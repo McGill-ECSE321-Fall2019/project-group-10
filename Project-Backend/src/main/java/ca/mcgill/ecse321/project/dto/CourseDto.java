@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.project.dto;
 
-
 public class CourseDto {
 
 	private String courseName;
@@ -29,6 +28,4 @@ public class CourseDto {
 	public String getUniName() {
 		return uniName;
 	}
-
-
 }

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +25,8 @@ import ca.mcgill.ecse321.project.service.*;
 @RestController
 public class TutoringServiceRestController {
 
+// ******************************************** GET MAPPINGS ********************************************** \\
+	
 	@Autowired
 	TutoringAppService service;
 	
@@ -95,11 +99,23 @@ public class TutoringServiceRestController {
 //		}
 //		return tutorDTOs;
 //	}
+
+	
+// ******************************************** POST MAPPINGS ********************************************** \\
 	
 	
-	// ********** Convert Model to DTO Class ********** //
+	//Uses request parameter to get the username and courseoffering id. RequestBody sends the descprion.
+	@PostMapping(value = { "/text", "/text/" })
+	public TextDTO createReview(@PathVariable("text") String name, @RequestParam String tutorUsername, @RequestParam int coID, @RequestBody String description, @RequestBody boolean isAllowed) throws IllegalArgumentException {
+		Text text = service.createText(description, isAllowed, tutorUsername, coID);
+		return convertToDto(text);
+	}
+
 	
-	// Convert the model course to a DTO object
+// ********************************************* Course DTO ************************************************ \\
+
+  
+  	// Convert the model course to a DTO object
 	private CourseOfferingDTO convertToDto(CourseOffering co) {
 		if (co == null) {
 			throw new IllegalArgumentException("There is no such CourseOffering!");
@@ -108,8 +124,7 @@ public class TutoringServiceRestController {
 				co.getCourse().getCourseName(), co.getCourse().getUniversity().getName());
 		return coDTO;
 	}
-	
-	// Convert the model course to a DTO object
+  
 	private CourseDto convertToDto(Course c) {
 		if (c == null) {
 			throw new IllegalArgumentException("There is no such Course!");
@@ -126,4 +141,14 @@ public class TutoringServiceRestController {
 		UniversityDTO uDTO = new UniversityDTO(u.getName(), u.getAddress());
 		return uDTO;
 	}
+	
+	//Convert the model text into a DTO of the text object.
+	private TextDTO convertToDto(Text t) {
+		if(t == null){
+			throw new IllegalArgumentException("There is no such Text!");
+		}
+		TextDTO tDTO = new TextDTO(t.getIsAllowed(), t.getDescription());
+		return tDTO;
+	}	
 }
+

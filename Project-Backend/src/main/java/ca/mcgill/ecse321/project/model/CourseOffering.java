@@ -13,12 +13,14 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class CourseOffering{
+
 	private Term term;
 
 	public void setTerm(Term value) {
 		this.term = value;
 	}
 	public Term getTerm() {
+
 		return this.term;
 	}
 	private int year;
