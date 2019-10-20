@@ -96,10 +96,8 @@ public class SessionTest {
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
-		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
-		Student[] studentsArray = new Student[allSessions.get(0).getStudent().size()];
-		allSessions.get(0).getStudent().toArray(studentsArray);
-		assertEquals("studentUser", (studentsArray[0].getUsername()));
+		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
+		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 	}
 	
@@ -125,12 +123,8 @@ public class SessionTest {
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
-
-		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
-		Student[] studentsArray = new Student[allSessions.get(0).getStudent().size()];
-		allSessions.get(0).getStudent().toArray(studentsArray);
-		assertEquals("studentUser", (studentsArray[0].getUsername()));
-
+		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
+		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
 		date = Date.valueOf("2019-02-01");
@@ -145,17 +139,13 @@ public class SessionTest {
 		}
 		
 		allSessions = service.getAllSessions();
-		studentsArray = new Student[allSessions.get(0).getStudent().size()];
 		
 		assertEquals(1, allSessions.size());
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
-
 		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
-		allSessions.get(0).getStudent().toArray(studentsArray);
-		assertEquals("studentUser", (studentsArray[0].getUsername()));
-
+		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
 	}

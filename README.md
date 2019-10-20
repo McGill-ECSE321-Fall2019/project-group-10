@@ -46,7 +46,7 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Taylor Lynn Curtis</td>
-    <td>Software Consulting Lead: Responsible for dependency injections and writing JPA Tag code</td>
+    <td>Software Consulting Lead: Responsible for dependecny injections and writing JPA Tag code</td>
     <td>19</td>
     <td>[tbh]</td>
     <td>[tbh]</td>

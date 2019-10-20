@@ -21,9 +21,10 @@ import ca.mcgill.ecse321.project.dao.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CourseOfferingTest {
-
+	
 	@Autowired
 	private TutoringAppService service;
+
 	@Autowired 
 	private AvailabilityRepository availabilityRepository;
 	@Autowired
@@ -42,13 +43,13 @@ public class CourseOfferingTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
-
+	
 	@Before
 	public void setUp(){
 		service.createUniversity("McGill", "3040 University");
 		service.createCourse("Intro to Software","ECSE 321", service.getAllUniversities().get(0).getUniversityID());
 	}
-
+	
 	@After
 	public void clearDatabase() {
 		sessionRepository.deleteAll();
@@ -61,11 +62,11 @@ public class CourseOfferingTest {
 		roleRepository.deleteAll();
 		userRepository.deleteAll();
 	}
-
-	//	creates a course offering 
+	
 	@Test
 	public void testCreateCourseOffering() {
 		assertEquals(0, service.getAllCourseOfferings().size());
+		
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
 
@@ -76,21 +77,18 @@ public class CourseOfferingTest {
 			fail();
 		}
 
-		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all the courseOffering
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
 		// check that all the attributes are correct
-
 		assertEquals(1, allCO.size());
 		assertEquals(year, allCO.get(0).getYear());
 		assertEquals(Term.Fall, allCO.get(0).getTerm());
 		assertEquals(courseID, allCO.get(0).getCourse().getCourseID());
-}
-//	deletes the course 
+	}
+	
 	@Test
 	public void testDeleteCourseOffering() {
 		assertEquals(0, service.getAllCourseOfferings().size());
-
-//		sets up information for the course
-
+		
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
 
@@ -100,9 +98,9 @@ public class CourseOfferingTest {
 			// Check that no error occurred
 			fail();
 		}
-
-		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all the courses
-
+		
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+		
 		try {
 			service.deleteCourseOffering(allCO.get(0).getCourseOfferingID());
 		} catch (IllegalArgumentException e) {
@@ -112,16 +110,13 @@ public class CourseOfferingTest {
 
 		allCO = service.getAllCourseOfferings();
 
-		assertEquals(0, allCO.size()); //checks the size of the list
+		assertEquals(0, allCO.size());
 	}
 	
-//	test to update the course
 	@Test
 	public void testUpdateCourseOffering() {
 		assertEquals(0, service.getAllCourseOfferings().size());
-
-//		sets up information for the course
-
+		
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
 
@@ -132,12 +127,13 @@ public class CourseOfferingTest {
 			fail();
 		}
 
-		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all the courses
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
 
-		assertEquals(1, allCO.size()); //checks the size of the list
-		assertEquals(year, allCO.get(0).getYear()); //checks for the Year the course is offered
-		assertEquals(term, allCO.get(0).getTerm());//check which term is the course being offered
-		assertEquals(courseID, allCO.get(0).getCourse().getCourseID());// checks for the courseID
+		assertEquals(1, allCO.size());
+		//assertEquals(id, allCO.get(0).getCourseOfferingID());
+		assertEquals(year, allCO.get(0).getYear());
+		assertEquals(Term.Summer, allCO.get(0).getTerm());
+		assertEquals(courseID, allCO.get(0).getCourse().getCourseID());
 		
 		year = 2020;
 
@@ -155,14 +151,13 @@ public class CourseOfferingTest {
 		assertEquals(Term.Fall, allCO.get(0).getTerm());
 	}
 	
-//	test to check if the course offering has a null term
 	@Test
 	public void testCreateCourseOfferingNullTerm() {
 		assertEquals(0, service.getAllCourseOfferings().size());
 		
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
-
+		
 		String error = null;
 
 		try {
@@ -174,20 +169,18 @@ public class CourseOfferingTest {
 
 		// check error
 		assertEquals("Invalid term choice...", error);
-
-		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all the courses
-		assertEquals(0, allCO.size()); //checks the size of the list
+				
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+		assertEquals(0, allCO.size());
 	}
-
-//	test to create a course with an invalid year
+	
 	@Test
 	public void testCreateCourseOfferingInvalidYear() {
 		assertEquals(0, service.getAllCourseOfferings().size());
-
-//		sets up the information 
+		
 		int year = 1800;
 		int courseID = service.getAllCourses().get(0).getCourseID();
-
+		
 		String error = null;
 
 		try {
@@ -196,21 +189,22 @@ public class CourseOfferingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
+		
 		// check error
 		assertEquals("That is far too long ago...", error);
-		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the size of the list
-		assertEquals(0, allCO.size()); //checks the list is populating with invalid information 
-	}
 
-//	creates a course with a null course 
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+
+		assertEquals(0, allCO.size());
+	}
+	
 	@Test
 	public void testCreateCourseOfferingNullCourse() {
 		assertEquals(0, service.getAllCourseOfferings().size());
-
-//		sets up information for creating a course
+	
 		int year = 2019;
 		int courseID = 3;
-
+		
 		String error = null;
 
 		try {
@@ -219,24 +213,22 @@ public class CourseOfferingTest {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
-
+		
 		// check error
 		assertEquals("Please specify a valid Course", error);
 
-		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all the courses
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
 		// check no change in database
-		assertEquals(0, allCO.size()); //checks if the list is not being populated
+		assertEquals(0, allCO.size());
 	}
-
 	
-//	creates a university with an invalid term 
 	@Test
 	public void testCreateCourseOfferingInvalidTerm() {
 		assertEquals(0, service.getAllCourseOfferings().size());
-
+		
 		int year = 2019;
 		int courseID = service.getAllCourses().get(0).getCourseID();
-
+		
 		String error = null;
 
 		try {
@@ -249,8 +241,8 @@ public class CourseOfferingTest {
 		// check error
 		assertEquals("Invalid term choice...", error);
 		// check no change in database
-		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all courses
-		assertEquals(0, allCO.size()); //check if the list is being populated with invalid parameters
+		List<CourseOffering> allCO = service.getAllCourseOfferings();
+		assertEquals(0, allCO.size());
 	}
-
+	
 }
