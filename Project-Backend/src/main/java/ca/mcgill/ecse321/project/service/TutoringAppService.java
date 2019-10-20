@@ -4,18 +4,18 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.project.dao.*;
+import ca.mcgill.ecse321.project.dto.CourseDto;
 import ca.mcgill.ecse321.project.model.*;
 
 @Service
 public class TutoringAppService {
-
+	
 	@Autowired
 	AvailabilityRepository availabilityRepository;
 	@Autowired
@@ -42,13 +42,11 @@ public class TutoringAppService {
 	UniversityRepository universityRepository;
 	@Autowired
 	UserRepository userRepository;
-
+	
 
 	//Checking to make sure we can create an availability instance.
 	@Transactional
 	public Availability createAvailability(Date date, Time time, String tName) {
-
-		// check for invalid inputs
 
 		if(tName == null || tName.equals("")){
 			throw new IllegalArgumentException("Invalid name...");
@@ -59,12 +57,12 @@ public class TutoringAppService {
 		if(time == null){
 			throw new IllegalArgumentException("Invalid time parameters...");
 		}
-
+			
 		// set the 
 		Availability availability = new Availability();
 		availability.setTime(time);
 		availability.setDate(date);
-		//		availability.setTutor(tutorRepository.findTutorByUsername(tName));
+		availability.setTutor(tutorRepository.findTutorByUsername(tName));
 		availabilityRepository.save(availability);
 		return availability;
 	}
@@ -82,23 +80,25 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Invalid time parameters...");
 		}
 		
+
 		Availability availability = availabilityRepository.findAvailabilityById(oldID);
+
 		availability.setTime(time);
 		availability.setDate(date);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if( t == null)
 			throw new IllegalArgumentException("Please specify a valid Tutor");
-		//		availability.setTutor(t);
+//		availability.setTutor(t);
 		availabilityRepository.save(availability);
 		return availability;
 	}
-
+	
 	//Checking to make sure we can get the list of all the availability intances.
 	@Transactional
 	public List<Availability> getAllAvailabilities() {
 		return toList(availabilityRepository.findAll());
 	}
-
+	
 	//Checking to make sure we can get all the availability intances.
 	@Transactional
 	public Availability getAvailability(int id) {
@@ -106,18 +106,18 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Incorrect id value for the availability...");
 		}
 				
-		Availability a = availabilityRepository.findAvailabilityById(new Integer(id));
+		Availability a = availabilityRepository.findAvailabilityByAvailabilityID(new Integer(id));
 		return a;
 	}
-
+	
 	//Checking to make sure we can get all the availabilities for the given tutor.
-	//	@Transactional
-	//	public List<Availability> getAvailabilityByTutor(String username) {
-	//		Tutor tutor = tutorRepository.findTutorByUsername(username);
-	////		return toList(availabilityRepository.findAvailabilityByTutor(tutor));
-	//	}
-	//
-	//	//Checking to make sure we can delete the availabilities.
+//	@Transactional
+//	public List<Availability> getAvailabilityByTutor(String username) {
+//		Tutor tutor = tutorRepository.findTutorByUsername(username);
+////		return toList(availabilityRepository.findAvailabilityByTutor(tutor));
+//	}
+//	
+//	//Checking to make sure we can delete the availabilities.
 	@Transactional
 	public boolean deleteAvailability(int id) {
 		if(id < 0){
@@ -132,29 +132,29 @@ public class TutoringAppService {
 		}
 		return done;
 	}
-
+	
 	//Checking to make sure we can delete the availabilities given the tutor.
-	//	@Transactional
-	//	public boolean deleteAvailabilityByTutor(String username) {
-	//		if(username == null || username.equals("")){
-	//			throw new IllegalArgumentException("You are searching for an invalid username...");
-	//		}
-	//
-	//		boolean done = false;
-	//		//List<Availability> availList = getAvailabilityByTutor(username);
-	//		for(Availability a: getAvailabilityByTutor(username)) {
-	//			if (a != null) {
-	//				availabilityRepository.delete(a);
-	//			}
-	//		}
-	//		done = true;
-	//
-	//		return done;
-	//	}
-
+//	@Transactional
+//	public boolean deleteAvailabilityByTutor(String username) {
+//		if(username == null || username.equals("")){
+//			throw new IllegalArgumentException("You are searching for an invalid username...");
+//		}
+//
+//		boolean done = false;
+//		//List<Availability> availList = getAvailabilityByTutor(username);
+//		for(Availability a: getAvailabilityByTutor(username)) {
+//			if (a != null) {
+//				availabilityRepository.delete(a);
+//			}
+//		}
+//		done = true;
+//		
+//		return done;
+//	}
+	
 	//Checking to make sure we can create a course offering.
 	@Transactional
-	public CourseOffering createCourseOffering(String term, int year, int courseID) {
+	public CourseOffering createCourseOffering(Term term, int year, int courseID) {
 		if(year < 1900){
 			throw new IllegalArgumentException("That is far too long ago...");
 		}
@@ -164,7 +164,7 @@ public class TutoringAppService {
 		if(term == null || !(term.equals("winter") || term.equals("summer") || term.equals("fall"))){
 			throw new IllegalArgumentException("Invalid term choice...");
 		}
-
+		
 		CourseOffering courseOffering = new CourseOffering();
 		courseOffering.setYear(year);
 		courseOffering.setTerm(term);
@@ -175,10 +175,10 @@ public class TutoringAppService {
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
-
+	
 	//Checking to make sure we can update the course offering.
 	@Transactional
-	public CourseOffering updateCourseOffering(int oldID, String term, int year, int courseID) {
+	public CourseOffering updateCourseOffering(int oldID, Term term, int year, int courseID) {
 		if(year < 1900){
 			throw new IllegalArgumentException("That is far too long ago...");
 		}
@@ -200,13 +200,13 @@ public class TutoringAppService {
 		courseOfferingRepository.save(courseOffering);
 		return courseOffering;
 	}
-
+	
 	//Checking to make sure we can get the list of all the course offerings.
 	@Transactional
 	public List<CourseOffering> getAllCourseOfferings() {
 		return toList(courseOfferingRepository.findAll());
 	}
-
+	
 	//Checking to make sure we can get all the course offerings.
 	@Transactional
 	public CourseOffering getCourseOffering(int id) {
@@ -216,7 +216,7 @@ public class TutoringAppService {
 		CourseOffering a = courseOfferingRepository.findCourseOfferingByCourseOfferingID(id);
 		return a;
 	}
-
+	
 	//Checking to make sure we can get delete the course offerings.
 	@Transactional
 	public boolean deleteCourseOffering(int id) {
@@ -231,7 +231,7 @@ public class TutoringAppService {
 		}
 		return done;
 	}
-
+	
 	//Checking to make sure we can get create a course.
 	@Transactional
 	public Course createCourse(String description, String courseName, int uniID) {
@@ -244,7 +244,7 @@ public class TutoringAppService {
 		University u = universityRepository.findUniversityByUniversityID(uniID);
 		if( u == null)
 			throw new IllegalArgumentException("Please specify a valid University");
-
+	
 		Course course = new Course();
 		course.setDescription(description);
 		course.setCourseName(courseName);
@@ -252,7 +252,7 @@ public class TutoringAppService {
 		courseRepository.save(course);
 		return course;
 	}
-
+	
 	//Checking to make sure we can get update a course.
 	@Transactional
 	public Course updateCourse(int oldID, String description, String courseName, int uniID) {
@@ -274,7 +274,7 @@ public class TutoringAppService {
 		courseRepository.save(course);
 		return course;
 	}
-
+	
 	//Checking to make sure we can get a course.
 	@Transactional
 	public Course getCourse(int id) {
@@ -299,13 +299,13 @@ public class TutoringAppService {
 		}
 		return done;
 	}
-
+	
 	//Checking to make sure we can get all course.
 	@Transactional
 	public List<Course> getAllCourses() {
 		return toList(courseRepository.findAll());
 	}
-
+	
 	//Checking to make sure we can create a text.
 	@Transactional
 	public Text createText(String description, boolean isAllowed, String revieweeUsername, int coID) {
@@ -318,7 +318,7 @@ public class TutoringAppService {
 		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
 		if(c == null)
 			throw new IllegalArgumentException("Please enter a valid Course Offering");
-
+		
 		Text text = new Text();
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
@@ -346,7 +346,7 @@ public class TutoringAppService {
 		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
 		if(c == null)
 			throw new IllegalArgumentException("Please enter a valid Course Offering");
-
+		
 		Text text = textRepository.findTextByReviewID(oldID);
 		if(text == null)
 			throw new IllegalArgumentException("Please enter a valid Text Review to update");
@@ -362,13 +362,13 @@ public class TutoringAppService {
 		textRepository.save(text);
 		return (Text)text;
 	}
-
+	
 	//Checking to make sure we can get a list of text instances.
 	@Transactional
 	public List<Text> getAllTexts() {
 		return toList(textRepository.findAll());
 	}
-
+	
 	//Checking to make sure we can get text.
 	@Transactional
 	public Text getText(int id) {
@@ -379,7 +379,7 @@ public class TutoringAppService {
 		Text a = textRepository.findTextByReviewID(id);
 		return a;
 	}
-
+	
 	//Checking to make sure we can delete a text.
 	@Transactional
 	public boolean deleteText(int id) {
@@ -395,7 +395,7 @@ public class TutoringAppService {
 		}
 		return done;
 	}
-
+	
 	//Checking to make sure we can create a rating.
 	@Transactional
 	public Rating createRating(int ratingValue, String revieweeUsername, int coID) {
@@ -406,9 +406,9 @@ public class TutoringAppService {
 		if(ratingValue < 0){
 			throw new IllegalArgumentException("You can't give your tutor a negative rating...");
 		}
-
+		
 		Rating rating = new Rating();
-
+		
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
 			rating.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
 		else if (studentRepository.findStudentByUsername(revieweeUsername) != null)
@@ -418,18 +418,18 @@ public class TutoringAppService {
 		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
 		if(c == null)
 			throw new IllegalArgumentException("Please enter a valid Course Offering");
-
+		
 		try {
-			rating.setRatingValue(ratingValue);
+		rating.setRatingValue(ratingValue);
 		} catch(RuntimeException e) {
 			throw new IllegalArgumentException("Rating value must be between 1 and 5");
 		}
-
+		
 		rating.setCourseOffering(c);
 		ratingRepository.save(rating);
 		return rating;
 	}
-
+	
 	//Checking to make sure we can create a text.
 	@Transactional
 	public Rating updateRating(int oldID, int ratingValue, String revieweeUsername, int coID) {
@@ -448,9 +448,9 @@ public class TutoringAppService {
 		} catch(RuntimeException e) {
 			throw new IllegalArgumentException("Please enter a valid Course Offering");
 		}
-
+		
 		try {
-			rating.setRatingValue(ratingValue);
+		rating.setRatingValue(ratingValue);
 		} catch(RuntimeException e) {
 			throw new IllegalArgumentException("Rating value must be between 1 and 5");
 		}
@@ -464,31 +464,31 @@ public class TutoringAppService {
 		ratingRepository.save(rating);
 		return rating;
 	}
-
+	
 	//Checking to make sure we can get all ratings.
 	@Transactional
 	public List<Rating> getAllRatings() {
 		return toList(ratingRepository.findAll());
 	}
-
+	
 	//Checking to make sure we can get a rating.
 	@Transactional
 	public Rating getRating(int id) {
 		if(id < 0){
 			throw new IllegalArgumentException("Incorrect id value for the rating search...");
 		}
-
+		
 		Rating a = ratingRepository.findRatingByReviewID(id);
 		return a;
 	}
-
+	
 	//Checking to make sure we can delete a rating.
 	@Transactional
 	public boolean deleteRating(int id) {
 		if(id < 0){
 			throw new IllegalArgumentException("Incorrect id value for the rating deletion...");
 		}
-
+		
 		boolean done = false;
 		Rating a = getRating(id);
 		if (a != null) {
@@ -497,7 +497,7 @@ public class TutoringAppService {
 		}
 		return done;
 	}
-
+	
 	//Checking to make sure we can create a tutor.
 	@Transactional
 	public Tutor createTutor(String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
@@ -533,7 +533,7 @@ public class TutoringAppService {
 		tutorRepository.save(tutor);
 		return tutor;
 	}
-
+	
 	//Checking to make sure we can update a tutor.
 	@Transactional
 	public Tutor updateTutor(String oldUsername, String username, String password, String userEmail, double hourlyRate, int exp, Education level) {
@@ -573,7 +573,7 @@ public class TutoringAppService {
 		tutorRepository.save(tutor);
 		return tutor;
 	}
-
+	
 	//Checking to make sure we can get a tutor.
 	@Transactional
 	public Tutor getTutor(String username) {
@@ -583,7 +583,7 @@ public class TutoringAppService {
 		Tutor a = tutorRepository.findTutorByUsername(username);
 		return a;
 	}
-
+	
 	//Checking to make sure we can delete a tutor.
 	@Transactional
 	public boolean deleteTutor(String username) {
@@ -598,19 +598,19 @@ public class TutoringAppService {
 		}
 		return done;
 	}
-
+	
 	//Checking to make sure we can get all students.
 	@Transactional
 	public List<Student> getAllStudents() {
 		return toList(studentRepository.findAll());
 	}
-
+	
 	//Checking to make sure we can get all tutors.
 	@Transactional
 	public List<Tutor> getAllTutors() {
 		return toList(tutorRepository.findAll());
 	}
-
+	
 	//Checking to make sure we can create a student.
 	@Transactional
 	public Student createStudent(String username, String password, String userEmail) {
@@ -621,7 +621,6 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("Please insert a password...");
 		}
 		if(userEmail == null) {
-			
 			throw new IllegalArgumentException("Please insert a proper email...");
 		}
 		if(!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
@@ -630,7 +629,7 @@ public class TutoringAppService {
 		TSUser u = userRepository.findTSuserByEmail(userEmail);
 		if (u == null)
 			throw new IllegalArgumentException("Please input a valid user");
-
+		
 		Student student = new Student();
 		student.setUsername(username);
 		student.setPassword(password);
@@ -676,7 +675,7 @@ public class TutoringAppService {
 		Student a = studentRepository.findStudentByUsername(username);
 		return a;
 	}
-
+	
 	//Checking to make sure we can delete a student.
 	@Transactional
 	public boolean deleteStudent(String username) {
@@ -717,11 +716,10 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		Set<Student> student = session.getStudent();
-		Student target = studentRepository.findStudentByUsername(sName);
-		if(target == null)
+		List<Student> student = new ArrayList<Student>();
+		if(studentRepository.findStudentByUsername(sName) == null)
 			throw new IllegalArgumentException("Please input a valid student");
-		student.add(target);
+		student.add(studentRepository.findStudentByUsername(sName));
 		session.setStudent(student);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null)
@@ -730,7 +728,7 @@ public class TutoringAppService {
 		sessionRepository.save(session);
 		return session;
 	}
-
+	
 	//Checking to make sure we can update a session.
 	@Transactional
 	public Session updateSession(int oldID, int coID, Date date, Time time, Double amountPaid, String sName, String tName) {
@@ -757,24 +755,24 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
-		Set<Student> students = session.getStudent();
+		List<Student> student = new ArrayList<Student>();
 		if(studentRepository.findStudentByUsername(sName) == null)
 			throw new IllegalArgumentException("Please input a valid student");
-		students.add(studentRepository.findStudentByUsername(sName));
-		session.setStudent(students);
+		student.add(studentRepository.findStudentByUsername(sName));
+		session.setStudent(student);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null)
 			throw new IllegalArgumentException("Please input a valid tutor");
 		sessionRepository.save(session);
 		return session;
 	}
-
+	
 	//Checking to make sure we can get all sessions.
 	@Transactional
 	public List<Session> getAllSessions() {
 		return toList(sessionRepository.findAll());
 	}
-
+	
 	//Checking to make sure we can get a session.
 	@Transactional
 	public Session getSession(int id) {
@@ -784,7 +782,7 @@ public class TutoringAppService {
 		Session a = sessionRepository.findSessionBySessionID(new Integer(id));
 		return a;
 	}
-
+	
 	//Checking to make sure we can delete a session.
 	@Transactional
 	public boolean deleteSession(int id) {
@@ -799,7 +797,7 @@ public class TutoringAppService {
 		}
 		return done;
 	}
-
+	
 	//Checking to make sure we can create a university.
 	@Transactional
 	public University createUniversity(String name, String addr) {
@@ -810,7 +808,7 @@ public class TutoringAppService {
 		if(addr == null || addr.equals("")){
 			throw new IllegalArgumentException("Invalid address...");
 		}
-
+		
 		University uni = new University();
 		uni.setName(name);
 		uni.setAddress(addr);
@@ -824,7 +822,7 @@ public class TutoringAppService {
 	public List<University> getAllUniversities() {
 		return toList(universityRepository.findAll());
 	}
-
+	
 	//Checking to make sure we can create a user.
 	@Transactional
 	public TSUser createUser(String name, String email, int age, String phoneNum) {
@@ -839,7 +837,7 @@ public class TutoringAppService {
 		if(!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
 			throw new IllegalArgumentException("Please insert a proper email...");
 		}
-
+		
 		//Special phone number check.
 		if(!phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
 			throw new IllegalArgumentException("Invalid phone number...");
@@ -853,7 +851,7 @@ public class TutoringAppService {
 		userRepository.save(user);
 		return user;
 	}
-
+	
 	//Checking to make sure we can update a user.
 	@Transactional
 	public TSUser updateUser(String name, String oldEmail,String newEmail, int age, String phoneNum) {
@@ -865,14 +863,14 @@ public class TutoringAppService {
 		userRepository.save(user);
 		return user;
 	}
-
+	
 	//Checking to make sure we can get a user.
 	@Transactional
 	public TSUser getUser(String email) {
 		TSUser a = userRepository.findTSuserByEmail(email);
 		return a;
 	}
-
+	
 	//Checking to make sure we can delete a user.
 	@Transactional
 	public boolean deleteUser(String email) {
@@ -884,7 +882,7 @@ public class TutoringAppService {
 		}
 		return done;
 	}
-
+	
 	//Checking to make sure we can get all users.
 	@Transactional
 	public List<TSUser> getAllUsers() {
@@ -954,7 +952,7 @@ public class TutoringAppService {
 
 	//
 
-	//	 <----University---->
+//	 <----University---->
 
 
 	//Checking to make sure we can update a university.
@@ -986,5 +984,52 @@ public class TutoringAppService {
 			done = true;
 		}
 		return done;
-	}	
+	}
+
+	// get courses from specified university name
+	@Transactional
+	public List<Course> getAllCoursesByUniversity(String name) throws IllegalArgumentException {
+		List<Course> courses = new ArrayList<>();
+		
+		// get all courses
+		List<Course> allcourses = getAllCourses();
+		if(allcourses == null)
+			throw new IllegalArgumentException("No courses offered for this university");
+		
+		// filter by university name
+		for(Course c : getAllCourses()) {
+			if(c.getUniversity().getName() == name)
+				courses.add(c);
+		}
+		
+		return courses;
+	}
+
+	// get course offerings from specified course from associated university
+	public List<CourseOffering> getAllCourseOfferingsByCourse(String cname, String uniName) {
+		List<CourseOffering> courseOs = new ArrayList<>();
+		
+		// get all course offerings
+		for(CourseOffering co : getAllCourseOfferings()) {
+			// check name and university names that they are what we are looking for
+			if(co.getCourse().getCourseName().equals(cname) 
+					&& co.getCourse().getUniversity().getName().equals(uniName))
+				courseOs.add(co);
+		}
+		return courseOs;
+	}
+	
+//	// get course offerings from specified course from associated university
+//	public List<CourseOffering> getAllTutorsByCourseOffering(String cname, String uniName, String coname) {
+//		List<CourseOffering> courseOs = getAllCourseOfferingsByCourse(cname, coname);
+//		
+//		// get all tutors
+//		for(Tutor t : getAllTutors()) {
+//			// check name and university names that they are what we are looking for
+//			if(getCourse().getCourseName().equals(cname) 
+//					&& co.getCourse().getUniversity().getName().equals(uniName))
+//				courseOs.add(co);
+//		}
+//		return courseOs;
+//	}
 }
