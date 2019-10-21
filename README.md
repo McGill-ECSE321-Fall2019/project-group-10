@@ -1,19 +1,19 @@
 Welcome to the ECSE 321 Group 10 GitHub repository!<br>
 
-<br>**Team Members:**<br>
+<h2>Team Members:</h2>
 Taylor Lynn Curtis<br>
 Alex Grunwald<br>
 Chelsea Myers-Colet<br>
 Yoan Poulmarc'k<br>
 Anas Shahid<br>
 
-<br>**Scope of Project:**
+<h2>Scope of Project:</h2><br>
 The goal of our project is to create the student perspective of a tutoring application. 
 This will be accessible via an app on any Android device. The application
 will allow students to select a course and view all available tutors, their
 hourly rates, availabilities and reviews from other students.<br>
 
-<br>**Overview Table**<br>
+<h2>Overview Table</h2>
 Below can be found the role of each member and the number of hours spent on each sprint.
 
 <table>
@@ -28,7 +28,7 @@ Below can be found the role of each member and the number of hours spent on each
 
   <tr>
     <td>Alex Gruenwald</td>
-    <td>Technical(ly) Intern: Responsible for UML Lab modelling and generating of model code. Proofreading expert.</td>
+    <td>Technical(ly) Intern</td>
     <td>19</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -37,7 +37,7 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Chelsea M-C</td>
-    <td>Documentation Manager: Responsible for meeting minutes and writing tests.</td>
+    <td>Documentation Manager</td>
     <td>20</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -46,7 +46,7 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Taylor Lynn Curtis</td>
-    <td>Software Consulting Lead: Responsible for dependency injections and writing JPA Tag code</td>
+    <td>Software Consulting Lead</td>
     <td>19</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -55,7 +55,7 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Anas Shahid</td>
-    <td>Software Developer: Responsible for writing tests and fixing bugs.</td>
+    <td>Software Developer</td>
     <td>11</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
@@ -64,16 +64,31 @@ Below can be found the role of each member and the number of hours spent on each
   
   <tr>
     <td>Yoan Poulmarc'k</td>
-    <td>Software Architecture Lead: Set up database and connected other applications together.</td>
+    <td>Software Architecture Lead</td>
     <td>17</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
-  
-  
-
 </table>
+
+<h2>Tasks By Deliverable</h2>
+<h3>Sprint 1</h3>
+<ul>
+  <li>Alex: Responsible for UML Lab modelling and generating of model code. Proofreading expert. </li>
+  <li>Chelsea: Responsible for meeting minutes and writing tests.</li>
+  <li>Taylor: Responsible for dependency injections and writing JPA Tag code.</li>
+  <li>Anas: Responsible for writing tests and fixing bugs.</li>
+  <li>Yoan: Set up database and connected other applications together.</li>
+</ul>
+<h3>Sprint 2</h3>
+<ul>
+  <li>Alex:</li>
+  <li>Chelsea:</li>
+  <li>Taylor: </li>
+  <li>Anas:</li>
+  <li>Yoan:</li>
+</ul>
 
 <br>To see our meeting minutes, including key design decisions and architecture
 framework, head over to our wiki page and select any page titled with a date:<br>
