@@ -6,12 +6,11 @@ import org.springframework.data.repository.CrudRepository;
 // import model class
 import ca.mcgill.ecse321.project.model.*;
 
-import java.util.List;
 
 public interface AvailabilityRepository extends CrudRepository<Availability, Integer>{
 
-	Availability findAvailabilityByAvailabilityID(Integer id);
+	Availability findAvailabilityById(Integer id);
 	
-	List<Availability> findAvailabilityByTutor(Tutor tutor);
+	//List<Availability> findAvailabilityByTutor(Tutor tutor);
 
 }

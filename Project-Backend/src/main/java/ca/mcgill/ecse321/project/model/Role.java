@@ -4,65 +4,76 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import ca.mcgill.ecse321.project.model.User;
+import ca.mcgill.ecse321.project.model.TSUser;
 import javax.persistence.ManyToOne;
+
 import java.util.Set;
 import javax.persistence.OneToMany;
 
 @Entity
 public abstract class Role{
-   private String username;
-   
-   public void setUsername(String value) {
-      this.username = value;
-   }
-   @Id
-   @GeneratedValue
-   public String getUsername() {
-      return this.username;
-   }
-   
-   private String password;
-   
-   public void setPassword(String value) {
-      this.password = value;
-   }
-   
-   public String getPassword() {
-      return this.password;
-   }
-   
-   private User user;
-   
-   @ManyToOne(optional=false)
-   public User getUser() {
-      return this.user;
-   }
-   
-   public void setUser(User user) {
-      this.user = user;
-   }
-   
-   private Set<Review> review;
-   
-   @OneToMany(mappedBy="writtenAbout" )
-   public Set<Review> getReview() {
-      return this.review;
-   }
-   
-   public void setReview(Set<Review> reviews) {
-      this.review = reviews;
-   }
-   
-   private Set<Review> authoredReview;
-   
-   @OneToMany
-   public Set<Review> getAuthoredReview() {
-      return this.authoredReview;
-   }
-   
-   public void setAuthoredReview(Set<Review> authoredReviews) {
-      this.authoredReview = authoredReviews;
-   }
-   
-   }
+	private int id;
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return this.id;
+	}
+
+	private String username;
+
+	public void setUsername(String value) {
+		this.username = value;
+	}
+
+	public String getUsername() {
+		return this.username;
+	}
+
+	private String password;
+
+	public void setPassword(String value) {
+		this.password = value;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	private TSUser user;
+
+	@ManyToOne(optional=false)
+	public TSUser getUser() {
+		return this.user;
+	}
+
+	public void setUser(TSUser user) {
+		this.user = user;
+	}
+
+	private Set<Review> review;
+
+	@OneToMany(mappedBy="writtenAbout" )
+	public Set<Review> getReview() {
+		return this.review;
+	}
+
+	public void setReview(Set<Review> reviews) {
+		this.review = reviews;
+	}
+
+	private Set<Review> authoredReview;
+
+	@OneToMany
+	public Set<Review> getAuthoredReview() {
+		return this.authoredReview;
+	}
+
+	public void setAuthoredReview(Set<Review> authoredReviews) {
+		this.authoredReview = authoredReviews;
+	}
+
+}

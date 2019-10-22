@@ -15,17 +15,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.dao.*;
-//import needed for tutoring app service 
-import ca.mcgill.ecse321.project.service.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 
 public class RoomTest {
-	
+
 	@Autowired
 	private TutoringAppService service;
-
 	@Autowired 
 	private AvailabilityRepository availabilityRepository;
 	@Autowired
@@ -44,7 +41,7 @@ public class RoomTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@After
 	public void clearDatabase() {
 		// clear the databases in order of dependencies
@@ -58,10 +55,11 @@ public class RoomTest {
 		roleRepository.deleteAll();
 		userRepository.deleteAll();
 	}
-	
+
+//	creates a new room for the session
 	@Test
 	public void testCreateRoom() {
-
+//		sets up the information 
 		int roomNumber = 1;
 
 		try {
@@ -71,27 +69,27 @@ public class RoomTest {
 			fail();
 		}
 
-		List<Room> allRooms = service.getAllRooms();
+		List<Room> allRooms = service.getAllRooms(); //gets the list of all the rooms
 
 		// check that it was created and all the attributes are correct
-		assertEquals(1, allRooms.size());
-		assertEquals(roomNumber, allRooms.get(0).getRoomNumber());
-		}
-	
-	
+		assertEquals(1, allRooms.size()); //checks the the room size is set
+		assertEquals(roomNumber, allRooms.get(0).getRoomNumber()); //checks if the room number is set
+	}
+
+//	test to delete a room
 	@Test
 	public void testDeleteRoom() {
 		assertEquals(0, service.getAllCourseOfferings().size());
-		
+//		sets up information for the room
 		int roomNumber = 1;
-		
+
 		try {
 			service.createRoom(roomNumber);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
-		
+
 		try {
 			service.deleteRoom(roomNumber);
 		} catch (IllegalArgumentException e) {
@@ -99,16 +97,17 @@ public class RoomTest {
 			fail();
 		}
 		// check that the correct error was generated
-		List<Room> allRooms = service.getAllRooms();
-		assertEquals(0, allRooms.size());
+		List<Room> allRooms = service.getAllRooms(); //gets the list of all rooms
+		assertEquals(0, allRooms.size()); // checks the room is deleted
 	}
-	
+
+//	test to update the room
 	@Test
 	public void testUpdateRoom() {
 		assertEquals(0, service.getAllCourseOfferings().size());
-		
+
 		int roomNumber = 1;
-		
+
 
 		try {
 			service.createRoom(roomNumber);
@@ -117,12 +116,12 @@ public class RoomTest {
 			fail();
 		}
 
-		List<Room> allRooms = service.getAllRooms();
+		List<Room> allRooms = service.getAllRooms(); //gets the list of all the rooms
 
-		assertEquals(1, allRooms.size());
-		assertEquals(roomNumber, allRooms.get(0).getRoomNumber());
+		assertEquals(1, allRooms.size()); //gets the size of the room
+		assertEquals(roomNumber, allRooms.get(0).getRoomNumber()); //checks the roomNumber
 		int newRoomNumber  = 2;
-		
+
 		try {
 			service.updateRoom(roomNumber, newRoomNumber);
 		} catch (IllegalArgumentException e) {
@@ -130,17 +129,17 @@ public class RoomTest {
 			fail();
 		}
 		// check that the correct error was generated
-		allRooms = service.getAllRooms();
-		assertEquals(1, allRooms.size());
-		assertEquals(newRoomNumber, allRooms.get(0).getRoomNumber());
-		}
-	
-	
+		allRooms = service.getAllRooms(); //gets the list of all the rooms
+		assertEquals(1, allRooms.size()); //checks the size of the list
+		assertEquals(newRoomNumber, allRooms.get(0).getRoomNumber()); //checks if the room number is updated
+	}
+
+//	test to check if the room ID is null
 	@Test
 	public void testCreateRoomNullID() {
-
+//		sets up information to create a room
 		int roomNumber = -1;
-	
+
 		String error = null;
 
 		try {
@@ -152,11 +151,11 @@ public class RoomTest {
 
 		// check that the correct error was generated
 		assertEquals("Room number cannot be negative", error);
-		List<Room> allRooms = service.getAllRooms();
+		List<Room> allRooms = service.getAllRooms(); //gets the list of all the rooms
 
-		assertEquals(0, allRooms.size());
+		assertEquals(0, allRooms.size()); // checks the size of the list
 
 	}
-	
-	
+
+
 }

@@ -42,11 +42,16 @@ public class TutorTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
-	
+
+	private String USERNAME = "cmc";
+	private String PASSWORD = "dogs";
+	private String EMAIL = "test.tester@mcgill.ca";
+	private double HR  = 12;
+	private int EXP = 3;
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "test.tester@mcgill.ca", 22, "5145555555");
+		service.createUser("aName", EMAIL, 22, "5145555555");
 	}
 
 	@After
@@ -63,15 +68,11 @@ public class TutorTest {
 	}
 	
 	@Test
+	//Test if creating tutor works
 	public void testCreateTutor() {
 
-		String username = "cmc";
-		String password = "dogs";
-		double hr  = 12;
-		int exp = 3;
-
 		try {
-			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -80,24 +81,20 @@ public class TutorTest {
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(1, allTutors.size());
-		assertEquals(username, allTutors.get(0).getUsername());
-		assertEquals(password, allTutors.get(0).getPassword());
-		assertEquals(hr, allTutors.get(0).getHourlyRate(), 0.05);
-		assertEquals(exp, allTutors.get(0).getExperience());
+		assertEquals(USERNAME, allTutors.get(0).getUsername());
+		assertEquals(PASSWORD, allTutors.get(0).getPassword());
+		assertEquals(HR, allTutors.get(0).getHourlyRate(), 0.05);
+		assertEquals(EXP, allTutors.get(0).getExperience());
 		assertEquals(Education.masters, allTutors.get(0).getEducation());
-		assertEquals("email", allTutors.get(0).getUser().getEmail());
+		assertEquals(EMAIL, allTutors.get(0).getUser().getEmail());
 	}
 	
 	@Test
+	//Test if updating tutor works
 	public void testUpdateTutor() {
 
-		String username = "cmc";
-		String password = "dogs";
-		double hr  = 12;
-		int exp = 3;
-
 		try {
-			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -107,18 +104,20 @@ public class TutorTest {
 
 		assertEquals(1, allTutors.size());
 		
-		username = "amc";
-		password = "cats";
-		hr  = 14;
-		exp = 4;
+		String username = "amc";
+		String password = "cats";
+		double hr  = 14;
+		int exp = 4;
 		
 		try {
-			service.updateTutor("cmc", username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+			service.updateTutor(USERNAME, username, password, EMAIL, hr, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 		
+		allTutors = service.getAllTutors();
+
 		assertEquals(username, allTutors.get(0).getUsername());
 		assertEquals(password, allTutors.get(0).getPassword());
 		assertEquals(hr, allTutors.get(0).getHourlyRate(), 0.05);
@@ -126,22 +125,18 @@ public class TutorTest {
 	}
 	
 	@Test
+	//Test if deleting tutor works
 	public void testDeleteTutor() {
 
-		String username = "cmc";
-		String password = "dogs";
-		double hr  = 12;
-		int exp = 3;
-
 		try {
-			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 		
 		try {
-			service.deleteTutor(username);
+			service.deleteTutor(USERNAME);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -153,17 +148,13 @@ public class TutorTest {
 	}
 	
 	@Test
+	//Test that creating a tutor without username fails
 	public void testCreateTutorNullUsername() {
 
-		String username = null;
-		String password = "dogs";
-		double hr  = 12;
-		int exp = 3;
-		
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+			service.createTutor(null, PASSWORD, EMAIL, HR, EXP, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -176,17 +167,13 @@ public class TutorTest {
 	}
 	
 	@Test
+	//Test that creating a tutor w/out a password fails
 	public void testCreateTutorNullPassword() {
-
-		String username = "cmc";
-		String password = null;
-		double hr  = 12;
-		int exp = 3;
 		
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+			service.createTutor(USERNAME, null, EMAIL, HR, EXP, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -199,17 +186,13 @@ public class TutorTest {
 	}
 	
 	@Test
+	//Test that creating a user with an email not linked to a user fails
 	public void testCreateTutorNullUser() {
 
-		String username = "cmc";
-		String password = "dogs";
-		double hr  = 12;
-		int exp = 3;
-		
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "emailwrong@email.ca", hr, exp, Education.masters);
+			service.createTutor(USERNAME, PASSWORD, "emailwrong@email.ca", HR, EXP, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -224,17 +207,13 @@ public class TutorTest {
 	}
 	
 	@Test
+	//Test that creating a tutor with an email in the wrong format fails
 	public void testCreateTutorWrongEmail() {
-
-		String username = "cmc";
-		String password = "test";
-		double hr  = 12;
-		int exp = 3;
 		
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "emailwrong", hr, exp, Education.masters);
+			service.createTutor(USERNAME, PASSWORD, "emailwrong", HR, EXP, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -248,17 +227,15 @@ public class TutorTest {
 	}
 	
 	@Test
+	//Test that creating a tutor with an invalid HR fails
 	public void testCreateTutorInvalidHR() {
 
-		String username = "cmc";
-		String password = "dogs";
 		double hr  = -12;
-		int exp = 3;
 		
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+			service.createTutor(USERNAME, PASSWORD, "test.tester@mcgill.ca", hr, EXP, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -272,17 +249,15 @@ public class TutorTest {
 	}
 	
 	@Test
+	//Test that creating a tutor with an invalid exp fails
 	public void testCreateTutorInvalidExp() {
 
-		String username = "cmc";
-		String password = null;
-		double hr  = 12;
 		int exp = -3;
 		
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, Education.masters);
+			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, exp, Education.masters);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -296,17 +271,13 @@ public class TutorTest {
 	}
 	
 	@Test
+	//Test that creating a tutor w/out specifying education level fails
 	public void testCreateTutorInvalidEducation() {
 
-		String username = "cmc";
-		String password = null;
-		double hr  = 12;
-		int exp = 3;
-		
 		String error = null;
 
 		try {
-			service.createTutor(username, password, "test.tester@mcgill.ca", hr, exp, null);
+			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, null);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();

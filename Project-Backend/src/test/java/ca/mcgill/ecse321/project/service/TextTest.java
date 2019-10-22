@@ -21,10 +21,9 @@ import ca.mcgill.ecse321.project.dao.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TextTest {
-	
+
 	@Autowired
 	private TutoringAppService service;
-
 	@Autowired 
 	private AvailabilityRepository availabilityRepository;
 	@Autowired
@@ -43,15 +42,15 @@ public class TextTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 
 	@Before
 	public void setUp(){
-		service.createUser("aName", "email", 22, "5145555555");
-		service.createTutor("cmc", "dogs", "email", 12, 3, Education.bachelor);
-		service.createUniversity("McGill", "3040 University", 1);
-		service.createCourse("Intro to Software","ECSE 321", 2, 1);
-		service.createCourseOffering(3, "fall", 2019, 2);
+		service.createUser("aName", "email@mcgill.ca", 22, "5145555555");
+		service.createTutor("cmc", "dogs", "email@mcgill.ca", 12, 3, Education.bachelor);
+		service.createUniversity("McGill", "3040 University");
+		service.createCourse("Intro to Software","ECSE 321", service.getAllUniversities().get(0).getUniversityID());
+		service.createCourseOffering(Term.Fall, 2019, service.getAllCourses().get(0).getCourseID());
 	}
 
 	@After
@@ -66,111 +65,113 @@ public class TextTest {
 		roleRepository.deleteAll();
 		userRepository.deleteAll();
 	}
-	
+
+	//	test to create text
 	@Test
 	public void testCreateText() {
-
-		int id = 5;
+		//	sets up information for creating a text
 		String description = "great tutor";
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
-		int coID = 3;		
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();		
 
 		try {
-			service.createText(id, description, isAllowed, revieweeUsername, coID);
+			service.createText(description, isAllowed, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Text> allTexts = service.getAllTexts();
+		List<Text> allTexts = service.getAllTexts(); //gets the list of all the texts
 
-		assertEquals(1, allTexts.size());
-		assertEquals(id, allTexts.get(0).getReviewID());
-		assertEquals(description, allTexts.get(0).getDescription());
-		assertEquals(isAllowed, allTexts.get(0).getIsAllowed());
-		assertEquals(revieweeUsername, allTexts.get(0).getWrittenAbout().getUsername());
-		assertEquals(coID, allTexts.get(0).getCourseOffering().getCourseOfferingID());
+		assertEquals(1, allTexts.size()); //tests if the size of the list is being updated
+		assertEquals(description, allTexts.get(0).getDescription()); //checks the description of the text
+		assertEquals(isAllowed, allTexts.get(0).getIsAllowed()); 
+		assertEquals(revieweeUsername, allTexts.get(0).getWrittenAbout().getUsername()); //checks the username of the reviewee
+		assertEquals(coID, allTexts.get(0).getCourseOffering().getCourseOfferingID()); //checks the ID of the courseOffering
 	}
-	
+
+	//	test to update the text
 	@Test
 	public void testUpdateText() {
-
-		int id = 5;
+		//		sets up the information to create Reviews
 		String description = "great tutor";
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
-		int coID = 3;	
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();	
 
 		try {
-			service.createText(id, description, isAllowed, revieweeUsername, coID);
+			service.createText(description, isAllowed, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Text> allTexts = service.getAllTexts();
+		List<Text> allTexts = service.getAllTexts(); //checks the list of all the texts
 
-		assertEquals(1, allTexts.size());
-		
-		id = 6;
+		assertEquals(1, allTexts.size()); //checks the size of the review list
+
 		description = "horrible tutor";
 		isAllowed = false;
-		
+
 		try {
-			service.updateText(5, id, description, isAllowed, revieweeUsername, coID);
+			service.updateText(service.getAllTexts().get(0).getReviewID(),description, isAllowed, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
-		
-		assertEquals(1, allTexts.size());
-		assertEquals(id, allTexts.get(0).getReviewID());
-		assertEquals(description, allTexts.get(0).getDescription());
-		assertEquals(isAllowed, allTexts.get(0).getIsAllowed());
+
+		allTexts = service.getAllTexts();
+
+		assertEquals(1, allTexts.size()); //checks the size of the review
+		assertEquals(description, allTexts.get(0).getDescription()); //checks the size of the description
+		assertEquals(isAllowed, allTexts.get(0).getIsAllowed()); 
 	}
-	
+
+	//	test to delete the text
 	@Test
 	public void testDeleteText() {
-
-		int id = 5;
+		//		sets up information for the reviews
 		String description = "great tutor";
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
-		int coID = 3;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		try {
-			service.createText(id, description, isAllowed, revieweeUsername, coID);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			fail();
-		}
-		
-		try {
-			service.deleteText(id);
+			service.createText(description, isAllowed, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
-		List<Text> allTexts = service.getAllTexts();
+		List<Text> allTexts = service.getAllTexts(); //gets the list of the reviews
 
-		assertEquals(0, allTexts.size());
+		try {
+			service.deleteText(allTexts.get(0).getReviewID());
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		allTexts = service.getAllTexts(); 
+
+		assertEquals(0, allTexts.size()); //checks the size of the review
 	}
-	
+
+
+	//	test to create text with null username
 	@Test
 	public void testCreateTextNullUsername() {
-
-		int id = 5;
+		//		sets up the information to create a review
 		String description = "great tutor";
 		boolean isAllowed = true;
 		String revieweeUsername = null;
-		int coID = 3;
-		
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
+
 		String error = null;
 
 		try {
-			service.createText(id, description, isAllowed, revieweeUsername, coID);
+			service.createText(description, isAllowed, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -178,24 +179,25 @@ public class TextTest {
 		// check error
 		assertEquals("Please insert a reviewee username...", error);
 
-		List<Text> allTexts = service.getAllTexts();
+		List<Text> allTexts = service.getAllTexts(); // gets the list of all the text 
 
-		assertEquals(0, allTexts.size());
+		assertEquals(0, allTexts.size()); // checks the size of the list
 	}
-	
+
+
+	//	test to create a text with null course offering
 	@Test
 	public void testCreateTextNullCourseOffering() {
-
-		int id = 5;
+		//		test to create a review
 		String description = "great tutor";
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
 		int coID = 4;
-		
+
 		String error = null;
 
 		try {
-			service.createText(id, description, isAllowed, revieweeUsername, coID);
+			service.createText(description, isAllowed, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -203,55 +205,32 @@ public class TextTest {
 
 		// check error
 		assertEquals("Please enter a valid Course Offering", error);
-		List<Text> allTexts = service.getAllTexts();
-		assertEquals(0, allTexts.size());
+		List<Text> allTexts = service.getAllTexts(); //get the list of all the review
+		assertEquals(0, allTexts.size()); //checks the size of the list
 	}
-	
+
+	//	test to create a text with null description
 	@Test
 	public void testCreateTextNullDescription() {
-
-		int id = 5;
+		//		sets up a new review
 		String description = null;
 		boolean isAllowed = true;
 		String revieweeUsername = "cmc";
-		int coID = 3;
-		
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
+
 		String error = null;
 
 		try {
-			service.createText(id, description, isAllowed, revieweeUsername, coID);
+			service.createText(description, isAllowed, revieweeUsername, coID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
 		assertEquals(error, "Please insert a brief description...");
-		List<Text> allTexts = service.getAllTexts();
+		List<Text> allTexts = service.getAllTexts(); //gets the list of all the reviews
 
-		assertEquals(0, allTexts.size());
+		assertEquals(0, allTexts.size()); //checks the size of the list
 	}
-	
-	@Test
-	public void testCreateTextInvalidID() {
 
-		int id = -5;
-		String description = "great session";
-		boolean isAllowed = true;
-		String revieweeUsername = "cmc";
-		int coID = 3;
-		
-		String error = null;
-
-		try {
-			service.createText(id, description, isAllowed, revieweeUsername, coID);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			error = e.getMessage();
-		}
-		// check that the correct error was generated
-		assertEquals(error, "Incorrect id value");
-		List<Text> allTexts = service.getAllTexts();
-
-		assertEquals(0, allTexts.size());
-	}
 }

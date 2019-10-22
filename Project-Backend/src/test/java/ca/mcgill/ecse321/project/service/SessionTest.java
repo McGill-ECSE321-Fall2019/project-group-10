@@ -46,12 +46,13 @@ public class SessionTest {
 	@Autowired
 	private UserRepository userRepository;
 	
+	
 	@Before
 	public void setUp(){
 		// create the necessary objects for session creation
-		service.createUniversity("McGill", "3040 University", 1);
-		service.createCourse("Intro to Software","ECSE 321", 2, 1);
-		service.createCourseOffering(3, "fall", 2019, 2);
+		service.createUniversity("McGill", "3040 University");
+		service.createCourse("Intro to Software","ECSE 321", service.getAllUniversities().get(0).getUniversityID());
+		service.createCourseOffering(Term.Fall, 2019, service.getAllCourses().get(0).getCourseID());
 		service.createUser("aName", "tutor.tester@mcgill.ca", 22, "5145555555");
 		service.createUser("aName_student", "student.tester@mcgill.ca", 22, "5145555555");
 		service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
@@ -73,45 +74,46 @@ public class SessionTest {
 	
 	@Test
 	public void testCreateSession() {
-		assertEquals(0, service.getAllSessions().size());
-		
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
+		 		
+		Date date = Date.valueOf("2018-02-01");
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
-		int id = 4;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
+		
+		String studentUser = service.getAllStudents().get(0).getUsername();
+		String tutorUser = service.getAllTutors().get(0).getUsername();
 
 		try {
-			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+			service.createSession(coID, date, time, amountPaid, studentUser, tutorUser);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
-
+		
 		List<Session> allSessions = service.getAllSessions();
-
+		
+		
 		assertEquals(1, allSessions.size());
-		assertEquals(id, allSessions.get(0).getSessionID());
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
-		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
+		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
+		
 	}
 	
 	@Test
 	public void testUpdateSession() {
-		assertEquals(0, service.getAllSessions().size());
-		
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
+		//assertEquals(0, service.getAllSessions().size());
+				
+		Date date = Date.valueOf("2019-02-01");
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
-		int id = 4;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		try {
-			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+			service.createSession(coID, date, time, amountPaid, "studentUser", "username");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -120,21 +122,19 @@ public class SessionTest {
 		List<Session> allSessions = service.getAllSessions();
 
 		assertEquals(1, allSessions.size());
-		assertEquals(id, allSessions.get(0).getSessionID());
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
-		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
+		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
-		date = new java.sql.Date(millis-20);
+		date = Date.valueOf("2019-02-01");
 		time = Time.valueOf("10:10:10");
 		amountPaid = 24;
-		id = 5;
 		
 		try {
-			service.updateSession(4, 3, date, time, amountPaid, id, "studentUser", "username");
+			service.updateSession(allSessions.get(0).getSessionID(), coID, date, time, amountPaid, "studentUser", "username");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -143,11 +143,10 @@ public class SessionTest {
 		allSessions = service.getAllSessions();
 		
 		assertEquals(1, allSessions.size());
-		assertEquals(id, allSessions.get(0).getSessionID());
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
 		assertEquals(date, allSessions.get(0).getDate());
-		assertEquals(3, allSessions.get(0).getCourseOffering().getCourseOfferingID());
+		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
@@ -159,12 +158,12 @@ public class SessionTest {
 		
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
-		int id = 4;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		try {
-			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+			service.createSession(coID, date, time, amountPaid, "studentUser", "username");
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -174,7 +173,7 @@ public class SessionTest {
 		assertEquals(1, allSessions.size());
 		
 		try {
-			service.deleteSession(id);
+			service.deleteSession(allSessions.get(0).getSessionID());
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -186,19 +185,18 @@ public class SessionTest {
 	}
 	
 	@Test
-	public void testCreateAvailabilityNullCourseOffering() {
+	public void testCreateSessionNullCourseOffering() {
 		assertEquals(0, service.getAllSessions().size());
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
 		double amountPaid = 23;
-		int id = 4;
 
 		String error = null;
 
 		try {
-			service.createSession(100, date, time, amountPaid, id, "studentUser", "username");
+			service.createSession(100, date, time, amountPaid, "studentUser", "username");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -212,19 +210,19 @@ public class SessionTest {
 	}
 	
 	@Test
-	public void testCreateAvailabilityNullTutor() {
+	public void testCreateSessionNullTutor() {
 		assertEquals(0, service.getAllSessions().size());
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
 		double amountPaid = 23;
-		int id = 4;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		String error = null;
 
 		try {
-			service.createSession(3, date, time, amountPaid, id, "studentUser", "wrongusername");
+			service.createSession(coID, date, time, amountPaid, "studentUser", "wrongusername");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -238,19 +236,19 @@ public class SessionTest {
 	}
 	
 	@Test
-	public void testCreateAvailabilityNullStudent() {
+	public void testCreateSessionNullStudent() {
 		assertEquals(0, service.getAllSessions().size());
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
 		double amountPaid = 23;
-		int id = 4;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		String error = null;
 
 		try {
-			service.createSession(3, date, time, amountPaid, id, "wrongstudentUser", "username");
+			service.createSession(coID, date, time, amountPaid, "wrongstudentUser", "username");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -262,45 +260,21 @@ public class SessionTest {
 		assertEquals(0, service.getAllSessions().size());
 	}
 	
-	@Test
-	public void testCreateAvailabilityInvalidID() {
-		assertEquals(0, service.getAllSessions().size());
-
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
-		double amountPaid = 23;
-		int id = -4;
-
-		String error = null;
-
-		try {
-			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		}
-
-		// check error
-		assertEquals("Incorrect id value for the session update...", error);
-
-		// check no change in memory
-		assertEquals(0, service.getAllSessions().size());
-	}
 	
 	@Test
-	public void testCreateAvailabilityInvalidAmountPaid() {
+	public void testCreateSessionInvalidAmountPaid() {
 		assertEquals(0, service.getAllSessions().size());
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = new java.sql.Time(millis);
 		double amountPaid = -23;
-		int id = 4;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		String error = null;
 
 		try {
-			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+			service.createSession(coID, date, time, amountPaid, "studentUser", "username");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -313,19 +287,19 @@ public class SessionTest {
 	}
 	
 	@Test
-	public void testCreateAvailabilityNullTime() {
+	public void testCreateSessionNullTime() {
 		assertEquals(0, service.getAllSessions().size());
 
 		long millis=System.currentTimeMillis();  		
 		Date date = new java.sql.Date(millis);
 		Time time = null;
 		double amountPaid = 23;
-		int id = 4;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		String error = null;
 
 		try {
-			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+			service.createSession(coID, date, time, amountPaid, "studentUser", "username");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -338,19 +312,19 @@ public class SessionTest {
 	}
 	
 	@Test
-	public void testCreateAvailabilityNullDate() {
+	public void testCreateSessionNullDate() {
 		assertEquals(0, service.getAllSessions().size());
 
 		long millis=System.currentTimeMillis();  		
 		Date date = null;
 		Time time = new java.sql.Time(millis);
 		double amountPaid = 23;
-		int id = 4;
+		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
 		String error = null;
 
 		try {
-			service.createSession(3, date, time, amountPaid, id, "studentUser", "username");
+			service.createSession(coID, date, time, amountPaid, "studentUser", "username");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
