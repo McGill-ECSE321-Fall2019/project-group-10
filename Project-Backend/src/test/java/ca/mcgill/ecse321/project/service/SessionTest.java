@@ -46,6 +46,7 @@ public class SessionTest {
 	@Autowired
 	private UserRepository userRepository;
 	
+	
 	@Before
 	public void setUp(){
 		// create the necessary objects for session creation
@@ -81,7 +82,6 @@ public class SessionTest {
 		
 		String studentUser = service.getAllStudents().get(0).getUsername();
 		String tutorUser = service.getAllTutors().get(0).getUsername();
-		
 
 		try {
 			service.createSession(coID, date, time, amountPaid, studentUser, tutorUser);
@@ -89,9 +89,10 @@ public class SessionTest {
 			// Check that no error occurred
 			fail();
 		}
-
+		
 		List<Session> allSessions = service.getAllSessions();
-
+		
+		
 		assertEquals(1, allSessions.size());
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
@@ -99,6 +100,7 @@ public class SessionTest {
 		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
+		
 	}
 	
 	@Test

@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.project.service;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,13 +46,14 @@ public class AvailabilityTest {
 	@Autowired
 	private UserRepository userRepository;
 	
-
-	@Before
-	public void setUp(){
-		// user necessary to create a tutor which is needed for availabilities
-		//service.createUser("aName", "test.object@mcgill.ca", 22, "5145555555");
-		//service.createTutor("username", "password", "aName", 12, 3, Education.highschool);
-	}
+	private String USERNAME = "cmc";
+	private String PASSWORD = "dogs";
+	private String EMAIL = "test.tester@mcgill.ca";
+	private double HR  = 12;
+	private int EXP = 3;
+	
+	private java.sql.Date DATE = new Date(10121995);
+	private java.sql.Time TIME = new Time(123);
 
 	@After
 	public void clearDatabase() {
@@ -72,14 +72,15 @@ public class AvailabilityTest {
 	@Test
 	public void testCreateAvailability() {
 		assertEquals(0, service.getAllAvailabilities().size());
-
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
-		int id = 1;
+		
+		Date date = DATE;
+		Time time = TIME;
+		int id;
 		
 		try {
-			service.createAvailability(date, time, "username");
+			service.createUser("aName", EMAIL, 22, "5145555555");
+			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
+			service.createAvailability(date, time, USERNAME);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -89,46 +90,45 @@ public class AvailabilityTest {
 
 		// check that it was created and all the attributes are correct
 		assertEquals(1, allAvailabilities.size());
-		assertEquals(date, allAvailabilities.get(0).getDate());
-		assertEquals(time, allAvailabilities.get(0).getTime());
-		//assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
+		assertEquals(date.toString(), allAvailabilities.get(0).getDate().toString());
+		assertEquals(time.toString(), allAvailabilities.get(0).getTime().toString());
 
-		date = Date.valueOf("2010-09-10");
-		id = 2;
-		time = Time.valueOf("10:10:10");
+		date = new java.sql.Date(3333333333l);
+		id = allAvailabilities.get(0).getId();
+		time = new java.sql.Time(123456798l);
 
 
 		try {
-			service.updateAvailability(1, date, time, "username");
+			service.updateAvailability(id, date, time, USERNAME);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
-
+		
+		allAvailabilities = service.getAllAvailabilities();
+		
 		// check that all the attributes are correct
 		assertEquals(1, allAvailabilities.size());
-		assertEquals(date, allAvailabilities.get(0).getDate());
-		assertEquals(time, allAvailabilities.get(0).getTime());
-		//assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
+		assertEquals(date.toString(), allAvailabilities.get(0).getDate().toString());
+		assertEquals(time.toString(), allAvailabilities.get(0).getTime().toString());
 
 	}
-
 	
 	@Test
 	public void testDeleteAvailability() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		int id = 1;
-		Time time = new java.sql.Time(millis);
-
 		try {
-			service.createAvailability(date, time, "username");
+			
+			service.createUser("aName", EMAIL, 22, "5145555555");
+			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
+			service.createAvailability(DATE, TIME, USERNAME);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
+		
+		int id = service.getAllAvailabilities().get(0).getId();
 		
 		try {
 			service.deleteAvailability(id);
@@ -145,11 +145,9 @@ public class AvailabilityTest {
 	@Test
 	public void testCreateAvailabilityNullDate() {
 		assertEquals(0, service.getAllAvailabilities().size());
-
-		long millis=System.currentTimeMillis();  		
+		
 		Date date = null;
-		Time time = new java.sql.Time(millis);
-		int id = 1;
+		Time time = TIME;
 	
 		
 		String error = null;
@@ -171,11 +169,9 @@ public class AvailabilityTest {
 	@Test
 	public void testCreateAvailabilityNullTime() {
 		assertEquals(0, service.getAllAvailabilities().size());
-
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
+		
+		Date date = DATE;
 		Time time = null;
-		int id = 2;
 		
 		String error = null;
 
@@ -194,45 +190,14 @@ public class AvailabilityTest {
 	}
 	
 	@Test
-	public void testCreateAvailabilityInvalidID() {
-		assertEquals(0, service.getAllAvailabilities().size());
-
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = Time.valueOf("");
-		int id = -1;
-		
-
-		String error = null;
-
-		try {
-			service.createAvailability(date, time, "username");
-
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		}
-
-		// check error
-		assertEquals("Incorrect id value for the availability...", error);
-
-		// check no change in memory
-		assertEquals(0, service.getAllAvailabilities().size());
-
-	}
-	
-	@Test
 	public void testCreateAvailabilityNullTutor() {
 		assertEquals(0, service.getAllAvailabilities().size());
 
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		int id = 1;
-		Time time = new java.sql.Time(millis);
 
 		String error = null;
 
 		try {
-			service.createAvailability(date, time, "unknown");
+			service.createAvailability(DATE, TIME, "unknown");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}

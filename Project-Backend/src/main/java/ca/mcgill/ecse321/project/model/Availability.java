@@ -2,12 +2,10 @@ package ca.mcgill.ecse321.project.model;
 import java.sql.Date;
 import java.sql.Time;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 public class Availability{
