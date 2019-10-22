@@ -1,18 +1,13 @@
 package ca.mcgill.ecse321.project.model;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Tutor extends Role{

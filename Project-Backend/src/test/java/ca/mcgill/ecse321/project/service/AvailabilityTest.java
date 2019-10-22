@@ -100,7 +100,6 @@ public class AvailabilityTest {
 		assertEquals(1, allAvailabilities.size());
 		assertEquals(date.toString(), allAvailabilities.get(0).getDate().toString());
 		assertEquals(time.toString(), allAvailabilities.get(0).getTime().toString());
-		//assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
 
 		date = new java.sql.Date(3333333333l);
 		id = allAvailabilities.get(0).getId();
@@ -120,10 +119,8 @@ public class AvailabilityTest {
 		assertEquals(1, allAvailabilities.size());
 		assertEquals(date.toString(), allAvailabilities.get(0).getDate().toString());
 		assertEquals(time.toString(), allAvailabilities.get(0).getTime().toString());
-		//assertEquals("username", allAvailabilities.get(0).getTutor().getUsername());
 
 	}
-
 	
 	@Test
 	public void testDeleteAvailability() {
@@ -156,11 +153,9 @@ public class AvailabilityTest {
 	@Test
 	public void testCreateAvailabilityNullDate() {
 		assertEquals(0, service.getAllAvailabilities().size());
-
-		long millis=System.currentTimeMillis();  		
+		
 		Date date = null;
-		Time time = new java.sql.Time(millis);
-		int id = 1;
+		Time time = TIME;
 	
 		
 		String error = null;
@@ -182,11 +177,9 @@ public class AvailabilityTest {
 	@Test
 	public void testCreateAvailabilityNullTime() {
 		assertEquals(0, service.getAllAvailabilities().size());
-
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
+		
+		Date date = DATE;
 		Time time = null;
-		int id = 2;
 		
 		String error = null;
 

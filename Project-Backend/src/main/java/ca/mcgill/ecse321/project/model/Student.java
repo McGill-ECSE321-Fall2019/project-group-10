@@ -1,7 +1,5 @@
 package ca.mcgill.ecse321.project.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
