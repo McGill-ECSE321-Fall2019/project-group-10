@@ -72,5 +72,11 @@ public class BusinessMethodTest {
 //		when(eventDao.save(any(Event.class))).thenAnswer(returnParameterAsAnswer);
 //		when(registrationDao.save(any(Registration.class))).thenAnswer(returnParameterAsAnswer);
 	}
-
+	
+	@Test
+	public void testTrue() {
+		
+		assertEquals(1,1);
+		
+	}
 }
