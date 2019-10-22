@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.dto.CourseDto;
 import ca.mcgill.ecse321.project.model.*;
 
 @Service

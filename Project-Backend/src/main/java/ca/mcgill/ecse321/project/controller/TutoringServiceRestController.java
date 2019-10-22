@@ -25,8 +25,6 @@ import ca.mcgill.ecse321.project.service.*;
 @RestController
 public class TutoringServiceRestController {
 	
-	@Autowired
-	TutoringAppService service;
 
 // ******************************************** GET MAPPINGS ********************************************** \\
 	
