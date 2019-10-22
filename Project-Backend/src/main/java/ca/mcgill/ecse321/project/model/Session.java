@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -50,7 +51,7 @@ public class Session{
 	}
 	private List<Student> student;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	public List<Student> getStudent() {
 		return this.student;
 	}
@@ -61,7 +62,7 @@ public class Session{
 
 	private Tutor tutor;
 
-	@ManyToOne(optional=false)
+	@ManyToOne(fetch = FetchType.EAGER, optional=false)
 	public Tutor getTutor() {
 		return this.tutor;
 	}

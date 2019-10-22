@@ -63,6 +63,13 @@ public class TutoringAppService {
 		availability.setTime(time);
 		availability.setDate(date);
 		availability.setTutor(tutorRepository.findTutorByUsername(tName));
+		
+		if (availability.getTutor() == null){
+			
+			throw new IllegalArgumentException("Please specify a valid Tutor");
+			
+		}
+		
 		availabilityRepository.save(availability);
 		return availability;
 	}
@@ -82,7 +89,11 @@ public class TutoringAppService {
 		
 
 		Availability availability = availabilityRepository.findAvailabilityById(oldID);
-
+		
+		if (availability == null) {
+			
+			throw new IllegalArgumentException("Invalid availability ID, the availability does not exist...");
+		}
 		availability.setTime(time);
 		availability.setDate(date);
 		Tutor t = tutorRepository.findTutorByUsername(tName);

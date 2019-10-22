@@ -5,10 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.Optional;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -46,6 +48,12 @@ public class SessionTest {
 	@Autowired
 	private UserRepository userRepository;
 	
+	private String USERNAME = "cmc";
+	private String PASSWORD = "dogs";
+	private String EMAIL = "test.tester@mcgill.ca";
+	private double HR  = 12;
+	private int EXP = 3;
+	
 	@Before
 	public void setUp(){
 		// create the necessary objects for session creation
@@ -79,19 +87,23 @@ public class SessionTest {
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 		
+		List<Student> students = service.getAllStudents();
+		
 		String studentUser = service.getAllStudents().get(0).getUsername();
 		String tutorUser = service.getAllTutors().get(0).getUsername();
-		
+		Session session = null;
 
 		try {
-			service.createSession(coID, date, time, amountPaid, studentUser, tutorUser);
+			session = service.createSession(coID, date, time, amountPaid, studentUser, tutorUser);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
-
+		
+		System.out.println(session.getStudent().toString());
 		List<Session> allSessions = service.getAllSessions();
-
+		
+		
 		assertEquals(1, allSessions.size());
 		assertEquals(time, allSessions.get(0).getTime());
 		assertEquals(amountPaid, allSessions.get(0).getAmountPaid(), 0.05);
@@ -99,6 +111,7 @@ public class SessionTest {
 		assertEquals(coID, allSessions.get(0).getCourseOffering().getCourseOfferingID());
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
+		
 	}
 	
 	@Test

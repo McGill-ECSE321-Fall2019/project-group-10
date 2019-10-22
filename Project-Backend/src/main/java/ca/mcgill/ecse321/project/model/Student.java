@@ -1,7 +1,10 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+
 import java.util.Set;
 import javax.persistence.ManyToMany;
 
@@ -9,7 +12,7 @@ import javax.persistence.ManyToMany;
 public class Student extends Role{
 	private Set<Session> session;
 
-	@ManyToMany(mappedBy="student" )
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy="student")
 	public Set<Session> getSession() {
 		return this.session;
 	}
