@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.project.service;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -55,13 +54,6 @@ public class AvailabilityTest {
 	
 	private java.sql.Date DATE = new Date(10121995);
 	private java.sql.Time TIME = new Time(123);
-
-	@Before
-	public void setUp(){
-		// user necessary to create a tutor which is needed for availabilities
-		//service.createUser("aName", "test.object@mcgill.ca", 22, "5145555555");
-		//service.createTutor("username", "password", "aName", 12, 3, Education.highschool);
-	}
 
 	@After
 	public void clearDatabase() {
