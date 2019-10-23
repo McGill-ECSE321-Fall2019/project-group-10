@@ -7,8 +7,10 @@ import javax.persistence.Id;
 
 import java.sql.Date;
 import java.sql.Time;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -91,6 +93,16 @@ public class Session{
 
 	public void setRoom(Room room) {
 		this.room = room;
+		Set<Session> sessions = room.getSession();
+		if(sessions == null) {
+			Set<Session> session = new HashSet<>();
+			session.add(this);
+			room.setSession(session);
+		}
+		else {
+			sessions.add(this);
+			room.setSession(sessions);
+		}
 	}
 
 }

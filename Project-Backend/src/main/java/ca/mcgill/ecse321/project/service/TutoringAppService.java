@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -1010,7 +1011,7 @@ public class TutoringAppService {
 				courses.add(c);
 		}
 		
-		if(courses == null)
+		if(courses.size() == 0)
 			throw new IllegalArgumentException("No courses offered for this university");
 		
 		return courses;
@@ -1028,11 +1029,12 @@ public class TutoringAppService {
 		for(CourseOffering co : allcourseOs) {
 			// check name and university names that they are what we are looking for
 			if(co.getCourse().getCourseName().equals(cname) 
-					&& co.getCourse().getUniversity().getName().equals(uniName))
+					&& co.getCourse().getUniversity().getName().equals(uniName)) {
 				courseOs.add(co);
+			}
 		}
 		
-		if(courseOs == null)
+		if(courseOs.size() == 0)
 			throw new IllegalArgumentException("No courses offerings offered for this course");
 		
 		return courseOs;
@@ -1058,31 +1060,43 @@ public class TutoringAppService {
 
 	// find a tutor by the username
 	public Tutor findTutorByUsername(String username) {
-		for(Tutor t : getAllTutors()) {
-			if(t.getUsername() == username)
-				return t;
-		}
-		return null;
+		Tutor t = new Tutor();
+		
+		// find the correct tutor by the given username
+		t = tutorRepository.findTutorByUsername(username);
+		
+		// check if it is null
+		if (t == null)
+			throw new IllegalArgumentException("No tutor by that username");
+		
+		// otherwise return the found tutor
+		return t;
 	}
 	
 	// check is there is a room available at the give time
-	public boolean isRoomAvailable(Date date, Time startTime, Time endTime) {
+	public boolean isRoomAvailable(Date date, Time startTime) {
 		// check all rooms
-		for(Room r: getAllRooms()) {
-			// set preliminary availability to true
-			boolean isAvail = true;
-			// look at all sessions of the room
-			for(Session s: new ArrayList<Session>(r.getSession())) {
-				// if one of the sessions is at the same time, set available to false and move 
-				// to the next room
-				if((s.getTime().equals(startTime) && s.getDate().equals(date))) {
-					isAvail = false;
-					break;
+		List<Room> rooms = getAllRooms();
+		if(rooms != null) {
+			for(Room r: rooms) {
+				// set preliminary availability to true
+				boolean isAvail = true;
+				// look at all sessions of the room
+				Set<Session> sessions = r.getSession();
+				if(sessions != null) {
+					for(Session s: new ArrayList<Session>(sessions)) {
+						// if one of the sessions is at the same time, set available to false and move 
+						// to the next room
+						if((s.getTime().equals(startTime) && s.getDate().equals(date))) {
+							isAvail = false;
+							break;
+						}
+					}
 				}
+				// if none of the sessions for a room are at that time, then it is available
+				if(isAvail == true)
+					return true;
 			}
-			// if none of the sessions for a room are at that time, then it is available
-			if(isAvail == true)
-				return true;
 		}
 		return false;
 	}

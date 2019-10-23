@@ -130,7 +130,7 @@ public class TutoringServiceRestController {
 	@RequestParam Time startTime,
 	@RequestParam Time endTime)
 	throws IllegalArgumentException {
-		return service.isRoomAvailable(date, startTime, endTime);
+		return service.isRoomAvailable(date, startTime);
 	}
 	
 // ******************************************* Conversion to  DTO ********************************************* \\
