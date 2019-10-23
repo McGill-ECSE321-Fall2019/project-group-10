@@ -33,6 +33,8 @@ public abstract class Role{
 		return this.username;
 	}
 
+	public boolean isPassword(String password) { password.equals(getPassword()); }
+
 	private String password;
 
 	public void setPassword(String value) {

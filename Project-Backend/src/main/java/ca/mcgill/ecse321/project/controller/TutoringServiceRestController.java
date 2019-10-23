@@ -87,6 +87,7 @@ public class TutoringServiceRestController {
 		}
 		return cDTOs;
 	}
+
 	
 //	// Get all the tutors signed up for a course offering
 //	@PostMapping(value = { "/{universityname}/{coursename}/{courseOffering}", "/{universityname}/{coursename}/{courseOffering}/" })
@@ -110,6 +111,34 @@ public class TutoringServiceRestController {
 	public TextDTO createReview(@PathVariable("text") String name, @RequestParam String tutorUsername, @RequestParam int coID, @RequestBody String description, @RequestBody boolean isAllowed) throws IllegalArgumentException {
 		Text text = service.createText(description, isAllowed, tutorUsername, coID);
 		return convertToDto(text);
+	}
+
+	@PostMapping(value = { "/login", "/login/"})
+	public boolean login (@RequestParam String username, @RequestParam String password)
+	{
+		Role role = getRoleByUsername(username);
+		if(role.isPassword(password))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	private Role getRoleByUsername(String username)
+	{
+		Role role = null;
+		try {
+			role = service.getStudent(username);
+
+			if(role == null)
+				role = service.getTutor(username);
+
+		} catch (Exception e)
+		{
+
+		}
+
+		return role;
 	}
 
 	
