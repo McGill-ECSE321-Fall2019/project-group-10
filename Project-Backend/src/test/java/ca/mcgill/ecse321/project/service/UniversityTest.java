@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 
@@ -167,7 +168,7 @@ public class UniversityTest {
 			error = e.getMessage();
 		}
 		// check the correct error
-		assertEquals("Invalid name...", error);
+		assertEquals(ErrorStrings.Invalid_University_Name, error);
 		List<University> allUniversities = service.getAllUniversities(); //gets the list of all the universities
 		assertEquals(0, allUniversities.size()); //validates the university is not being added to the list
 
@@ -189,7 +190,7 @@ public class UniversityTest {
 			error = e.getMessage();
 		}
 		// check the correct error
-		assertEquals("Invalid address...", error);
+		assertEquals(ErrorStrings.Invalid_University_Address, error);
 		List<University> allUniversities = service.getAllUniversities(); //gets the list of all the universities
 		assertEquals(0, allUniversities.size()); //checks if the university is not added to the list 
 
