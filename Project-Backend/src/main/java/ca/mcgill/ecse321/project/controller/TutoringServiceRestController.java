@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dto.*;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.service.*;
@@ -102,15 +103,16 @@ public class TutoringServiceRestController {
 //	}
 
 	
-// ******************************************** POST MAPPINGS ********************************************** \\
 	
 	
-	//Uses request parameter to get the username and courseoffering id. RequestBody sends the descprion.
+	//Post mapping to get both the text and rating for the review. 1) Text 2) Rating
 	@PostMapping(value = { "/text", "/text/" })
-	public TextDTO createReview(@PathVariable("text") String name, @RequestParam String tutorUsername, @RequestParam int coID, @RequestBody String description, @RequestBody boolean isAllowed) throws IllegalArgumentException {
+	public ReviewDTO[] createReview(@PathVariable("text") String name, @RequestParam String tutorUsername, @RequestParam String revieweeUsername, @RequestParam int coID, @RequestBody String description, @RequestBody boolean isAllowed, @RequestBody int ratingValue) throws IllegalArgumentException {
 		Text text = service.createText(description, isAllowed, tutorUsername, coID);
-		return convertToDto(text);
+		Rating rating = service.createRating(ratingValue, revieweeUsername, coID);
+		return convertToDto(text, rating);
 	}
+	
 
 	
 // ********************************************* Course DTO ************************************************ \\
@@ -119,7 +121,7 @@ public class TutoringServiceRestController {
   	// Convert the model course to a DTO object
 	private CourseOfferingDTO convertToDto(CourseOffering co) {
 		if (co == null) {
-			throw new IllegalArgumentException("There is no such CourseOffering!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
 		}
 		CourseOfferingDTO coDTO = new CourseOfferingDTO(co.getTerm(), co.getYear(), 
 				co.getCourse().getCourseName(), co.getCourse().getUniversity().getName());
@@ -128,7 +130,7 @@ public class TutoringServiceRestController {
   
 	private CourseDto convertToDto(Course c) {
 		if (c == null) {
-			throw new IllegalArgumentException("There is no such Course!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Course);
 		}
 		CourseDto cDTO = new CourseDto(c.getCourseName(), c.getDescription(), c.getUniversity().getName());
 		return cDTO;
@@ -137,19 +139,26 @@ public class TutoringServiceRestController {
 	// Convert the model university to a DTO object
 	private UniversityDTO convertToDto(University u) {
 		if (u == null) {
-			throw new IllegalArgumentException("There is no such University!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_University);
 		}
 		UniversityDTO uDTO = new UniversityDTO(u.getName(), u.getAddress());
 		return uDTO;
 	}
 	
 	//Convert the model text into a DTO of the text object.
-	private TextDTO convertToDto(Text t) {
+	private ReviewDTO[] convertToDto(Text t, Rating r) {
 		if(t == null){
-			throw new IllegalArgumentException("There is no such Text!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Text);
+		}
+		if(r == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
 		}
 		TextDTO tDTO = new TextDTO(t.getIsAllowed(), t.getDescription());
-		return tDTO;
+		RatingDTO rDTO = new RatingDTO(r.getRatingValue());
+		
+		//Package
+		ReviewDTO[] reviewPackage = {tDTO, rDTO};
+		return reviewPackage;
 	}	
 }
 

@@ -66,7 +66,7 @@ public class TutoringAppService {
 		
 		if (availability.getTutor() == null){
 			
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Tutor_Null);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Tutor);
 			
 		}
 		
@@ -98,7 +98,7 @@ public class TutoringAppService {
 		availability.setDate(date);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if( t == null)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Tutor_Null);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Tutor);
 //		availability.setTutor(t);
 		availabilityRepository.save(availability);
 		return availability;

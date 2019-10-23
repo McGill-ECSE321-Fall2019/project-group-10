@@ -204,7 +204,7 @@ public class AvailabilityTest {
 		}
 
 		// check error
-		assertEquals(ErrorStrings.Invalid_Availability_Tutor_Null, error);
+		assertEquals(ErrorStrings.Invalid_Availability_Tutor, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllAvailabilities().size());
