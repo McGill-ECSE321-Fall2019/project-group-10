@@ -125,17 +125,17 @@ public class TutoringServiceRestController {
 		Student student = service.getStudent(studentUsername);
 		for(Session s : student.getSession()) {
 			if(s.getSessionID() == sessionID) {
-				if(s.getIsActive()) {
-					Room room = s.getRoom();
+				//if(s.getIsActive()) {
+				//	Room room = s.getRoom();
 					//If room is not available - session ends and email user is notified.
-					if(!room.isAvailable()) {
-						s.setActivity(false);
-						EmailCreator.notifyUserOfRoomUnavailability(studentUsername);
-						return null;
-					} else {
-						sessionDto.add(convertToDto(s));
-					}
-				}
+				//	if(!room.isAvailable()) {
+				//		s.setActivity(false);
+				//		EmailCreator.notifyUserOfRoomUnavailability(studentUsername);
+				//		return null;
+				//	} else {
+				//		sessionDto.add(convertToDto(s));
+				//	}
+				//}
 			}
 		}
 		return sessionDto;

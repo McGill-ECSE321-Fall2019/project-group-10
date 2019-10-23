@@ -1,7 +1,7 @@
 package ca.mcgill.ecse321.project;
 
 public class EmailCreator {
-
+	
 	public static void notifyUserOfRoomUnavailability(String email) {
 		
 	}
