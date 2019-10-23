@@ -1033,7 +1033,7 @@ public class TutoringAppService {
 				courseOs.add(co);
 			}
 		}
-		
+
 		if(courseOs.size() == 0)
 			throw new IllegalArgumentException("No courses offerings offered for this course");
 		
