@@ -52,10 +52,10 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Name);
 		}
 		if(date == null){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Date_Null);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Date);
 		}
 		if(time == null){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Time_Null);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Time);
 		}
 			
 		// set the 
@@ -81,10 +81,10 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Name);
 		}
 		if(date == null){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Date_Null);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Date);
 		}
 		if(time == null){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Time_Null);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Time);
 		}
 		
 
@@ -836,7 +836,7 @@ public class TutoringAppService {
 	@Transactional
 	public TSUser createUser(String name, String email, int age, String phoneNum) {
 		if(age < 12){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_User_AgeToYoung);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_User_AgeTooYoung);
 		}
 		if(name == null || name.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_User_Name);

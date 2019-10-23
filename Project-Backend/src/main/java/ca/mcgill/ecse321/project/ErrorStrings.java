@@ -4,8 +4,8 @@ public class ErrorStrings {
     
 //============ AVAILABILITY ===========\\
 	public static String Invalid_Availability_Name = "Invalid name...";
-    public static String Invalid_Availability_Date_Null = "Invalid date parameters...";
-    public static String Invalid_Availability_Time_Null = "Invalid time parameters...";
+    public static String Invalid_Availability_Date = "Invalid date parameters...";
+    public static String Invalid_Availability_Time = "Invalid time parameters...";
     public static String Invalid_Availability_Null = "Invalid availability ID, the availability does not exist...";
     public static String Invalid_Availability_Tutor_Null = "Please specify a valid Tutor";
     public static String Invalid_Availability_ID_Get = "Incorrect id value for the availability...";
@@ -84,7 +84,7 @@ public class ErrorStrings {
     public static String Invalid_University_FindCourse = "No courses offered for this university";
     
 //================= USER =====================\\
-    public static String Invalid_User_AgeToYoung = "Must be above the age of 12 for this tutoring service...";
+    public static String Invalid_User_AgeTooYoung = "Must be above the age of 12 for this tutoring service...";
     public static String Invalid_User_Name = "Invalid name...";
     public static String Invalid_User_Email = "Please insert a proper email...";
     public static String Invalid_User_PhoneNumber = "Invalid phone number...";
