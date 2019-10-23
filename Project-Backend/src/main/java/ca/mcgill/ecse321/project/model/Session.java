@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 public class Session{
 	private Date date;
 	private Time time;
+	private boolean isActive = true;
 
 	public void setDate(Date value) {
 		this.date = value;
@@ -93,4 +94,12 @@ public class Session{
 		this.room = room;
 	}
 
+	public boolean getIsActive() {
+		return isActive;
+	}
+	
+	public void setActivity(boolean isActive) {
+		this.isActive = isActive;
+	}
+	
 }

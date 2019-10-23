@@ -98,5 +98,5 @@ public class ErrorStrings {
     public static String Invalid_DTO_University = "There is no such University!";
     public static String Invalid_DTO_Rating = "There is no such rating!";
     public static String Invalid_DTO_Text = "There is no such text!";
-    
+    public static String Invalid_DTO_Session = "There is no such session!";
 }

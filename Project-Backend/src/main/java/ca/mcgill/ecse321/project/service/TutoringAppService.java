@@ -1015,6 +1015,7 @@ public class TutoringAppService {
 	}
 
 	// get course offerings from specified course from associated university
+	@Transactional
 	public List<CourseOffering> getAllCourseOfferingsByCourse(String cname, String uniName) {
 		List<CourseOffering> courseOs = new ArrayList<>();
 		
@@ -1027,6 +1028,50 @@ public class TutoringAppService {
 		}
 		return courseOs;
 	}
+	
+	//For better reading of code - method made to find the reviews for given tutor in the course.
+	@Transactional
+	public List<Review[]> getAllReviewsByCoIDForTutor(String tutorUsername, int coID){
+		List<Tutor> tutorList = getAllTutorsByCourseOfferings(coID);
+		for(Tutor t : tutorList) {
+			if(t.getUsername().equals(tutorUsername)) {
+				return getAllReviewsByTutorUsername(tutorUsername);
+			}
+		}	
+		return null;
+	}
+
+	//Get package of text and ratings. 1) text 2) rating
+	@Transactional
+	public List<Review[]> getAllReviewsByTutorUsername(String tutorUsername){
+		List<Review[]> reviewList = new ArrayList<>();
+		Review[] reviewPackage = new Review[2];
+		
+		for(Text t: getAllTexts()) {
+			for(Rating r : getAllRatings()) {
+				if(r.getReviewID() == t.getReviewID()) {}
+				reviewPackage[0] = t; //text position 1
+				reviewPackage[1] = r; //rating position 2
+				
+				reviewList.add(reviewPackage);
+			}
+		}
+		
+		return reviewList;
+	}
+	
+	//Get all the required tutors for the specific courseOffering.
+	@Transactional
+	public List<Tutor> getAllTutorsByCourseOfferings(int coID){
+		for(CourseOffering c : getAllCourseOfferings()) {
+			if(c.getCourseOfferingID() == coID) {
+				return c.getTutors();
+			}			
+		}
+		return null;
+	}
+	
+	
 	
 //	// get course offerings from specified course from associated university
 //	public List<CourseOffering> getAllTutorsByCourseOffering(String cname, String uniName, String coname) {

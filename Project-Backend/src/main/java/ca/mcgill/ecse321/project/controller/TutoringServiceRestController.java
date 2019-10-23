@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.project.EmailCreator;
 import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dto.*;
 import ca.mcgill.ecse321.project.model.*;
@@ -103,16 +104,42 @@ public class TutoringServiceRestController {
 //	}
 
 	
-	
-	
 	//Post mapping to get both the text and rating for the review. 1) Text 2) Rating
-	@PostMapping(value = { "/text", "/text/" })
-	public ReviewDTO[] createReview(@PathVariable("text") String name, @RequestParam String tutorUsername, @RequestParam String revieweeUsername, @RequestParam int coID, @RequestBody String description, @RequestBody boolean isAllowed, @RequestBody int ratingValue) throws IllegalArgumentException {
-		Text text = service.createText(description, isAllowed, tutorUsername, coID);
-		Rating rating = service.createRating(ratingValue, revieweeUsername, coID);
-		return convertToDto(text, rating);
+	@PostMapping(value = { "/{coID}/{tutorUsername}", "/{coID}/{tutorUsername}/" })
+	public List<ReviewDTO[]> getAllReviewsForTutorInCourseOffering(@PathVariable("coID") int coID, @PathVariable("tutorUsername") String tutorUsername) throws IllegalArgumentException {
+		List<ReviewDTO[]> reviewDto = new ArrayList<>();
+		List<Review[]> reviewPackages = service.getAllReviewsByCoIDForTutor(tutorUsername, coID);
+		
+		for(Review[] review : reviewPackages) {
+			reviewDto.add(convertToDto((Text)review[0], (Rating)review[1]));			
+		}
+		
+		return reviewDto;
 	}
-	
+
+	//Getting session details for the user
+	@PostMapping(value = {"/{sessionId}/{username}", "/{sessionId}/{username}"})
+	public List<SessionDTO> getActiveSessionDetails(@PathVariable("sessionId") int sessionID, @PathVariable("username") String studentUsername) throws IllegalArgumentException{
+		List<SessionDTO> sessionDto = new ArrayList<>();
+		
+		Student student = service.getStudent(studentUsername);
+		for(Session s : student.getSession()) {
+			if(s.getSessionID() == sessionID) {
+				if(s.getIsActive()) {
+					Room room = s.getRoom();
+					//If room is not available - session ends and email user is notified.
+					if(!room.isAvailable()) {
+						s.setActivity(false);
+						EmailCreator.notifyUserOfRoomUnavailability(studentUsername);
+						return null;
+					} else {
+						sessionDto.add(convertToDto(s));
+					}
+				}
+			}
+		}
+		return sessionDto;
+	}
 
 	
 // ********************************************* Course DTO ************************************************ \\
@@ -160,5 +187,13 @@ public class TutoringServiceRestController {
 		ReviewDTO[] reviewPackage = {tDTO, rDTO};
 		return reviewPackage;
 	}	
+	
+	private SessionDTO convertToDto(Session s) {
+		if(s == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
+		}
+		SessionDTO sDTO = new SessionDTO(s.getTime(), s.getAmountPaid(), s.getDate());
+		return sDTO;
+	}
 }
 
