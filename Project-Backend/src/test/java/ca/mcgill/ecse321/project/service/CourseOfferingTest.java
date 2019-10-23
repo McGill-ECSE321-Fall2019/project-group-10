@@ -217,7 +217,7 @@ public class CourseOfferingTest {
 		}
 
 		// check error
-		assertEquals("Please specify a valid Course", error);
+		assertEquals("Please specify a valid course offering...", error);
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all the courses
 		// check no change in database
