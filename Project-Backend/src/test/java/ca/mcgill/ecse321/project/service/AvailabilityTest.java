@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -159,7 +160,7 @@ public class AvailabilityTest {
 		}
 
 		// check error
-		assertEquals("Invalid date parameters...", error);
+		assertEquals(ErrorStrings.Invalid_Availability_Date, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllAvailabilities().size());
@@ -182,7 +183,7 @@ public class AvailabilityTest {
 		}
 
 		// check error
-		assertEquals("Invalid time parameters...", error);
+		assertEquals(ErrorStrings.Invalid_Availability_Time, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllAvailabilities().size());
@@ -203,7 +204,7 @@ public class AvailabilityTest {
 		}
 
 		// check error
-		assertEquals("Please specify a valid Tutor", error);
+		assertEquals(ErrorStrings.Invalid_Availability_Tutor, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllAvailabilities().size());

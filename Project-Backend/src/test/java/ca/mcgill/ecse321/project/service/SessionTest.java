@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -202,7 +203,7 @@ public class SessionTest {
 		}
 
 		// check error
-		assertEquals("Please input a valid course offering", error);
+		assertEquals(ErrorStrings.Invalid_Session_FindCourseOfferingByID, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());
@@ -228,7 +229,7 @@ public class SessionTest {
 		}
 
 		// check error
-		assertEquals("Please input a valid tutor", error);
+		assertEquals(ErrorStrings.Invalid_Session_FindTutorByUsername, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());
@@ -254,7 +255,7 @@ public class SessionTest {
 		}
 
 		// check error
-		assertEquals("Please input a valid student", error);
+		assertEquals(ErrorStrings.Invalid_Session_FindStudentByUsername, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());
@@ -280,7 +281,7 @@ public class SessionTest {
 		}
 
 		// check error
-		assertEquals("So your student is paying you?? Please provide positive amount paid...", error);
+		assertEquals(ErrorStrings.Invalid_Session_NegativeAmountPaid, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());
@@ -305,7 +306,7 @@ public class SessionTest {
 		}
 
 		// check error
-		assertEquals("Invalid time parameters...", error);
+		assertEquals(ErrorStrings.Invalid_Session_DateTime, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());
@@ -330,7 +331,7 @@ public class SessionTest {
 		}
 
 		// check error
-		assertEquals("Invalid time parameters...", error);
+		assertEquals(ErrorStrings.Invalid_Session_DateTime, error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSessions().size());

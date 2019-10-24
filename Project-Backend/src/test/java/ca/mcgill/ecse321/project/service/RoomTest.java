@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -150,7 +151,7 @@ public class RoomTest {
 		}
 
 		// check that the correct error was generated
-		assertEquals("Room number cannot be negative", error);
+		assertEquals(ErrorStrings.Invalid_Room_NegativeNumber, error);
 		List<Room> allRooms = service.getAllRooms(); //gets the list of all the rooms
 
 		assertEquals(0, allRooms.size()); // checks the size of the list

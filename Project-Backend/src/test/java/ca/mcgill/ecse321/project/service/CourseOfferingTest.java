@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -170,7 +171,7 @@ public class CourseOfferingTest {
 		}
 
 		// check error
-		assertEquals("Invalid term choice...", error);
+		assertEquals(ErrorStrings.Invalid_CourseOffering_Term, error);
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all the courses
 		assertEquals(0, allCO.size()); //checks the size of the list
@@ -194,7 +195,7 @@ public class CourseOfferingTest {
 			error = e.getMessage();
 		}
 		// check error
-		assertEquals("That is far too long ago...", error);
+		assertEquals(ErrorStrings.Invalid_CourseOffering_Year, error);
 		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the size of the list
 		assertEquals(0, allCO.size()); //checks the list is populating with invalid information 
 	}
@@ -217,7 +218,7 @@ public class CourseOfferingTest {
 		}
 
 		// check error
-		assertEquals("Please specify a valid Course", error);
+		assertEquals(ErrorStrings.Invalid_CourseOffering_CantFindCourseOffering, error);
 
 		List<CourseOffering> allCO = service.getAllCourseOfferings(); //gets the list of all the courses
 		// check no change in database
