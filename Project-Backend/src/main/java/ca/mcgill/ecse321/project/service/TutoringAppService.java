@@ -1141,6 +1141,19 @@ public class TutoringAppService {
 		
 		return reviewList;
 	}
-
-
+	
+	@Transactional
+	public boolean isSessionActive(Session s) {
+		if(s == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Availability);
+		}
+		//Compare the date.
+		long millis=System.currentTimeMillis(); 
+		Date currentDate = (Date) new java.util.Date(millis);
+		
+		if(s.getDate().compareTo(currentDate) > 0) {
+			return true;
+		} 
+		return false;
+	}
 }
