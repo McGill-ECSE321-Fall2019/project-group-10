@@ -7,7 +7,7 @@ public class ErrorStrings {
     public static String Invalid_Availability_Date = "Invalid date parameters...";
     public static String Invalid_Availability_Time = "Invalid time parameters...";
     public static String Invalid_Availability_Null = "Invalid availability ID, the availability does not exist...";
-    public static String Invalid_Availability_Tutor_Null = "Please specify a valid Tutor";
+    public static String Invalid_Availability_Tutor = "Please specify a valid Tutor";
     public static String Invalid_Availability_ID_Get = "Incorrect id value for the availability...";
     public static String Invalid_Availability_ID_Delete = "You are searching for an invalid id...";
     
@@ -92,7 +92,11 @@ public class ErrorStrings {
 //================== ROOM ====================\\
     public static String Invalid_Room_NegativeNumber = "Room number cannot be negative";
     
-    
-    
-    
+//================== CONVERTTODTO ===================\\
+    public static String Invalid_DTO_CourseOffering = "There is no such CourseOffering!";
+    public static String Invalid_DTO_Course = "There is no such Course!";
+    public static String Invalid_DTO_University = "There is no such University!";
+    public static String Invalid_DTO_Rating = "There is no such rating!";
+    public static String Invalid_DTO_Text = "There is no such text!";
+    public static String Invalid_DTO_Session = "There is no such session!";
 }

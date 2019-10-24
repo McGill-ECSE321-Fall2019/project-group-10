@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.project.EmailCreator;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dto.*;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.service.*;
@@ -102,14 +104,41 @@ public class TutoringServiceRestController {
 //	}
 
 	
-// ******************************************** POST MAPPINGS ********************************************** \\
-	
-	
-	//Uses request parameter to get the username and courseoffering id. RequestBody sends the descprion.
-	@PostMapping(value = { "/text", "/text/" })
-	public TextDTO createReview(@PathVariable("text") String name, @RequestParam String tutorUsername, @RequestParam int coID, @RequestBody String description, @RequestBody boolean isAllowed) throws IllegalArgumentException {
-		Text text = service.createText(description, isAllowed, tutorUsername, coID);
-		return convertToDto(text);
+	//Post mapping to get both the text and rating for the review. 1) Text 2) Rating
+	@PostMapping(value = { "/{coID}/{tutorUsername}", "/{coID}/{tutorUsername}/" })
+	public List<ReviewDTO[]> getAllReviewsForTutorInCourseOffering(@PathVariable("coID") int coID, @PathVariable("tutorUsername") String tutorUsername) throws IllegalArgumentException {
+		List<ReviewDTO[]> reviewDto = new ArrayList<>();
+		List<Review[]> reviewPackages = service.getAllReviewsByCoIDForTutor(tutorUsername, coID);
+		
+		for(Review[] review : reviewPackages) {
+			reviewDto.add(convertToDto((Text)review[0], (Rating)review[1]));			
+		}
+		
+		return reviewDto;
+	}
+
+	//Getting session details for the user
+	@PostMapping(value = {"/{sessionId}/{username}", "/{sessionId}/{username}"})
+	public List<SessionDTO> getActiveSessionDetails(@PathVariable("sessionId") int sessionID, @PathVariable("username") String studentUsername) throws IllegalArgumentException{
+		List<SessionDTO> sessionDto = new ArrayList<>();
+		
+		Student student = service.getStudent(studentUsername);
+		for(Session s : student.getSession()) {
+			if(s.getSessionID() == sessionID) {
+				//if(s.getIsActive()) {
+				//	Room room = s.getRoom();
+					//If room is not available - session ends and email user is notified.
+				//	if(!room.isAvailable()) {
+				//		s.setActivity(false);
+				//		EmailCreator.notifyUserOfRoomUnavailability(studentUsername);
+				//		return null;
+				//	} else {
+				//		sessionDto.add(convertToDto(s));
+				//	}
+				//}
+			}
+		}
+		return sessionDto;
 	}
 
 	
@@ -119,7 +148,7 @@ public class TutoringServiceRestController {
   	// Convert the model course to a DTO object
 	private CourseOfferingDTO convertToDto(CourseOffering co) {
 		if (co == null) {
-			throw new IllegalArgumentException("There is no such CourseOffering!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
 		}
 		CourseOfferingDTO coDTO = new CourseOfferingDTO(co.getTerm(), co.getYear(), 
 				co.getCourse().getCourseName(), co.getCourse().getUniversity().getName());
@@ -128,7 +157,7 @@ public class TutoringServiceRestController {
   
 	private CourseDto convertToDto(Course c) {
 		if (c == null) {
-			throw new IllegalArgumentException("There is no such Course!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Course);
 		}
 		CourseDto cDTO = new CourseDto(c.getCourseName(), c.getDescription(), c.getUniversity().getName());
 		return cDTO;
@@ -137,19 +166,34 @@ public class TutoringServiceRestController {
 	// Convert the model university to a DTO object
 	private UniversityDTO convertToDto(University u) {
 		if (u == null) {
-			throw new IllegalArgumentException("There is no such University!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_University);
 		}
 		UniversityDTO uDTO = new UniversityDTO(u.getName(), u.getAddress());
 		return uDTO;
 	}
 	
 	//Convert the model text into a DTO of the text object.
-	private TextDTO convertToDto(Text t) {
+	private ReviewDTO[] convertToDto(Text t, Rating r) {
 		if(t == null){
-			throw new IllegalArgumentException("There is no such Text!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Text);
+		}
+		if(r == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
 		}
 		TextDTO tDTO = new TextDTO(t.getIsAllowed(), t.getDescription());
-		return tDTO;
+		RatingDTO rDTO = new RatingDTO(r.getRatingValue());
+		
+		//Package
+		ReviewDTO[] reviewPackage = {tDTO, rDTO};
+		return reviewPackage;
 	}	
+	
+	private SessionDTO convertToDto(Session s) {
+		if(s == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
+		}
+		SessionDTO sDTO = new SessionDTO(s.getTime(), s.getAmountPaid(), s.getDate());
+		return sDTO;
+	}
 }
 

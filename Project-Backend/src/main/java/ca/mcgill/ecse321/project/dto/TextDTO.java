@@ -1,7 +1,7 @@
 package ca.mcgill.ecse321.project.dto;
 
 
-public class TextDTO {
+public class TextDTO extends ReviewDTO{
 
 	private boolean isAllowed;
 	private String description;	
