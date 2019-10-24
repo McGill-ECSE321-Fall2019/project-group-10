@@ -162,7 +162,14 @@ public class TutoringServiceRestController {
 // ******************************************* PUT MAPPING ********************************************* \\	
 	
 	@PutMapping(value = {"/availability", "/availability/"})
-	//public AvailableDTO updateAvailability()
+	public AvailabilityDTO updateAvailability(
+			@RequestParam("availabilityID") Availability availability,
+			@RequestParam("tutor") Tutor tutor
+			) throws IllegalArgumentException {
+		// @formatter:on
+		Availability available = service.updateAvailability(availability.getId(), availability.getDate(), availability.getTime(), tutor.getUsername());
+		return convertToDto(available);
+	}
 	
 	
 // ******************************************* Conversion to  DTO ********************************************* \\

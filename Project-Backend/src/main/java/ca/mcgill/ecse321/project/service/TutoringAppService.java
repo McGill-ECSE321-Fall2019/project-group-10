@@ -1049,7 +1049,7 @@ public class TutoringAppService {
 		// find course offering from repository
 		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(id);
 		if(co == null)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_CO);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_COBad);
 		
 		List<Tutor> tutors = new ArrayList<>();
 		// get the tutors associated with it
