@@ -1242,7 +1242,7 @@ public class TutoringAppService {
 	//For better reading of code - method made to find the reviews for given tutor in the course.
 	@Transactional
 	public List<Review[]> getAllReviewsByCoIDForTutor(String tutorUsername, int coID){
-		List<Tutor> tutorList = getAllTutorsByCourseOfferings(coID);
+		List<Tutor> tutorList = getAllTutorsByCourseOffering(coID);
 		for(Tutor t : tutorList) {
 			if(t.getUsername().equals(tutorUsername)) {
 				return getAllReviewsByTutorUsername(tutorUsername);
