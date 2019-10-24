@@ -45,18 +45,18 @@ public class UniversityTest {
 	private UserRepository userRepository;
 
 
-	@After
-	public void clearDatabase() {
-		sessionRepository.deleteAll();
-		roomRepository.deleteAll();
-		reviewRepository.deleteAll();
-		courseOfferingRepository.deleteAll();
-		courseRepository.deleteAll();
-		universityRepository.deleteAll();
-		availabilityRepository.deleteAll();
-		roleRepository.deleteAll();
-		userRepository.deleteAll();
-	}
+//	@After
+//	public void clearDatabase() {
+//		sessionRepository.deleteAll();
+//		roomRepository.deleteAll();
+//		reviewRepository.deleteAll();
+//		courseOfferingRepository.deleteAll();
+//		courseRepository.deleteAll();
+//		universityRepository.deleteAll();
+//		availabilityRepository.deleteAll();
+//		roleRepository.deleteAll();
+//		userRepository.deleteAll();
+//	}
 
 	// try to create a new university
 	@Test

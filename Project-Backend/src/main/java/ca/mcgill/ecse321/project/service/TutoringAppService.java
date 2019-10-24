@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -1003,13 +1004,17 @@ public class TutoringAppService {
 		// get all courses
 		List<Course> allcourses = getAllCourses();
 		if(allcourses == null)
+
 			throw new IllegalArgumentException(ErrorStrings.Invalid_University_FindCourse);
 		
 		// filter by university name
-		for(Course c : getAllCourses()) {
+		for(Course c : allcourses) {
 			if(c.getUniversity().getName() == name)
 				courses.add(c);
 		}
+		
+		if(courses.size() == 0)
+			throw new IllegalArgumentException("No courses offered for this university");
 		
 		return courses;
 	}
@@ -1020,15 +1025,88 @@ public class TutoringAppService {
 		List<CourseOffering> courseOs = new ArrayList<>();
 		
 		// get all course offerings
-		for(CourseOffering co : getAllCourseOfferings()) {
+		List<CourseOffering> allcourseOs = getAllCourseOfferings();
+		if(allcourseOs == null)
+			throw new IllegalArgumentException("No courses offerings offered yet");
+		
+		for(CourseOffering co : allcourseOs) {
 			// check name and university names that they are what we are looking for
 			if(co.getCourse().getCourseName().equals(cname) 
-					&& co.getCourse().getUniversity().getName().equals(uniName))
+					&& co.getCourse().getUniversity().getName().equals(uniName)) {
 				courseOs.add(co);
+			}
 		}
+
+		if(courseOs.size() == 0)
+			throw new IllegalArgumentException("No courses offerings offered for this course");
+		
 		return courseOs;
 	}
 	
+	// get tutors for specified course offering from associated course and university
+	@Transactional
+  public List<Tutor> getAllTutorsByCourseOffering(int id) {
+		// find course offering from repository
+		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(id);
+		if(co == null)
+			throw new IllegalArgumentException("This course offering does not exist");
+		
+		List<Tutor> tutors = new ArrayList<>();
+		
+		// get the tutors associated with it
+		tutors = co.getTutors();
+		
+		if(tutors == null)
+			throw new IllegalArgumentException("No tutors for this course offering");
+
+		return tutors;
+	}
+
+	// find a tutor by the username
+  @Transactional
+	public Tutor findTutorByUsername(String username) {
+		Tutor t = new Tutor();
+		
+		// find the correct tutor by the given username
+		t = tutorRepository.findTutorByUsername(username);
+		
+		// check if it is null
+		if (t == null)
+			throw new IllegalArgumentException("No tutor by that username");
+		
+		// otherwise return the found tutor
+		return t;
+	}
+	
+	// check is there is a room available at the give time
+  @Transactional
+	public boolean isRoomAvailable(Date date, Time startTime) {
+		// check all rooms
+		List<Room> rooms = getAllRooms();
+		if(rooms != null) {
+			for(Room r: rooms) {
+				// set preliminary availability to true
+				boolean isAvail = true;
+				// look at all sessions of the room
+				Set<Session> sessions = r.getSession();
+				if(sessions != null) {
+					for(Session s: new ArrayList<Session>(sessions)) {
+						// if one of the sessions is at the same time, set available to false and move 
+						// to the next room
+						if((s.getTime().equals(startTime) && s.getDate().equals(date))) {
+							isAvail = false;
+							break;
+						}
+					}
+				}
+				// if none of the sessions for a room are at that time, then it is available
+				if(isAvail == true)
+					return true;
+			}
+		}
+		return false;
+	}
+=======
 	//For better reading of code - method made to find the reviews for given tutor in the course.
 	@Transactional
 	public List<Review[]> getAllReviewsByCoIDForTutor(String tutorUsername, int coID){
@@ -1059,31 +1137,6 @@ public class TutoringAppService {
 		
 		return reviewList;
 	}
-	
-	//Get all the required tutors for the specific courseOffering.
-	@Transactional
-	public List<Tutor> getAllTutorsByCourseOfferings(int coID){
-		for(CourseOffering c : getAllCourseOfferings()) {
-			if(c.getCourseOfferingID() == coID) {
-				return c.getTutors();
-			}			
-		}
-		return null;
-	}
-	
-	
-	
-//	// get course offerings from specified course from associated university
-//	public List<CourseOffering> getAllTutorsByCourseOffering(String cname, String uniName, String coname) {
-//		List<CourseOffering> courseOs = getAllCourseOfferingsByCourse(cname, coname);
-//		
-//		// get all tutors
-//		for(Tutor t : getAllTutors()) {
-//			// check name and university names that they are what we are looking for
-//			if(getCourse().getCourseName().equals(cname) 
-//					&& co.getCourse().getUniversity().getName().equals(uniName))
-//				courseOs.add(co);
-//		}
-//		return courseOs;
-//	}
+
+
 }
