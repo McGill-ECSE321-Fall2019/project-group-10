@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.project.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -964,7 +965,6 @@ public class TutoringAppService {
 
 //	 <----University---->
 
-
 	//Checking to make sure we can update a university.
 	@Transactional
 	public University updateUniversity(int oldID, String newName, String newAddress) {
@@ -1009,7 +1009,7 @@ public class TutoringAppService {
 		
 		// filter by university name
 		for(Course c : allcourses) {
-			if(c.getUniversity().getName() == name)
+			if(c.getUniversity().getName().equals(name))
 				courses.add(c);
 		}
 		
@@ -1052,13 +1052,11 @@ public class TutoringAppService {
 			throw new IllegalArgumentException("This course offering does not exist");
 		
 		List<Tutor> tutors = new ArrayList<>();
-		
 		// get the tutors associated with it
 		tutors = co.getTutors();
-		
-		if(tutors == null)
-			throw new IllegalArgumentException("No tutors for this course offering");
 
+		if(tutors == null || tutors.size() == 0)
+			throw new IllegalArgumentException("No tutors for this course offering");
 		return tutors;
 	}
 

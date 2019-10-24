@@ -58,6 +58,7 @@ public class TutoringServiceRestController {
 			// convert model class to a data transfer object
 			cDTOs.add(convertToDto(c));
 		}
+		
 		return cDTOs;
 	}
 	
@@ -67,7 +68,7 @@ public class TutoringServiceRestController {
 			@PathVariable("coursename") String cname) throws IllegalArgumentException {
 		// @formatter:on
 		List<CourseOfferingDTO> coDTOs = new ArrayList<>();
-
+		
 		// get course offerings by course by university from the tutoring service
 		List<CourseOffering> courseOs = service.getAllCourseOfferingsByCourse(cname, name);
 				
@@ -82,7 +83,7 @@ public class TutoringServiceRestController {
 	@GetMapping(value = { "/courses", "/courses/" })
 	public List<CourseDto> getAllCourses() {
 		List<CourseDto> cDTOs = new ArrayList<>();
-		
+
 		// get universities from the tutoring service
 		for (Course c : service.getAllCourses()) {
 			// convert model class to a data transfer object
@@ -181,7 +182,7 @@ public class TutoringServiceRestController {
 		if (r == null) {
 			throw new IllegalArgumentException("There is no such Rating!");
 		}
-		RatingDTO rDTO = new RatingDTO();
+		RatingDTO rDTO = new RatingDTO(r.getRatingValue());
 		return rDTO;
 	}
 	
