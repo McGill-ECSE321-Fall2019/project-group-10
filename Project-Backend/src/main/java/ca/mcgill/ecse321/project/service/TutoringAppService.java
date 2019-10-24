@@ -753,15 +753,17 @@ public class TutoringAppService {
 		Availability av = null;
 		for (Availability a : tutorAvailabilities) {
 			
+			if (a == null) {
+				
+				continue;
+				
+			}
+			
 			Date avDate = a.getDate();
 			Time avTime = a.getTime();
 			
 			if (date.toString().equals(avDate.toString()) && (time.toString().equals(avTime.toString()))) {
 				
-				if (a == null) {
-					
-					continue;
-				}
 				
 				tIsAvailable = true;
 				tId = a.getId();
