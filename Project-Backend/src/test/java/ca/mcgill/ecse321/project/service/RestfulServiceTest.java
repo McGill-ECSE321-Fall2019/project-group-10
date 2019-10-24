@@ -53,7 +53,24 @@ public class RestfulServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 	
-
+	@Test
+	public void runApplication() {
+		// INSTRUCTIONS:
+		// first delete everything from the repositories
+		// then run the setup code
+		// then delete again
+		String purpose = "startup";
+		switch(purpose) {
+			case "startup": deleteAll(); break;
+			case "create": setUp(); break;
+			case "end": deleteAll(); break;
+		}
+			
+		// needed for Junit test
+		assertEquals(1,1);
+		
+	}
+	
 	public void setUp() {
 		// save some objects in the database to test the restful apis
 		
@@ -132,26 +149,7 @@ public class RestfulServiceTest {
 		tutorRepository.save(t);
 	}
 	
-	@Test
-	public void runApplication() {
-		// INSTRUCTIONS:
-		// first delete everything from the repositories
-		// then run the setup code
-		// then delete again
-		String purpose = "startup";
-		switch(purpose) {
-			case "startup": deleteAll(); break;
-			case "create": setUp(); break;
-			case "end": deleteAll(); break;
-		}
-			
-		// needed for Junit test
-		assertEquals(1,1);
-		
-	}
 	
-	
-	//@After
 	public void deleteAll() {
 		// clear in order of dependencies
 		sessionRepository.deleteAll();
