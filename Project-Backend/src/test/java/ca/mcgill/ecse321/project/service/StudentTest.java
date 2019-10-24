@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -44,6 +45,10 @@ public class StudentTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TutorRepository tutorRepository; 
+	@Autowired
+	private StudentRepository studentRepository; 
 
 	private String USERNAME = "cmc";
 	private String PASSWORD = "dogs";
@@ -56,6 +61,7 @@ public class StudentTest {
 
 	@After
 	public void clearDatabase() {
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -64,6 +70,8 @@ public class StudentTest {
 		universityRepository.deleteAll();
 		availabilityRepository.deleteAll();
 		roleRepository.deleteAll();
+		tutorRepository.deleteAll();
+		studentRepository.deleteAll();
 		userRepository.deleteAll();
 	}
 	
@@ -155,7 +163,7 @@ public class StudentTest {
 		List<Student> allStudents = service.getAllStudents();
 
 		// check that the correct error was generated
-		assertEquals("Please insert a username...", error);
+		assertEquals(ErrorStrings.Invalid_Student_Username, error);
 		assertEquals(0, allStudents.size());
 	}
 	
@@ -175,7 +183,7 @@ public class StudentTest {
 		List<Student> allStudents = service.getAllStudents();
 
 		// check that the correct error was generated
-		assertEquals("Please insert a password...", error);
+		assertEquals(ErrorStrings.Invalid_Student_Password, error);
 		assertEquals(0, allStudents.size());
 	}
 	
@@ -192,7 +200,7 @@ public class StudentTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals("Please input a valid user", error);
+		assertEquals(ErrorStrings.Invalid_Student_FindUserByEmail, error);
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
@@ -213,7 +221,7 @@ public class StudentTest {
 		List<Student> allStudents = service.getAllStudents();
 
 		// check that the correct error was generated
-		assertEquals("Please insert a proper email...", error);
+		assertEquals(ErrorStrings.Invalid_Student_UserEmail, error);
 		assertEquals(0, allStudents.size());
 	}
 	

@@ -1,5 +1,8 @@
 package ca.mcgill.ecse321.project.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -38,6 +41,16 @@ public abstract class Review{
 
 	public void setWrittenAbout(Role writtenAbout) {
 		this.writtenAbout = writtenAbout;
+		Set<Review> reviews = writtenAbout.getReview();
+		if(reviews == null) {
+			Set<Review> review = new HashSet<>();
+			review.add(this);
+			writtenAbout.setReview(review);
+		}
+		else {
+			reviews.add(this);
+			writtenAbout.setReview(reviews);
+		}
 	}
 
 }

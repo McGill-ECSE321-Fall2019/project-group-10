@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 
@@ -42,6 +43,10 @@ public class CourseTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TutorRepository tutorRepository; 
+	@Autowired
+	private StudentRepository studentRepository; 
 	
 	@Before
 	public void setUp(){
@@ -50,6 +55,7 @@ public class CourseTest {
 	
 	@After
 	public void clearDatabase() {
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -58,6 +64,8 @@ public class CourseTest {
 		universityRepository.deleteAll();
 		availabilityRepository.deleteAll();
 		roleRepository.deleteAll();
+		tutorRepository.deleteAll();
+		studentRepository.deleteAll();
 		userRepository.deleteAll();
 	}
 	
@@ -169,7 +177,7 @@ public class CourseTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals("Please insert a brief description...", error); 
+		assertEquals(ErrorStrings.Invalid_Course_Description, error); 
 		List<Course> allCourses = service.getAllCourses(); //get the list of all the courses
 		assertEquals(0, allCourses.size()); //checks the size of the list
 
@@ -192,7 +200,7 @@ public class CourseTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals("Please insert a course name to search...", error);
+		assertEquals(ErrorStrings.Invalid_Course_CourseName, error);
 		List<Course> allCourses = service.getAllCourses(); //gets the list of all the courses
 		assertEquals(0, allCourses.size()); // checks the size of the list
 
@@ -214,7 +222,7 @@ public class CourseTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals("Please specify a valid University", error);
+		assertEquals(ErrorStrings.Invalid_Course_FindUniversityWithID, error);
 		List<Course> allCourses = service.getAllCourses(); //gets the list of all the courses
 		assertEquals(0, allCourses.size()); //checks the size of the list
 

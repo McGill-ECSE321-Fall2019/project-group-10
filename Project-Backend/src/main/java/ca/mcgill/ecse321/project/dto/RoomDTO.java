@@ -5,6 +5,15 @@ public class RoomDTO {
 	private int roomNumber;
 	private String roomType;
 
+
+	public void setRoomNumber(int roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
+
 	public RoomDTO() {
 	}
 

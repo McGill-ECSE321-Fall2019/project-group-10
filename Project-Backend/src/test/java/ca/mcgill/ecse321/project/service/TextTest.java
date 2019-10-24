@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -42,6 +43,10 @@ public class TextTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TutorRepository tutorRepository; 
+	@Autowired
+	private StudentRepository studentRepository; 
 
 
 	@Before
@@ -55,6 +60,7 @@ public class TextTest {
 
 	@After
 	public void clearDatabase() {
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -63,6 +69,8 @@ public class TextTest {
 		universityRepository.deleteAll();
 		availabilityRepository.deleteAll();
 		roleRepository.deleteAll();
+		tutorRepository.deleteAll();
+		studentRepository.deleteAll();
 		userRepository.deleteAll();
 	}
 
@@ -177,7 +185,7 @@ public class TextTest {
 			error = e.getMessage();
 		}
 		// check error
-		assertEquals("Please insert a reviewee username...", error);
+		assertEquals(ErrorStrings.Invalid_Text_RevieweeUsername, error);
 
 		List<Text> allTexts = service.getAllTexts(); // gets the list of all the text 
 
@@ -204,7 +212,7 @@ public class TextTest {
 		}
 
 		// check error
-		assertEquals("Please enter a valid Course Offering", error);
+		assertEquals(ErrorStrings.Invalid_Text_FindCourseOffering, error);
 		List<Text> allTexts = service.getAllTexts(); //get the list of all the review
 		assertEquals(0, allTexts.size()); //checks the size of the list
 	}
@@ -227,7 +235,7 @@ public class TextTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals(error, "Please insert a brief description...");
+		assertEquals(error, ErrorStrings.Invalid_Text_Description);
 		List<Text> allTexts = service.getAllTexts(); //gets the list of all the reviews
 
 		assertEquals(0, allTexts.size()); //checks the size of the list

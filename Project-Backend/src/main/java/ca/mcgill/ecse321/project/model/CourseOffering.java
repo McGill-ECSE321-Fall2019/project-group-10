@@ -6,6 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
@@ -81,9 +83,16 @@ public class CourseOffering{
 	public List<Tutor> getTutors(){
 		return this.tutors;
 	}
+	
+	public void addTutor(Tutor t) {
+		if(tutors == null) {
+			tutors = new ArrayList<>();
+		}
+		this.tutors.add(t);
+	}
 
-	public void setTutors(List<Tutor> tutors) {
-		this.tutors = tutors;
+	public void setTutors(List<Tutor> tutor) {
+		this.tutors = tutor;
 	}
 
 }

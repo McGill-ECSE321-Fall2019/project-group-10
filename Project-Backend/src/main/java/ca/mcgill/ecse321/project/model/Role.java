@@ -36,7 +36,7 @@ public abstract class Role{
 		this.username = value;
 	}
 
-	public boolean isPassword(String password) { password.equals(getPassword()); }
+	public boolean isPassword(String password) { return password.equals(getPassword()); }
 
 	private String password;
 

@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -41,10 +42,14 @@ public class RoomTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TutorRepository tutorRepository; 
+	@Autowired
+	private StudentRepository studentRepository; 
 
 	@After
 	public void clearDatabase() {
-		// clear the databases in order of dependencies
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -53,6 +58,8 @@ public class RoomTest {
 		universityRepository.deleteAll();
 		availabilityRepository.deleteAll();
 		roleRepository.deleteAll();
+		tutorRepository.deleteAll();
+		studentRepository.deleteAll();
 		userRepository.deleteAll();
 	}
 
@@ -150,7 +157,7 @@ public class RoomTest {
 		}
 
 		// check that the correct error was generated
-		assertEquals("Room number cannot be negative", error);
+		assertEquals(ErrorStrings.Invalid_Room_NegativeNumber, error);
 		List<Room> allRooms = service.getAllRooms(); //gets the list of all the rooms
 
 		assertEquals(0, allRooms.size()); // checks the size of the list

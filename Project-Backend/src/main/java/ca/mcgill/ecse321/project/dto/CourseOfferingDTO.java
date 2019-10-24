@@ -8,16 +8,16 @@ public class CourseOfferingDTO {
 	private int year;
 	private String cname;
 	private String uniName;
+	private int id;
 	
 	//Data transfer object session.
 	public CourseOfferingDTO() {
 	}
 
-	public CourseOfferingDTO(Term term, int year, String cname, String uniName) {
+	public CourseOfferingDTO(Term term, int year, int id) {
 		this.term = term;
 		this.year = year;
-		this.cname = cname;
-		this.uniName = uniName;
+		this.id = id;
 	}
 
 	//get attributes
@@ -29,12 +29,8 @@ public class CourseOfferingDTO {
 		return year;
 	}
 	
-	public String getCourse() {
-		return cname;
-	}
-	
-	public String getUniversity() {
-		return uniName;
+	public int getID() {
+		return id;
 	}
 
 
