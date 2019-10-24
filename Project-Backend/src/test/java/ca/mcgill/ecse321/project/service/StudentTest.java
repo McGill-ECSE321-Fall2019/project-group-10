@@ -45,6 +45,10 @@ public class StudentTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TutorRepository tutorRepository; 
+	@Autowired
+	private StudentRepository studentRepository; 
 
 	private String USERNAME = "cmc";
 	private String PASSWORD = "dogs";
@@ -57,6 +61,7 @@ public class StudentTest {
 
 	@After
 	public void clearDatabase() {
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -65,6 +70,8 @@ public class StudentTest {
 		universityRepository.deleteAll();
 		availabilityRepository.deleteAll();
 		roleRepository.deleteAll();
+		tutorRepository.deleteAll();
+		studentRepository.deleteAll();
 		userRepository.deleteAll();
 	}
 	

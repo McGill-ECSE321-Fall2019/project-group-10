@@ -7,8 +7,10 @@ import javax.persistence.Id;
 
 import java.sql.Date;
 import java.sql.Time;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -16,6 +18,7 @@ import javax.persistence.ManyToOne;
 public class Session{
 	private Date date;
 	private Time time;
+
 	
 	private boolean isConfirmed;
 	
@@ -25,6 +28,7 @@ public class Session{
 	public void setConfirmed(boolean isConfirmed) {
 		this.isConfirmed = isConfirmed;
 	}
+
 	public void setDate(Date value) {
 		this.date = value;
 	}
@@ -89,7 +93,6 @@ public class Session{
 		this.courseOffering = co2;
 	}
 
-
 	private Room room;
 
 	@ManyToOne
@@ -101,4 +104,12 @@ public class Session{
 		this.room = room;
 	}
 
+	//public boolean getIsActive() {
+	//	return isActive;
+	//}
+	
+	//public void setActivity(boolean isActive) {
+	//	this.isActive = isActive;
+	//}
+	
 }
