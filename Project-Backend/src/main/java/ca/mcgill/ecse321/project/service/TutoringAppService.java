@@ -1160,8 +1160,6 @@ public class TutoringAppService {
 				}	
 			}
 		}
-		
-		
 		return reviewList;
 	}
 	

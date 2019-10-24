@@ -2,6 +2,9 @@ package ca.mcgill.ecse321.project;
 
 public class ErrorStrings {
     
+	public static String Invalid_NULL = null;
+	public static String Invalid_EMPTY = "";
+	
 //============ AVAILABILITY ===========\\
 	public static String Invalid_Availability_Name = "Invalid name...";
     public static String Invalid_Availability_Date = "Invalid date parameters...";
