@@ -111,7 +111,7 @@ public class ErrorStrings {
     public static String Invalid_Service_CO = "No course offerings offered for this course";
     public static String Invalid_Service_CONone = "No courses offerings offered yet";
     public static String Invalid_Service_CourseOfferedUni = "No courses offered for this university";
-
+    public static String Invalid_Service_COBad = "This course offering does not exist";
 
 
 
