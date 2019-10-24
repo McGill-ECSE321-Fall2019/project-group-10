@@ -848,17 +848,28 @@ public class TutoringAppService {
 		boolean done = false;
 		Session a = getSession(id);
 		
-		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
 
 		LocalDate currentDate = LocalDate.now();
-		LocalTime currentTime = LocalTime.now().format(format);
+		LocalTime currentTime = LocalTime.now();
 		if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 1) {
 			
-			if(format.parse(currentTime.toString()) - format.parse(a.getTime().toLocalTime().toString()) <= )
+			int currentMinutes = Integer.parseInt(currentTime.toString().substring(0, 2));
+			currentMinutes = currentMinutes * 60;
+			currentMinutes = currentMinutes + Integer.parseInt(currentTime.toString().substring(3, 5));
+			
+			int sMinutes = Integer.parseInt(a.getTime().toString().substring(0, 2));
+			sMinutes = sMinutes * 60;
+			sMinutes = sMinutes + Integer.parseInt(a.getTime().toString().substring(3, 5));
+			
+			if(currentMinutes > sMinutes) {
+				
+				throw new IllegalArgumentException("It is too late to cancel a session!");
+				
+			}
 			
 		} else if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 0) {
 			
-			
+			throw new IllegalArgumentException("It is too late to cancel a session!");
 			
 		}
 		if (a != null) {

@@ -114,7 +114,7 @@ public class TutoringServiceRestController {
 	public boolean removeSession(@RequestParam(name = "session_id") Integer sessionId) {
 		
 		return service.deleteSession(sessionId);
-		
+		//Insert notification
 		
 	}
 //	// Get all the tutors signed up for a course offering
