@@ -175,7 +175,7 @@ public class TutoringServiceRestController {
   	// Convert the model room to a DTO object
 	private RoomDTO convertToDto(Room r) {
 		if (r == null) {
-			throw new IllegalArgumentException("There is no such Room!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Room);
 		}
 		RoomDTO rDTO = new RoomDTO();
 		return rDTO;
@@ -184,7 +184,7 @@ public class TutoringServiceRestController {
   	// Convert the model rating to a DTO object
 	private RatingDTO convertToDto(Rating r) {
 		if (r == null) {
-			throw new IllegalArgumentException("There is no such Rating!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
 		}
 		RatingDTO rDTO = new RatingDTO();
 		return rDTO;
@@ -193,7 +193,7 @@ public class TutoringServiceRestController {
   	// Convert the model user to a DTO object
 	private UserDTO convertToDto(User u) {
 		if (u == null) {
-			throw new IllegalArgumentException("There is no such User!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_User);
 		}
 		UserDTO uDTO = new UserDTO();
 		return uDTO;
@@ -202,7 +202,7 @@ public class TutoringServiceRestController {
   	// Convert the model tutor to a DTO object
 	private TutorDTO convertToDto(Tutor t) {
 		if (t == null) {
-			throw new IllegalArgumentException("There is no such Tutor!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
 		}
 		TutorDTO tDTO = new TutorDTO(t.getUsername(), t.getEducation(), t.getHourlyRate(), t.getExperience());
 		
@@ -269,7 +269,7 @@ public class TutoringServiceRestController {
 	//Convert the model availability into a DTO of the availability object.
 	private AvailabilityDTO convertToDto(Availability a) {
 		if(a == null){
-			throw new IllegalArgumentException("There is no such Availability!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Availability);
 		}
 		AvailabilityDTO aDTO = new AvailabilityDTO(a.getDate(), a.getTime());
 		return aDTO;
