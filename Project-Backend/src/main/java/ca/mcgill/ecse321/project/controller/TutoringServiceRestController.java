@@ -2,6 +2,9 @@ package ca.mcgill.ecse321.project.controller;
 
 import java.sql.Date;
 import java.sql.Time;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +12,9 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -95,6 +100,47 @@ public class TutoringServiceRestController {
 		return cDTOs;
 	}
 	
+
+	@GetMapping(value= { "/sessions", "/sessions/"})
+	public List<SessionDTO> getAllSessions() {
+		
+		List<SessionDTO> sessionDtos = new ArrayList<>();
+		for (Session s : service.getAllSessions()) {
+			
+			sessionDtos.add(convertToDto(s));
+		}
+		
+		return sessionDtos;
+		
+	}
+	
+	@GetMapping(value = {"/session", "/session/" })
+	public SessionDTO getSession(@RequestParam(name = "session_id") Integer sessionId){
+		
+		return convertToDto(service.getSession(sessionId));
+		
+	}
+	
+	@DeleteMapping(value = {"/session/delete", "/session/delete/"})
+	public boolean removeSession(@RequestParam(name = "session_id") Integer sessionId) {
+		
+		return service.deleteSession(sessionId);
+		//Insert notification
+		
+	}
+//	// Get all the tutors signed up for a course offering
+//	@PostMapping(value = { "/{universityname}/{coursename}/{courseOffering}", "/{universityname}/{coursename}/{courseOffering}/" })
+//	public List<TutorDTO> getTutorsByCO() {
+//		List<TutorDTO> tutorDTOs = new ArrayList<>();
+//		
+//		// get universities from the tutoring service
+//		for (Tutor t : service.getAllUniversities()) {
+//			// convert model class to a data transfer object
+//			tutorDTOs.add(convertToDto(t));
+//		}
+//		return tutorDTOs;
+//	}
+
 	// Get all the tutors signed up for a course offering
 	@GetMapping(value = { "/courseoffering/{id}", "/courseoffering/{id}/" })
 	public List<TutorDTO> getTutorsByCO(@PathVariable("id") String id) {
@@ -164,7 +210,17 @@ public class TutoringServiceRestController {
 		}
 		
 		return convertToDto(text);
+	
+	@PostMapping(value = {"/session", "/session/"})
+	public SessionDTO bookSession(@RequestParam(name = "tutor_name") String tName, @RequestParam(name = "student_name") String sName, @RequestParam(name = "booking_date") @DateTimeFormat(pattern = "MMddyyyy") LocalDate bookingDate, 
+			@RequestParam(name = "booking_time") @DateTimeFormat(pattern = "HH:mm") LocalTime bookingTime, @RequestParam(name = "course_offering_id") Integer courseOfferingId, @RequestParam(name = "amount_paid") Double amountPaid) {
+		
+		Session s = service.createSession(courseOfferingId, Date.valueOf(bookingDate), Time.valueOf(bookingTime), amountPaid, sName, tName);
+		
+		return convertToDto(s);
 	}
+
+	//Getting session details for the user
 	
 	//Cancel a session if no room is available.
 	
@@ -321,12 +377,54 @@ public class TutoringServiceRestController {
 		return aDTO;
 	}
 	
-	private SessionDTO convertToDto(Session s) {
-		if(s == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
+	private RoomDTO convertToDto(Room room) {
+		
+		if (room == null) {
+			throw new IllegalArgumentException("There is no such room");
 		}
-		SessionDTO sDTO = new SessionDTO(s.getTime(), s.getAmountPaid(), s.getDate());
+		
+		RoomDTO r = new RoomDTO();
+		r.setRoomNumber(room.getRoomNumber());
+		r.setRoomType(r.getRoomType());
+		
+		return r;
+		
+	}
+	
+	private SessionDTO convertToDto(Session s) {
+		
+		if (s == null) {
+			
+			throw new IllegalArgumentException("There is no such session");
+			
+		}
+		
+		SessionDTO sDTO = new SessionDTO();
+		sDTO.setTime(s.getTime());
+		sDTO.setAmountPaid(s.getAmountPaid());
+		sDTO.setCourseOfferingDTO(convertToDto(s.getCourseOffering()));
+		sDTO.setDate(s.getDate());
+		sDTO.setRoomDTO(convertToDto(s.getRoom()));
+		sDTO.setTutor(covertToDto(s.getTutor()));
+		
+		ArrayList<StudentDTO> students = new ArrayList<>();
+		for (Student stu : s.getStudent()) {
+			students.add(convertToDto(stu));
+		}
+		sDTO.setStudentsDTO(students);
+		sDTO.setConfirmed(s.isConfirmed());
 		return sDTO;
+		
+	}
+	
+	private StudentDTO convertToDto(Student stu) {
+		
+		StudentDTO sDTO = new StudentDTO();
+		sDTO.setPassword(stu.getPassword());
+		sDTO.setUsername(stu.getUsername());
+		
+		return sDTO;
+		
 	}
 	
 	private ReviewDTO convertToDto(Review r) {
