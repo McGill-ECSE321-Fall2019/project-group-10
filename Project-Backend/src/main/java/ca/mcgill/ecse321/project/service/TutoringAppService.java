@@ -3,6 +3,10 @@ package ca.mcgill.ecse321.project.service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,12 +63,16 @@ public class TutoringAppService {
 		if(time == null){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Time);
 		}
-			
+		
+		
 		// set the 
 		Availability availability = new Availability();
 		availability.setTime(time);
 		availability.setDate(date);
-		availability.setTutor(tutorRepository.findTutorByUsername(tName));
+		Tutor t = tutorRepository.findTutorByUsername(tName);
+		checkAvailabilityUniqueForTutor(t, availability);
+		
+		availability.setTutor(t);
 		
 		if (availability.getTutor() == null){
 			
@@ -747,6 +755,11 @@ public class TutoringAppService {
 			
 		}
 		
+		if((time.compareTo(Time.valueOf("09:00:00")) < 0) && time.compareTo(Time.valueOf("20:00:00")) > 0) {
+			
+			throw new IllegalArgumentException("This is not a valid time");
+			
+		}
 		
 		Session session = new Session();
 		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
@@ -830,13 +843,48 @@ public class TutoringAppService {
 		if(id < 0){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_ID);
 		}
+		
+		
 		boolean done = false;
 		Session a = getSession(id);
+		
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+		LocalDate currentDate = LocalDate.now();
+		LocalTime currentTime = LocalTime.now().format(format);
+		if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 1) {
+			
+			if(format.parse(currentTime.toString()) - format.parse(a.getTime().toLocalTime().toString()) <= )
+			
+		} else if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 0) {
+			
+			
+			
+		}
 		if (a != null) {
+			
+			createAvailability(a.getDate(), a.getTime(), a.getTutor().getUsername());
 			sessionRepository.delete(a);
 			done = true;
 		}
 		return done;
+	}
+	
+	@Transactional
+	public boolean checkAvailabilityUniqueForTutor(Tutor t, Availability av) {
+		
+		for (Availability tAv : t.getAvailability()) {
+			
+			if(tAv.getDate().toString().equals(av.getDate().toString()) && tAv.getTime().toString().equals(av.getTime().toString())) {
+				
+				throw new IllegalArgumentException("Availability already exists");
+				
+			} 
+			
+		}
+		
+		return true;
+		
 	}
 	
 	//Checking to make sure we can create a university.

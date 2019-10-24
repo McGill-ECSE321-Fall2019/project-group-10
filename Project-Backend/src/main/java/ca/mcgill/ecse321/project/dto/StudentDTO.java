@@ -6,6 +6,14 @@ public class StudentDTO {
 	private String password;
 
 	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	//Data transfer object user.
 	public StudentDTO() {
 	}

@@ -4,17 +4,16 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-import ca.mcgill.ecse321.project.model.*;
 
 public class SessionDTO {
 
 	private Date date;
 	private Time time;
 	private Double amountPaid;
-	private List<Student> students;
-	private CourseOffering courseOffering;
-	private Room room;
-	private Tutor tutor;
+	private List<StudentDTO> students;
+	private CourseOfferingDTO courseOffering;
+	private RoomDTO room;
+	private TutorDTO tutor;
 	private boolean isConfirmed;
 	
 	public boolean isConfirmed() {
@@ -29,7 +28,7 @@ public class SessionDTO {
 	public SessionDTO() {
 	}
 
-	public SessionDTO(Time time, double amountPaid, Date date, Tutor tutor, List<Student> students, CourseOffering courseOffering, Room room, boolean isConfirmed) {
+	public SessionDTO(Time time, double amountPaid, Date date, TutorDTO tutor, List<StudentDTO> students, CourseOfferingDTO courseOffering, RoomDTO room, boolean isConfirmed) {
 		this.date = date;
 		this.time = time;
 		this.amountPaid = amountPaid;
@@ -53,19 +52,19 @@ public class SessionDTO {
 		this.amountPaid = amountPaid;
 	}
 
-	public void setStudents(List<Student> students) {
+	public void setStudentsDTO(List<StudentDTO> students) {
 		this.students = students;
 	}
 
-	public void setCourseOffering(CourseOffering courseOffering) {
+	public void setCourseOfferingDTO(CourseOfferingDTO courseOffering) {
 		this.courseOffering = courseOffering;
 	}
 
-	public void setRoom(Room room) {
+	public void setRoomDTO(RoomDTO room) {
 		this.room = room;
 	}
 
-	public void setTutor(Tutor tutor) {
+	public void setTutorDTO(TutorDTO tutor) {
 		this.tutor = tutor;
 	}
 
@@ -82,21 +81,21 @@ public class SessionDTO {
 		return amountPaid;
 	}
 	
-	public CourseOffering getCourseOffering() {
+	public CourseOfferingDTO getCourseOfferingDTO() {
 		return courseOffering;
 	}
 	
-	public List<Student> getStudents(){
+	public List<StudentDTO> getStudentsDTO(){
 		return students;
 	}
 	
-	public Room getRoom() {
+	public RoomDTO getRoomDTO() {
 		
 		return room;
 		
 	}
 	
-	public Tutor getTutor() {
+	public TutorDTO getTutorDTO() {
 		
 		return tutor;
 		

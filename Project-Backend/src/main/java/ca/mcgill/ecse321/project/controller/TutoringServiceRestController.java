@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -102,6 +103,20 @@ public class TutoringServiceRestController {
 		
 	}
 	
+	@GetMapping(value = {"/session", "/session/" })
+	public SessionDTO getSession(@RequestParam(name = "session_id") Integer sessionId){
+		
+		return convertToDto(service.getSession(sessionId));
+		
+	}
+	
+	@DeleteMapping(value = {"/session/delete", "/session/delete/"})
+	public boolean removeSession(@RequestParam(name = "session_id") Integer sessionId) {
+		
+		return service.deleteSession(sessionId);
+		
+		
+	}
 //	// Get all the tutors signed up for a course offering
 //	@PostMapping(value = { "/{universityname}/{coursename}/{courseOffering}", "/{universityname}/{coursename}/{courseOffering}/" })
 //	public List<TutorDTO> getTutorsByCO() {
@@ -174,6 +189,20 @@ public class TutoringServiceRestController {
 		return tDTO;
 	}	
 	
+	private RoomDTO convertToDto(Room room) {
+		
+		if (room == null) {
+			throw new IllegalArgumentException("There is no such room");
+		}
+		
+		RoomDTO r = new RoomDTO();
+		r.setRoomNumber(room.getRoomNumber());
+		r.setRoomType(r.getRoomType());
+		
+		return r;
+		
+	}
+	
 	private SessionDTO convertToDto(Session s) {
 		
 		if (s == null) {
@@ -185,12 +214,27 @@ public class TutoringServiceRestController {
 		SessionDTO sDTO = new SessionDTO();
 		sDTO.setTime(s.getTime());
 		sDTO.setAmountPaid(s.getAmountPaid());
-		sDTO.setCourseOffering(s.getCourseOffering());
+		sDTO.setCourseOfferingDTO(convertToDto(s.getCourseOffering()));
 		sDTO.setDate(s.getDate());
-		sDTO.setRoom(s.getRoom());
-		sDTO.setTutor(s.getTutor());
-		sDTO.setStudents(s.getStudent());
+		sDTO.setRoomDTO(convertToDto(s.getRoom()));
+		sDTO.setTutor(covertToDto(s.getTutor()));
+		
+		ArrayList<StudentDTO> students = new ArrayList<>();
+		for (Student stu : s.getStudent()) {
+			students.add(convertToDto(stu));
+		}
+		sDTO.setStudentsDTO(students);
 		sDTO.setConfirmed(s.isConfirmed());
+		return sDTO;
+		
+	}
+	
+	private StudentDTO convertToDto(Student stu) {
+		
+		StudentDTO sDTO = new StudentDTO();
+		sDTO.setPassword(stu.getPassword());
+		sDTO.setUsername(stu.getUsername());
+		
 		return sDTO;
 		
 	}
