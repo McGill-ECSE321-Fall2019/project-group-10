@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.project.controller;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +89,19 @@ public class TutoringServiceRestController {
 		return cDTOs;
 	}
 	
+	@GetMapping(value= { "/sessions", "/sessions/"})
+	public List<SessionDTO> getAllSessions() {
+		
+		List<SessionDTO> sessionDtos = new ArrayList<>();
+		for (Session s : service.getAllSessions()) {
+			
+			sessionDtos.add(convertToDto(s));
+		}
+		
+		return sessionDtos;
+		
+	}
+	
 //	// Get all the tutors signed up for a course offering
 //	@PostMapping(value = { "/{universityname}/{coursename}/{courseOffering}", "/{universityname}/{coursename}/{courseOffering}/" })
 //	public List<TutorDTO> getTutorsByCO() {
@@ -111,7 +125,15 @@ public class TutoringServiceRestController {
 		Text text = service.createText(description, isAllowed, tutorUsername, coID);
 		return convertToDto(text);
 	}
-
+	
+	@PostMapping(value = {"/session", "/session/"})
+	public SessionDTO bookSession(@RequestParam(name = "tutor_name") String tName, @RequestParam(name = "student_name") String sName, @RequestParam(name = "booking_date") @DateTimeFormat(pattern = "MMddyyyy") LocalDate bookingDate, 
+			@RequestParam(name = "booking_time") @DateTimeFormat(pattern = "HH:mm") LocalTime bookingTime, @RequestParam(name = "course_offering_id") Integer courseOfferingId, @RequestParam(name = "amount_paid") Double amountPaid) {
+		
+		Session s = service.createSession(courseOfferingId, Date.valueOf(bookingDate), Time.valueOf(bookingTime), amountPaid, sName, tName);
+		
+		return convertToDto(s);
+	}
 	
 // ********************************************* Course DTO ************************************************ \\
 
@@ -151,5 +173,26 @@ public class TutoringServiceRestController {
 		TextDTO tDTO = new TextDTO(t.getIsAllowed(), t.getDescription());
 		return tDTO;
 	}	
+	
+	private SessionDTO convertToDto(Session s) {
+		
+		if (s == null) {
+			
+			throw new IllegalArgumentException("There is no such session");
+			
+		}
+		
+		SessionDTO sDTO = new SessionDTO();
+		sDTO.setTime(s.getTime());
+		sDTO.setAmountPaid(s.getAmountPaid());
+		sDTO.setCourseOffering(s.getCourseOffering());
+		sDTO.setDate(s.getDate());
+		sDTO.setRoom(s.getRoom());
+		sDTO.setTutor(s.getTutor());
+		sDTO.setStudents(s.getStudent());
+		sDTO.setConfirmed(s.isConfirmed());
+		return sDTO;
+		
+	}
 }
 

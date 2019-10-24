@@ -1,8 +1,10 @@
 package ca.mcgill.ecse321.project.service;
 
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,16 +154,15 @@ public class TutoringAppService {
 //		}
 //
 //		boolean done = false;
-//		//List<Availability> availList = getAvailabilityByTutor(username);
-//		for(Availability a: getAvailabilityByTutor(username)) {
-//			if (a != null) {
-//				availabilityRepository.delete(a);
-//			}
-//		}
-//		done = true;
-//		
-//		return done;
-//	}
+	@Transactional
+	public List<Availability>getAvailabilityByTutor(String tName) {
+		
+		List<Availability> availabilitylList = new ArrayList<>();
+		Tutor t = tutorRepository.findTutorByUsername(tName);
+		availabilitylList = (Arrays.asList((t.getAvailability().toArray(new Availability[0]))));
+		
+		return availabilitylList;
+	}
 	
 	//Checking to make sure we can create a course offering.
 	@Transactional
@@ -716,7 +717,37 @@ public class TutoringAppService {
 		if(amountPaid < 0){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_NegativeAmountPaid);
 		}
-
+		
+		boolean tIsAvailable = false;
+		List<Availability> tutorAvailabilities = getAvailabilityByTutor(tName);
+		for (Availability a : tutorAvailabilities) {
+			
+			Date avDate = a.getDate();
+			Time avTime = a.getTime();
+			
+			if (date.toString().equals(avDate.toString()) && (time.toString().equals(avTime.toString()))) {
+				
+				tIsAvailable = true;
+				tutorRepository.deleteById(a.getId());
+				break;
+				
+			}
+			
+		}
+		
+		if(!tIsAvailable) {
+			
+			throw new IllegalArgumentException("The Tutor is busy during this time.");
+			
+		}
+		
+		if(!isRoomAvailable(date, time)) {
+			
+			throw new IllegalArgumentException("There is no room available at this time");
+			
+		}
+		
+		
 		Session session = new Session();
 		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
 		if (co == null)
@@ -725,6 +756,7 @@ public class TutoringAppService {
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
+		session.setConfirmed(false);
 		List<Student> student = new ArrayList<Student>();
 		if(studentRepository.findStudentByUsername(sName) == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindStudentByUsername);
@@ -1015,6 +1047,7 @@ public class TutoringAppService {
 	}
 
 	// get course offerings from specified course from associated university
+	@Transactional
 	public List<CourseOffering> getAllCourseOfferingsByCourse(String cname, String uniName) {
 		List<CourseOffering> courseOs = new ArrayList<>();
 		
@@ -1026,6 +1059,13 @@ public class TutoringAppService {
 				courseOs.add(co);
 		}
 		return courseOs;
+	}
+	
+	@Transactional
+	public boolean checkSessionConfirmed(Session s) {
+		
+		return s.isConfirmed();
+		
 	}
 	
 //	// get course offerings from specified course from associated university
