@@ -39,5 +39,23 @@ public class UserDTO {
 		return phoneNumber;
 	}
 
+	//Get age
+	public void setAge(int age) {
+		this.age = age;
+	}
+		//get name
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	//get email
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	//get phone number
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber =  phoneNumber;
+	}
 
 }

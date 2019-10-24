@@ -1252,7 +1252,7 @@ public class TutoringAppService {
 	}
 				
 	
-	
+	//Check to see if a session has passed or not.
 	@Transactional
 	public boolean isSessionActive(Session s) {
 		if(s == null) {
