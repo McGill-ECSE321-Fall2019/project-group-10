@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -167,7 +168,7 @@ public class TutorTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals("Please insert a username...", error);
+		assertEquals(ErrorStrings.Invalid_Tutor_Username, error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -186,7 +187,7 @@ public class TutorTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals("Please insert a password...", error);
+		assertEquals(ErrorStrings.Invalid_Tutor_Password, error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -207,7 +208,7 @@ public class TutorTest {
 
 		// check that the correct error was generated
 
-		assertEquals("Please input a valid user", error);
+		assertEquals(ErrorStrings.Invalid_Tutor_FindUserError, error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -227,7 +228,7 @@ public class TutorTest {
 		}
 		// check that the correct error was generated
 
-		assertEquals("Please insert a proper email...", error);
+		assertEquals(ErrorStrings.Invalid_Tutor_EmailCheck, error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -249,7 +250,7 @@ public class TutorTest {
 		}
 		// check that the correct error was generated
 
-		assertEquals("Don't think you want to pay the student for your session...", error);
+		assertEquals(ErrorStrings.Invalid_Tutor_NegativeHourlyRate, error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -271,7 +272,7 @@ public class TutorTest {
 		}
 		// check that the correct error was generated
 
-		assertEquals("Please input a valid number of years for your experience...", error);
+		assertEquals(ErrorStrings.Invalid_Tutor_NegativeExperience, error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -291,7 +292,7 @@ public class TutorTest {
 		}
 		// check that the correct error was generated
 
-		assertEquals("Please provide your education level...", error);
+		assertEquals(ErrorStrings.Invalid_Tutor_NullLevel, error);
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());

@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -175,7 +176,7 @@ public class RatingTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals(error, "Please insert a reviewee username...");
+		assertEquals(error, ErrorStrings.Invalid_Rating_RevieweeUsername);
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());
@@ -197,7 +198,7 @@ public class RatingTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals(error, "Please enter a valid course offering...");
+		assertEquals(error, ErrorStrings.Invalid_Rating_Reviewee);
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());
@@ -220,7 +221,7 @@ public class RatingTest {
 		}
 
 		// check that the correct error was generated
-		assertEquals(error, "You can't give your tutor a negative rating... [1,5]");
+		assertEquals(error, ErrorStrings.Invalid_Rating_NegativeRatingValue);
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());
@@ -244,7 +245,7 @@ public class RatingTest {
 		}
 		
 		// check that the correct error was generated
-		assertEquals(error, "Please enter a valid course offering...");
+		assertEquals(error, ErrorStrings.Invalid_Rating_FindCourseOffering);
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());

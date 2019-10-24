@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 
 @RunWith(SpringRunner.class)
@@ -162,7 +163,7 @@ public class StudentTest {
 		List<Student> allStudents = service.getAllStudents();
 
 		// check that the correct error was generated
-		assertEquals("Please insert a username...", error);
+		assertEquals(ErrorStrings.Invalid_Student_Username, error);
 		assertEquals(0, allStudents.size());
 	}
 	
@@ -182,7 +183,7 @@ public class StudentTest {
 		List<Student> allStudents = service.getAllStudents();
 
 		// check that the correct error was generated
-		assertEquals("Please insert a password...", error);
+		assertEquals(ErrorStrings.Invalid_Student_Password, error);
 		assertEquals(0, allStudents.size());
 	}
 	
@@ -199,7 +200,7 @@ public class StudentTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals("Please input a valid user", error);
+		assertEquals(ErrorStrings.Invalid_Student_FindUserByEmail, error);
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
@@ -220,7 +221,7 @@ public class StudentTest {
 		List<Student> allStudents = service.getAllStudents();
 
 		// check that the correct error was generated
-		assertEquals("Please insert a proper email...", error);
+		assertEquals(ErrorStrings.Invalid_Student_UserEmail, error);
 		assertEquals(0, allStudents.size());
 	}
 	

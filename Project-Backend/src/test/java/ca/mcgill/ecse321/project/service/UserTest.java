@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 
@@ -187,7 +188,7 @@ public class UserTest {
 		}
 
 		// check that the correct error was generated
-		assertEquals("Must be above the age of 12 for this tutoring service...", error); //checks if the error message matches with the message set
+		assertEquals(ErrorStrings.Invalid_User_AgeTooYoung, error); //checks if the error message matches with the message set
 		List<TSUser> allUsers = service.getAllUsers(); //gets the list of all the users
 		assertEquals(0, allUsers.size()); // makes sure an underage user is been created
 		
@@ -212,7 +213,7 @@ public class UserTest {
 		}
 		// check that the correct error was generated
 
-		assertEquals("Invalid phone number...", error); //checks the error message
+		assertEquals(ErrorStrings.Invalid_User_PhoneNumber, error); //checks the error message
 		List<TSUser> allUsers = service.getAllUsers(); //gets the list of all the user
 		assertEquals(0, allUsers.size()); //checks the size of the list
 		
@@ -238,7 +239,7 @@ public class UserTest {
 		}
 		// check that the correct error was generated
 
-		assertEquals("Invalid name...", error); 
+		assertEquals(ErrorStrings.Invalid_User_Name, error); 
 		List<TSUser> allUsers = service.getAllUsers(); //gets the list of all the users
 		assertEquals(0, allUsers.size()); // checks the size of the userList
 		
@@ -264,7 +265,7 @@ public class UserTest {
 		}
 		// check that the correct error was generated
 
-		assertEquals("Please insert a proper email...", error);
+		assertEquals(ErrorStrings.Invalid_User_Email, error);
 		List<TSUser> allUsers = service.getAllUsers(); //gets the list
 		assertEquals(0, allUsers.size()); //checks the size of the list
 		
@@ -288,7 +289,7 @@ public class UserTest {
 		}
 		// check that the correct error was generated
 
-		assertEquals("Please insert a proper email...", error);
+		assertEquals(ErrorStrings.Invalid_User_Email, error);
 		List<TSUser> allUsers = service.getAllUsers(); //gets the list of the users
 		assertEquals(0, allUsers.size()); //checks the size of the list
 		

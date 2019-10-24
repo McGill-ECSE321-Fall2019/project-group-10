@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Room{
 	private Set<Session> session;
+	//private boolean isAvailable;
 
 	@OneToMany(mappedBy="room" )
 	public Set<Session> getSession() {
@@ -49,5 +50,9 @@ public class Room{
 	public int getId() {
 		return this.id;
 	}
+	
+	//public boolean isAvailable() {
+	//	return isAvailable;
+	//}
 
 }
