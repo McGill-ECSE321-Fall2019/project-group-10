@@ -369,7 +369,7 @@ public class UniversityBackendTest {
 		
 		// check that we have one course offering and that it is the right one
 		assertEquals(0, courseOs.size());
-		assertEquals(ErrorStrings.Invalid_Service_CO, error);
+		assertEquals(ErrorStrings.Invalid_Service_TutorForCO, error);
 	}
 	
 	// test for course that doesn't exist
@@ -386,7 +386,7 @@ public class UniversityBackendTest {
 		
 		// check that we have one course offering and that it is the right one
 		assertEquals(0, courseOs.size());
-		assertEquals(ErrorStrings.Invalid_Service_CO, error);
+		assertEquals(ErrorStrings.Invalid_Service_TutorForCO, error);
 	}
 	
 	// check that we can view all the tutors for a course offering
