@@ -99,4 +99,18 @@ public class ErrorStrings {
     public static String Invalid_DTO_Rating = "There is no such rating!";
     public static String Invalid_DTO_Text = "There is no such text!";
     public static String Invalid_DTO_Session = "There is no such session!";
+    public static String Invalid_DTO_Tutor = "There is no such tutor!";
+    public static String Invalid_DTO_Student = "There is no such student!";
+    
+//=================== SERVICE ERRORS ======================\\
+    public static String Invalid_Service_Tutor = "No tutor by that username";
+    public static String Invalid_Service_TutorForCO = "No tutors for this course offering";
+    public static String Invalid_Service_CO = "No course offerings offered for this course";
+    public static String Invalid_Service_CONone = "No courses offerings offered yet";
+    public static String Invalid_Service_CourseOfferedUni = "No courses offered for this university";
+
+
+
+
+
 }

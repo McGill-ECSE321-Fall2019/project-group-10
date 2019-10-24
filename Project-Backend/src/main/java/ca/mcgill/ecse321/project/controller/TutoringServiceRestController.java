@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -165,6 +166,10 @@ public class TutoringServiceRestController {
 		return service.isRoomAvailable(date, startTime);
 	}
 	
+	//@PutMapping(value = {"/availability", "/availability/"})
+	//public AvailableDTO updateAvailability()
+	
+	
 // ******************************************* Conversion to  DTO ********************************************* \\
 
   	// Convert the model room to a DTO object
@@ -233,6 +238,14 @@ public class TutoringServiceRestController {
 		}
 		CourseOfferingDTO coDTO = new CourseOfferingDTO(co.getTerm(), co.getYear(), co.getCourseOfferingID());
 		return coDTO;
+	}
+	
+	private TextDTO convertToDto(Text t) {
+		if (t == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
+		}
+		TextDTO tDTO = new TextDTO();
+		return tDTO;
 	}
   
 	// convert the model course to DTO object
