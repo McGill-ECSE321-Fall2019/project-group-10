@@ -726,28 +726,6 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_NegativeAmountPaid);
 		}
 		
-		boolean tIsAvailable = false;
-		List<Availability> tutorAvailabilities = getAvailabilityByTutor(tName);
-		for (Availability a : tutorAvailabilities) {
-			
-			Date avDate = a.getDate();
-			Time avTime = a.getTime();
-			
-			if (date.toString().equals(avDate.toString()) && (time.toString().equals(avTime.toString()))) {
-				
-				tIsAvailable = true;
-				tutorRepository.deleteById(a.getId());
-				break;
-				
-			}
-			
-		}
-		
-		if(!tIsAvailable) {
-			
-			throw new IllegalArgumentException("The Tutor is busy during this time.");
-			
-		}
 		
 		if(!isRoomAvailable(date, time)) {
 			
@@ -761,6 +739,43 @@ public class TutoringAppService {
 			
 		}
 		
+		Tutor t = tutorRepository.findTutorByUsername(tName);
+		if (t == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindTutorByUsername);
+		}
+		
+		boolean tIsAvailable = false;
+		int tId = 0;
+		List<Availability> tutorAvailabilities = getAvailabilityByTutor(tName);
+		Availability av = null;
+		for (Availability a : tutorAvailabilities) {
+			
+			Date avDate = a.getDate();
+			Time avTime = a.getTime();
+			
+			if (date.toString().equals(avDate.toString()) && (time.toString().equals(avTime.toString()))) {
+				
+				if (a == null) {
+					
+					continue;
+				}
+				
+				tIsAvailable = true;
+				tId = a.getId();
+				av = a;
+				
+				break;
+				
+			}
+			
+		}
+		
+		if(!tIsAvailable) {
+			
+			throw new IllegalArgumentException("The Tutor is busy during this time.");
+			
+		}
+		
 		Session session = new Session();
 		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
 		if (co == null)
@@ -771,14 +786,18 @@ public class TutoringAppService {
 		session.setAmountPaid(amountPaid);
 		session.setConfirmed(false);
 		List<Student> student = new ArrayList<Student>();
-		if(studentRepository.findStudentByUsername(sName) == null)
+		if(studentRepository.findStudentByUsername(sName) == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindStudentByUsername);
+		}
+		session.setTutor(t);
 		student.add(studentRepository.findStudentByUsername(sName));
 		session.setStudent(student);
-		Tutor t = tutorRepository.findTutorByUsername(tName);
-		if (t == null)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindTutorByUsername);
-		session.setTutor(t);
+		if(tIsAvailable) {
+			
+			availabilityRepository.deleteById(tId);
+			t.getAvailability().remove(av);
+			
+		}
 		sessionRepository.save(session);
 		return session;
 	}
@@ -875,6 +894,7 @@ public class TutoringAppService {
 		if (a != null) {
 			
 			createAvailability(a.getDate(), a.getTime(), a.getTutor().getUsername());
+			a.getTutor().getSession().remove(a);
 			sessionRepository.delete(a);
 			done = true;
 		}
