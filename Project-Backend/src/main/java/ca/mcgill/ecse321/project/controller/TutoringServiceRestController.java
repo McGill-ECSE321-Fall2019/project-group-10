@@ -24,18 +24,18 @@ import ca.mcgill.ecse321.project.service.*;
 @CrossOrigin(origins = "*")
 @RestController
 public class TutoringServiceRestController {
-	
+
 
 // ******************************************** GET MAPPINGS ********************************************** \\
-	
+
 	@Autowired
 	TutoringAppService service;
-	
+
 	// Get all the schools offered by the application
-	@GetMapping(value = { "/universities", "/universities/" })
+	@GetMapping(value = {"/universities", "/universities/"})
 	public List<UniversityDTO> getAllUniversities() {
 		List<UniversityDTO> universityDtos = new ArrayList<>();
-		
+
 		// get universities from the tutoring service
 		for (University university : service.getAllUniversities()) {
 			// convert model class to a data transfer object
@@ -43,43 +43,43 @@ public class TutoringServiceRestController {
 		}
 		return universityDtos;
 	}
-	
-	@PostMapping(value = { "/{universityname}", "/{universityname}/" })
+
+	@PostMapping(value = {"/{universityname}", "/{universityname}/"})
 	public List<CourseDto> getCoursesforUni(@PathVariable("universityname") String name) throws IllegalArgumentException {
 		// @formatter:on
 		List<CourseDto> cDTOs = new ArrayList<>();
 
 		// get courses by university from the tutoring service
 		List<Course> courses = service.getAllCoursesByUniversity(name);
-				
+
 		for (Course c : courses) {
 			// convert model class to a data transfer object
 			cDTOs.add(convertToDto(c));
 		}
 		return cDTOs;
 	}
-	
-	@PostMapping(value = { "/{universityname}/{coursename}", "/{universityname}/{coursename}/" })
-	public List<CourseOfferingDTO> getCOforCourseforUni(@PathVariable("universityname") String name, 
-			@PathVariable("coursename") String cname) throws IllegalArgumentException {
+
+	@PostMapping(value = {"/{universityname}/{coursename}", "/{universityname}/{coursename}/"})
+	public List<CourseOfferingDTO> getCOforCourseforUni(@PathVariable("universityname") String name,
+														@PathVariable("coursename") String cname) throws IllegalArgumentException {
 		// @formatter:on
 		List<CourseOfferingDTO> coDTOs = new ArrayList<>();
 
 		// get course offerings by course by university from the tutoring service
 		List<CourseOffering> courseOs = service.getAllCourseOfferingsByCourse(cname, name);
-				
+
 		for (CourseOffering c : courseOs) {
 			// convert model class to a data transfer object
 			coDTOs.add(convertToDto(c));
 		}
 		return coDTOs;
 	}
-	
+
 	// Get all the schools offered by the application
-	@GetMapping(value = { "/courses", "/courses/" })
+	@GetMapping(value = {"/courses", "/courses/"})
 	public List<CourseDto> getAllCourses() {
 		List<CourseDto> cDTOs = new ArrayList<>();
-		
+
 		// get universities from the tutoring service
 		for (Course c : service.getAllCourses()) {
 			// convert model class to a data transfer object
@@ -88,7 +88,7 @@ public class TutoringServiceRestController {
 		return cDTOs;
 	}
 
-	
+
 //	// Get all the tutors signed up for a course offering
 //	@PostMapping(value = { "/{universityname}/{coursename}/{courseOffering}", "/{universityname}/{coursename}/{courseOffering}/" })
 //	public List<TutorDTO> getTutorsByCO() {
@@ -102,59 +102,47 @@ public class TutoringServiceRestController {
 //		return tutorDTOs;
 //	}
 
-	
+
 // ******************************************** POST MAPPINGS ********************************************** \\
-	
-	
-	//Uses request parameter to get the username and courseoffering id. RequestBody sends the descprion.
-	@PostMapping(value = { "/text", "/text/" })
+
+
+	//Uses request parameter to get the username and courseoffering id. RequestBody sends the description.
+	@PostMapping(value = {"/text", "/text/"})
 	public TextDTO createReview(@PathVariable("text") String name, @RequestParam String tutorUsername, @RequestParam int coID, @RequestBody String description, @RequestBody boolean isAllowed) throws IllegalArgumentException {
 		Text text = service.createText(description, isAllowed, tutorUsername, coID);
 		return convertToDto(text);
 	}
 
-	@PostMapping(value = { "/login", "/login/"})
-	public boolean login (@RequestParam String username, @RequestParam String password)
-	{
+	@PostMapping(value = {"/login", "/login/"})
+	public boolean login(@RequestParam String username, @RequestParam String password) {
 		Role role = getRoleByUsername(username);
-		if(role.isPassword(password))
-		{
+		if (role.isPassword(password) && !role.isLoggedIn()) {
+			role.logIn();
 			return true;
 		}
 		return false;
 	}
 
-	private Role getRoleByUsername(String username)
-	{
-		Role role = null;
-		try {
-			role = service.getStudent(username);
-
-			if(role == null)
-				role = service.getTutor(username);
-
-		} catch (Exception e)
-		{
-
-		}
-
-		return role;
+	@PostMapping(value = {"/logout", "/logout/"})
+	public void logout(@RequestParam String username) {
+		Role role = getRoleByUsername(username);
+		role.logOut();
 	}
 
-	
+
 // ********************************************* Course DTO ************************************************ \\
 
-  
-  	// Convert the model course to a DTO object
+
+	// Convert the model course to a DTO object
 	private CourseOfferingDTO convertToDto(CourseOffering co) {
 		if (co == null) {
 			throw new IllegalArgumentException("There is no such CourseOffering!");
 		}
-		CourseOfferingDTO coDTO = new CourseOfferingDTO(co.getTerm(), co.getYear(), 
+		CourseOfferingDTO coDTO = new CourseOfferingDTO(co.getTerm(), co.getYear(),
 				co.getCourse().getCourseName(), co.getCourse().getUniversity().getName());
 		return coDTO;
 	}
-  
+
 	private CourseDto convertToDto(Course c) {
 		if (c == null) {
 			throw new IllegalArgumentException("There is no such Course!");
@@ -162,7 +150,7 @@ public class TutoringServiceRestController {
 		CourseDto cDTO = new CourseDto(c.getCourseName(), c.getDescription(), c.getUniversity().getName());
 		return cDTO;
 	}
-	
+
 	// Convert the model university to a DTO object
 	private UniversityDTO convertToDto(University u) {
 		if (u == null) {
@@ -171,14 +159,36 @@ public class TutoringServiceRestController {
 		UniversityDTO uDTO = new UniversityDTO(u.getName(), u.getAddress());
 		return uDTO;
 	}
-	
+
 	//Convert the model text into a DTO of the text object.
 	private TextDTO convertToDto(Text t) {
-		if(t == null){
+		if (t == null) {
 			throw new IllegalArgumentException("There is no such Text!");
 		}
 		TextDTO tDTO = new TextDTO(t.getIsAllowed(), t.getDescription());
 		return tDTO;
-	}	
+	}
+
+	// ********************************************* Helper methods ************************************************ \\
+
+	private Role getRoleByUsername(String username) {
+		Role role = null;
+		try {
+			role = service.getStudent(username);
+
+			if (role == null)
+				role = service.getTutor(username);
+
+		} catch (Exception e) {
+
+		}
+
+		return role;
+	}
+
+	private void notifyTutorByEmail(String username)
+	{
+
+	}
 }
 
