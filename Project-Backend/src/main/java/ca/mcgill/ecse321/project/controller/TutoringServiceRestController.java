@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -187,52 +188,21 @@ public class TutoringServiceRestController {
 		Session s = service.createSession(courseOfferingId, Date.valueOf(bookingDate), Time.valueOf(bookingTime), amountPaid, sName, tName);
 		
 		return convertToDto(s);
+	}
 
 	//Getting session details for the user
-	@PostMapping(value = {"/{sessionId}/{username}", "/{sessionId}/{username}"})
-	public List<SessionDTO> getActiveSessionDetails(@PathVariable("sessionId") int sessionID, @PathVariable("username") String studentUsername) throws IllegalArgumentException{
-		List<SessionDTO> sessionDto = new ArrayList<>();
-		
-		Student student = service.getStudent(studentUsername);
-		for(Session s : student.getSession()) {
-			if(s.getSessionID() == sessionID) {
-				//if(s.getIsActive()) {
-				//	Room room = s.getRoom();
-					//If room is not available - session ends and email user is notified.
-				//	if(!room.isAvailable()) {
-				//		s.setActivity(false);
-				//		EmailCreator.notifyUserOfRoomUnavailability(studentUsername);
-				//		return null;
-				//	} else {
-				//		sessionDto.add(convertToDto(s));
-				//	}
-				//}
-			}
-		}
-		return sessionDto;
-
-	}
 	
 	// Check room availability
-	@PostMapping(value = { "/checkavailability", "/checkavailability/" })
-	public boolean checkRoomAvailability(@RequestParam Date date,
-	@RequestParam Time startTime,
-	@RequestParam Time endTime)
-	throws IllegalArgumentException {
+		
+	@PostMapping(value = {"/checkavailability", "/checkavailability/"})
+	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date, 
+			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
 		return service.isRoomAvailable(date, startTime);
 	}
 	
 // ******************************************* Conversion to  DTO ********************************************* \\
 
-  	// Convert the model room to a DTO object
-	private RoomDTO convertToDto(Room r) {
-		if (r == null) {
-			throw new IllegalArgumentException("There is no such Room!");
-		}
-		RoomDTO rDTO = new RoomDTO();
-		return rDTO;
-	}
-	
+  	
   	// Convert the model rating to a DTO object
 	private RatingDTO convertToDto(Rating r) {
 		if (r == null) {
