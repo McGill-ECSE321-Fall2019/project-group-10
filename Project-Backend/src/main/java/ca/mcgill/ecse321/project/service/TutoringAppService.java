@@ -1106,61 +1106,18 @@ public class TutoringAppService {
 		return false;
 	}
 
-	//For better reading of code - method made to find the reviews for given tutor in the course.
+	//Gets all the reviews.
 	@Transactional
-	public List<Review[]> getAllReviewsByCoIDForTutor(String tutorUsername, int coID){
-		List<Review[]> listReviews = new ArrayList<>();
-		
-		List<Tutor> tutorList = getAllTutorsByCourseOffering(coID);
-		for(Tutor t : tutorList) {
-			if(t == null) {
-				throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
-			}
-			if(t.getUsername().equals(tutorUsername)) {
-				listReviews = getAllReviewsByTutorUsername(tutorUsername);
-			}
-		}	
-		return listReviews;
-	}
-
-	//Get package of text and ratings. 1) text 2) rating
-	@Transactional
-	public List<Review[]> getAllReviews(){
-		List<Review[]> reviewList = new ArrayList<>();
-		Review[] reviewPackage = new Review[2];
-		
-		for(Text t: getAllTexts()) {
-			for(Rating r : getAllRatings()) {
-				if(r.getReviewID() == t.getReviewID()) {
-					reviewPackage[0] = t; //text position 1
-					reviewPackage[1] = r; //rating position 2
-					
-					reviewList.add(reviewPackage);
-				}
-			}
-		}
-		return reviewList;
-	}
-	
-	@Transactional
-	public List<Review[]> getAllReviewsByTutorUsername(String tutorUsername){
-		List<Review[]> reviewList = new ArrayList<>();
-		Review[] reviewPackage = new Review[2];
+	public Set<Review> getAllReviewsByTutor(String tutorUsername){
 		
 		Tutor tutor = getTutor(tutorUsername);
-		for(Text t: getAllTexts()) {
-			if(t.getWrittenAbout().getUsername().equals(tutor.getUsername())) {
-				for(Rating r : getAllRatings()) {
-					if(r.getReviewID() == t.getReviewID()) {
-						reviewPackage[0] = t; //text position 1
-						reviewPackage[1] = r; //rating position 2
-						reviewList.add(reviewPackage);
-					}
-				}	
-			}
-		}
-		return reviewList;
+		if(tutor == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+		
+		return tutor.getReview();
 	}
+				
+	
 	
 	@Transactional
 	public boolean isSessionActive(Session s) {

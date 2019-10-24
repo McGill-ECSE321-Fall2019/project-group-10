@@ -3,7 +3,9 @@ package ca.mcgill.ecse321.project.controller;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
@@ -117,26 +119,20 @@ public class TutoringServiceRestController {
 		return tDTO;
 	}
 
-	
-// ******************************************** POST MAPPINGS ********************************************** \\
-	
-
-	//Post mapping to get both the text and rating for the review. 1) Text 2) Rating
-	@PostMapping(value = { "/{coID}/{tutorUsername}", "/{coID}/{tutorUsername}/" })
-	public List<ReviewDTO[]> getAllReviewsForTutorInCourseOffering(@PathVariable("coID") int coID, @PathVariable("tutorUsername") String tutorUsername) throws IllegalArgumentException {
-		List<ReviewDTO[]> reviewDto = new ArrayList<>();
-		List<Review[]> reviewPackages = service.getAllReviewsByCoIDForTutor(tutorUsername, coID);
-		
-		for(Review[] review : reviewPackages) {
-			reviewDto.add(convertToDto((Text)review[0], (Rating)review[1]));			
+	//Get mapping to get both the text and rating for the review. 1) Text 2) Rating
+	@GetMapping(value = { "/{coID}/{tutorUsername}", "/{coID}/{tutorUsername}/" })
+	public List<ReviewDTO> getAllReviewsForTutor(@PathVariable("tutorUsername") String tutorUsername) throws IllegalArgumentException {
+		List<Review> reviewList = Arrays.asList(service.getAllReviewsByTutor(tutorUsername).toArray(new Review[0]));
+		List<ReviewDTO> reviewListDto = new ArrayList<>();
+		for(Review r : reviewList) {			
+			reviewListDto.add(convertToDto(r));		
 		}
-		
-		return reviewDto;
+		return reviewListDto;
 	}
-
-	//Cancel a session if no room is available.
-	@PostMapping(value = {"/{sessionId}/{username}", "/{sessionId}/{username}"})
-	public boolean checkForCancelSession(@PathVariable("sessionId") int sessionID, @PathVariable("username") String studentUsername) throws IllegalArgumentException{
+	
+	//Checking to see if session is cancelled.
+	@GetMapping(value = {"/{sessionId}/{username}", "/{sessionId}/{username}"})
+	public boolean getIfCanceledSession(@PathVariable("sessionId") int sessionID, @PathVariable("username") String studentUsername) throws IllegalArgumentException{
 		Session s = service.getSession(sessionID);
 		if(s == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
@@ -151,26 +147,38 @@ public class TutoringServiceRestController {
 		return true;
 	}
 	
+// ******************************************** POST MAPPINGS ********************************************** \\
+
+	//Creates a review with rating and text
+	@PostMapping(value = { "/{coID}/{tutorUsername}", "/{coID}/{tutorUsername}/" })
+	public TextDTO createText(@RequestParam("reviewId") int reviewId, 
+			@RequestParam("description") String description, 
+			@RequestParam("isAllowed") boolean isAllowed,
+			@RequestParam("revieweeUsername") String revieweeUsername)
+			throws IllegalArgumentException{
+			
+		Text text = service.createText(description, isAllowed, revieweeUsername, reviewId);
+	
+		if(text == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Text);
+		}
+		
+		return convertToDto(text);
+	}
+	
+	//Cancel a session if no room is available.
+	
 	// Check room availability
 	@PostMapping(value = { "/checkavailability", "/checkavailability/"})
 	public boolean checkRoomAvailability(@RequestParam Date date, @RequestParam Time startTime,	@RequestParam Time endTime)	throws IllegalArgumentException {
 		return service.isRoomAvailable(date, startTime);
 	}
 	
-	
-	
-// ******************************************* PUT MAPPING ********************************************* \\	
-	
-	@PutMapping(value = {"/availability", "/availability/"})
-	public AvailabilityDTO updateAvailability(
-			@RequestParam("availabilityID") Availability availability,
-			@RequestParam("tutor") Tutor tutor
-			) throws IllegalArgumentException {
-		// @formatter:on
-		Availability available = service.updateAvailability(availability.getId(), availability.getDate(), availability.getTime(), tutor.getUsername());
-		return convertToDto(available);
-	}
-	
+	//session
+	//user
+	//student
+	//review
+
 	
 // ******************************************* Conversion to  DTO ********************************************* \\
 	
@@ -183,16 +191,29 @@ public class TutoringServiceRestController {
 	 */
 	
 	@PutMapping(value = {"/Availability", "/Availability/"})
-	public AvailabilityDTO updateAvailability(@RequestParam(name = "availability") Availability a, @RequestParam(name = "tutor") Tutor tutor) throws IllegalArgumentException{
+	public AvailabilityDTO updateAvailability(@RequestParam(name = "id") Integer aId, @RequestParam(name = "date") Date aD, @RequestParam(name = "time") Time aT, @RequestParam(name = "tutorUsername") String tutorUsername) throws IllegalArgumentException{
 		//Checks
-		if(service.getAvailability(a.getId()) != null) {
+		if(service.getAvailability(aId) == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Availability);
 		}
-		Availability availability = service.updateAvailability(a.getId(), a.getDate(), a.getTime(), tutor.getUsername());
+		Availability availability = service.updateAvailability(aId, aD, aT, tutorUsername);
 		return convertToDto(availability);
 	}
 	
+	@PutMapping(value = {"/session", "/session/"})
+	public SessionDTO update(@RequestParam(name = "sessionId") Integer sId, @RequestParam(name = "date") Date sD, @RequestParam(name = "time") Time sT, @RequestParam(name = "amountPaid") double amountPaid, @RequestParam(name = "studentUser") String studentUser, @RequestParam(name = "tutorUser") String tutorUser, @RequestParam(name = "coId") Integer coId) throws IllegalArgumentException{
+		//Checks
+		if(service.getSession(sId) == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
+		}
+		Session session = service.updateSession(sId, coId, sD, sT, amountPaid, studentUser, tutorUser);
+		return convertToDto(session);
+	}
 	
+	//user
+	//student
+	//session
+	//
 	
 	
 
@@ -269,6 +290,7 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
 		}
 		TextDTO tDTO = new TextDTO();
+		
 		return tDTO;
 	}
   
@@ -299,28 +321,21 @@ public class TutoringServiceRestController {
 		return aDTO;
 	}
 	
-	//Convert the model text into a DTO of the text object.
-	private ReviewDTO[] convertToDto(Text t, Rating r) {
-		if(t == null){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Text);
-		}
-		if(r == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
-		}
-		TextDTO tDTO = new TextDTO(t.getIsAllowed(), t.getDescription());
-		RatingDTO rDTO = new RatingDTO(r.getRatingValue());
-		
-		//Package
-		ReviewDTO[] reviewPackage = {tDTO, rDTO};
-		return reviewPackage;
-	}	
-	
 	private SessionDTO convertToDto(Session s) {
 		if(s == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
 		}
 		SessionDTO sDTO = new SessionDTO(s.getTime(), s.getAmountPaid(), s.getDate());
 		return sDTO;
+	}
+	
+	private ReviewDTO convertToDto(Review r) {
+		if(r == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Review);
+		}
+		ReviewDTO rDTO = new ReviewDTO(r.getCourseOffering(), r.getReviewID(), r.getWrittenAbout());
+		return rDTO;
+		
 	}
 }
 

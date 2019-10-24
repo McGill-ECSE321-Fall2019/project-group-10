@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.project.dto;
 public class RatingDTO extends ReviewDTO{
 
 	private int rating;
-
 	
 	//Data transfer object rating.
 	public RatingDTO() {
@@ -17,6 +16,4 @@ public class RatingDTO extends ReviewDTO{
 	public int getRating() {
 		return rating;
 	}
-
-
 }

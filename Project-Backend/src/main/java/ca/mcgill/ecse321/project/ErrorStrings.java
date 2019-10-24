@@ -108,6 +108,7 @@ public class ErrorStrings {
     public static String Invalid_DTO_Room = "There is no such room!";
     public static String Invalid_DTO_User = "Thre is no such user!";
     public static String Invalid_DTO_Availability = "There is no such availability!";
+    public static String Invalid_DTO_Review = "There is no such review!";
     
 //=================== SERVICE ERRORS ======================\\
     public static String Invalid_Service_Tutor = "No tutor by that username";
