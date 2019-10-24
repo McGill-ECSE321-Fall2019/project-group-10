@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -166,11 +167,33 @@ public class TutoringServiceRestController {
 	}
 	
 // ******************************************* Conversion to  DTO ********************************************* \\
+	
+	/**Method that updates an availability.
+	 * 
+	 * @param a - created availability
+	 * @param tutor - tutor the availability is attached to
+	 * @return updated availability Dto
+	 * @throws IllegalArgumentException
+	 */
+	
+	@PutMapping(value = {"/Availability", "/Availability/"})
+	public AvailabilityDTO updateAvailability(@RequestParam(name = "availability") Availability a, @RequestParam(name = "tutor") Tutor tutor) throws IllegalArgumentException{
+		//Checks
+		if(service.getAvailability(a.getId()) != null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Availability);
+		}
+		Availability availability = service.updateAvailability(a.getId(), a.getDate(), a.getTime(), tutor.getUsername());
+		return convertToDto(availability);
+	}
+	
+	
+	
+	
 
   	// Convert the model room to a DTO object
 	private RoomDTO convertToDto(Room r) {
 		if (r == null) {
-			throw new IllegalArgumentException("There is no such Room!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Room);
 		}
 		RoomDTO rDTO = new RoomDTO();
 		return rDTO;
@@ -179,7 +202,7 @@ public class TutoringServiceRestController {
   	// Convert the model rating to a DTO object
 	private RatingDTO convertToDto(Rating r) {
 		if (r == null) {
-			throw new IllegalArgumentException("There is no such Rating!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
 		}
 		RatingDTO rDTO = new RatingDTO();
 		return rDTO;
@@ -188,7 +211,7 @@ public class TutoringServiceRestController {
   	// Convert the model user to a DTO object
 	private UserDTO convertToDto(User u) {
 		if (u == null) {
-			throw new IllegalArgumentException("There is no such User!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_User);
 		}
 		UserDTO uDTO = new UserDTO();
 		return uDTO;
@@ -197,7 +220,7 @@ public class TutoringServiceRestController {
   	// Convert the model tutor to a DTO object
 	private TutorDTO convertToDto(Tutor t) {
 		if (t == null) {
-			throw new IllegalArgumentException("There is no such Tutor!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
 		}
 		TutorDTO tDTO = new TutorDTO(t.getUsername(), t.getEducation(), t.getHourlyRate(), t.getExperience());
 		
@@ -256,7 +279,7 @@ public class TutoringServiceRestController {
 	//Convert the model availability into a DTO of the availability object.
 	private AvailabilityDTO convertToDto(Availability a) {
 		if(a == null){
-			throw new IllegalArgumentException("There is no such Availability!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Availability);
 		}
 		AvailabilityDTO aDTO = new AvailabilityDTO(a.getDate(), a.getTime());
 		return aDTO;

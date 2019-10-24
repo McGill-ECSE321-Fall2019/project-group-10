@@ -99,4 +99,11 @@ public class ErrorStrings {
     public static String Invalid_DTO_Rating = "There is no such rating!";
     public static String Invalid_DTO_Text = "There is no such text!";
     public static String Invalid_DTO_Session = "There is no such session!";
+    public static String Invalid_DTO_Availability = "There is no such Availability!";
+    public static String Invalid_DTO_Room = "There is no such room!";
+    public static String Invalid_DTO_User = "There is no such User!";
+    public static String Invalid_DTO_Tutor = "There is no such Tutor!";
+
+
+
 }
