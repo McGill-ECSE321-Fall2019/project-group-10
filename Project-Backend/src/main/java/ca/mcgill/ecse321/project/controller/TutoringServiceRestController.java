@@ -167,6 +167,10 @@ public class TutoringServiceRestController {
 		return service.isRoomAvailable(date, startTime);
 	}
 	
+	//@PutMapping(value = {"/availability", "/availability/"})
+	//public AvailableDTO updateAvailability()
+	
+	
 // ******************************************* Conversion to  DTO ********************************************* \\
 	
 	/**Method that updates an availability.
@@ -257,6 +261,14 @@ public class TutoringServiceRestController {
 		}
 		CourseOfferingDTO coDTO = new CourseOfferingDTO(co.getTerm(), co.getYear(), co.getCourseOfferingID());
 		return coDTO;
+	}
+	
+	private TextDTO convertToDto(Text t) {
+		if (t == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
+		}
+		TextDTO tDTO = new TextDTO();
+		return tDTO;
 	}
   
 	// convert the model course to DTO object

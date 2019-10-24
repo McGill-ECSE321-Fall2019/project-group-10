@@ -1014,7 +1014,7 @@ public class TutoringAppService {
 		}
 		
 		if(courses.size() == 0)
-			throw new IllegalArgumentException("No courses offered for this university");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_CourseOfferedUni);
 		
 		return courses;
 	}
@@ -1027,7 +1027,7 @@ public class TutoringAppService {
 		// get all course offerings
 		List<CourseOffering> allcourseOs = getAllCourseOfferings();
 		if(allcourseOs == null)
-			throw new IllegalArgumentException("No courses offerings offered yet");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_CONone);
 		
 		for(CourseOffering co : allcourseOs) {
 			// check name and university names that they are what we are looking for
@@ -1038,7 +1038,7 @@ public class TutoringAppService {
 		}
 
 		if(courseOs.size() == 0)
-			throw new IllegalArgumentException("No courses offerings offered for this course");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_TutorForCO);
 		
 		return courseOs;
 	}
@@ -1049,14 +1049,15 @@ public class TutoringAppService {
 		// find course offering from repository
 		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(id);
 		if(co == null)
-			throw new IllegalArgumentException("This course offering does not exist");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_CO);
 		
 		List<Tutor> tutors = new ArrayList<>();
 		// get the tutors associated with it
 		tutors = co.getTutors();
 
 		if(tutors == null || tutors.size() == 0)
-			throw new IllegalArgumentException("No tutors for this course offering");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_TutorForCO);
+
 		return tutors;
 	}
 
@@ -1070,7 +1071,7 @@ public class TutoringAppService {
 		
 		// check if it is null
 		if (t == null)
-			throw new IllegalArgumentException("No tutor by that username");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Tutor);
 		
 		// otherwise return the found tutor
 		return t;
@@ -1104,17 +1105,22 @@ public class TutoringAppService {
 		}
 		return false;
 	}
-=======
+
 	//For better reading of code - method made to find the reviews for given tutor in the course.
 	@Transactional
 	public List<Review[]> getAllReviewsByCoIDForTutor(String tutorUsername, int coID){
-		List<Tutor> tutorList = getAllTutorsByCourseOfferings(coID);
+		List<Review[]> listReviews = new ArrayList<>();
+		
+		List<Tutor> tutorList = getAllTutorsByCourseOffering(coID);
 		for(Tutor t : tutorList) {
+			if(t == null) {
+				throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+			}
 			if(t.getUsername().equals(tutorUsername)) {
-				return getAllReviewsByTutorUsername(tutorUsername);
+				listReviews = getAllReviewsByTutorUsername(tutorUsername);
 			}
 		}	
-		return null;
+		return listReviews;
 	}
 
 	//Get package of text and ratings. 1) text 2) rating

@@ -102,7 +102,17 @@ public class ErrorStrings {
     public static String Invalid_DTO_Availability = "There is no such Availability!";
     public static String Invalid_DTO_Room = "There is no such room!";
     public static String Invalid_DTO_User = "There is no such User!";
-    public static String Invalid_DTO_Tutor = "There is no such Tutor!";
+   
+    public static String Invalid_DTO_Tutor = "There is no such tutor!";
+    public static String Invalid_DTO_Student = "There is no such student!";
+    
+//=================== SERVICE ERRORS ======================\\
+    public static String Invalid_Service_Tutor = "No tutor by that username";
+    public static String Invalid_Service_TutorForCO = "No tutors for this course offering";
+    public static String Invalid_Service_CO = "No course offerings offered for this course";
+    public static String Invalid_Service_CONone = "No courses offerings offered yet";
+    public static String Invalid_Service_CourseOfferedUni = "No courses offered for this university";
+
 
 
 
