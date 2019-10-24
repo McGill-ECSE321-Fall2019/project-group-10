@@ -217,8 +217,8 @@ public class TutoringServiceRestController {
 			// check wether its a rating or a text
 			if(r instanceof Rating)
 				ratings.add(convertToDto((Rating)r));
-			if(r instanceof Text)
-				texts.add(convertToDto((Text)r));
+			//if(r instanceof Text)
+				//texts.add(convertToDto((Text)r));
 		}
 		
 		tDTO.setRatings(ratings);
