@@ -394,7 +394,7 @@ public class TutoringServiceRestController {
 		sDTO.setCourseOfferingDTO(convertToDto(s.getCourseOffering()));
 		sDTO.setDate(s.getDate());
 		sDTO.setRoomDTO(convertToDto(s.getRoom()));
-		sDTO.setTutor(covertToDto(s.getTutor()));
+		sDTO.setTutorDTO(convertToDto(s.getTutor()));
 		
 		ArrayList<StudentDTO> students = new ArrayList<>();
 		for (Student stu : s.getStudent()) {
