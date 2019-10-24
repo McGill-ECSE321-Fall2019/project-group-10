@@ -18,7 +18,16 @@ import javax.persistence.ManyToOne;
 public class Session{
 	private Date date;
 	private Time time;
-	//private boolean isActive = true;
+
+	
+	private boolean isConfirmed;
+	
+	public boolean isConfirmed() {
+		return isConfirmed;
+	}
+	public void setConfirmed(boolean isConfirmed) {
+		this.isConfirmed = isConfirmed;
+	}
 
 	public void setDate(Date value) {
 		this.date = value;
