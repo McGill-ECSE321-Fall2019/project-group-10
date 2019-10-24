@@ -200,6 +200,7 @@ public class UniversityBackendTest {
 			s.setRoom(r);
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
+			r.addSession(s);
 			
 			rooms.add(r);
 			return rooms;
@@ -221,11 +222,13 @@ public class UniversityBackendTest {
 			s.setRoom(r);
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
+			r.addSession(s);
 			
 			Session s2 = new Session();
 			s2.setRoom(r2);
 			s2.setDate(SESSION_DATE);
 			s2.setTime(SESSION_TIME);
+			r2.addSession(s2);
 			
 			rooms.add(r);
 			rooms.add(r2);
@@ -248,11 +251,13 @@ public class UniversityBackendTest {
 			s.setRoom(r);
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
+			r.addSession(s);
 			
 			Session s2 = new Session();
 			s2.setRoom(r2);
 			s2.setDate(SESSION_DATE_DIFF);
 			s2.setTime(SESSION_TIME_DIFF);
+			r2.addSession(s2);
 			
 			rooms.add(r);
 			rooms.add(r2);
