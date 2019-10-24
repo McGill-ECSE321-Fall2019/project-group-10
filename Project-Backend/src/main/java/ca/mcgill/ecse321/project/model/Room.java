@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.OneToMany;
 
@@ -19,6 +21,13 @@ public class Room{
 
 	public void setSession(Set<Session> session1s) {
 		this.session = session1s;
+	}
+	
+	public void addSession(Session s) {
+		if(session == null) {
+			session = new HashSet<>();
+		}
+		this.session.add(s);
 	}
 
 	private int roomNumber;

@@ -84,7 +84,6 @@ public class Session{
 		this.courseOffering = co2;
 	}
 
-
 	private Room room;
 
 	@ManyToOne
@@ -94,16 +93,6 @@ public class Session{
 
 	public void setRoom(Room room) {
 		this.room = room;
-		Set<Session> sessions = room.getSession();
-		if(sessions == null) {
-			Set<Session> session = new HashSet<>();
-			session.add(this);
-			room.setSession(session);
-		}
-		else {
-			sessions.add(this);
-			room.setSession(sessions);
-		}
 	}
 
 	//public boolean getIsActive() {
