@@ -1125,19 +1125,41 @@ public class TutoringAppService {
 
 	//Get package of text and ratings. 1) text 2) rating
 	@Transactional
-	public List<Review[]> getAllReviewsByTutorUsername(String tutorUsername){
+	public List<Review[]> getAllReviews(){
 		List<Review[]> reviewList = new ArrayList<>();
 		Review[] reviewPackage = new Review[2];
 		
 		for(Text t: getAllTexts()) {
 			for(Rating r : getAllRatings()) {
-				if(r.getReviewID() == t.getReviewID()) {}
-				reviewPackage[0] = t; //text position 1
-				reviewPackage[1] = r; //rating position 2
-				
-				reviewList.add(reviewPackage);
+				if(r.getReviewID() == t.getReviewID()) {
+					reviewPackage[0] = t; //text position 1
+					reviewPackage[1] = r; //rating position 2
+					
+					reviewList.add(reviewPackage);
+				}
 			}
 		}
+		return reviewList;
+	}
+	
+	@Transactional
+	public List<Review[]> getAllReviewsByTutorUsername(String tutorUsername){
+		List<Review[]> reviewList = new ArrayList<>();
+		Review[] reviewPackage = new Review[2];
+		
+		Tutor tutor = getTutor(tutorUsername);
+		for(Text t: getAllTexts()) {
+			if(t.getWrittenAbout().getUsername().equals(tutor.getUsername())) {
+				for(Rating r : getAllRatings()) {
+					if(r.getReviewID() == t.getReviewID()) {
+						reviewPackage[0] = t; //text position 1
+						reviewPackage[1] = r; //rating position 2
+						reviewList.add(reviewPackage);
+					}
+				}	
+			}
+		}
+		
 		
 		return reviewList;
 	}
