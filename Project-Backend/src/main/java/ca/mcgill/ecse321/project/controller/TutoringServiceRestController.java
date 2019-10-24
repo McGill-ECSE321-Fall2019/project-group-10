@@ -157,7 +157,11 @@ public class TutoringServiceRestController {
 		return service.isRoomAvailable(date, startTime);
 	}
 	
-	//@PutMapping(value = {"/availability", "/availability/"})
+	
+	
+// ******************************************* PUT MAPPING ********************************************* \\	
+	
+	@PutMapping(value = {"/availability", "/availability/"})
 	//public AvailableDTO updateAvailability()
 	
 	
