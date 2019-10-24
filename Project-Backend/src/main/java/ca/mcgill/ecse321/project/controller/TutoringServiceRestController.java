@@ -133,36 +133,26 @@ public class TutoringServiceRestController {
 		return reviewDto;
 	}
 
-	//Getting session details for the user
+	//Cancel a session if no room is available.
 	@PostMapping(value = {"/{sessionId}/{username}", "/{sessionId}/{username}"})
-	public List<SessionDTO> getActiveSessionDetails(@PathVariable("sessionId") int sessionID, @PathVariable("username") String studentUsername) throws IllegalArgumentException{
-		List<SessionDTO> sessionDto = new ArrayList<>();
-		
-		Student student = service.getStudent(studentUsername);
-		for(Session s : student.getSession()) {
-			if(s.getSessionID() == sessionID) {
-				//if(s.getIsActive()) {
-				//	Room room = s.getRoom();
-					//If room is not available - session ends and email user is notified.
-				//	if(!room.isAvailable()) {
-				//		s.setActivity(false);
-				//		EmailCreator.notifyUserOfRoomUnavailability(studentUsername);
-				//		return null;
-				//	} else {
-				//		sessionDto.add(convertToDto(s));
-				//	}
-				//}
+	public boolean checkForCancelSession(@PathVariable("sessionId") int sessionID, @PathVariable("username") String studentUsername) throws IllegalArgumentException{
+		Session s = service.getSession(sessionID);
+		if(s == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
+	
+		//Check to make sure the date has not passed.
+		if(service.isSessionActive(s)) {
+			//If room is not available - session ends and email user is notified.
+			if(service.isRoomAvailable(s.getDate(), s.getTime())) {
+				return false;
 			}
 		}
-		return sessionDto;
+		return true;
 	}
 	
 	// Check room availability
-	@PostMapping(value = { "/checkavailability", "/checkavailability/" })
-	public boolean checkRoomAvailability(@RequestParam Date date,
-	@RequestParam Time startTime,
-	@RequestParam Time endTime)
-	throws IllegalArgumentException {
+	@PostMapping(value = { "/checkavailability", "/checkavailability/"})
+	public boolean checkRoomAvailability(@RequestParam Date date, @RequestParam Time startTime,	@RequestParam Time endTime)	throws IllegalArgumentException {
 		return service.isRoomAvailable(date, startTime);
 	}
 	
