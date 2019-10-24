@@ -195,8 +195,8 @@ public class TutoringServiceRestController {
 	
 // ******************************************** POST MAPPINGS ********************************************** \\
 
-	//Creates a review with rating and text
-	@PostMapping(value = { "/{coID}/{tutorUsername}", "/{coID}/{tutorUsername}/" })
+	//Creates a text
+	@PostMapping(value = { "/text", "/text/" })
 	public TextDTO createText(@RequestParam("reviewId") int reviewId, 
 			@RequestParam("description") String description, 
 			@RequestParam("isAllowed") boolean isAllowed,
@@ -208,8 +208,23 @@ public class TutoringServiceRestController {
 		if(text == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Text);
 		}
-		
 		return convertToDto(text);
+	}
+	
+	//Creates a text
+		@PostMapping(value = { "/rating", "/rating/" })
+		public RatingDTO createRating(@RequestParam("reviewId") int reviewId, 
+				@RequestParam("rating") int ratingValue,
+				@RequestParam("revieweeUsername") String revieweeUsername)
+				throws IllegalArgumentException{
+				
+			Rating rating = service.createRating(ratingValue, revieweeUsername, reviewId);
+		
+			if(rating == null) {
+				throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
+			}
+			return convertToDto(rating);
+		}
 	
 	@PostMapping(value = {"/session", "/session/"})
 	public SessionDTO bookSession(@RequestParam(name = "tutor_name") String tName, @RequestParam(name = "student_name") String sName, @RequestParam(name = "booking_date") @DateTimeFormat(pattern = "MMddyyyy") LocalDate bookingDate, 
@@ -271,25 +286,8 @@ public class TutoringServiceRestController {
 	//session
 	//
 	
-	
 
-  	// Convert the model room to a DTO object
-	private RoomDTO convertToDto(Room r) {
-		if (r == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Room);
-		}
-		RoomDTO rDTO = new RoomDTO();
-		return rDTO;
-	}
-	
-  	// Convert the model rating to a DTO object
-	private RatingDTO convertToDto(Rating r) {
-		if (r == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
-		}
-		RatingDTO rDTO = new RatingDTO(r.getRatingValue());
-		return rDTO;
-	}
+
 	
   	// Convert the model user to a DTO object
 	private UserDTO convertToDto(User u) {
@@ -339,15 +337,6 @@ public class TutoringServiceRestController {
 		}
 		CourseOfferingDTO coDTO = new CourseOfferingDTO(co.getTerm(), co.getYear(), co.getCourseOfferingID());
 		return coDTO;
-	}
-	
-	private TextDTO convertToDto(Text t) {
-		if (t == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
-		}
-		TextDTO tDTO = new TextDTO();
-		
-		return tDTO;
 	}
   
 	// convert the model course to DTO object
@@ -417,6 +406,31 @@ public class TutoringServiceRestController {
 		
 	}
 	
+	private TextDTO convertToDto(Text t) {
+		if (t == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Text);
+		}
+		TextDTO tDTO = new TextDTO();
+		tDTO.setDescription(t.getDescription());
+		tDTO.setIsAllowed(t.getIsAllowed());
+		tDTO.setReviewID(t.getReviewID());
+		tDTO.setCourseOffering(convertToDto(t.getCourseOffering()));
+		tDTO.setRole(convertToDto(t.getWrittenAbout()));
+		return tDTO;
+	}
+	
+	private RatingDTO convertToDto(Rating r) {
+		if (r == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
+		}
+		RatingDTO rDTO = new RatingDTO();
+		rDTO.setRatingValue(r.getRatingValue());
+		rDTO.setReviewID(r.getReviewID());
+		rDTO.setCourseOfferingDTO(convertToDto(r.getCourseOffering()));
+		rDTO.setRoleDTO(convertToDto(r.getWrittenAbout()));
+		return rDTO;
+	}
+	
 	private StudentDTO convertToDto(Student stu) {
 		
 		StudentDTO sDTO = new StudentDTO();
@@ -424,7 +438,6 @@ public class TutoringServiceRestController {
 		sDTO.setUsername(stu.getUsername());
 		
 		return sDTO;
-		
 	}
 	
 	private ReviewDTO convertToDto(Review r) {
@@ -434,6 +447,14 @@ public class TutoringServiceRestController {
 		ReviewDTO rDTO = new ReviewDTO(r.getCourseOffering(), r.getReviewID(), r.getWrittenAbout());
 		return rDTO;
 		
+	}
+	
+	private RoleDTO convertToDto(Role r) {
+		if(r == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Role);
+		}
+		RoleDTO rDTO = new RoleDTO(r.getUsername(), r.getPassword());
+		return rDTO;
 	}
 }
 

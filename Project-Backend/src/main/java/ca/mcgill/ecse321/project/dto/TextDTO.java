@@ -8,8 +8,8 @@ public class TextDTO extends ReviewDTO{
 	private boolean isAllowed;
 	private String description;	
 	private int reviewId;
-	private Role role;
-	private CourseOffering co;
+	private RoleDTO role;
+	private CourseOfferingDTO co;
 	
 	//Data transfer object session.
 	public TextDTO() {
@@ -31,11 +31,11 @@ public class TextDTO extends ReviewDTO{
 		return description;
 	}
 	
-	public Role getRole() {
+	public RoleDTO getRoleDTO() {
 		return role;
 	}
 	
-	public CourseOffering getCourseOffering() {
+	public CourseOfferingDTO getCourseOfferingDTO() {
 		return co;
 	}
 	
@@ -47,11 +47,11 @@ public class TextDTO extends ReviewDTO{
 		this.description = description;
 	}
 	
-	public void setRole(Role role) {
+	public void setRole(RoleDTO role) {
 		this.role = role;
 	}
 	
-	public void setCourseOffering(CourseOffering co) {
+	public void setCourseOffering(CourseOfferingDTO co) {
 		this.co = co;
 	}
 
