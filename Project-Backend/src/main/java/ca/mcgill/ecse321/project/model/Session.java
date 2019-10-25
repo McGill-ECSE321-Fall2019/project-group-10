@@ -103,13 +103,4 @@ public class Session{
 	public void setRoom(Room room) {
 		this.room = room;
 	}
-
-	//public boolean getIsActive() {
-	//	return isActive;
-	//}
-	
-	//public void setActivity(boolean isActive) {
-	//	this.isActive = isActive;
-	//}
-	
 }

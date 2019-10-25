@@ -753,15 +753,17 @@ public class TutoringAppService {
 		Availability av = null;
 		for (Availability a : tutorAvailabilities) {
 			
+			if (a == null) {
+				
+				continue;
+				
+			}
+			
 			Date avDate = a.getDate();
 			Time avTime = a.getTime();
 			
 			if (date.toString().equals(avDate.toString()) && (time.toString().equals(avTime.toString()))) {
 				
-				if (a == null) {
-					
-					continue;
-				}
 				
 				tIsAvailable = true;
 				tId = a.getId();
@@ -1126,7 +1128,7 @@ public class TutoringAppService {
 		}
 		
 		if(courses.size() == 0)
-			throw new IllegalArgumentException("No courses offered for this university");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_CourseOfferedUni);
 		
 		return courses;
 	}
@@ -1139,7 +1141,7 @@ public class TutoringAppService {
 		// get all course offerings
 		List<CourseOffering> allcourseOs = getAllCourseOfferings();
 		if(allcourseOs == null)
-			throw new IllegalArgumentException("No courses offerings offered yet");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_CONone);
 		
 		for(CourseOffering co : allcourseOs) {
 			// check name and university names that they are what we are looking for
@@ -1150,7 +1152,7 @@ public class TutoringAppService {
 		}
 
 		if(courseOs.size() == 0)
-			throw new IllegalArgumentException("No courses offerings offered for this course");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_TutorForCO);
 		
 		return courseOs;
 	}
@@ -1183,14 +1185,15 @@ public class TutoringAppService {
 		// find course offering from repository
 		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(id);
 		if(co == null)
-			throw new IllegalArgumentException("This course offering does not exist");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_COBad);
 		
 		List<Tutor> tutors = new ArrayList<>();
 		// get the tutors associated with it
 		tutors = co.getTutors();
 
 		if(tutors == null || tutors.size() == 0)
-			throw new IllegalArgumentException("No tutors for this course offering");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_TutorForCO);
+
 		return tutors;
 	}
 
@@ -1204,7 +1207,7 @@ public class TutoringAppService {
 		
 		// check if it is null
 		if (t == null)
-			throw new IllegalArgumentException("No tutor by that username");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Tutor);
 		
 		// otherwise return the found tutor
 		return t;
@@ -1239,36 +1242,31 @@ public class TutoringAppService {
 		return false;
 	}
 
-	//For better reading of code - method made to find the reviews for given tutor in the course.
+	//Gets all the reviews.
 	@Transactional
-	public List<Review[]> getAllReviewsByCoIDForTutor(String tutorUsername, int coID){
-		List<Tutor> tutorList = getAllTutorsByCourseOffering(coID);
-		for(Tutor t : tutorList) {
-			if(t.getUsername().equals(tutorUsername)) {
-				return getAllReviewsByTutorUsername(tutorUsername);
-			}
-		}	
-		return null;
-	}
-
-	//Get package of text and ratings. 1) text 2) rating
-	@Transactional
-	public List<Review[]> getAllReviewsByTutorUsername(String tutorUsername){
-		List<Review[]> reviewList = new ArrayList<>();
-		Review[] reviewPackage = new Review[2];
+	public Set<Review> getAllReviewsByTutor(String tutorUsername){
 		
-		for(Text t: getAllTexts()) {
-			for(Rating r : getAllRatings()) {
-				if(r.getReviewID() == t.getReviewID()) {}
-				reviewPackage[0] = t; //text position 1
-				reviewPackage[1] = r; //rating position 2
+		Tutor tutor = getTutor(tutorUsername);
+		if(tutor == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+		
+		return tutor.getReview();
+	}
 				
-				reviewList.add(reviewPackage);
-			}
+	
+	
+	@Transactional
+	public boolean isSessionActive(Session s) {
+		if(s == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Availability);
 		}
+		//Compare the date.
+		long millis=System.currentTimeMillis(); 
+		Date currentDate = (Date) new java.util.Date(millis);
 		
-		return reviewList;
+		if(s.getDate().compareTo(currentDate) > 0) {
+			return true;
+		} 
+		return false;
 	}
-
-
 }
