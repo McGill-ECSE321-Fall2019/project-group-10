@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -45,7 +46,7 @@ public class CourseOffering{
 
 	private List<Session> session;
 
-	@OneToMany(mappedBy="courseOffering" )
+	@OneToMany(mappedBy="courseOffering", cascade = CascadeType.ALL )
 	public List<Session> getSession() {
 		return this.session;
 	}

@@ -73,17 +73,21 @@ public class TutoringAppService {
 		availability.setTime(time);
 		availability.setDate(date);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
-		checkAvailabilityUniqueForTutor(t, availability);
 		
-		availability.setTutor(t);
-		
-		if (availability.getTutor() == null){
+		if (t == null){
 			
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Tutor);
 			
 		}
 		
+		checkAvailabilityUniqueForTutor(t, availability);
+		
+		availability.setTutor(t);
 		availabilityRepository.save(availability);
+		
+		
+		t.getAvailability().add(availability);
+		tutorRepository.save(t);
 		return availability;
 	}
 
@@ -151,6 +155,7 @@ public class TutoringAppService {
 		boolean done = false;
 		Availability a = getAvailability(id);
 		if (a != null) {
+			a.getTutor().getAvailability().remove(a);
 			availabilityRepository.delete(a);
 			done = true;
 		}
@@ -803,7 +808,11 @@ public class TutoringAppService {
 			t.getAvailability().remove(av);
 			
 		}
+		co.getSession().add(session);
+		studentRepository.findStudentByUsername(sName).getSession().add(session);
 		sessionRepository.save(session);
+		courseOfferingRepository.save(co);
+		studentRepository.save(studentRepository.findStudentByUsername(sName));
 		return session;
 	}
 	
@@ -900,6 +909,21 @@ public class TutoringAppService {
 			
 			createAvailability(a.getDate(), a.getTime(), a.getTutor().getUsername());
 			a.getTutor().getSession().remove(a);
+			
+			tutorRepository.save(a.getTutor());
+			if (a.getRoom() != null) {
+				a.getRoom().getSession().remove(a);
+				roomRepository.save(a.getRoom());
+				
+			}
+			for (Student s: a.getStudent()) {
+				if(s.getSession() != null) {
+					s.getSession().remove(a);
+					studentRepository.save(s);
+				}
+				
+			}
+			
 			sessionRepository.delete(a);
 			done = true;
 		}
