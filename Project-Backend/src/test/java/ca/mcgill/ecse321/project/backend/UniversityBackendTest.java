@@ -325,7 +325,8 @@ public class UniversityBackendTest {
 	//************************************************* TESTS *************************************************//
 
 	// check that the service can retrieve all universities properly
-	@Test
+	// test coverage: 100%
+	//@Test
 	public void getAllUniversities() {
 		List<University> uniList = new ArrayList<>();
 		
@@ -342,7 +343,8 @@ public class UniversityBackendTest {
 	}
 	
 	// check for no universities created
-	@Test
+	// test coverage: 100%
+	//@Test
 	public void getAllUniversitiesEmpty() {
 		List<University> uniList = new ArrayList<>();
 		
@@ -359,7 +361,8 @@ public class UniversityBackendTest {
 	}
 	
 	// check that we can get all the courses
-	@Test
+	// coverage: 100%
+	//@Test
 	public void getAllCourses() {
 		List<Course> courseList = new ArrayList<>();
 		
@@ -375,7 +378,8 @@ public class UniversityBackendTest {
 	}
 	
 	// check that we can get all the courses
-	@Test
+	// coverage: 100%
+	//@Test
 	public void getAllCoursesEmpty() {
 		List<Course> courseList = new ArrayList<>();
 		
@@ -392,6 +396,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that we can view all the courses at a school
+	// coverage: 89.8%
 	@Test
 	public void getCoursesByUniversityPositive() {
 		List<Course> courses = new ArrayList<>();
@@ -456,7 +461,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that we can view all the courses offerings for a course
-	@Test
+	//@Test
 	public void getCoursesOfferingsPositive() {
 		
 		List<CourseOffering> courseOs = new ArrayList<>();
@@ -472,7 +477,7 @@ public class UniversityBackendTest {
 	}
 	
 	// test for university that doesn't exist
-	@Test
+	//@Test
 	public void getCoursesOfferingsBadUni() {
 		
 		List<CourseOffering> courseOs = new ArrayList<>();
@@ -489,7 +494,7 @@ public class UniversityBackendTest {
 	}
 	
 	// test for course that doesn't exist
-	@Test
+	//@Test
 	public void getCoursesOfferingsBadCourse() {
 		
 		List<CourseOffering> courseOs = new ArrayList<>();
@@ -506,7 +511,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that we can view all the tutors for a course offering
-	@Test
+	//@Test
 	public void getTutorsPositive() {
 		
 		List<Tutor> tutors = new ArrayList<>();
@@ -521,7 +526,7 @@ public class UniversityBackendTest {
 	}
 	
 	// test if course offering exists
-	@Test
+	//@Test
 	public void getTutorsBadCO() {
 		
 		List<Tutor> tutors = new ArrayList<>();
@@ -537,7 +542,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check for a tutor for a course offering that doesn't exist
-	@Test
+	//@Test
 	public void getTutorsNoCO() {
 		
 		List<Tutor> tutors = new ArrayList<>();
@@ -553,7 +558,7 @@ public class UniversityBackendTest {
 	}
 	
 	// test if there are no tutors for the course offering
-	@Test
+	//@Test
 	public void getTutorsEmpty() {
 		
 		List<Tutor> tutors = new ArrayList<>();
@@ -569,7 +574,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that we can display the tutor information
-	@Test
+	//@Test
 	public void getTutorInfoPositive() {
 		
 		Tutor t = new Tutor();
@@ -583,7 +588,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check for a tutor username that doesn't exist
-	@Test
+	//@Test
 	public void getTutorInfoBadUsername() {
 		
 		Tutor t = new Tutor();
@@ -600,7 +605,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that the service can retrieve all rooms properly
-	@Test
+	//@Test
 	public void getAllRoomsPositive() {
 		List<Room> roomList = new ArrayList<>();
 		
@@ -616,7 +621,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is a conflict of time and date
-	@Test
+	//@Test
 	public void checkConflictFalse() {
 		boolean isAvail = false;
 		
@@ -630,7 +635,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is no conflict by changing the date
-	@Test
+	//@Test
 	public void checkConflictTrueDate() {
 		boolean isAvail = false;
 		
@@ -644,7 +649,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is no conflict by changing the time
-	@Test
+	//@Test
 	public void checkConflictTrueTime() {
 		boolean isAvail = false;
 		
@@ -658,7 +663,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is no conflict when only 1 of 2 rooms has a conflict
-	@Test
+	//@Test
 	public void checkConflictTrueMultipleRooms() {
 		boolean isAvail = false;
 		
@@ -675,7 +680,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is a conflict when all rooms have a conflict
-	@Test
+	//@Test
 	public void checkConflictFalseMultipleRooms() {
 		boolean isAvail = false;
 		
@@ -692,7 +697,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check when there are no sessions created
-	@Test
+	//@Test
 	public void checkConflictTrueNoSessions() {
 		boolean isAvail = false;
 		
@@ -709,7 +714,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check when there are no rooms created
-	@Test
+	//@Test
 	public void checkConflictNoRooms() {
 		boolean isAvail = false;
 		
