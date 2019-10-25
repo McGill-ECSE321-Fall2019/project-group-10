@@ -1293,4 +1293,34 @@ public class TutoringAppService {
 		} 
 		return false;
 	}
+	
+	@Transactional
+	public Student addStudentToSession(int sessionId, String studentName) {
+		
+		Student stu = studentRepository.findStudentByUsername(studentName);
+		Session session = sessionRepository.findSessionBySessionID(sessionId);
+		
+		if(stu == null) {
+			throw new IllegalArgumentException("Student is null!");
+		}
+		
+		if(session == null) {
+			
+			throw new IllegalArgumentException("Session is null!");
+			
+		}
+		
+		if (session.getStudent().contains(stu)) {
+			
+			throw new IllegalArgumentException("Student is already added to this session.");
+			
+		}
+		
+		session.getStudent().add(stu);
+		stu.getSession().add(session);
+		
+		return stu;
+		
+		
+	}
 }

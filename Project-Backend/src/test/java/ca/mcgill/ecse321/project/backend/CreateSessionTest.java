@@ -53,7 +53,6 @@ public class CreateSessionTest {
 	// constants for university
 	private static final String UNI_NAME = "McGill";
 	private static final String UNI_ADDR = "304 Sherbrooke";
-	private static final String UNI_NAME_BAD = "Concordia";
 	
 	// constants for course
 	private static final String COURSE_NAME = "ECSE321";
@@ -70,15 +69,27 @@ public class CreateSessionTest {
 	// constants for tutor
 	private static final String TUTOR_NAME = "username";
 	private static final String TUTOR_NAME_BAD = "bad username";
+	private static final double SESSION_AMOUNT_PAID = 15.00;
 	
 	// constant for room
 	private static final int ROOM_NUM = 203;
 	
 	// constants for session
-	private static final Date SESSION_DATE = Date.valueOf("2018-02-01");
+	private static final Date SESSION_DATE = Date.valueOf("2020-02-01");
 	private static final Time SESSION_TIME = Time.valueOf("11:11:11");
 	private static final Date SESSION_DATE_DIFF = Date.valueOf("2020-03-02");
 	private static final Time SESSION_TIME_DIFF = Time.valueOf("03:02:32");
+	
+	//Constants for Student
+	private static final String STUDENT_NAME = "studentUser";
+	private static final String STUDENT_NAME_BAD = "badStudentUsername"; 
+	private static final String STUDENT_EMAIL = "student.tester@mcgill.ca";
+	
+	// constants for availability
+	private static final Date AVAILABILITY_DATE = Date.valueOf("2020-02-01");
+	private static final Time AVAILABILITY_TIME = Time.valueOf("11:11:11");
+	private static final Date AVAILABILITY_DATE_2 = Date.valueOf("2021-02-01");
+	private static final Time AVAILABILITY_TIME_2 = Time.valueOf("10:10:00");
 	
 	@Before
 	public void setMockOutput() {
@@ -90,6 +101,8 @@ public class CreateSessionTest {
 		setMockOutputCourseOffering();
 		setMockOutputTutor();
 		setMockOutputRoom();
+		setMockOutputStudent();
+		setMockOutputAvailability();
 	}
 	
 	//********************************************* MOCK OUTPUTS *********************************************//
@@ -188,6 +201,35 @@ public class CreateSessionTest {
 		});
 	}
 	
+	// mock output for availability
+	private void setMockOutputAvailability() {
+		
+		when(service.getAvailabilityByTutor((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			
+			if(invocation.getArgument(0).equals(TUTOR_NAME)) {
+				
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME);
+				
+				Availability a = new Availability();
+				a.setDate(AVAILABILITY_DATE);
+				a.setTime(AVAILABILITY_TIME);
+				a.setTutor(t);
+				
+				List<Availability> avList = new ArrayList<Availability>();
+				avList.add(a);
+				
+				return avList;
+				
+			} else {
+				
+				return null;
+			}
+			
+		});
+		
+	}
+	
 	// mock output for room regular
 	private void setMockOutputRoom() {
 		when(roomRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
@@ -196,11 +238,6 @@ public class CreateSessionTest {
 			Room r = new Room();
 			r.setRoomNumber(ROOM_NUM);
 			
-			// add a session to the room
-			Session s = new Session();
-			s.setRoom(r);
-			s.setDate(SESSION_DATE);
-			s.setTime(SESSION_TIME);
 			
 			rooms.add(r);
 			return rooms;
@@ -208,14 +245,12 @@ public class CreateSessionTest {
 	}
 	
 	// mock output for creating multiple rooms with sessions at the same time
-	private void setMockOutputMultipleRoomsSameTime() {
+	private void setMockOutputNoAvailableRooms() {
 		when(roomRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 			// create a room list
 			List<Room> rooms = new ArrayList<>();
 			Room r = new Room();
 			r.setRoomNumber(ROOM_NUM);
-			Room r2 = new Room();
-			r2.setRoomNumber(ROOM_NUM+1);
 			
 			// add a session to the rooms
 			Session s = new Session();
@@ -223,13 +258,8 @@ public class CreateSessionTest {
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
 			
-			Session s2 = new Session();
-			s2.setRoom(r2);
-			s2.setDate(SESSION_DATE);
-			s2.setTime(SESSION_TIME);
-			
 			rooms.add(r);
-			rooms.add(r2);
+			
 			return rooms;
 		});
 	}
@@ -289,3 +319,31 @@ public class CreateSessionTest {
 			return null;
 		});
 	}
+	
+	//mock the output for a student
+	private void setMockOutputStudent() {
+		when(studentRepository.findStudentByUsername((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			
+			Student s = new Student();
+			s.setUsername(STUDENT_NAME);
+			return s;
+		
+		});
+		
+	}
+	
+	//************************************************* TESTS *************************************************//
+	
+	@Test
+	private void testCreateValidSession() {
+		
+		
+		try {
+			Session s = service.createSession(CO_ID, SESSION_DATE, SESSION_TIME,SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+	}
+	
+}

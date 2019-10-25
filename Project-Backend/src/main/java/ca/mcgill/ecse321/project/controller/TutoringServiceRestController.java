@@ -234,6 +234,14 @@ public class TutoringServiceRestController {
 		
 		return convertToDto(s);
 	}
+	@PutMapping(value = {"/addstudent", "/addstudent/"})
+	public StudentDTO addStudentToSession(@RequestParam(name = "student_name") String studentName, @RequestParam(name = "session_id") Integer sessionId) throws IllegalArgumentException {
+		
+		Student s = service.addStudentToSession(sessionId, studentName);
+		
+		return convertToDto(s);
+		
+	}
 
 	//Getting session details for the user
 	
