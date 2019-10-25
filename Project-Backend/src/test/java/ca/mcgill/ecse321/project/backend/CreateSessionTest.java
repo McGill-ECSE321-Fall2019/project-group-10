@@ -73,6 +73,7 @@ public class CreateSessionTest {
 	private static final String TUTOR_NAME = "username";
 	private static final String TUTOR_NAME_BAD = "bad username";
 	private static final double SESSION_AMOUNT_PAID = 15.00;
+	private static final String TUTOR_NAME_UNAVAILABLE = "unavUsername";
 	
 	// constant for room
 	private static final int ROOM_NUM = 203;
@@ -202,6 +203,19 @@ public class CreateSessionTest {
 				Availability a = new Availability();
 				a.setDate(AVAILABILITY_DATE);
 				a.setTime(AVAILABILITY_TIME);
+				a.setTutor(t);
+				t.getAvailability().add(a);
+				return t;
+			} else if(invocation.getArgument(0).equals(TUTOR_NAME_BAD)){
+				return null;
+			} else if(invocation.getArgument(0).equals(TUTOR_NAME_UNAVAILABLE)) {
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME_UNAVAILABLE);
+				Set<Availability> avSet = new HashSet<Availability>();
+				t.setAvailability(avSet);
+				Availability a = new Availability();
+				a.setDate(AVAILABILITY_DATE_2);
+				a.setTime(AVAILABILITY_TIME_2);
 				a.setTutor(t);
 				t.getAvailability().add(a);
 				return t;
@@ -456,7 +470,113 @@ public class CreateSessionTest {
 	}
 	
 	@Test
-	public void testCreateSessionTooEarly() {
+	public void testCreateSessionTooEarlyTime() {
+		
+		String error = null;
+		
+		try {
+			service.createSession(CO_ID, SESSION_DATE, Time.valueOf("08:00:00"), SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, "This is not a valid time");
+		
+	}
+	
+	@Test
+	public void testCreateSessionTooLateTime() {
+		
+		String error = null;
+		
+		try {
+			service.createSession(CO_ID, SESSION_DATE, Time.valueOf("20:10:00"), SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, "This is not a valid time");
+		
+	}
+	
+	@Test
+	public void testCreateSessionSameDayOrInThePast(){
+		
+		String error = null;
+		
+		try {
+			service.createSession(CO_ID, Date.valueOf("2019-10-24"), SESSION_TIME, SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, "Can not book a session on the same day, or in the past!");
+		
+	}
+	
+	@Test
+	public void testCreateSessionNullTutor() {
+		
+		String error = null;
+		
+		try {
+			service.createSession(CO_ID, SESSION_DATE, SESSION_TIME, SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME_BAD);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, ErrorStrings.Invalid_Session_FindTutorByUsername);
+		
+	}
+	
+	@Test
+	public void testCreateSessionUnavailableTutor() {
+		
+		String error = null;
+		
+		try {
+			service.createSession(CO_ID, SESSION_DATE, SESSION_TIME, SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME_UNAVAILABLE);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, "The Tutor is busy during this time.");
+		
+	}
+	
+	@Test
+	public void testCreateSessionNullCourseOffering() {
+		
+		String error = null;
+		
+		try {
+			service.createSession(90, SESSION_DATE, SESSION_TIME, SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, ErrorStrings.Invalid_Session_FindCourseOfferingByID);
+		
+	}
+	
+	public void testCreateSessionNullStudent() {
+		
+		String error = null;
+		
+		try {
+			service.createSession(CO_ID, SESSION_DATE, SESSION_TIME, SESSION_AMOUNT_PAID, STUDENT_NAME_BAD, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error,ErrorStrings.Invalid_Session_FindStudentByUsername);
 		
 	}
 }

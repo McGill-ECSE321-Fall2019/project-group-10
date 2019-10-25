@@ -741,14 +741,18 @@ public class TutoringAppService {
 			
 		}
 		
-		if((time.compareTo(Time.valueOf("09:00:00")) < 0) && time.compareTo(Time.valueOf("20:00:00")) > 0) {
+		if((time.compareTo(Time.valueOf("09:00:00")) < 0) || time.compareTo(Time.valueOf("20:00:00")) > 0) {
 			
 			throw new IllegalArgumentException("This is not a valid time");
 			
 		}
 		
-		Date currentDate = 
-		if(Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 0)
+		LocalDate currentDate = LocalDate.now();
+		if(Period.between(currentDate, date.toLocalDate()).getDays() <= 0) {
+			
+			throw new IllegalArgumentException("Can not book a session on the same day, or in the past!");
+			
+		}
 		
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null) {
@@ -761,11 +765,6 @@ public class TutoringAppService {
 		Availability av = null;
 		for (Availability a : tutorAvailabilities) {
 			
-			if (a == null) {
-				
-				continue;
-				
-			}
 			
 			Date avDate = a.getDate();
 			Time avTime = a.getTime();
