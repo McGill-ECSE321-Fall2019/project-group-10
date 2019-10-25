@@ -39,6 +39,16 @@ public class TutoringServiceRestController {
 
 // ******************************************** GET MAPPINGS ********************************************** \\
 	
+	@GetMapping(value = {"/users", "/users/"})
+	public List<UserDTO> getAllUsers(){
+		List<TSUser> listOfUsers = service.getAllUsers();
+		List<UserDTO> userListDto = new ArrayList<>();
+		for(TSUser user : listOfUsers) {
+			userListDto.add(convertToDto(user));
+		}
+		return userListDto;
+	}
+	
 	// Get all the schools offered by the application
 	@GetMapping(value = { "/universities", "/universities/" })
 	public List<UniversityDTO> getAllUniversities() {
@@ -207,6 +217,36 @@ public class TutoringServiceRestController {
 	
 // ******************************************** POST MAPPINGS ********************************************** \\
 
+	@PostMapping(value = {"/setup/1", "/setup/1/"})
+	public UserDTO setupCreateUser(@RequestParam("age") int age,
+			@RequestParam("name") String name,
+			@RequestParam("email") String email,
+			@RequestParam("phonenumber") String phonenumber) throws IllegalArgumentException{
+		TSUser user = service.createUser(name, email, age, phonenumber);
+		return convertToDto(user);
+	}
+	
+	//Create tutor
+	@PostMapping(value = {"/setup/2", "/setup/2/"})
+	public TutorDTO setupCreateRole(@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("useremail") String email,
+			@RequestParam("amountPaid") double amountPaid,
+			@RequestParam("hourlyRate") int hourlyRate,
+			@RequestParam("experience") int experience) throws IllegalArgumentException{
+			
+		TSUser user = service.getUser(email);
+		if(user == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+		}
+		Tutor tutor = service.createTutor(username, password, user.getEmail(), hourlyRate, experience, Education.bachelor);
+		tutor.setId(user.getId());
+		return convertToDto(tutor);
+	}
+	
+	
+	
+	
 	//Creates a text
 	@PostMapping(value = { "/text", "/text/" })
 	public TextDTO createTextForTutor(@RequestParam("reviewId") int reviewId, 
