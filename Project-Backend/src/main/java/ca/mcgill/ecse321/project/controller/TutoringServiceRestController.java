@@ -37,8 +37,8 @@ public class TutoringServiceRestController {
 	@Autowired
 	TutoringAppService service;
 
-// ******************************************** GET MAPPINGS ********************************************** \\
-	
+// *********************************************** TESTS ***************************************************\\
+
 	@GetMapping(value = {"/users", "/users/"})
 	public List<UserDTO> getAllUsers(){
 		List<TSUser> listOfUsers = service.getAllUsers();
@@ -48,6 +48,49 @@ public class TutoringServiceRestController {
 		}
 		return userListDto;
 	}
+	
+	@GetMapping(value = {"/tutors", "/tutors/"})
+	public List<TutorDTO> getAllTutors(){
+		List<Tutor> listOfTutors = service.getAllTutors();
+		List<TutorDTO> tutorList = new ArrayList<>();
+		for(Tutor tutor : listOfTutors) {
+			tutorList.add(convertToDtoSetup(tutor));
+		}
+		return tutorList;
+	}
+	
+
+	@PostMapping(value = {"/setup/1", "/setup/1/"})
+	public UserDTO setupCreateUser(@RequestParam("age") int age,
+			@RequestParam("name") String name,
+			@RequestParam("email") String email,
+			@RequestParam("phonenumber") String phonenumber) throws IllegalArgumentException{
+		TSUser user = service.createUser(name, email, age, phonenumber);
+		return convertToDto(user);
+	}
+	
+	//Create tutor
+	@PostMapping(value = {"/setup/2", "/setup/2/"})
+	public TutorDTO setupCreateRole(@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("useremail") String email,
+			@RequestParam("amountPaid") double amountPaid,
+			@RequestParam("hourlyRate") int hourlyRate,
+			@RequestParam("experience") int experience) throws IllegalArgumentException{
+			
+		TSUser user = service.getUser(email);
+		if(user == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_User);
+		}
+		Tutor tutor = service.createTutor(username, password, user.getEmail(), hourlyRate, experience, Education.bachelor);
+		tutor.setUser(user);
+		return convertToDtoSetup(tutor);
+	}
+	
+	//Availablility creation.
+	
+// ******************************************** GET MAPPINGS ********************************************** \\
+	
 	
 	// Get all the schools offered by the application
 	@GetMapping(value = { "/universities", "/universities/" })
@@ -217,35 +260,6 @@ public class TutoringServiceRestController {
 	
 // ******************************************** POST MAPPINGS ********************************************** \\
 
-	@PostMapping(value = {"/setup/1", "/setup/1/"})
-	public UserDTO setupCreateUser(@RequestParam("age") int age,
-			@RequestParam("name") String name,
-			@RequestParam("email") String email,
-			@RequestParam("phonenumber") String phonenumber) throws IllegalArgumentException{
-		TSUser user = service.createUser(name, email, age, phonenumber);
-		return convertToDto(user);
-	}
-	
-	//Create tutor
-	@PostMapping(value = {"/setup/2", "/setup/2/"})
-	public TutorDTO setupCreateRole(@RequestParam("username") String username,
-			@RequestParam("password") String password,
-			@RequestParam("useremail") String email,
-			@RequestParam("amountPaid") double amountPaid,
-			@RequestParam("hourlyRate") int hourlyRate,
-			@RequestParam("experience") int experience) throws IllegalArgumentException{
-			
-		TSUser user = service.getUser(email);
-		if(user == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
-		}
-		Tutor tutor = service.createTutor(username, password, user.getEmail(), hourlyRate, experience, Education.bachelor);
-		tutor.setId(user.getId());
-		return convertToDto(tutor);
-	}
-	
-	
-	
 	
 	//Creates a text
 	@PostMapping(value = { "/text", "/text/" })
@@ -378,6 +392,16 @@ public class TutoringServiceRestController {
 	
 //========================================= DTO =======================================\\
   
+	//Setup
+	private TutorDTO convertToDtoSetup(Tutor t) {
+		
+		if(t == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+		}
+		TutorDTO tDTO = new TutorDTO(t.getUsername(), t.getEducation(), t.getHourlyRate(), t.getExperience());
+		tDTO.setUser(convertToDto(t.getUser()));
+		return tDTO;
+	}	
 	
 	// Convert the model user to a DTO object
 	private UserDTO convertToDto(TSUser u) {
