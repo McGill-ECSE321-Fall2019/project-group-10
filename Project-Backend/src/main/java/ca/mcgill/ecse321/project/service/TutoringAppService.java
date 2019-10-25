@@ -750,6 +750,8 @@ public class TutoringAppService {
 		boolean tIsAvailable = false;
 		int tId = 0;
 		List<Availability> tutorAvailabilities = getAvailabilityByTutor(tName);
+		if(tutorAvailabilities == null || tutorAvailabilities.size() == 0)
+			tIsAvailable = true;
 		Availability av = null;
 		for (Availability a : tutorAvailabilities) {
 			

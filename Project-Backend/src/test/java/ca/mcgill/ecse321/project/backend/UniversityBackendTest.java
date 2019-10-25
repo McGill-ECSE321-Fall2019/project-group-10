@@ -179,7 +179,6 @@ public class UniversityBackendTest {
 				//create a course offering
 				CourseOffering co = new CourseOffering();
 				co.setCourseOfferingID(CO_ID);
-				//co.setCourse(c);
 				
 				//create a Tutor
 				Tutor t = new Tutor();

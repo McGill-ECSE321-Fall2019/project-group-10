@@ -11,6 +11,7 @@ import java.sql.Time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,10 +86,12 @@ public class AvailabilityTest {
 		Time time = TIME;
 		int id;
 		
+		service.createUser("aName", EMAIL, 22, "5145555555");
+		Tutor t = service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
+		
 		try {
-			service.createUser("aName", EMAIL, 22, "5145555555");
-			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
-			service.createAvailability(date, time, USERNAME);
+			Availability a = service.createAvailability(date, time, USERNAME);
+			t.addAvailability(a);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -100,6 +103,8 @@ public class AvailabilityTest {
 		assertEquals(1, allAvailabilities.size());
 		assertEquals(date.toString(), allAvailabilities.get(0).getDate().toString());
 		assertEquals(time.toString(), allAvailabilities.get(0).getTime().toString());
+		List<Availability> as = new ArrayList<>(t.getAvailability());
+		assertEquals(as.get(0).getDate().toString(), date.toString());
 
 		date = new java.sql.Date(3333333333l);
 		id = allAvailabilities.get(0).getId();
