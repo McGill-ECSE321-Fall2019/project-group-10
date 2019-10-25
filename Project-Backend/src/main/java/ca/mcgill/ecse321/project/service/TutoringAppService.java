@@ -1251,6 +1251,14 @@ public class TutoringAppService {
 		return tutor.getReview();
 	}
 				
+	@Transactional
+	public Set<Review> getAllReviewsByCO(int courseOId){
+		CourseOffering courseOffering = getCourseOffering(courseOId);
+		if(courseOffering == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
+		}
+		return courseOffering.getReview();
+	}
 	
 	//Check to see if a session has passed or not.
 	@Transactional
