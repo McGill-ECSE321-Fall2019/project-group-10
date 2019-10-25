@@ -747,6 +747,9 @@ public class TutoringAppService {
 			
 		}
 		
+		Date currentDate = 
+		if(Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 0)
+		
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindTutorByUsername);

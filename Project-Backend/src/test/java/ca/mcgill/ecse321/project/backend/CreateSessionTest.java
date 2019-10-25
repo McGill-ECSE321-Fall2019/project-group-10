@@ -8,10 +8,13 @@ import static org.mockito.Mockito.when;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -154,6 +157,7 @@ public class CreateSessionTest {
 			co.setTerm(CO_TERM);
 			co.setYear(CO_YEAR);
 			co.setCourse(c);
+			co.setSession(new ArrayList<Session>());
 			
 			cos.add(co);
 			return cos;
@@ -171,7 +175,7 @@ public class CreateSessionTest {
 				t.setUsername(TUTOR_NAME);
 				List<Tutor> tutors = new ArrayList<>();
 				tutors.add(t);
-				
+				co.setSession(new ArrayList<Session>());
 				co.setTutors(tutors);
 	
 				return co;
@@ -193,7 +197,13 @@ public class CreateSessionTest {
 				//create a Tutor with the right name
 				Tutor t = new Tutor();
 				t.setUsername(TUTOR_NAME);
-
+				Set<Availability> avSet = new HashSet<Availability>();
+				t.setAvailability(avSet);
+				Availability a = new Availability();
+				a.setDate(AVAILABILITY_DATE);
+				a.setTime(AVAILABILITY_TIME);
+				a.setTutor(t);
+				t.getAvailability().add(a);
 				return t;
 			} else {
 				return null;
@@ -204,7 +214,7 @@ public class CreateSessionTest {
 	// mock output for availability
 	private void setMockOutputAvailability() {
 		
-		when(service.getAvailabilityByTutor((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+		/*when(service.getAvailabilityByTutor((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 			
 			if(invocation.getArgument(0).equals(TUTOR_NAME)) {
 				
@@ -226,7 +236,7 @@ public class CreateSessionTest {
 				return null;
 			}
 			
-		});
+		});*/
 		
 	}
 	
@@ -323,10 +333,18 @@ public class CreateSessionTest {
 	//mock the output for a student
 	private void setMockOutputStudent() {
 		when(studentRepository.findStudentByUsername((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
-			
-			Student s = new Student();
-			s.setUsername(STUDENT_NAME);
-			return s;
+			if (invocation.getArgument(0).equals(STUDENT_NAME)) {
+				Student s = new Student();
+				s.setUsername(STUDENT_NAME);
+				Set<Session> sessions = new HashSet<Session> ();
+				s.setSession(sessions);
+				return s;
+			}
+			else {
+				
+				return null;
+				
+			}
 		
 		});
 		
@@ -335,15 +353,110 @@ public class CreateSessionTest {
 	//************************************************* TESTS *************************************************//
 	
 	@Test
-	private void testCreateValidSession() {
+	public void testCreateValidSession() {
 		
+		Session s = null;
 		
 		try {
-			Session s = service.createSession(CO_ID, SESSION_DATE, SESSION_TIME,SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+			s = service.createSession(CO_ID, SESSION_DATE, SESSION_TIME,SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
+		
+		
+		
+		
+		assertEquals(SESSION_TIME.toString(), s.getTime().toString());
+		assertEquals((int)SESSION_AMOUNT_PAID, (int)s.getAmountPaid());
+		assertEquals(SESSION_DATE.toString(), s.getDate().toString());
+		assertEquals(s.getCourseOffering().getCourseOfferingID(), CO_ID);
+		assertEquals(STUDENT_NAME, s.getStudent().get(0).getUsername());
+		assertEquals(TUTOR_NAME, s.getTutor().getUsername());
+		
 	}
 	
+	//Test Null User Name
+	@Test
+	public void testCreateSessionNullTutorName (){
+		
+		String error = null;
+		try {
+			service.createSession(CO_ID, SESSION_DATE, SESSION_TIME,SESSION_AMOUNT_PAID, STUDENT_NAME, null);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, ErrorStrings.Invalid_Session_TutorName);
+		
+	}
+	
+	@Test
+	public void testCreateSessionNullStudentName() {
+		
+		String error = null;
+		try {
+			service.createSession(CO_ID, SESSION_DATE, SESSION_TIME,SESSION_AMOUNT_PAID, null, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, ErrorStrings.Invalid_Session_StudentName);
+		
+	}
+	
+	@Test
+	public void testCreateSessionNullDate() {
+		
+		String error = null;
+		try {
+			service.createSession(CO_ID, null, SESSION_TIME,SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, ErrorStrings.Invalid_Session_DateTime);
+		
+	}
+	
+	@Test
+	public void testCreateSessionNegAmountPaid() {
+		
+		String error = null;
+		try {
+			service.createSession(CO_ID, SESSION_DATE, SESSION_TIME, -0.05, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, ErrorStrings.Invalid_Session_NegativeAmountPaid);
+		
+	}
+	
+	@Test
+	public void testCreateSessionUnavialableRoom() {
+		setMockOutputRoomNoRooms();
+		
+		String error = null;
+		
+		try {
+			service.createSession(CO_ID, SESSION_DATE, SESSION_TIME, SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, "There is no room available at this time");
+		
+		
+	}
+	
+	@Test
+	public void testCreateSessionTooEarly() {
+		
+	}
 }
