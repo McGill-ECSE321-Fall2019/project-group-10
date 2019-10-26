@@ -724,30 +724,37 @@ public class TutoringAppService {
 		return done;
 	}
 
-	//Checking to make sure we can create a session.
+	//Create (Or book) a session
 	@Transactional
 	public Session createSession(int coID, Date date, Time time, Double amountPaid, String sName, String tName) {
-
+		
+		//if the tutor's name is null, throw an error
 		if(tName == null || tName.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_TutorName);
 		}
+		//if the student name is null, throw an error
 		if(sName == null || sName.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_StudentName);
 		}
+		
+		//if the date or time is null, throw an error
 		if(date == null || time == null){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_DateTime);
 		}
+		
+		//if the amount paid is negative, throw an error
 		if(amountPaid < 0){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_NegativeAmountPaid);
 		}
 		
-		
+		//If there is no room available at the time, throw an error
 		if(!isRoomAvailable(date, time)) {
 			
 			throw new IllegalArgumentException("There is no room available at this time");
 			
 		}
 		
+		//If the time is outside the valid booking time (between 9am-8pm) throw an error
 		if((time.compareTo(Time.valueOf("09:00:00")) < 0) || time.compareTo(Time.valueOf("20:00:00")) > 0) {
 			
 			throw new IllegalArgumentException("This is not a valid time");
@@ -755,21 +762,22 @@ public class TutoringAppService {
 		}
 		
 		LocalDate currentDate = LocalDate.now();
+		//Check that it is not the same day for a booking
 		if(Period.between(currentDate, date.toLocalDate()).getDays() <= 0) {
 			
 			throw new IllegalArgumentException("Can not book a session on the same day, or in the past!");
 			
 		}
-		
-		int p = Period.between(currentDate, date.toLocalDate()).getDays();
-		
-		if(p > 14) {
+		//check that it is not more than two weeks away
+		if(Period.between(currentDate, date.toLocalDate()).getDays() > 14) {
 			
 			throw new IllegalArgumentException("Can not book a session more than 14 days in advance");
 			
 		}
 		
+		//get the tutor
 		Tutor t = tutorRepository.findTutorByUsername(tName);
+		//if no such tutor, throw an error
 		if (t == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindTutorByUsername);
 		}
@@ -778,8 +786,9 @@ public class TutoringAppService {
 		int tId = 0;
 		List<Availability> tutorAvailabilities = getAvailabilityByTutor(tName);
 		if(tutorAvailabilities == null || tutorAvailabilities.size() == 0)
-			tIsAvailable = true;
+			tIsAvailable = false;
 		Availability av = null;
+		//Check that the tutor is available
 		for (Availability a : tutorAvailabilities) {
 			
 			
@@ -799,39 +808,55 @@ public class TutoringAppService {
 			
 		}
 		
+		//If the tutor is not available, throw an exception
 		if(!tIsAvailable) {
 			
 			throw new IllegalArgumentException("The Tutor is busy during this time.");
 			
 		}
-		
+		//create an empty session
 		Session session = new Session();
+		//Get the course offering
 		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
+		//If the course offering is null, throw an exception
 		if (co == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindCourseOfferingByID);
+		//set the values of the new session
 		session.setCourseOffering(co);
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
 		session.setConfirmed(false);
+		//empty student list
 		List<Student> student = new ArrayList<Student>();
+		
+		//if there is no student by the student name, throw an exception
 		if(studentRepository.findStudentByUsername(sName) == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindStudentByUsername);
 		}
+		
+		//set the tutor
 		session.setTutor(t);
 		student.add(studentRepository.findStudentByUsername(sName));
+		//seet the students
 		session.setStudent(student);
+		
+		//double check that the tutor is available
 		if(tIsAvailable) {
 			
+			//delete the availability from the tutor
 			availabilityRepository.deleteById(tId);
 			t.getAvailability().remove(av);
 			
 		}
 		co.getSession().add(session);
+		//save everything
 		studentRepository.findStudentByUsername(sName).getSession().add(session);
 		sessionRepository.save(session);
 		courseOfferingRepository.save(co);
 		studentRepository.save(studentRepository.findStudentByUsername(sName));
+		
+		//return the created session
 		return session;
 	}
 	
@@ -873,13 +898,13 @@ public class TutoringAppService {
 		return session;
 	}
 	
-	//Checking to make sure we can get all sessions.
+	//Getting all sessions.
 	@Transactional
 	public List<Session> getAllSessions() {
 		return toList(sessionRepository.findAll());
 	}
 	
-	//Checking to make sure we can get a session.
+	//Getting a session by an ID.
 	@Transactional
 	public Session getSession(int id) {
 		
@@ -887,15 +912,18 @@ public class TutoringAppService {
 		return a;
 	}
 	
+	//Get the list of session by student name
 	@Transactional
 	public List<Session> getSessionByStudent(String sName) {
 		
+		//If null, throw an error
 		if(sName == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_StudentName);
 		}
 		
 		Student stu = studentRepository.findStudentByUsername(sName);
 		
+		//If the student is null, throw an error
 		if(stu == null) {
 			
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindStudentByUsername);
@@ -905,13 +933,14 @@ public class TutoringAppService {
 		
 	}
 	
-	//Checking to make sure we can delete a session.
+	//Delete a session from the database.
 	@Transactional
 	public boolean deleteSession(int id) {
 		
 		boolean done = false;
 		Session a = getSession(id);
 		
+		//If the session is not found or null, throw an error
 		if(a == null) {
 			
 			throw new IllegalArgumentException("Invalid Session ID");
@@ -919,6 +948,9 @@ public class TutoringAppService {
 		
 		LocalDate currentDate = LocalDate.now();
 		LocalTime currentTime = LocalTime.now();
+		
+		//check that it is at least 24 hours before the session will start
+		//Throw an error if this is not in range
 		if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 1) {
 			
 			int currentMinutes = Integer.parseInt(currentTime.toString().substring(0, 2));
@@ -934,23 +966,30 @@ public class TutoringAppService {
 				throw new IllegalArgumentException("It is too late to cancel a session!");
 				
 			}
-			
+		
+		//Check for same day or the past, throw an error if this is the case
 		} else if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() <= 0) {
 			
 			throw new IllegalArgumentException("It is too late to cancel a session! Please do it at least the day before!");
 			
 		}
-			
+		
+		//create an availability for the tutor at this time
 		createAvailability(a.getDate(), a.getTime(), a.getTutor().getUsername());
 		
 		a.getTutor().getSession().remove(a);
 		
+		
 		tutorRepository.save(a.getTutor());
+		
+		//remove room assigned, if one has already been assigned
 		if (a.getRoom() != null) {
 			a.getRoom().getSession().remove(a);
 			roomRepository.save(a.getRoom());
 			
 		}
+		
+		//remove the session from each student
 		for (Student s: a.getStudent()) {
 			if(s.getSession() != null) {
 				s.getSession().remove(a);
@@ -1315,23 +1354,27 @@ public class TutoringAppService {
 		return false;
 	}
 	
+	
+	// Add a student to an already existing session
 	@Transactional
 	public Student addStudentToSession(int sessionId, String studentName) {
 		
 		Student stu = studentRepository.findStudentByUsername(studentName);
 		Session session = sessionRepository.findSessionBySessionID(sessionId);
 		
+		//invalid if student is null
 		if(stu == null) {
 			throw new IllegalArgumentException("Student is null!");
 		}
 		
+		//invalid if session is null
 		if(session == null) {
 			
 			throw new IllegalArgumentException("Session is null!");
 			
 		}
 		
-		
+		//Check that the student has not already been added to the session
 		for (Student s : session.getStudent()) {
 			
 			if(s.getId() == stu.getId()) {
@@ -1340,6 +1383,7 @@ public class TutoringAppService {
 			}
 		}
 		
+		//Add the session to the student, and the student to the session
 		session.getStudent().add(stu);
 		stu.getSession().add(session);
 		

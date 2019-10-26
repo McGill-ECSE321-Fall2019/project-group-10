@@ -52,15 +52,7 @@ public class SessionBackendTest {
 	@InjectMocks
 	private TutoringAppService service;
 	
-	// constants for university
-	private static final String UNI_NAME = "McGill";
-	private static final String UNI_ADDR = "304 Sherbrooke";
-	
-	// constants for course
-	private static final String COURSE_NAME = "ECSE321";
 	// constants for course offering
-	private static final Term CO_TERM = Term.Fall;
-	private static final int CO_YEAR = 2019;
 	private static final int CO_ID = 1;
 	
 	private static final int CO_ID_EMPTY = 3;
@@ -224,8 +216,9 @@ public class SessionBackendTest {
 		});
 		
 	}
-	
+	// mock output for students
 	private void setMockOutputSession() {
+		//mock Find all
 		when(sessionRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 			Session s = new Session();
 			Session s1 = new Session();
@@ -247,8 +240,10 @@ public class SessionBackendTest {
 			
 		});
 		
+		// mock getting a specific section
 		when(sessionRepository.findSessionBySessionID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			
+			//completely valid session, used in later calls
 			if(invocation.getArgument(0).equals(0)) {
 				
 				Session s = new Session();
@@ -292,7 +287,8 @@ public class SessionBackendTest {
 				s.setCourseOffering(co);
 				
 				return s;
-				
+			
+			//Time very close, but still a valid session to book on October 26, 2019
 			} else if (invocation.getArgument(0).equals(1)) {
 				
 				Session s = new Session();
@@ -337,7 +333,7 @@ public class SessionBackendTest {
 				
 				return s;
 				
-				
+			//Unavailable tutor	
 			} else if (invocation.getArgument(0).equals(2)) {
 				
 				
@@ -382,7 +378,8 @@ public class SessionBackendTest {
 				s.setCourseOffering(co);
 				
 				return s;	
-				
+			
+			//Invalid session
 			} else if (invocation.getArgument(0).equals(3)) {
 				
 				Session s = new Session();
@@ -426,11 +423,13 @@ public class SessionBackendTest {
 				s.setCourseOffering(co);
 				
 				return s;
-				
+			
+			//null session
 			} else if (invocation.getArgument(0).equals(4)) {
 				
 				return null;
-				
+			
+			//session to test add student 
 			} else if (invocation.getArgument(0).equals(5)) {
 				
 				Session s = new Session();
@@ -485,26 +484,10 @@ public class SessionBackendTest {
 		
 	}
 	
-	private void createMockAvailability() {
-		
-		/*when(service.createAvailability((testDate),(testTime), (anyString()))).thenAnswer((InvocationOnMock invocation) -> {
-			
-			
-			Availability availability = new Availability();
-			availability.setTime(testTime);
-			availability.setDate(testDate);
-			Tutor t = tutorRepository.findTutorByUsername(invocation.getArgument(0));
-			availability.setTutor(t);
-			t.getAvailability().add(availability);
-			
-			return availability;
-			
-		});*/
-		
-	}
 	
 	//************************************************* TESTS *************************************************//
 	
+	//Test the creation of a valid session!
 	@Test
 	public void testCreateValidSession() {
 		
@@ -543,6 +526,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//Test create session null student Name
 	@Test
 	public void testCreateSessionNullStudentName() {
 		
@@ -550,7 +534,7 @@ public class SessionBackendTest {
 		try {
 			service.createSession(CO_ID, SESSION_DATE, SESSION_TIME,SESSION_AMOUNT_PAID, null, TUTOR_NAME);
 		} catch (IllegalArgumentException e) {
-			
+			//get the error
 			error = e.getMessage();
 		}
 		//check it was the correct error
@@ -558,6 +542,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//test a null Date
 	@Test
 	public void testCreateSessionNullDate() {
 		
@@ -573,6 +558,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//Test if there is a negative amount paid
 	@Test
 	public void testCreateSessionNegAmountPaid() {
 		
@@ -588,6 +574,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//try to create a session if there is no available room
 	@Test
 	public void testCreateSessionUnavialableRoom() {
 		setMockOutputRoomNoRooms();
@@ -606,6 +593,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//test creating the session at an early time
 	@Test
 	public void testCreateSessionTooEarlyTime() {
 		
@@ -622,6 +610,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//check creating the session too late
 	@Test
 	public void testCreateSessionTooLateTime() {
 		
@@ -638,6 +627,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//Create a session on the same or in the past
 	@Test
 	public void testCreateSessionSameDayOrInThePast(){
 		
@@ -654,6 +644,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//create a session null tutor
 	@Test
 	public void testCreateSessionNullTutor() {
 		
@@ -670,6 +661,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//create a session with an unavailable tutor
 	@Test
 	public void testCreateSessionUnavailableTutor() {
 		
@@ -686,6 +678,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//create a session with a null course offering
 	@Test
 	public void testCreateSessionNullCourseOffering() {
 		
@@ -702,6 +695,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//test that there is a null student
 	@Test
 	public void testCreateSessionNullStudent() {
 		
@@ -718,6 +712,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//test getting all sessions
 	@Test
 	public void testFindAllSessions() {
 		
@@ -726,7 +721,7 @@ public class SessionBackendTest {
 		List<Session> sessions = null;
 		
 		try {
-			
+			//get the sessions createed
 			sessions = service.getAllSessions();
 			
 		} catch (Exception e) {
@@ -735,12 +730,14 @@ public class SessionBackendTest {
 			
 		}
 		
+		//check that the sessions returned are correct
 		assertEquals(sessions.size(), 2);
 		assertEquals(sessions.get(0).getDate(), SESSION_DATE_DIFF );
 		assertEquals(sessions.get(1).getDate(), SESSION_DATE);
 		
 	}
 	
+	//test getting a session by ID
 	@Test
 	public void testGetSessionById() {
 		
@@ -751,56 +748,61 @@ public class SessionBackendTest {
 		try {
 			sessions = service.getAllSessions();
 		} catch (Exception e){
-			
+			//if this fails, there was a mistake
 			fail();
 			
 		}
 		
 		if(sessions == null) {
 			
+			//if sessions is null, then fail
 			fail();
 			
 		}
-		
+		//get the id of the first session
 		int id = sessions.get(0).getSessionID();
 		
 		Session s = null;
 		
 		try {
+			//get the session with id
 			s = service.getSession(id);
 		} catch (Exception e) {
+			
+			//should pass, if it throws an exception, it is invalid
 			fail();
 		}
 		
+		//assert equals the session number returned by getSession and the id
 		assertEquals(s.getSessionID(), sessions.get(0).getSessionID());
 		
 	}
 	
+	//Test a valid delete 
 	@Test
 	public void testValidDeleteSession() {
 		
 		setMockOutputSession();
-		createMockAvailability();
-		boolean result = false;
-		//s = sessionRepository.findSessionBySessionID(0);
 		
+		boolean result = false;
 		
 		try {
+			//check that the session was successfully deleted
 			result = service.deleteSession(0);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
-		
+		//check that the method returned true
 		assertEquals(result, true);
 		
 	}
 	
+	//Test deleting a session the day before the session is to take palce
 	@Test
 	public void testDeleteSessionValidWithinOneDay() {
 		
 		setMockOutputSession();
-		createMockAvailability();
 		
 		boolean result = false;
 		
@@ -811,68 +813,74 @@ public class SessionBackendTest {
 			fail();
 		}
 		
+		//check for successful deletion
 		assertEquals(result, true);
 		
 	}
+	
+	//test that it is too late on a different day then the session is suppose to be on 
+	//to cancel.
 	@Test
-	public void testDeleteToLateOnAnotherDateSession() {
+	public void testDeleteTooLateOnAnotherDateSession() {
 		
 		setMockOutputSession();
-		createMockAvailability();
 		
 		String error = null;
 		
 		try {
 			service.deleteSession(2);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// get the error message
 			error = e.getMessage();
 		}
 		
+		//Check that the error occurred
 		assertEquals( error, "It is too late to cancel a session!" );
 		
 	}
 	
+	// test delete on the same date
 	@Test
 	public void testDeleteOnSameDateSession() {
 		
 		setMockOutputSession();
-		createMockAvailability();
 		
 		String error = null;
 		
 		try {
 			service.deleteSession(3);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// get the error message
 			error = e.getMessage();
 		}
 		
+		//Check that the error occurred, and that it is correct
 		assertEquals( error, "It is too late to cancel a session! Please do it at least the day before!");
-		
 		
 	}
 	
+	//Delete a Session with a null session
 	@Test
 	public void testDeleteSessionNullError() {
 		
 		setMockOutputSession();
-		createMockAvailability();
 		
 		String error = null;
 		
 		try {
 			service.deleteSession(4);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// get the error message
 			error = e.getMessage();
 		}
 		
+		//check that it was the correct error
 		assertEquals( error, "Invalid Session ID");
 		
 		
 	}
 	
+	//Testing adding a Null student name to a session
 	@Test
 	public void testAddAStudentToASessionNullStudentName() {
 		String error = null;
@@ -880,14 +888,16 @@ public class SessionBackendTest {
 		try {
 			service.getSessionByStudent(null);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// get the error message
 			error = e.getMessage();
 		}
 		
+		//check that this is the correct error
 		assertEquals( error, ErrorStrings.Invalid_Session_StudentName);
 		
 	}
 	
+	//add a student to a session with a null student, but not a null student name
 	@Test
 	public void testAddStudentToASessionNullStudent() {
 		
@@ -896,14 +906,16 @@ public class SessionBackendTest {
 		try {
 			service.getSessionByStudent(STUDENT_NAME_BAD);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// get the error message
 			error = e.getMessage();
 		}
 		
+		//check correct error
 		assertEquals( error, ErrorStrings.Invalid_Session_FindStudentByUsername);
 		
 	}
 	
+	//test getting sessions by student
 	@Test
 	public void testGetSessionByStudent() {
 		
@@ -916,10 +928,12 @@ public class SessionBackendTest {
 			fail();
 		}
 		
+		//check that the right set of sessions is returned
 		assertEquals( 0, sessions.size());
 		
 	}
 	
+	//Test trying to create a session more than two weeks from now
 	@Test
 	public void createSessionInFutureFar() {
 		
@@ -935,6 +949,7 @@ public class SessionBackendTest {
 		
 	}
 	
+	//Try to add a student to a session that already has that student
 	@Test
 	public void testAddStudentAlreadyAdded() {
 		
@@ -945,32 +960,16 @@ public class SessionBackendTest {
 		try {
 			service.addStudentToSession(0, STUDENT_NAME);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// get the error message
 			error = e.getMessage();
 		}
 		
+		//check for correct error
 		assertEquals(error, "Student is already added to this session.");
 		
 	}
 	
-	@Test
-	public void testAddStudentNullStudent() {
-		
-		setMockOutputSession();
-		
-		String error = null;
-		
-		try {
-			service.addStudentToSession(0, STUDENT_NAME_BAD);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			error = e.getMessage();
-		}
-		
-		assertEquals(error, "Student is null!");
-		
-	}
-	
+	//test adding a student to a null session
 	@Test
 	public void testAddStudentNullSession() {
 		
@@ -981,14 +980,16 @@ public class SessionBackendTest {
 		try {
 			service.addStudentToSession(100, STUDENT_NAME);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
+			// get error message
 			error = e.getMessage();
 		}
 		
+		//check that it is the correct error
 		assertEquals(error, "Session is null!");
 		
 	}
 	
+	//test adding a student to a session
 	@Test
 	public void testValidAddStudent() {
 		
@@ -1006,4 +1007,40 @@ public class SessionBackendTest {
 		assertEquals(s.getSession().size(), 1);
 		
 	}
+	
+	//test get the session of a null student name
+	@Test
+	public void testGetSesstionByStudentNullSName() {
+		
+		String error = null;
+		
+		try {
+			service.getSessionByStudent(null);
+		} catch (IllegalArgumentException e) {
+			// get error message
+			error = e.getMessage();
+		}
+		
+		//check that it is the correct error
+		assertEquals(error, ErrorStrings.Invalid_Session_StudentName);
+		
+	}
+	
+	//test get the session of a null student
+	@Test
+	public void testGetSesstionByStudentNullStudent() {
+			
+			String error = null;
+			
+			try {
+				service.getSessionByStudent(STUDENT_NAME_BAD);
+			} catch (IllegalArgumentException e) {
+				// get error message
+				error = e.getMessage();
+			}
+			
+			//check that it is the correct error
+			assertEquals(error, ErrorStrings.Invalid_Student_FindStudentByUsername);
+			
+		}
 }
