@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.project.backend;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -95,11 +96,16 @@ public class CreateSessionTest {
 	private static final Date AVAILABILITY_DATE_2 = Date.valueOf("2021-02-01");
 	private static final Time AVAILABILITY_TIME_2 = Time.valueOf("10:10:00");
 	
+	private Date testDate;
+	private Time testTime;
+	
 	@Before
 	public void setMockOutput() {
 		
 		// run all setups for mock outputs
-
+		testDate = mock(Date.class);
+		testTime = mock(Time.class);
+		
 		setMockOutputUniversity();
 		setMockOutputCourse();
 		setMockOutputCourseOffering();
@@ -218,6 +224,8 @@ public class CreateSessionTest {
 				a.setTime(AVAILABILITY_TIME_2);
 				a.setTutor(t);
 				t.getAvailability().add(a);
+				Set<Session> sessions = new HashSet<Session>();
+				sessions.add(sessionRepository.findSessionBySessionID(0));
 				return t;
 			} else {
 				return null;
@@ -386,7 +394,85 @@ public class CreateSessionTest {
 			
 		});
 		
+		when(sessionRepository.findSessionBySessionID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			
+			if(invocation.getArgument(0).equals(0)) {
+				
+				Session s = new Session();
+				s.setAmountPaid(SESSION_AMOUNT_PAID);
+				s.setDate(SESSION_DATE);
+				s.setTime(SESSION_TIME);
+				
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME_UNAVAILABLE);
+				Set<Availability> avSet = new HashSet<Availability>();
+				t.setAvailability(avSet);
+				Availability a = new Availability();
+				a.setDate(SESSION_DATE_DIFF);
+				a.setTime(SESSION_TIME_DIFF);
+				a.setTutor(t);
+				t.getAvailability().add(a);
+				
+				Student student = new Student();
+				student.setUsername(STUDENT_NAME);
+				
+				Set<Session> sessions = new HashSet<Session>();
+				sessions.add(s);
+				student.setSession(sessions);
+				
+				List<Student> students = (new ArrayList<Student>());
+				students.add(student);
+				s.setStudent(students);
+				s.setAmountPaid(12.00);
+				s.setTutor(t);
+				CourseOffering co = new CourseOffering();
+				
+				t.setSession(sessions);
+				
+				List<Session> sessions2 = new ArrayList<Session>();
+				
+				sessions2.add(s);
+				
+				co.setSession(sessions2);
+				
+				
+				s.setCourseOffering(co);
+				
+				return s;
+				
+			} else if (invocation.getArgument(0).equals(1)) {
+				
+				
+				
+				
+			}
+			
+			
+			
+			return null;
+			
+		});
+		
 	}
+	
+	private void createMockAvailability() {
+		
+		/*when(service.createAvailability((testDate),(testTime), (anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			
+			
+			Availability availability = new Availability();
+			availability.setTime(testTime);
+			availability.setDate(testDate);
+			Tutor t = tutorRepository.findTutorByUsername(invocation.getArgument(0));
+			availability.setTutor(t);
+			t.getAvailability().add(availability);
+			
+			return availability;
+			
+		});*/
+		
+	}
+	
 	//************************************************* TESTS *************************************************//
 	
 	@Test
@@ -400,8 +486,6 @@ public class CreateSessionTest {
 			// Check that no error occurred
 			fail();
 		}
-		
-		
 		
 		
 		assertEquals(SESSION_TIME.toString(), s.getTime().toString());
@@ -632,6 +716,54 @@ public class CreateSessionTest {
 		
 		setMockOutputSession();
 		
+		List<Session> sessions = null;
+		
+		try {
+			sessions = service.getAllSessions();
+		} catch (Exception e){
+			
+			fail();
+			
+		}
+		
+		if(sessions == null) {
+			
+			fail();
+			
+		}
+		
+		int id = sessions.get(0).getSessionID();
+		
+		Session s = null;
+		
+		try {
+			s = service.getSession(id);
+		} catch (Exception e) {
+			fail();
+		}
+		
+		assertEquals(s.getSessionID(), sessions.get(0).getSessionID());
 		
 	}
+	
+	@Test
+	public void testValidDeleteSession() {
+		
+		setMockOutputSession();
+		createMockAvailability();
+		Session s = null;
+		//s = sessionRepository.findSessionBySessionID(0);
+		
+		
+		try {
+			service.deleteSession(0);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		
+		//assertEquals();
+		
+	}
+	
 }

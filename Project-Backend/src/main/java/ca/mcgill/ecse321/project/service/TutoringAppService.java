@@ -69,9 +69,6 @@ public class TutoringAppService {
 		
 		
 		// set the 
-		Availability availability = new Availability();
-		availability.setTime(time);
-		availability.setDate(date);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		
 		if (t == null){
@@ -79,6 +76,10 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Tutor);
 			
 		}
+		
+		Availability availability = new Availability();
+		availability.setTime(time);
+		availability.setDate(date);
 		
 		checkAvailabilityUniqueForTutor(t, availability);
 		
@@ -865,9 +866,7 @@ public class TutoringAppService {
 	//Checking to make sure we can get a session.
 	@Transactional
 	public Session getSession(int id) {
-		if(id < 0){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_ID);
-		}
+		
 		Session a = sessionRepository.findSessionBySessionID(new Integer(id));
 		return a;
 	}
@@ -893,10 +892,6 @@ public class TutoringAppService {
 	//Checking to make sure we can delete a session.
 	@Transactional
 	public boolean deleteSession(int id) {
-		if(id < 0){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_ID);
-		}
-		
 		
 		boolean done = false;
 		Session a = getSession(id);
