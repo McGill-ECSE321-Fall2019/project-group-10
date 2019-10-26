@@ -96,70 +96,17 @@ public class CreateSessionTest {
 	public void setMockOutput() {
 		
 		// run all setups for mock outputs
-		
-		setMockOutputUniversity();
-		setMockOutputCourse();
 		setMockOutputCourseOffering();
 		setMockOutputTutor();
 		setMockOutputRoom();
 		setMockOutputStudent();
-		setMockOutputAvailability();
 	}
 	
 	//********************************************* MOCK OUTPUTS *********************************************//
 	
-	// mock output for university
-	private void setMockOutputUniversity() {
-		when(universityRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			List<University> unis = new ArrayList<>();
-			University uni = new University();
-			uni.setName(UNI_NAME);
-			uni.setAddress(UNI_ADDR);
-			unis.add(uni);
-			return unis;
-		});	
-	}
-	
-	// mock output for course
-	private void setMockOutputCourse() {
-		when(courseRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			// create a university
-			University uni = new University();
-			uni.setName(UNI_NAME);
-			
-			// create a course
-			List<Course> cs = new ArrayList<>();
-			Course c = new Course();
-			c.setCourseName(COURSE_NAME);
-			c.setUniversity(uni);
-			cs.add(c);
-			return cs;
-		});
-	}
 	
 	// mock output for course offering
 	private void setMockOutputCourseOffering() {
-		when(courseOfferingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			// create a university
-			University uni = new University();
-			uni.setName(UNI_NAME);
-			
-			// create a course
-			Course c = new Course();
-			c.setCourseName(COURSE_NAME);
-			c.setUniversity(uni);
-			
-			//create a course offering
-			List<CourseOffering> cos = new ArrayList<>();
-			CourseOffering co = new CourseOffering();
-			co.setTerm(CO_TERM);
-			co.setYear(CO_YEAR);
-			co.setCourse(c);
-			co.setSession(new ArrayList<Session>());
-			
-			cos.add(co);
-			return cos;
-		});
 		
 		when(courseOfferingRepository.findCourseOfferingByCourseOfferingID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(CO_ID)) {
@@ -224,34 +171,6 @@ public class CreateSessionTest {
 		});
 	}
 	
-	// mock output for availability
-	private void setMockOutputAvailability() {
-		
-		/*when(service.getAvailabilityByTutor((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
-			
-			if(invocation.getArgument(0).equals(TUTOR_NAME)) {
-				
-				Tutor t = new Tutor();
-				t.setUsername(TUTOR_NAME);
-				
-				Availability a = new Availability();
-				a.setDate(AVAILABILITY_DATE);
-				a.setTime(AVAILABILITY_TIME);
-				a.setTutor(t);
-				
-				List<Availability> avList = new ArrayList<Availability>();
-				avList.add(a);
-				
-				return avList;
-				
-			} else {
-				
-				return null;
-			}
-			
-		});*/
-		
-	}
 	
 	// mock output for room regular
 	private void setMockOutputRoom() {
