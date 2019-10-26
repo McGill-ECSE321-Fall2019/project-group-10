@@ -66,6 +66,7 @@ public class UniversityBackendTest {
 	private static final int CO_ID = 1;
 	private static final int CO_ID_BAD = 2;
 	private static final int CO_ID_EMPTY = 3;
+	private static final int CO_ID_NONE = 4;
 	
 	// constants for tutor
 	private static final String TUTOR_NAME = "username";
@@ -106,6 +107,14 @@ public class UniversityBackendTest {
 		});	
 	}
 	
+	// mock output for an empty university list
+	private void setMockOutputUniversityEmpty() {
+		when(universityRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			List<University> unis = new ArrayList<>();
+			return unis;
+		});	
+	}
+	
 	// mock output for course
 	private void setMockOutputCourse() {
 		when(courseRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
@@ -118,6 +127,26 @@ public class UniversityBackendTest {
 			Course c = new Course();
 			c.setCourseName(COURSE_NAME);
 			c.setUniversity(uni);
+			cs.add(c);
+			return cs;
+		});
+	}
+	
+	// mock output for an empty course list
+	private void setMockOutputCourseEmpty() {
+		when(courseRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			// create a course list 
+			List<Course> cs = new ArrayList<>();
+			return cs;
+		});
+	}
+	// mock output for a course without a university
+	private void setMockOutputCourseNoUni() {
+		when(courseRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			// create a course
+			List<Course> cs = new ArrayList<>();
+			Course c = new Course();
+			c.setCourseName(COURSE_NAME);
 			cs.add(c);
 			return cs;
 		});
@@ -151,7 +180,6 @@ public class UniversityBackendTest {
 				//create a course offering
 				CourseOffering co = new CourseOffering();
 				co.setCourseOfferingID(CO_ID);
-				//co.setCourse(c);
 				
 				//create a Tutor
 				Tutor t = new Tutor();
@@ -201,6 +229,7 @@ public class UniversityBackendTest {
 			s.setRoom(r);
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
+			r.addSession(s);
 			
 			rooms.add(r);
 			return rooms;
@@ -222,11 +251,13 @@ public class UniversityBackendTest {
 			s.setRoom(r);
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
+			r.addSession(s);
 			
 			Session s2 = new Session();
 			s2.setRoom(r2);
 			s2.setDate(SESSION_DATE);
 			s2.setTime(SESSION_TIME);
+			r2.addSession(s2);
 			
 			rooms.add(r);
 			rooms.add(r2);
@@ -249,11 +280,13 @@ public class UniversityBackendTest {
 			s.setRoom(r);
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
+			r.addSession(s);
 			
 			Session s2 = new Session();
 			s2.setRoom(r2);
 			s2.setDate(SESSION_DATE_DIFF);
 			s2.setTime(SESSION_TIME_DIFF);
+			r2.addSession(s2);
 			
 			rooms.add(r);
 			rooms.add(r2);
@@ -293,7 +326,8 @@ public class UniversityBackendTest {
 	//************************************************* TESTS *************************************************//
 
 	// check that the service can retrieve all universities properly
-	@Test
+	// test coverage: 100%
+	//@Test
 	public void getAllUniversities() {
 		List<University> uniList = new ArrayList<>();
 		
@@ -309,7 +343,61 @@ public class UniversityBackendTest {
 		assertEquals(UNI_ADDR, u.getAddress());
 	}
 	
+	// check for no universities created
+	// test coverage: 100%
+	//@Test
+	public void getAllUniversitiesEmpty() {
+		List<University> uniList = new ArrayList<>();
+		
+		// run the correct mock output
+		setMockOutputUniversityEmpty();
+		
+		// get all universities
+		try {
+			uniList = service.getAllUniversities();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that only 1 and its the right one
+		assertEquals(0, uniList.size());
+	}
+	
+	// check that we can get all the courses
+	// coverage: 100%
+	//@Test
+	public void getAllCourses() {
+		List<Course> courseList = new ArrayList<>();
+		
+		// get all universities
+		try {
+			courseList = service.getAllCourses();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that only 1 and its the right one
+		assertEquals(1, courseList.size());
+		Course c = courseList.get(0);
+		assertEquals(COURSE_NAME, c.getCourseName());
+	}
+	
+	// check that we can get all the courses
+	// coverage: 100%
+	//@Test
+	public void getAllCoursesEmpty() {
+		List<Course> courseList = new ArrayList<>();
+		
+		// run the correct mock ouptut
+		setMockOutputCourseEmpty();
+		
+		// get all universities
+		try {
+			courseList = service.getAllCourses();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that only 1 and its the right one
+		assertEquals(0, courseList.size());
+	}
+	
 	// check that we can view all the courses at a school
+	// coverage: 89.8%
 	@Test
 	public void getCoursesByUniversityPositive() {
 		List<Course> courses = new ArrayList<>();
@@ -321,6 +409,40 @@ public class UniversityBackendTest {
 		// check that we have one course and that it is the right one
 		assertEquals(1, courses.size());
 		assertEquals(COURSE_NAME, courses.get(0).getCourseName());	
+	}
+	
+	// test for getting courses if no university linked to course
+	@Test
+	public void getCoursesByUniversityNoLinks() {
+		String error = null;
+		
+		//run the correct mock output
+		setMockOutputCourseNoUni();
+		
+		// get all the courses associated with the given university
+		try {
+			service.getAllCoursesByUniversity(UNI_NAME);
+		} catch(IllegalArgumentException e) { error = e.getMessage();}
+		
+		// check the error message
+		assertEquals("No courses offered for this university", error);
+	}
+	
+	// test for getting courses if there are no courses
+	@Test
+	public void getCoursesByUniversityEmpty() {
+		String error = null;
+		
+		//run the correct mock output
+		setMockOutputCourseEmpty();
+		
+		// get all the courses associated with the given university
+		try {
+			service.getAllCoursesByUniversity(UNI_NAME);
+		} catch(IllegalArgumentException e) { error = e.getMessage();}
+		
+		// check that we have one course and that it is the right one
+		assertEquals("No courses offered for this university", error);
 	}
 	
 	// Test for getting the courses for a university that doesn't exist
@@ -340,7 +462,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that we can view all the courses offerings for a course
-	@Test
+	//@Test
 	public void getCoursesOfferingsPositive() {
 		
 		List<CourseOffering> courseOs = new ArrayList<>();
@@ -356,7 +478,7 @@ public class UniversityBackendTest {
 	}
 	
 	// test for university that doesn't exist
-	@Test
+	//@Test
 	public void getCoursesOfferingsBadUni() {
 		
 		List<CourseOffering> courseOs = new ArrayList<>();
@@ -373,7 +495,7 @@ public class UniversityBackendTest {
 	}
 	
 	// test for course that doesn't exist
-	@Test
+	//@Test
 	public void getCoursesOfferingsBadCourse() {
 		
 		List<CourseOffering> courseOs = new ArrayList<>();
@@ -390,7 +512,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that we can view all the tutors for a course offering
-	@Test
+	//@Test
 	public void getTutorsPositive() {
 		
 		List<Tutor> tutors = new ArrayList<>();
@@ -405,7 +527,7 @@ public class UniversityBackendTest {
 	}
 	
 	// test if course offering exists
-	@Test
+	//@Test
 	public void getTutorsBadCO() {
 		
 		List<Tutor> tutors = new ArrayList<>();
@@ -420,8 +542,24 @@ public class UniversityBackendTest {
 		assertEquals(ErrorStrings.Invalid_Service_COBad, error);
 	}
 	
+	// check for a tutor for a course offering that doesn't exist
+	//@Test
+	public void getTutorsNoCO() {
+		
+		List<Tutor> tutors = new ArrayList<>();
+		String error = null;
+		// get all the tutors associated with the given course offering
+		try {
+			tutors = service.getAllTutorsByCourseOffering(CO_ID_NONE);
+		} catch(IllegalArgumentException e) { error = e.getMessage();}
+		
+		// check that we have no tutors and correct error message
+		assertEquals(0, tutors.size());
+		assertEquals("This course offering does not exist", error);
+	}
+	
 	// test if there are no tutors for the course offering
-	@Test
+	//@Test
 	public void getTutorsEmpty() {
 		
 		List<Tutor> tutors = new ArrayList<>();
@@ -437,7 +575,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that we can display the tutor information
-	@Test
+	//@Test
 	public void getTutorInfoPositive() {
 		
 		Tutor t = new Tutor();
@@ -451,7 +589,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check for a tutor username that doesn't exist
-	@Test
+	//@Test
 	public void getTutorInfoBadUsername() {
 		
 		Tutor t = new Tutor();
@@ -468,7 +606,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that the service can retrieve all rooms properly
-	@Test
+	//@Test
 	public void getAllRoomsPositive() {
 		List<Room> roomList = new ArrayList<>();
 		
@@ -484,7 +622,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is a conflict of time and date
-	@Test
+	//@Test
 	public void checkConflictFalse() {
 		boolean isAvail = false;
 		
@@ -498,7 +636,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is no conflict by changing the date
-	@Test
+	//@Test
 	public void checkConflictTrueDate() {
 		boolean isAvail = false;
 		
@@ -512,7 +650,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is no conflict by changing the time
-	@Test
+	//@Test
 	public void checkConflictTrueTime() {
 		boolean isAvail = false;
 		
@@ -526,7 +664,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is no conflict when only 1 of 2 rooms has a conflict
-	@Test
+	//@Test
 	public void checkConflictTrueMultipleRooms() {
 		boolean isAvail = false;
 		
@@ -543,7 +681,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check that there is a conflict when all rooms have a conflict
-	@Test
+	//@Test
 	public void checkConflictFalseMultipleRooms() {
 		boolean isAvail = false;
 		
@@ -560,7 +698,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check when there are no sessions created
-	@Test
+	//@Test
 	public void checkConflictTrueNoSessions() {
 		boolean isAvail = false;
 		
@@ -577,7 +715,7 @@ public class UniversityBackendTest {
 	}
 	
 	// check when there are no rooms created
-	@Test
+	//@Test
 	public void checkConflictNoRooms() {
 		boolean isAvail = false;
 		

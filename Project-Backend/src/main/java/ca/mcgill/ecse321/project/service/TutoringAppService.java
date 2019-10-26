@@ -771,6 +771,8 @@ public class TutoringAppService {
 		boolean tIsAvailable = false;
 		int tId = 0;
 		List<Availability> tutorAvailabilities = getAvailabilityByTutor(tName);
+		if(tutorAvailabilities == null || tutorAvailabilities.size() == 0)
+			tIsAvailable = true;
 		Availability av = null;
 		for (Availability a : tutorAvailabilities) {
 			
@@ -1174,7 +1176,8 @@ public class TutoringAppService {
 		
 		// filter by university name
 		for(Course c : allcourses) {
-			if(c.getUniversity().getName().equals(name))
+			University u = c.getUniversity();
+			if(u != null && u.getName().equals(name))
 				courses.add(c);
 		}
 		

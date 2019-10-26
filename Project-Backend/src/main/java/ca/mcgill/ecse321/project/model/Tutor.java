@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
@@ -79,6 +80,14 @@ public class Tutor extends Role{
 
 	public void setCourseOfferings(List<CourseOffering> courseOfferings) {
 		this.courseOfferings = courseOfferings;
+	}
+
+	public void addAvailability(Availability a) {
+		// TODO Auto-generated method stub
+		if(availability == null) {
+			availability = new HashSet<>();
+		}
+		this.availability.add(a);
 	}
 
 
