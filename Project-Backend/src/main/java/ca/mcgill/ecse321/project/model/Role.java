@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import ca.mcgill.ecse321.project.model.TSUser;
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.persistence.ManyToOne;
 
 import java.util.Set;
@@ -25,13 +27,16 @@ public abstract class Role{
 
 	private String username;
 
+	@UniqueElements
+	public String getUsername() {
+		return this.username;
+	}
+
 	public void setUsername(String value) {
 		this.username = value;
 	}
 
-	public String getUsername() {
-		return this.username;
-	}
+	public boolean isPassword(String password) { return password.equals(getPassword()); }
 
 	private String password;
 
@@ -75,5 +80,13 @@ public abstract class Role{
 	public void setAuthoredReview(Set<Review> authoredReviews) {
 		this.authoredReview = authoredReviews;
 	}
+
+	private boolean loggedIn;
+
+	public boolean isLoggedIn() { return loggedIn;}
+
+	public void logIn() { loggedIn = true; }
+
+	public void logOut() { loggedIn = false; }
 
 }
