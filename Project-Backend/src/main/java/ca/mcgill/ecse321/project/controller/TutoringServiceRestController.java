@@ -120,6 +120,20 @@ public class TutoringServiceRestController {
 		return convertToDto(service.getSession(sessionId));
 
 	}
+	
+	@GetMapping(value = {"/sessionsbystudent", "/sessionbystudent/"})
+	public List<SessionDTO> getSessionByStudent(@RequestParam(name = "student_name") String sName) {
+		
+		
+		List<SessionDTO> sessionDtos = new ArrayList<>();
+		for (Session s : service.getSessionByStudent(sName)) {
+			
+			sessionDtos.add(convertToDto(s));
+		}
+		
+		return sessionDtos;
+		
+	}
 
 	@DeleteMapping(value = {"/session/delete", "/session/delete/"})
 	public boolean removeSession(@RequestParam(name = "session_id") Integer sessionId) {
@@ -253,6 +267,14 @@ public class TutoringServiceRestController {
 		Session s = service.createSession(courseOfferingId, Date.valueOf(bookingDate), Time.valueOf(bookingTime), amountPaid, sName, tName);
 
 		return convertToDto(s);
+	}
+	@PutMapping(value = {"/addstudent", "/addstudent/"})
+	public StudentDTO addStudentToSession(@RequestParam(name = "student_name") String studentName, @RequestParam(name = "session_id") Integer sessionId) throws IllegalArgumentException {
+		
+		Student s = service.addStudentToSession(sessionId, studentName);
+		
+		return convertToDto(s);
+		
 	}
 
 	//Getting session details for the user

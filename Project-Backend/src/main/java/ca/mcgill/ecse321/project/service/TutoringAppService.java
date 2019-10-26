@@ -69,21 +69,26 @@ public class TutoringAppService {
 		
 		
 		// set the 
-		Availability availability = new Availability();
-		availability.setTime(time);
-		availability.setDate(date);
 		Tutor t = tutorRepository.findTutorByUsername(tName);
-		checkAvailabilityUniqueForTutor(t, availability);
 		
-		availability.setTutor(t);
-		
-		if (availability.getTutor() == null){
+		if (t == null){
 			
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Tutor);
 			
 		}
 		
+		Availability availability = new Availability();
+		availability.setTime(time);
+		availability.setDate(date);
+		
+		checkAvailabilityUniqueForTutor(t, availability);
+		
+		availability.setTutor(t);
 		availabilityRepository.save(availability);
+		
+		
+		t.getAvailability().add(availability);
+		tutorRepository.save(t);
 		return availability;
 	}
 
@@ -151,6 +156,7 @@ public class TutoringAppService {
 		boolean done = false;
 		Availability a = getAvailability(id);
 		if (a != null) {
+			a.getTutor().getAvailability().remove(a);
 			availabilityRepository.delete(a);
 			done = true;
 		}
@@ -736,9 +742,24 @@ public class TutoringAppService {
 			
 		}
 		
-		if((time.compareTo(Time.valueOf("09:00:00")) < 0) && time.compareTo(Time.valueOf("20:00:00")) > 0) {
+		if((time.compareTo(Time.valueOf("09:00:00")) < 0) || time.compareTo(Time.valueOf("20:00:00")) > 0) {
 			
 			throw new IllegalArgumentException("This is not a valid time");
+			
+		}
+		
+		LocalDate currentDate = LocalDate.now();
+		if(Period.between(currentDate, date.toLocalDate()).getDays() <= 0) {
+			
+			throw new IllegalArgumentException("Can not book a session on the same day, or in the past!");
+			
+		}
+		
+		int p = Period.between(currentDate, date.toLocalDate()).getDays();
+		
+		if(p > 14) {
+			
+			throw new IllegalArgumentException("Can not book a session more than 14 days in advance");
 			
 		}
 		
@@ -753,11 +774,6 @@ public class TutoringAppService {
 		Availability av = null;
 		for (Availability a : tutorAvailabilities) {
 			
-			if (a == null) {
-				
-				continue;
-				
-			}
 			
 			Date avDate = a.getDate();
 			Time avTime = a.getTime();
@@ -803,7 +819,11 @@ public class TutoringAppService {
 			t.getAvailability().remove(av);
 			
 		}
+		co.getSession().add(session);
+		studentRepository.findStudentByUsername(sName).getSession().add(session);
 		sessionRepository.save(session);
+		courseOfferingRepository.save(co);
+		studentRepository.save(studentRepository.findStudentByUsername(sName));
 		return session;
 	}
 	
@@ -854,25 +874,41 @@ public class TutoringAppService {
 	//Checking to make sure we can get a session.
 	@Transactional
 	public Session getSession(int id) {
-		if(id < 0){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_ID);
-		}
+		
 		Session a = sessionRepository.findSessionBySessionID(new Integer(id));
 		return a;
+	}
+	
+	@Transactional
+	public List<Session> getSessionByStudent(String sName) {
+		
+		if(sName == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_StudentName);
+		}
+		
+		Student stu = studentRepository.findStudentByUsername(sName);
+		
+		if(stu == null) {
+			
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindStudentByUsername);
+		}
+		
+		return toList(stu.getSession());
+		
 	}
 	
 	//Checking to make sure we can delete a session.
 	@Transactional
 	public boolean deleteSession(int id) {
-		if(id < 0){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_ID);
-		}
-		
 		
 		boolean done = false;
 		Session a = getSession(id);
 		
-
+		if(a == null) {
+			
+			throw new IllegalArgumentException("Invalid Session ID");
+		}
+		
 		LocalDate currentDate = LocalDate.now();
 		LocalTime currentTime = LocalTime.now();
 		if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 1) {
@@ -891,18 +927,33 @@ public class TutoringAppService {
 				
 			}
 			
-		} else if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 0) {
+		} else if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() <= 0) {
 			
-			throw new IllegalArgumentException("It is too late to cancel a session!");
+			throw new IllegalArgumentException("It is too late to cancel a session! Please do it at least the day before!");
 			
 		}
-		if (a != null) {
 			
-			createAvailability(a.getDate(), a.getTime(), a.getTutor().getUsername());
-			a.getTutor().getSession().remove(a);
-			sessionRepository.delete(a);
-			done = true;
+		createAvailability(a.getDate(), a.getTime(), a.getTutor().getUsername());
+		
+		a.getTutor().getSession().remove(a);
+		
+		tutorRepository.save(a.getTutor());
+		if (a.getRoom() != null) {
+			a.getRoom().getSession().remove(a);
+			roomRepository.save(a.getRoom());
+			
 		}
+		for (Student s: a.getStudent()) {
+			if(s.getSession() != null) {
+				s.getSession().remove(a);
+				studentRepository.save(s);
+			}
+			
+		}
+		
+		sessionRepository.delete(a);
+		done = true;
+		
 		return done;
 	}
 	
@@ -1268,5 +1319,35 @@ public class TutoringAppService {
 			return true;
 		} 
 		return false;
+	}
+	
+	@Transactional
+	public Student addStudentToSession(int sessionId, String studentName) {
+		
+		Student stu = studentRepository.findStudentByUsername(studentName);
+		Session session = sessionRepository.findSessionBySessionID(sessionId);
+		
+		if(stu == null) {
+			throw new IllegalArgumentException("Student is null!");
+		}
+		
+		if(session == null) {
+			
+			throw new IllegalArgumentException("Session is null!");
+			
+		}
+		
+		if (session.getStudent().contains(stu)) {
+			
+			throw new IllegalArgumentException("Student is already added to this session.");
+			
+		}
+		
+		session.getStudent().add(stu);
+		stu.getSession().add(session);
+		
+		return stu;
+		
+		
 	}
 }

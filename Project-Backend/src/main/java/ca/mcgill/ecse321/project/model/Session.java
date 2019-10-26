@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -62,7 +63,7 @@ public class Session{
 	}
 	private List<Student> student;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	public List<Student> getStudent() {
 		return this.student;
 	}
@@ -73,7 +74,7 @@ public class Session{
 
 	private Tutor tutor;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional=false)
+	@ManyToOne(fetch = FetchType.EAGER, optional=true, cascade = CascadeType.ALL)
 	public Tutor getTutor() {
 		return this.tutor;
 	}
@@ -84,7 +85,7 @@ public class Session{
 
 	private CourseOffering courseOffering;
 
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=true, cascade = CascadeType.ALL)
 	public CourseOffering getCourseOffering() {
 		return this.courseOffering;
 	}

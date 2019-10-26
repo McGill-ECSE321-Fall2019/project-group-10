@@ -89,6 +89,7 @@ public class AvailabilityTest {
 			service.createUser("aName", EMAIL, 22, "5145555555");
 			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
 			service.createAvailability(date, time, USERNAME);
+			//tutorRepository.save(av.getTutor());
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
