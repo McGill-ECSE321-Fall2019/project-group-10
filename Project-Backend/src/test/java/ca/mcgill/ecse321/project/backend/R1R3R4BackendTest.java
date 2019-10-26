@@ -83,7 +83,7 @@ public class R1R3R4BackendTest {
 	@Before
 	public void setMockOutput() {
 		
-		// run all setups for mock outputs
+		// run all default setups for mock outputs
 
 		setMockOutputUniversity();
 		setMockOutputCourse();
@@ -159,11 +159,18 @@ public class R1R3R4BackendTest {
 	}
 	
 	// mock output for course offering null
-		private void setMockOutputCourseOfferingNull() {
-			when(courseOfferingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-				return null;
-			});
-		}
+	private void setMockOutputCourseOfferingNull() {
+		when(courseOfferingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			return null;
+		});
+	}
+	// mock output for course offering empty
+	private void setMockOutputCourseOfferingEmpty() {
+		when(courseOfferingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			List<CourseOffering> cos = new ArrayList<>();
+			return cos;
+		});
+	}
 	
 	// mock output for course offering regular
 	private void setMockOutputCourseOffering() {
@@ -367,7 +374,6 @@ public class R1R3R4BackendTest {
 	}
 	
 	// check that we can get all the courses
-	// coverage: 100%
 	@Test
 	public void getAllCourses() {
 		List<Course> courseList = new ArrayList<>();
@@ -384,7 +390,6 @@ public class R1R3R4BackendTest {
 	}
 	
 	// check that we can get all the courses
-	// coverage: 100%
 	@Test
 	public void getAllCoursesEmpty() {
 		List<Course> courseList = new ArrayList<>();
@@ -402,7 +407,6 @@ public class R1R3R4BackendTest {
 	}
 	
 	// check that we can view all the courses at a school
-	// coverage: 89.8%
 	@Test
 	public void getCoursesByUniversityPositive() {
 		List<Course> courses = new ArrayList<>();
@@ -481,6 +485,57 @@ public class R1R3R4BackendTest {
 		// check that we have zero courses and that it is the right error message
 		assertEquals(0, courses.size());
 		assertEquals(ErrorStrings.Invalid_Service_CourseOfferedUni, error);		
+	}
+	
+	// check that we can get all the course offerings
+	@Test
+	public void getAllCoursesOfferingsPositive() {
+		List<CourseOffering> courseOs = new ArrayList<>();
+		
+		// get all course offerings
+		try {
+			courseOs = service.getAllCourseOfferings();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that only 1 and its the right one
+		assertEquals(1, courseOs.size());
+		CourseOffering c = courseOs.get(0);
+		assertEquals(CO_TERM, c.getTerm());
+		assertEquals(CO_YEAR, c.getYear());
+	}
+	
+	// check that we can get all the course offerings (none)
+	@Test
+	public void getAllCoursesOfferingsEmpty() {
+		List<CourseOffering> courseOs = new ArrayList<>();
+		
+		// set the correct mock output
+		setMockOutputCourseOfferingEmpty();
+		
+		// get all course offerings
+		try {
+			courseOs = service.getAllCourseOfferings();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that none received
+		assertEquals(0, courseOs.size());
+	}
+	
+	// check that we can get all the course offerings (null)
+	@Test
+	public void getAllCoursesOfferingsNull() {
+		List<CourseOffering> courseOs = new ArrayList<>();
+		
+		// set the correct mock output
+		setMockOutputCourseOfferingNull();
+		
+		// get all course offerings
+		try {
+			courseOs = service.getAllCourseOfferings();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that none received
+		assertEquals(null, courseOs);
 	}
 	
 	// check that we can view all the courses offerings for a course
