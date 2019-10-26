@@ -728,18 +728,18 @@ public class SessionBackendTest {
 		
 		setMockOutputSession();
 		createMockAvailability();
-		Session s = null;
+		boolean result = false;
 		//s = sessionRepository.findSessionBySessionID(0);
 		
 		
 		try {
-			service.deleteSession(0);
+			result = service.deleteSession(0);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 		
-		//assertEquals();
+		assertEquals(result, true);
 		
 	}
 	
@@ -749,14 +749,16 @@ public class SessionBackendTest {
 		setMockOutputSession();
 		createMockAvailability();
 		
-		
+		boolean result = false;
 		
 		try {
-			service.deleteSession(1);
+			result = service.deleteSession(1);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
+		
+		assertEquals(result, true);
 		
 	}
 	@Test
