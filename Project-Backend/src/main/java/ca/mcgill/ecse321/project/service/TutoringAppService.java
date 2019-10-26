@@ -1331,10 +1331,13 @@ public class TutoringAppService {
 			
 		}
 		
-		if (session.getStudent().contains(stu)) {
+		
+		for (Student s : session.getStudent()) {
 			
-			throw new IllegalArgumentException("Student is already added to this session.");
-			
+			if(s.getId() == stu.getId()) {
+				throw new IllegalArgumentException("Student is already added to this session.");
+				
+			}
 		}
 		
 		session.getStudent().add(stu);

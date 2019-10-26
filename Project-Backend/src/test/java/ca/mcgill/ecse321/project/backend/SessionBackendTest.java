@@ -83,6 +83,7 @@ public class SessionBackendTest {
 	//Constants for Student
 	private static final String STUDENT_NAME = "studentUser";
 	private static final String STUDENT_NAME_BAD = "badStudentUsername"; 
+	private static final String STUDENT_NAME_DIFF = "DiffUsername";
 	
 	// constants for availability
 	private static final Date AVAILABILITY_DATE = Date.valueOf("2019-10-31");
@@ -205,6 +206,14 @@ public class SessionBackendTest {
 				Set<Session> sessions = new HashSet<Session> ();
 				s.setSession(sessions);
 				return s;
+			} else if (invocation.getArgument(0).equals(STUDENT_NAME_DIFF)) {
+				
+				Student s = new Student();
+				s.setUsername(STUDENT_NAME);
+				Set<Session> sessions = new HashSet<Session> ();
+				s.setSession(sessions);
+				return s;
+				
 			}
 			else {
 				
@@ -421,6 +430,50 @@ public class SessionBackendTest {
 			} else if (invocation.getArgument(0).equals(4)) {
 				
 				return null;
+				
+			} else if (invocation.getArgument(0).equals(5)) {
+				
+				Session s = new Session();
+				s.setAmountPaid(SESSION_AMOUNT_PAID);
+				s.setDate(SESSION_DATE);
+				s.setTime(SESSION_TIME);
+				
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME_UNAVAILABLE);
+				Set<Availability> avSet = new HashSet<Availability>();
+				t.setAvailability(avSet);
+				Availability a = new Availability();
+				a.setDate(SESSION_DATE_DIFF);
+				a.setTime(SESSION_TIME_DIFF);
+				a.setTutor(t);
+				t.getAvailability().add(a);
+				
+				Student student = new Student();
+				student.setUsername(STUDENT_NAME);
+				
+				Set<Session> sessions = new HashSet<Session>();
+				
+				student.setSession(sessions);
+				
+				List<Student> students = (new ArrayList<Student>());
+				
+				s.setStudent(students);
+				s.setAmountPaid(12.00);
+				s.setTutor(t);
+				CourseOffering co = new CourseOffering();
+				
+				t.setSession(sessions);
+				
+				List<Session> sessions2 = new ArrayList<Session>();
+				
+				sessions2.add(s);
+				
+				co.setSession(sessions2);
+				
+				
+				s.setCourseOffering(co);
+				
+				return s;
 				
 			}
 			
@@ -852,7 +905,7 @@ public class SessionBackendTest {
 	}
 	
 	@Test
-	public void testAddStudentToSession() {
+	public void testGetSessionByStudent() {
 		
 		List<Session> sessions = null;
 		
@@ -879,6 +932,78 @@ public class SessionBackendTest {
 		}
 		//check it was the correct error
 		assertEquals(error, "Can not book a session more than 14 days in advance");
+		
+	}
+	
+	@Test
+	public void testAddStudentAlreadyAdded() {
+		
+		setMockOutputSession();
+		
+		String error = null;
+		
+		try {
+			service.addStudentToSession(0, STUDENT_NAME);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Student is already added to this session.");
+		
+	}
+	
+	@Test
+	public void testAddStudentNullStudent() {
+		
+		setMockOutputSession();
+		
+		String error = null;
+		
+		try {
+			service.addStudentToSession(0, STUDENT_NAME_BAD);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Student is null!");
+		
+	}
+	
+	@Test
+	public void testAddStudentNullSession() {
+		
+		setMockOutputSession();
+		
+		String error = null;
+		
+		try {
+			service.addStudentToSession(100, STUDENT_NAME);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+		
+		assertEquals(error, "Session is null!");
+		
+	}
+	
+	@Test
+	public void testValidAddStudent() {
+		
+		setMockOutputSession();
+		
+		Student s = null;
+		
+		try {
+			s = service.addStudentToSession(5, STUDENT_NAME);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		
+		assertEquals(s.getSession().size(), 1);
 		
 	}
 }
