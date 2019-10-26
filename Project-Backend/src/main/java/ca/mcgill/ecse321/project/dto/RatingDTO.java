@@ -10,9 +10,14 @@ public class RatingDTO extends ReviewDTO{
 	//Data transfer object rating.
 	public RatingDTO() {
 	}
+	
+	public RatingDTO(int rating) {
+		this.rating = rating;
+	}
 
 	public RatingDTO(int rating, int reviewId) {
 		this.rating = rating; 
+		this.reviewId = reviewId;
 	}
 
 	//get rating

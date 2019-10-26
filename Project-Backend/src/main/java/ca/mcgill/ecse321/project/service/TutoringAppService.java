@@ -233,7 +233,10 @@ public class TutoringAppService {
 	//Checking to make sure we can get the list of all the course offerings.
 	@Transactional
 	public List<CourseOffering> getAllCourseOfferings() {
-		return toList(courseOfferingRepository.findAll());
+		if(courseOfferingRepository.findAll() != null)
+			return toList(courseOfferingRepository.findAll());
+		else
+			return null;
 	}
 	
 	//Checking to make sure we can get all the course offerings.
@@ -332,7 +335,10 @@ public class TutoringAppService {
 	//Checking to make sure we can get all course.
 	@Transactional
 	public List<Course> getAllCourses() {
-		return toList(courseRepository.findAll());
+		if(courseRepository.findAll() != null)
+			return toList(courseRepository.findAll());
+		else
+			return null;
 	}
 	
 	//Checking to make sure we can create a text.
@@ -1171,7 +1177,6 @@ public class TutoringAppService {
 		// get all courses
 		List<Course> allcourses = getAllCourses();
 		if(allcourses == null)
-
 			throw new IllegalArgumentException(ErrorStrings.Invalid_University_FindCourse);
 		
 		// filter by university name
@@ -1218,20 +1223,6 @@ public class TutoringAppService {
 		return s.isConfirmed();
 		
 	}
-	
-//	// get course offerings from specified course from associated university
-//	public List<CourseOffering> getAllTutorsByCourseOffering(String cname, String uniName, String coname) {
-//		List<CourseOffering> courseOs = getAllCourseOfferingsByCourse(cname, coname);
-//		
-//		// get all tutors
-//		for(Tutor t : getAllTutors()) {
-//			// check name and university names that they are what we are looking for
-//			if(getCourse().getCourseName().equals(cname) 
-//					&& co.getCourse().getUniversity().getName().equals(uniName))
-//				courseOs.add(co);
-//		}
-//		return courseOs;
-//	}
 
 	// get tutors for specified course offering from associated course and university
 	@Transactional
@@ -1352,5 +1343,20 @@ public class TutoringAppService {
 		return stu;
 		
 		
+	}
+	
+	public Role getRoleByUsername(String username) {
+		Role role = null;
+		try {
+			role = getStudent(username);
+
+			if (role == null)
+				role = getTutor(username);
+
+		} catch (Exception e) {
+
+		}
+
+		return role;
 	}
 }
