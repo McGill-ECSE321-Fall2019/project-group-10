@@ -364,6 +364,29 @@ public class CreateSessionTest {
 		
 	}
 	
+	private void setMockOutputSession() {
+		when(sessionRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			Session s = new Session();
+			Session s1 = new Session();
+			s.setAmountPaid(SESSION_AMOUNT_PAID);
+			s.setDate(SESSION_DATE);
+			s.setTime(SESSION_TIME);
+			s.setStudent(new ArrayList<Student>());
+			s1.setAmountPaid(SESSION_AMOUNT_PAID);
+			s1.setDate(SESSION_DATE_DIFF);
+			s1.setTime(SESSION_TIME_DIFF);
+			s1.setStudent(new ArrayList<Student>());
+			
+			List<Session> sessions = new ArrayList<Session> ();
+			
+			sessions.add(s1);
+			sessions.add(s);
+			
+			return sessions;
+			
+		});
+		
+	}
 	//************************************************* TESTS *************************************************//
 	
 	@Test
@@ -565,6 +588,7 @@ public class CreateSessionTest {
 		
 	}
 	
+	@Test
 	public void testCreateSessionNullStudent() {
 		
 		String error = null;
@@ -577,6 +601,34 @@ public class CreateSessionTest {
 		}
 		//check it was the correct error
 		assertEquals(error,ErrorStrings.Invalid_Session_FindStudentByUsername);
+		
+	}
+	
+	@Test
+	public void testFindAllSessions() {
+		
+		setMockOutputSession();
+		
+		List<Session> sessions = null;
+		
+		try {
+			
+			sessions = service.getAllSessions();
+			
+		} catch (Exception e) {
+			
+			fail();
+			
+		}
+		
+		assertEquals(sessions.size(), 2);
+		assertEquals(sessions.get(0).getDate(), SESSION_DATE_DIFF );
+		assertEquals(sessions.get(1).getDate(), SESSION_DATE);
+		
+	}
+	
+	@Test
+	public void testGetSessionById() {
 		
 	}
 }
