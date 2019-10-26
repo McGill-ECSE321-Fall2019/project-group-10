@@ -442,8 +442,141 @@ public class CreateSessionTest {
 				
 			} else if (invocation.getArgument(0).equals(1)) {
 				
+				Session s = new Session();
+				s.setAmountPaid(SESSION_AMOUNT_PAID);
+				s.setDate(Date.valueOf("2019-10-27"));
+				s.setTime(Time.valueOf("21:00:00"));
+				
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME_UNAVAILABLE);
+				Set<Availability> avSet = new HashSet<Availability>();
+				t.setAvailability(avSet);
+				Availability a = new Availability();
+				a.setDate(SESSION_DATE_DIFF);
+				a.setTime(SESSION_TIME_DIFF);
+				a.setTutor(t);
+				t.getAvailability().add(a);
+				
+				Student student = new Student();
+				student.setUsername(STUDENT_NAME);
+				
+				Set<Session> sessions = new HashSet<Session>();
+				sessions.add(s);
+				student.setSession(sessions);
+				
+				List<Student> students = (new ArrayList<Student>());
+				students.add(student);
+				s.setStudent(students);
+				s.setAmountPaid(12.00);
+				s.setTutor(t);
+				CourseOffering co = new CourseOffering();
+				
+				t.setSession(sessions);
+				
+				List<Session> sessions2 = new ArrayList<Session>();
+				
+				sessions2.add(s);
+				
+				co.setSession(sessions2);
 				
 				
+				s.setCourseOffering(co);
+				
+				return s;
+				
+				
+			} else if (invocation.getArgument(0).equals(2)) {
+				
+				
+				Session s = new Session();
+				s.setAmountPaid(SESSION_AMOUNT_PAID);
+				s.setDate(Date.valueOf("2019-10-27"));
+				s.setTime(Time.valueOf("12:00:00"));
+				
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME_UNAVAILABLE);
+				Set<Availability> avSet = new HashSet<Availability>();
+				t.setAvailability(avSet);
+				Availability a = new Availability();
+				a.setDate(SESSION_DATE_DIFF);
+				a.setTime(SESSION_TIME_DIFF);
+				a.setTutor(t);
+				t.getAvailability().add(a);
+				
+				Student student = new Student();
+				student.setUsername(STUDENT_NAME);
+				
+				Set<Session> sessions = new HashSet<Session>();
+				sessions.add(s);
+				student.setSession(sessions);
+				
+				List<Student> students = (new ArrayList<Student>());
+				students.add(student);
+				s.setStudent(students);
+				s.setAmountPaid(12.00);
+				s.setTutor(t);
+				CourseOffering co = new CourseOffering();
+				
+				t.setSession(sessions);
+				
+				List<Session> sessions2 = new ArrayList<Session>();
+				
+				sessions2.add(s);
+				
+				co.setSession(sessions2);
+				
+				
+				s.setCourseOffering(co);
+				
+				return s;	
+				
+			} else if (invocation.getArgument(0).equals(3)) {
+				
+				Session s = new Session();
+				s.setAmountPaid(SESSION_AMOUNT_PAID);
+				s.setDate(Date.valueOf("2019-10-26"));
+				s.setTime(Time.valueOf("07:00:00"));
+				
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME_UNAVAILABLE);
+				Set<Availability> avSet = new HashSet<Availability>();
+				t.setAvailability(avSet);
+				Availability a = new Availability();
+				a.setDate(SESSION_DATE_DIFF);
+				a.setTime(SESSION_TIME_DIFF);
+				a.setTutor(t);
+				t.getAvailability().add(a);
+				
+				Student student = new Student();
+				student.setUsername(STUDENT_NAME);
+				
+				Set<Session> sessions = new HashSet<Session>();
+				sessions.add(s);
+				student.setSession(sessions);
+				
+				List<Student> students = (new ArrayList<Student>());
+				students.add(student);
+				s.setStudent(students);
+				s.setAmountPaid(12.00);
+				s.setTutor(t);
+				CourseOffering co = new CourseOffering();
+				
+				t.setSession(sessions);
+				
+				List<Session> sessions2 = new ArrayList<Session>();
+				
+				sessions2.add(s);
+				
+				co.setSession(sessions2);
+				
+				
+				s.setCourseOffering(co);
+				
+				return s;
+				
+			} else if (invocation.getArgument(0).equals(4)) {
+				
+				return null;
 				
 			}
 			
@@ -765,5 +898,83 @@ public class CreateSessionTest {
 		//assertEquals();
 		
 	}
+	
+	@Test
+	public void testDeleteSessionValidWithinOneDay() {
+		
+		setMockOutputSession();
+		createMockAvailability();
+		
+		
+		
+		try {
+			service.deleteSession(1);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		
+	}
+	@Test
+	public void testDeleteToLateOnAnotherDateSession() {
+		
+		setMockOutputSession();
+		createMockAvailability();
+		
+		String error = null;
+		
+		try {
+			service.deleteSession(2);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+		
+		assertEquals( error, "It is too late to cancel a session!" );
+		
+	}
+	
+	@Test
+	public void testDeleteOnSameDateSession() {
+		
+		setMockOutputSession();
+		createMockAvailability();
+		
+		String error = null;
+		
+		try {
+			service.deleteSession(3);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+		
+		assertEquals( error, "It is too late to cancel a session! Please do it at least the day before!");
+		
+		
+	}
+	
+	@Test
+	public void testDeleteSessionNullError() {
+		
+		setMockOutputSession();
+		createMockAvailability();
+		
+		String error = null;
+		
+		try {
+			service.deleteSession(4);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+		
+		assertEquals( error, "Invalid Session ID");
+		
+		
+	}
+	
+	@Test
+	public void test
 	
 }

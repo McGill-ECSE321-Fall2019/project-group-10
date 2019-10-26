@@ -896,7 +896,11 @@ public class TutoringAppService {
 		boolean done = false;
 		Session a = getSession(id);
 		
-
+		if(a == null) {
+			
+			throw new IllegalArgumentException("Invalid Session ID");
+		}
+		
 		LocalDate currentDate = LocalDate.now();
 		LocalTime currentTime = LocalTime.now();
 		if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 1) {
@@ -915,33 +919,33 @@ public class TutoringAppService {
 				
 			}
 			
-		} else if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 0) {
+		} else if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() <= 0) {
 			
-			throw new IllegalArgumentException("It is too late to cancel a session!");
+			throw new IllegalArgumentException("It is too late to cancel a session! Please do it at least the day before!");
 			
 		}
-		if (a != null) {
 			
-			createAvailability(a.getDate(), a.getTime(), a.getTutor().getUsername());
-			a.getTutor().getSession().remove(a);
+		createAvailability(a.getDate(), a.getTime(), a.getTutor().getUsername());
+		
+		a.getTutor().getSession().remove(a);
+		
+		tutorRepository.save(a.getTutor());
+		if (a.getRoom() != null) {
+			a.getRoom().getSession().remove(a);
+			roomRepository.save(a.getRoom());
 			
-			tutorRepository.save(a.getTutor());
-			if (a.getRoom() != null) {
-				a.getRoom().getSession().remove(a);
-				roomRepository.save(a.getRoom());
-				
-			}
-			for (Student s: a.getStudent()) {
-				if(s.getSession() != null) {
-					s.getSession().remove(a);
-					studentRepository.save(s);
-				}
-				
-			}
-			
-			sessionRepository.delete(a);
-			done = true;
 		}
+		for (Student s: a.getStudent()) {
+			if(s.getSession() != null) {
+				s.getSession().remove(a);
+				studentRepository.save(s);
+			}
+			
+		}
+		
+		sessionRepository.delete(a);
+		done = true;
+		
 		return done;
 	}
 	
