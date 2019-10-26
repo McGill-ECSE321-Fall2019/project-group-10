@@ -755,6 +755,14 @@ public class TutoringAppService {
 			
 		}
 		
+		int p = Period.between(currentDate, date.toLocalDate()).getDays();
+		
+		if(p > 14) {
+			
+			throw new IllegalArgumentException("Can not book a session more than 14 days in advance");
+			
+		}
+		
 		Tutor t = tutorRepository.findTutorByUsername(tName);
 		if (t == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindTutorByUsername);

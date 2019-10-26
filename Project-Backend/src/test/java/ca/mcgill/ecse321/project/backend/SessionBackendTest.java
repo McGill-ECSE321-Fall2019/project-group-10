@@ -75,7 +75,7 @@ public class SessionBackendTest {
 	private static final int ROOM_NUM = 203;
 	
 	// constants for session
-	private static final Date SESSION_DATE = Date.valueOf("2020-02-01");
+	private static final Date SESSION_DATE = Date.valueOf("2019-10-31");
 	private static final Time SESSION_TIME = Time.valueOf("11:11:11");
 	private static final Date SESSION_DATE_DIFF = Date.valueOf("2020-03-02");
 	private static final Time SESSION_TIME_DIFF = Time.valueOf("03:02:32");
@@ -85,7 +85,7 @@ public class SessionBackendTest {
 	private static final String STUDENT_NAME_BAD = "badStudentUsername"; 
 	
 	// constants for availability
-	private static final Date AVAILABILITY_DATE = Date.valueOf("2020-02-01");
+	private static final Date AVAILABILITY_DATE = Date.valueOf("2019-10-31");
 	private static final Time AVAILABILITY_TIME = Time.valueOf("11:11:11");
 	private static final Date AVAILABILITY_DATE_2 = Date.valueOf("2021-02-01");
 	private static final Time AVAILABILITY_TIME_2 = Time.valueOf("10:10:00");
@@ -862,6 +862,21 @@ public class SessionBackendTest {
 		}
 		
 		assertEquals( 0, sessions.size());
+		
+	}
+	
+	@Test
+	public void createSessionInFutureFar() {
+		
+		String error = null;
+		try {
+			service.createSession(CO_ID, Date.valueOf("2019-11-10"), SESSION_TIME,SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		//check it was the correct error
+		assertEquals(error, "Can not book a session more than 14 days in advance");
 		
 	}
 }

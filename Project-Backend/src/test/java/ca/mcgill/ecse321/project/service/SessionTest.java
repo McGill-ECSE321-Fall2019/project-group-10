@@ -62,7 +62,7 @@ public class SessionTest {
 		service.createUser("aName_student", "student.tester@mcgill.ca", 22, "5145555555");
 		service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
 		service.createStudent("studentUser", "password2", "student.tester@mcgill.ca");
-		service.createAvailability(Date.valueOf("2020-02-01"), Time.valueOf("11:11:11"), "username");
+		service.createAvailability(Date.valueOf("2019-10-31"), Time.valueOf("11:11:11"), "username");
 		service.createRoom(4);
 	}
 	
@@ -85,7 +85,7 @@ public class SessionTest {
 	@Test
 	public void testCreateSession() {
 		 		
-		Date date = Date.valueOf("2020-02-01");
+		Date date = Date.valueOf("2019-10-31");
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -117,7 +117,7 @@ public class SessionTest {
 	public void testUpdateSession() {
 		//assertEquals(0, service.getAllSessions().size());
 				
-		Date date = Date.valueOf("2020-02-01");
+		Date date = Date.valueOf("2019-10-31");
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -167,7 +167,7 @@ public class SessionTest {
 		assertEquals(0, service.getAllSessions().size());
 		
 		 		
-		Date date = Date.valueOf("2020-02-01");
+		Date date = Date.valueOf("2019-10-31");
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -198,7 +198,7 @@ public class SessionTest {
 	public void testCreateSessionNullCourseOffering() {
 		assertEquals(0, service.getAllSessions().size());
 
-		Date date = Date.valueOf("2020-02-01");
+		Date date = Date.valueOf("2019-10-31");
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 
@@ -247,7 +247,7 @@ public class SessionTest {
 	public void testCreateSessionNullStudent() {
 		assertEquals(0, service.getAllSessions().size());
 
-		Date date = Date.valueOf("2020-02-01");
+		Date date = Date.valueOf("2019-10-31");
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
