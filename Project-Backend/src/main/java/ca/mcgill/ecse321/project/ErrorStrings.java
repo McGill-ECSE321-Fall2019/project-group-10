@@ -33,7 +33,7 @@ public class ErrorStrings {
     
 //================ TEXT ===================\\
     public static String Invalid_Text_RevieweeUsername = "Please insert a reviewee username...";
-    public static String Invalid_Text_Description = "Please insert a brief description...";
+    public static String Invalid_Text_Description = "Please insert a brief description that is less than 250 words...";
     public static String Invalid_Text_FindCourseOffering = "Please enter a valid Course Offering";
     public static String Invalid_Text_Reviewee = "Please enter a valid Reviewee";
     public static String Invalid_Text_FindTextReview = "Please enter a valid Text Review to update";

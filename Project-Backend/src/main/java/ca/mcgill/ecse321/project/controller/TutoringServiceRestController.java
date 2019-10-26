@@ -37,8 +37,6 @@ public class TutoringServiceRestController {
 	@Autowired
 	TutoringAppService service;
 
-// *********************************************** TESTS ***************************************************\\
-
 	@GetMapping(value = {"/users", "/users/"})
 	public List<UserDTO> getAllUsers(){
 		List<TSUser> listOfUsers = service.getAllUsers();

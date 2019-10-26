@@ -138,7 +138,7 @@ public class UniversityBackendTest {
 			//create a course offering
 			List<CourseOffering> cos = new ArrayList<>();
 			CourseOffering co = new CourseOffering();
-			co.setTerm(CO_TERM);
+			co.setTerm(	CO_TERM);
 			co.setYear(CO_YEAR);
 			co.setCourse(c);
 			

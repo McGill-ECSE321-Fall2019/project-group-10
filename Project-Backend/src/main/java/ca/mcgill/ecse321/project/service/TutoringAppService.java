@@ -329,13 +329,13 @@ public class TutoringAppService {
 		return toList(courseRepository.findAll());
 	}
 	
-	//Checking to make sure we can create a text.
+	//Checking to make sure we can create a text. Description cannot exceed 250 words.
 	@Transactional
 	public Text createText(String description, boolean isAllowed, String revieweeUsername, int coID) {
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_RevieweeUsername);
 		}
-		if(description == null || description.equals("")){
+		if(description == null || description.equals("") || description.length() > 250){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Description);
 		}
 		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
@@ -426,6 +426,9 @@ public class TutoringAppService {
 
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_RevieweeUsername);
+		}
+		if(ratingValue < 0 || ratingValue > 5) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
 		}
 		
 		Rating rating = new Rating();
@@ -1255,7 +1258,7 @@ public class TutoringAppService {
 	public Set<Review> getAllReviewsByCO(int courseOId){
 		CourseOffering courseOffering = getCourseOffering(courseOId);
 		if(courseOffering == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
+			throw new IllegalArgumentException("test");//ErrorStrings.Invalid_DTO_CourseOffering);
 		}
 		return courseOffering.getReview();
 	}
