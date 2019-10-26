@@ -121,6 +121,20 @@ public class TutoringServiceRestController {
 		
 	}
 	
+	@GetMapping(value = {"/sessionsbystudent", "/sessionbystudent/"})
+	public List<SessionDTO> getSessionByStudent(@RequestParam(name = "student_name") String sName) {
+		
+		
+		List<SessionDTO> sessionDtos = new ArrayList<>();
+		for (Session s : service.getSessionByStudent(sName)) {
+			
+			sessionDtos.add(convertToDto(s));
+		}
+		
+		return sessionDtos;
+		
+	}
+	
 	@DeleteMapping(value = {"/session/delete", "/session/delete/"})
 	public boolean removeSession(@RequestParam(name = "session_id") Integer sessionId) {
 		

@@ -630,5 +630,8 @@ public class CreateSessionTest {
 	@Test
 	public void testGetSessionById() {
 		
+		setMockOutputSession();
+		
+		
 	}
 }

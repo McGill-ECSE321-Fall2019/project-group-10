@@ -872,6 +872,24 @@ public class TutoringAppService {
 		return a;
 	}
 	
+	@Transactional
+	public List<Session> getSessionByStudent(String sName) {
+		
+		if(sName == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_StudentName);
+		}
+		
+		Student stu = studentRepository.findStudentByUsername(sName);
+		
+		if(stu == null) {
+			
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindStudentByUsername);
+		}
+		
+		return toList(stu.getSession());
+		
+	}
+	
 	//Checking to make sure we can delete a session.
 	@Transactional
 	public boolean deleteSession(int id) {
