@@ -26,7 +26,7 @@ import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CreateSessionTest {
+public class SessionBackendTest {
 
 	@Mock 
 	private AvailabilityRepository availabilityRepository;
