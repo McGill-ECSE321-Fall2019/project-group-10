@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.project.backend;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -15,7 +14,6 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -60,14 +58,11 @@ public class CreateSessionTest {
 	
 	// constants for course
 	private static final String COURSE_NAME = "ECSE321";
-	private static final String COURSE_INFO = "Intro to soft eng";	
-	private static final String COURSE_NAME_BAD = "ECSE443";
-	
 	// constants for course offering
 	private static final Term CO_TERM = Term.Fall;
 	private static final int CO_YEAR = 2019;
 	private static final int CO_ID = 1;
-	private static final int CO_ID_BAD = 2;
+	
 	private static final int CO_ID_EMPTY = 3;
 	
 	// constants for tutor
@@ -88,7 +83,6 @@ public class CreateSessionTest {
 	//Constants for Student
 	private static final String STUDENT_NAME = "studentUser";
 	private static final String STUDENT_NAME_BAD = "badStudentUsername"; 
-	private static final String STUDENT_EMAIL = "student.tester@mcgill.ca";
 	
 	// constants for availability
 	private static final Date AVAILABILITY_DATE = Date.valueOf("2020-02-01");
@@ -96,15 +90,12 @@ public class CreateSessionTest {
 	private static final Date AVAILABILITY_DATE_2 = Date.valueOf("2021-02-01");
 	private static final Time AVAILABILITY_TIME_2 = Time.valueOf("10:10:00");
 	
-	private Date testDate;
-	private Time testTime;
+	
 	
 	@Before
 	public void setMockOutput() {
 		
 		// run all setups for mock outputs
-		testDate = mock(Date.class);
-		testTime = mock(Time.class);
 		
 		setMockOutputUniversity();
 		setMockOutputCourse();
@@ -276,65 +267,6 @@ public class CreateSessionTest {
 		});
 	}
 	
-	// mock output for creating multiple rooms with sessions at the same time
-	private void setMockOutputNoAvailableRooms() {
-		when(roomRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			// create a room list
-			List<Room> rooms = new ArrayList<>();
-			Room r = new Room();
-			r.setRoomNumber(ROOM_NUM);
-			
-			// add a session to the rooms
-			Session s = new Session();
-			s.setRoom(r);
-			s.setDate(SESSION_DATE);
-			s.setTime(SESSION_TIME);
-			
-			rooms.add(r);
-			
-			return rooms;
-		});
-	}
-	
-	// mock output for creating multiple rooms with sessions at different times
-	private void setMockOutputMultipleRoomsDiffTime() {
-		when(roomRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			// create a room list
-			List<Room> rooms = new ArrayList<>();
-			Room r = new Room();
-			r.setRoomNumber(ROOM_NUM);
-			Room r2 = new Room();
-			r2.setRoomNumber(ROOM_NUM+1);
-			
-			// add a session to the rooms
-			Session s = new Session();
-			s.setRoom(r);
-			s.setDate(SESSION_DATE);
-			s.setTime(SESSION_TIME);
-			
-			Session s2 = new Session();
-			s2.setRoom(r2);
-			s2.setDate(SESSION_DATE_DIFF);
-			s2.setTime(SESSION_TIME_DIFF);
-			
-			rooms.add(r);
-			rooms.add(r2);
-			return rooms;
-		});
-	}
-	
-	// mock output for room no sessions
-	private void setMockOutputRoomNoSessions() {
-		when(roomRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			// create a room list
-			List<Room> rooms = new ArrayList<>();
-			Room r = new Room();
-			r.setRoomNumber(ROOM_NUM);
-			
-			rooms.add(r);
-			return rooms;
-		});
-	}
 	
 	// mock output for room no rooms
 	private void setMockOutputRoomNoRooms() {
@@ -342,13 +274,6 @@ public class CreateSessionTest {
 			// create a room list
 			List<Room> rooms = new ArrayList<>();
 			return rooms;
-		});
-	}
-	
-	// mock output for room null
-	private void setMockOutputRoomNull() {
-		when(roomRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			return null;
 		});
 	}
 	
@@ -975,6 +900,49 @@ public class CreateSessionTest {
 	}
 	
 	@Test
-	public void test
+	public void testAddAStudentToASessionNullStudentName() {
+		String error = null;
+		
+		try {
+			service.getSessionByStudent(null);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+		
+		assertEquals( error, ErrorStrings.Invalid_Session_StudentName);
+		
+	}
 	
+	@Test
+	public void testAddStudentToASessionNullStudent() {
+		
+		String error = null;
+		
+		try {
+			service.getSessionByStudent(STUDENT_NAME_BAD);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+		
+		assertEquals( error, ErrorStrings.Invalid_Session_FindStudentByUsername);
+		
+	}
+	
+	@Test
+	public void testAddStudentToSession() {
+		
+		List<Session> sessions = null;
+		
+		try {
+			sessions = service.getSessionByStudent(STUDENT_NAME);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		
+		assertEquals( 0, sessions.size());
+		
+	}
 }
