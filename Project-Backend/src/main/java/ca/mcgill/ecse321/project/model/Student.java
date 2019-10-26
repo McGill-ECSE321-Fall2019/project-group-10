@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
@@ -10,7 +11,7 @@ import javax.persistence.ManyToMany;
 public class Student extends Role{
 	private Set<Session> session;
 
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy="student")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy="student", cascade = CascadeType.ALL)
 	public Set<Session> getSession() {
 		return this.session;
 	}

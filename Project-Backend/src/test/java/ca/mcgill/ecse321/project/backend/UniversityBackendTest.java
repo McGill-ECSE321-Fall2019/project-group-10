@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
@@ -457,7 +458,7 @@ public class UniversityBackendTest {
 		
 		// check that we have zero courses and that it is the right error message
 		assertEquals(0, courses.size());
-		assertEquals("No courses offered for this university", error);		
+		assertEquals(ErrorStrings.Invalid_Service_CourseOfferedUni, error);		
 	}
 	
 	// check that we can view all the courses offerings for a course
@@ -490,7 +491,7 @@ public class UniversityBackendTest {
 		
 		// check that we have one course offering and that it is the right one
 		assertEquals(0, courseOs.size());
-		assertEquals("No courses offerings offered for this course", error);
+		assertEquals(ErrorStrings.Invalid_Service_TutorForCO, error);
 	}
 	
 	// test for course that doesn't exist
@@ -507,7 +508,7 @@ public class UniversityBackendTest {
 		
 		// check that we have one course offering and that it is the right one
 		assertEquals(0, courseOs.size());
-		assertEquals("No courses offerings offered for this course", error);
+		assertEquals(ErrorStrings.Invalid_Service_TutorForCO, error);
 	}
 	
 	// check that we can view all the tutors for a course offering
@@ -538,7 +539,7 @@ public class UniversityBackendTest {
 		
 		// check that we have no tutors and correct error message
 		assertEquals(0, tutors.size());
-		assertEquals("This course offering does not exist", error);
+		assertEquals(ErrorStrings.Invalid_Service_COBad, error);
 	}
 	
 	// check for a tutor for a course offering that doesn't exist
@@ -570,7 +571,7 @@ public class UniversityBackendTest {
 		
 		// check that we have no tutors and correct error message
 		assertEquals(0, tutors.size());
-		assertEquals("No tutors for this course offering", error);
+		assertEquals(ErrorStrings.Invalid_Service_TutorForCO, error);
 	}
 	
 	// check that we can display the tutor information
@@ -601,7 +602,7 @@ public class UniversityBackendTest {
 		
 		// check that no tutor was returned and the correct error message
 		assertEquals(true, t.getUsername() == null);
-		assertEquals("No tutor by that username", error);
+		assertEquals(ErrorStrings.Invalid_Service_Tutor, error);
 	}
 	
 	// check that the service can retrieve all rooms properly

@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,6 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -28,7 +33,7 @@ public class Tutor extends Role{
 
 	private Set<Session> session;
 
-	@OneToMany(mappedBy="tutor" )
+	@OneToMany(mappedBy="tutor", cascade = CascadeType.ALL)
 	public Set<Session> getSession() {
 		return this.session;
 	}
@@ -55,8 +60,9 @@ public class Tutor extends Role{
 	}
 
 	private Set<Availability> availability;
-
-	@OneToMany
+	
+	
+	@OneToMany(cascade = CascadeType.ALL)
 	public Set<Availability> getAvailability() {
 		return this.availability;
 	}
@@ -67,7 +73,7 @@ public class Tutor extends Role{
 
 	private List<CourseOffering> courseOfferings;
 
-	@ManyToMany(mappedBy="tutors" )
+	@ManyToMany(mappedBy="tutors", cascade = CascadeType.ALL)
 	public List<CourseOffering> getCourseOfferings(){
 		return this.courseOfferings;
 	}

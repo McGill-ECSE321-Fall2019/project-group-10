@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.project.model;
 import java.sql.Date;
 import java.sql.Time;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -41,7 +42,7 @@ public Time getTime() {
 
 	private Tutor tutor;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false, cascade = CascadeType.ALL)
 	public Tutor getTutor() {
 	  return this.tutor;
 	}

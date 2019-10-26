@@ -91,9 +91,9 @@ public class AvailabilityTest {
 		t = tutorRepository.findTutorByUsername(USERNAME);
 		
 		try {
-			Availability a = service.createAvailability(date, time, USERNAME);
-			t.addAvailability(a);
-			//tutorRepository.save(t);
+			service.createUser("aName", EMAIL, 22, "5145555555");
+			service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
+			service.createAvailability(date, time, USERNAME);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -108,24 +108,24 @@ public class AvailabilityTest {
 		List<Availability> as = new ArrayList<>(service.getAllTutors().get(0).getAvailability());
 		assertEquals(as.get(0).getDate().toString(), date.toString());
 
-//		date = new java.sql.Date(3333333333l);
-//		id = allAvailabilities.get(0).getId();
-//		time = new java.sql.Time(123456798l);
-//
-//
-//		try {
-//			service.updateAvailability(id, date, time, USERNAME);
-//		} catch (IllegalArgumentException e) {
-//			// Check that no error occurred
-//			fail();
-//		}
-//		
-//		allAvailabilities = service.getAllAvailabilities();
-//		
-//		// check that all the attributes are correct
-//		assertEquals(1, allAvailabilities.size());
-//		assertEquals(date.toString(), allAvailabilities.get(0).getDate().toString());
-//		assertEquals(time.toString(), allAvailabilities.get(0).getTime().toString());
+		date = new java.sql.Date(3333333333l);
+		id = allAvailabilities.get(0).getId();
+		time = new java.sql.Time(123456798l);
+
+
+		try {
+			service.updateAvailability(id, date, time, USERNAME);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		
+		allAvailabilities = service.getAllAvailabilities();
+		
+		// check that all the attributes are correct
+		assertEquals(1, allAvailabilities.size());
+		assertEquals(date.toString(), allAvailabilities.get(0).getDate().toString());
+		assertEquals(time.toString(), allAvailabilities.get(0).getTime().toString());
 
 	}
 	
