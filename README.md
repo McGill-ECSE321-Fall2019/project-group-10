@@ -48,7 +48,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Taylor Lynn Curtis</td>
     <td>Software Consulting Lead</td>
     <td>19</td>
-    <td>34</td>
+    <td>45</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
