@@ -451,7 +451,7 @@ public class R1R3R4BackendTest {
 		} catch(IllegalArgumentException e) { error = e.getMessage();}
 		
 		// check the error message
-		assertEquals("No courses offered for this university", error);
+		assertEquals(ErrorStrings.Invalid_University_FindCourse , error);
 	}
 	
 	// test for getting courses if there are no courses
@@ -468,7 +468,7 @@ public class R1R3R4BackendTest {
 		} catch(IllegalArgumentException e) { error = e.getMessage();}
 		
 		// check that we have one course and that it is the right one
-		assertEquals("No courses offered for this university", error);
+		assertEquals(ErrorStrings.Invalid_University_FindCourse , error);
 	}
 	
 	// Test for getting the courses for a university that doesn't exist
@@ -652,7 +652,7 @@ public class R1R3R4BackendTest {
 		
 		// check that we have no tutors and correct error message
 		assertEquals(0, tutors.size());
-		assertEquals("This course offering does not exist", error);
+		assertEquals(ErrorStrings.Invalid_Service_COBad, error);
 	}
 	
 	// test if there are no tutors for the course offering

@@ -64,7 +64,6 @@ public class AvailabilityTest {
 	@After
 	public void clearDatabase() {
 		// clear in order of dependencies
-		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -84,11 +83,6 @@ public class AvailabilityTest {
 		
 		Date date = DATE;
 		Time time = TIME;
-		int id;
-		
-		service.createUser("aName", EMAIL, 22, "5145555555");
-		Tutor t = service.createTutor(USERNAME, PASSWORD, EMAIL, HR, EXP, Education.masters);
-		t = tutorRepository.findTutorByUsername(USERNAME);
 		
 		try {
 			service.createUser("aName", EMAIL, 22, "5145555555");
@@ -109,7 +103,7 @@ public class AvailabilityTest {
 		assertEquals(as.get(0).getDate().toString(), date.toString());
 
 		date = new java.sql.Date(3333333333l);
-		id = allAvailabilities.get(0).getId();
+		int id = allAvailabilities.get(0).getId();
 		time = new java.sql.Time(123456798l);
 
 

@@ -4,6 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 
 import java.util.HashSet;
 import java.util.List;
@@ -62,7 +63,7 @@ public class Tutor extends Role{
 	private Set<Availability> availability;
 	
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	public Set<Availability> getAvailability() {
 		return this.availability;
 	}
