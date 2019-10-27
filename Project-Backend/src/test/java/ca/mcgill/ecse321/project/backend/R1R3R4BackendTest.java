@@ -24,7 +24,7 @@ import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UniversityBackendTest {
+public class R1R3R4BackendTest {
 
 	@Mock 
 	private AvailabilityRepository availabilityRepository;
@@ -57,7 +57,6 @@ public class UniversityBackendTest {
 	
 	// constants for course
 	private static final String COURSE_NAME = "ECSE321";
-	private static final String COURSE_INFO = "Intro to soft eng";	
 	private static final String COURSE_NAME_BAD = "ECSE443";
 	
 	// constants for course offering
@@ -66,6 +65,7 @@ public class UniversityBackendTest {
 	private static final int CO_ID = 1;
 	private static final int CO_ID_BAD = 2;
 	private static final int CO_ID_EMPTY = 3;
+	private static final int CO_ID_NONE = 4;
 	
 	// constants for tutor
 	private static final String TUTOR_NAME = "username";
@@ -83,7 +83,7 @@ public class UniversityBackendTest {
 	@Before
 	public void setMockOutput() {
 		
-		// run all setups for mock outputs
+		// run all default setups for mock outputs
 
 		setMockOutputUniversity();
 		setMockOutputCourse();
@@ -106,6 +106,14 @@ public class UniversityBackendTest {
 		});	
 	}
 	
+	// mock output for an empty university list
+	private void setMockOutputUniversityEmpty() {
+		when(universityRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			List<University> unis = new ArrayList<>();
+			return unis;
+		});	
+	}
+	
 	// mock output for course
 	private void setMockOutputCourse() {
 		when(courseRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
@@ -123,7 +131,48 @@ public class UniversityBackendTest {
 		});
 	}
 	
-	// mock output for course offering
+	// mock output for course
+	private void setMockOutputCourseNull() {
+		when(courseRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			return null;
+		});
+	}
+	
+	// mock output for an empty course list
+	private void setMockOutputCourseEmpty() {
+		when(courseRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			// create a course list 
+			List<Course> cs = new ArrayList<>();
+			return cs;
+		});
+	}
+	// mock output for a course without a university
+	private void setMockOutputCourseNoUni() {
+		when(courseRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			// create a course
+			List<Course> cs = new ArrayList<>();
+			Course c = new Course();
+			c.setCourseName(COURSE_NAME);
+			cs.add(c);
+			return cs;
+		});
+	}
+	
+	// mock output for course offering null
+	private void setMockOutputCourseOfferingNull() {
+		when(courseOfferingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			return null;
+		});
+	}
+	// mock output for course offering empty
+	private void setMockOutputCourseOfferingEmpty() {
+		when(courseOfferingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			List<CourseOffering> cos = new ArrayList<>();
+			return cos;
+		});
+	}
+	
+	// mock output for course offering regular
 	private void setMockOutputCourseOffering() {
 		when(courseOfferingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 			// create a university
@@ -151,7 +200,6 @@ public class UniversityBackendTest {
 				//create a course offering
 				CourseOffering co = new CourseOffering();
 				co.setCourseOfferingID(CO_ID);
-				//co.setCourse(c);
 				
 				//create a Tutor
 				Tutor t = new Tutor();
@@ -201,6 +249,7 @@ public class UniversityBackendTest {
 			s.setRoom(r);
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
+			r.addSession(s);
 			
 			rooms.add(r);
 			return rooms;
@@ -222,11 +271,13 @@ public class UniversityBackendTest {
 			s.setRoom(r);
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
+			r.addSession(s);
 			
 			Session s2 = new Session();
 			s2.setRoom(r2);
 			s2.setDate(SESSION_DATE);
 			s2.setTime(SESSION_TIME);
+			r2.addSession(s2);
 			
 			rooms.add(r);
 			rooms.add(r2);
@@ -249,11 +300,13 @@ public class UniversityBackendTest {
 			s.setRoom(r);
 			s.setDate(SESSION_DATE);
 			s.setTime(SESSION_TIME);
+			r.addSession(s);
 			
 			Session s2 = new Session();
 			s2.setRoom(r2);
 			s2.setDate(SESSION_DATE_DIFF);
 			s2.setTime(SESSION_TIME_DIFF);
+			r2.addSession(s2);
 			
 			rooms.add(r);
 			rooms.add(r2);
@@ -283,13 +336,6 @@ public class UniversityBackendTest {
 		});
 	}
 	
-	// mock output for room null
-	private void setMockOutputRoomNull() {
-		when(roomRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			return null;
-		});
-	}
-	
 	//************************************************* TESTS *************************************************//
 
 	// check that the service can retrieve all universities properly
@@ -309,6 +355,57 @@ public class UniversityBackendTest {
 		assertEquals(UNI_ADDR, u.getAddress());
 	}
 	
+	// check for no universities created
+	// test coverage: 100%
+	@Test
+	public void getAllUniversitiesEmpty() {
+		List<University> uniList = new ArrayList<>();
+		
+		// run the correct mock output
+		setMockOutputUniversityEmpty();
+		
+		// get all universities
+		try {
+			uniList = service.getAllUniversities();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that only 1 and its the right one
+		assertEquals(0, uniList.size());
+	}
+	
+	// check that we can get all the courses
+	@Test
+	public void getAllCourses() {
+		List<Course> courseList = new ArrayList<>();
+		
+		// get all universities
+		try {
+			courseList = service.getAllCourses();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that only 1 and its the right one
+		assertEquals(1, courseList.size());
+		Course c = courseList.get(0);
+		assertEquals(COURSE_NAME, c.getCourseName());
+	}
+	
+	// check that we can get all the courses
+	@Test
+	public void getAllCoursesEmpty() {
+		List<Course> courseList = new ArrayList<>();
+		
+		// run the correct mock ouptut
+		setMockOutputCourseEmpty();
+		
+		// get all universities
+		try {
+			courseList = service.getAllCourses();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that only 1 and its the right one
+		assertEquals(0, courseList.size());
+	}
+	
 	// check that we can view all the courses at a school
 	@Test
 	public void getCoursesByUniversityPositive() {
@@ -321,6 +418,57 @@ public class UniversityBackendTest {
 		// check that we have one course and that it is the right one
 		assertEquals(1, courses.size());
 		assertEquals(COURSE_NAME, courses.get(0).getCourseName());	
+	}
+	
+	// test for getting courses if no university linked to course
+	@Test
+	public void getCoursesByUniversityNull() {
+		String error = null;
+		
+		//run the correct mock output
+		setMockOutputCourseNull();
+		
+		// get all the courses associated with the given university
+		try {
+			service.getAllCoursesByUniversity(UNI_NAME);
+		} catch(IllegalArgumentException e) { error = e.getMessage();}
+		
+		// check the error message
+		assertEquals(ErrorStrings.Invalid_University_FindCourse, error);
+	}
+	
+	// test for getting courses if no university linked to course
+	@Test
+	public void getCoursesByUniversityNoLinks() {
+		String error = null;
+		
+		//run the correct mock output
+		setMockOutputCourseNoUni();
+		
+		// get all the courses associated with the given university
+		try {
+			service.getAllCoursesByUniversity(UNI_NAME);
+		} catch(IllegalArgumentException e) { error = e.getMessage();}
+		
+		// check the error message
+		assertEquals("No courses offered for this university", error);
+	}
+	
+	// test for getting courses if there are no courses
+	@Test
+	public void getCoursesByUniversityEmpty() {
+		String error = null;
+		
+		//run the correct mock output
+		setMockOutputCourseEmpty();
+		
+		// get all the courses associated with the given university
+		try {
+			service.getAllCoursesByUniversity(UNI_NAME);
+		} catch(IllegalArgumentException e) { error = e.getMessage();}
+		
+		// check that we have one course and that it is the right one
+		assertEquals("No courses offered for this university", error);
 	}
 	
 	// Test for getting the courses for a university that doesn't exist
@@ -337,6 +485,57 @@ public class UniversityBackendTest {
 		// check that we have zero courses and that it is the right error message
 		assertEquals(0, courses.size());
 		assertEquals(ErrorStrings.Invalid_Service_CourseOfferedUni, error);		
+	}
+	
+	// check that we can get all the course offerings
+	@Test
+	public void getAllCoursesOfferingsPositive() {
+		List<CourseOffering> courseOs = new ArrayList<>();
+		
+		// get all course offerings
+		try {
+			courseOs = service.getAllCourseOfferings();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that only 1 and its the right one
+		assertEquals(1, courseOs.size());
+		CourseOffering c = courseOs.get(0);
+		assertEquals(CO_TERM, c.getTerm());
+		assertEquals(CO_YEAR, c.getYear());
+	}
+	
+	// check that we can get all the course offerings (none)
+	@Test
+	public void getAllCoursesOfferingsEmpty() {
+		List<CourseOffering> courseOs = new ArrayList<>();
+		
+		// set the correct mock output
+		setMockOutputCourseOfferingEmpty();
+		
+		// get all course offerings
+		try {
+			courseOs = service.getAllCourseOfferings();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that none received
+		assertEquals(0, courseOs.size());
+	}
+	
+	// check that we can get all the course offerings (null)
+	@Test
+	public void getAllCoursesOfferingsNull() {
+		List<CourseOffering> courseOs = new ArrayList<>();
+		
+		// set the correct mock output
+		setMockOutputCourseOfferingNull();
+		
+		// get all course offerings
+		try {
+			courseOs = service.getAllCourseOfferings();
+		} catch(IllegalArgumentException e) { fail();}
+		
+		// check that none received
+		assertEquals(null, courseOs);
 	}
 	
 	// check that we can view all the courses offerings for a course
@@ -370,6 +569,26 @@ public class UniversityBackendTest {
 		// check that we have one course offering and that it is the right one
 		assertEquals(0, courseOs.size());
 		assertEquals(ErrorStrings.Invalid_Service_TutorForCO, error);
+	}
+	
+	// test for null course offerings
+	@Test
+	public void getCoursesOfferingsNull() {
+		
+		List<CourseOffering> courseOs = new ArrayList<>();
+		String error = null;
+		
+		// set the correct mock output
+		setMockOutputCourseOfferingNull();
+		
+		// get all the courses offerings associated with the given course
+		try {
+			courseOs = service.getAllCourseOfferingsByCourse(COURSE_NAME, UNI_NAME);
+		} catch(IllegalArgumentException e) { error = e.getMessage();}
+		
+		// check that we have one course offering and that it is the right one
+		assertEquals(0, courseOs.size());
+		assertEquals(ErrorStrings.Invalid_Service_CONone, error);
 	}
 	
 	// test for course that doesn't exist
@@ -418,6 +637,22 @@ public class UniversityBackendTest {
 		// check that we have no tutors and correct error message
 		assertEquals(0, tutors.size());
 		assertEquals(ErrorStrings.Invalid_Service_COBad, error);
+	}
+	
+	// check for a tutor for a course offering that doesn't exist
+	@Test
+	public void getTutorsNoCO() {
+		
+		List<Tutor> tutors = new ArrayList<>();
+		String error = null;
+		// get all the tutors associated with the given course offering
+		try {
+			tutors = service.getAllTutorsByCourseOffering(CO_ID_NONE);
+		} catch(IllegalArgumentException e) { error = e.getMessage();}
+		
+		// check that we have no tutors and correct error message
+		assertEquals(0, tutors.size());
+		assertEquals("This course offering does not exist", error);
 	}
 	
 	// test if there are no tutors for the course offering
