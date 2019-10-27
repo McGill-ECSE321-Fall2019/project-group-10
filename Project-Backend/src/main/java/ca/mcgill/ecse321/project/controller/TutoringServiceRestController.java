@@ -39,6 +39,29 @@ public class TutoringServiceRestController {
 
 // ******************************************** GET MAPPINGS ********************************************** \\
 	
+	// Get all the users
+			@GetMapping(value = { "/users", "/users/" })
+			public List<UserDTO> getAllUsers() {
+				List<UserDTO> userDtos = new ArrayList<>();
+				// get all the users 
+				for (TSUser user : service.getAllUsers()){
+					// convert model class to a data transfer object
+					userDtos.add(convertToDto(user));
+				}
+				return userDtos;
+			}
+			
+//			Gets all the students
+			@GetMapping(value = { "/students", "/students/" })
+			public List<StudentDTO> getAllStudents() {
+				List<StudentDTO> studentDtos = new ArrayList<>();
+				// get all the students 
+				for (Student student : service.getAllStudents()){
+					// convert model class to a data transfer object
+					studentDtos.add(convertToDto(student));
+				}
+				return studentDtos;
+			}
 	
 	// Get all the schools offered by the application
 	@GetMapping(value = { "/universities", "/universities/" })
@@ -116,9 +139,7 @@ public class TutoringServiceRestController {
 	
 	@GetMapping(value = {"/session", "/session/" })
 	public SessionDTO getSession(@RequestParam(name = "session_id") Integer sessionId){
-		
 		return convertToDto(service.getSession(sessionId));
-		
 	}
 	
 	@DeleteMapping(value = {"/session/delete", "/session/delete/"})
@@ -194,7 +215,15 @@ public class TutoringServiceRestController {
 	}
 	
 // ******************************************** POST MAPPINGS ********************************************** \\
-
+//	Uses request parameter to get the Age, name, email, and phone number of the user.
+	@PostMapping(value = { "/user/{name}/{userAge}/{userName}/{userEmail}/{userPhoneNumber}", "/user/{name}/{userAge}/{userName}/{userEmail}/{userPhoneNumber}" })
+	public UserDTO registerUser(@PathVariable("name") String name, @PathVariable("userAge") int userAge, @PathVariable("userName") String userName, @PathVariable("userEmail") String userEmail, @PathVariable("userPhoneNumber") String userPhoneNumber) throws IllegalArgumentException {
+		TSUser user = service.createUser(userName, userEmail, userAge, userPhoneNumber); //link the user to the student
+		Student student = new Student();
+		student.setUser(user);
+		return convertToDto(user);
+	}
+	
 	//Creates a text
 	@PostMapping(value = { "/text", "/text/" })
 	public TextDTO createText(@RequestParam("reviewId") int reviewId, 
@@ -243,9 +272,6 @@ public class TutoringServiceRestController {
 		
 	}
 
-	//Getting session details for the user
-	
-	//Cancel a session if no room is available.
 	
 	// Check room availability
 	@PostMapping(value = { "/checkavailability", "/checkavailability/"})
@@ -289,20 +315,12 @@ public class TutoringServiceRestController {
 		return convertToDto(session);
 	}
 	
-	//user
-	//student
-	//session
-	//
-	
-
-
-	
   	// Convert the model user to a DTO object
-	private UserDTO convertToDto(User u) {
-		if (u == null) {
+	private UserDTO convertToDto(TSUser user) {
+		if (user == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_User);
 		}
-		UserDTO uDTO = new UserDTO();
+		UserDTO uDTO = new UserDTO(user.getAge(),user.getName(),user.getEmail(),user.getPhoneNumber());
 		return uDTO;
 	}
 	
