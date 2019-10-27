@@ -17,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
 import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dao.*;
@@ -49,7 +48,6 @@ public class ReviewBackendTest {
 	private static final String TEXT_BAD_TOO_LONG = "In addition to a stellar faculty, McGill is known for attracting the brightest students from across Canada, the United States, and around the world. McGill students have the highest average entering grades in Canada, and our commitment to fostering the very best has helped our students win more national and international awards on average than their peers at any other Canadian university. The prestigious Rhodes Scholarship has gone to a nation-leading 145 McGill students.";
 	private static final int TEXT_GOOD_REVIEWID = 3;
 	private static final int TEXT_BAD_REVIEWID = -3;
-	private static final int TEXT_BAD_REVIEWID2 = -4;
 	
 	// constants for rating
 	private static final int RATING_GOOD_REVIEWID = 3;
@@ -70,12 +68,10 @@ public class ReviewBackendTest {
 	
 	// constants for user
 	private static final String USER_USERNAME = "teddy";
-	private static final String USER_PASSWORD = "123";
 	private static final String USER_EMAIL = "testman@man,com";
+	private static final String USER_USERNAME2 = "teddy2";
+	private static final String USER_EMAIL2 = "testman2@man.com";
 	
-	// constants for tutor
-	private static final double HOURLY_RATE = 10.00;
-
 	// constants for user
 	private static final String TUTOR_USERNAME = "teddy";
 	private static final String TUTOR_USERNAME2 = "teddy2";
@@ -86,120 +82,94 @@ public class ReviewBackendTest {
 	@Before
 	public void setMockOutput() {
 		
-		setMockOutputUser();
+		//setMockOutputUser();
 		setMockOutputTutor();
+		//setMockOutputReview();
 		setMockOutputCourseOffering();
-		setMockOutputReview();
-		setMockOutputText();
-		setMockOutputRating();
 	}
 	
 	//********************************************* MOCK OUTPUTS *********************************************//
 	
-	private void setMockOutputUser() {
-		when(userRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			List<TSUser> userList = new ArrayList<>();
-			TSUser user = new TSUser();
-			user.setName(USER_USERNAME);
-			user.setEmail(USER_PASSWORD);
-			userList.add(user);
-			return userList;
-		});	
-	}
-	
+	//create 2 tutors.
 	private void setMockOutputTutor() {
-		when(userRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+		when(tutorRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			//link users to the tutors.
 			TSUser user = new TSUser();
-			user.setName(USER_USERNAME);
 			user.setEmail(USER_EMAIL);
 			
+			TSUser user1 = new TSUser();
+			user1.setEmail(USER_EMAIL2);
+			
 			List<Tutor> tutorList = new ArrayList<>();
+			
+			//Create tutors
 			Tutor tutor = new Tutor();
-			tutor.setHourlyRate(HOURLY_RATE);
 			tutor.setPassword(TUTOR_PASSWORD);
 			tutor.setUsername(TUTOR_USERNAME);
-			tutor.setId(TUTOR_ID);
 			tutor.setUser(user);
+			
+			Tutor tutor1 = new Tutor();
+			tutor1.setPassword(TUTOR_PASSWORD2);
+			tutor1.setUsername(TUTOR_USERNAME2);
+			tutor1.setUser(user1);
+			
 			tutorList.add(tutor);
+			tutorList.add(tutor1);
+			
 			return tutorList;
 		});	
+		
+		when(tutorRepository.findTutorByUsername((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(TUTOR_USERNAME2)) {
+				
+				//Create a tutor and link with user
+				TSUser user = new TSUser();
+				user.setEmail(USER_EMAIL2);
+				
+				Tutor tutor = new Tutor();
+				tutor.setUsername(TUTOR_USERNAME2);
+				tutor.setPassword(TUTOR_PASSWORD2);
+				tutor.setUser(user);
+				
+				return tutor;
+			
+			} else if(invocation.getArgument(0).equals(TUTOR_USERNAME)) {
+				
+				//Create a tutor and link with user
+				TSUser user = new TSUser();
+				user.setEmail(USER_EMAIL);
+				
+				Tutor tutor = new Tutor();
+				tutor.setUsername(TUTOR_USERNAME);
+				tutor.setPassword(TUTOR_PASSWORD);
+				tutor.setUser(user);
+				
+				return tutor;
+				
+			} else return null;
+		});
 	}
 	
-	private void setMockOutputText() {
-		when(textRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			List<Text> textList = new ArrayList<>();
-	
-			//Good description
-			Text text1 = new Text();
-			text1.setDescription(TEXT_GOOD_DESCRIPTION);
-			text1.setIsAllowed(true);
-			text1.setReviewID(REVIEW_ID1);
-			textList.add(text1);
-			
-			//Good description
-			Text text2 = new Text();
-			text2.setDescription(TEXT_GOOD_DESCRIPTION);
-			text2.setIsAllowed(true);
-			text2.setReviewID(REVIEW_ID2);
-			textList.add(text1);
-			
-			return textList;
-		});	
-	}
-	
-	private void setMockOutputRating() {
-		when(ratingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			List<Rating> ratingList = new ArrayList<>();
-			
-			//Good description
-			Rating rating = new Rating();
-			rating.setReviewID(REVIEW_ID1);
-			ratingList.add(rating);
-			
-			return ratingList;
-		});	
-	}
-	
-	private void setMockOutputReview() {
-		when(reviewRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-			List<Review> reviewList = new ArrayList<>();
-			
-			CourseOffering courseO2 = new CourseOffering();
-			courseO2.setCourseOfferingID(CO_ID2);
-			
-			//Good description
-			Review review = new Text();
-			review.setReviewID(REVIEW_ID1);
-			review.setCourseOffering(courseO2);
-			
-			Review review2 = new Text();
-			review2.setReviewID(REVIEW_ID2);
-			review2.setCourseOffering(courseO2);
-			
-			reviewList.add(review2);
-			reviewList.add(review);
-	
-			return reviewList;
-		});	
-	}
-	
+	//Create setup course offerings.
 	private void setMockOutputCourseOffering() {
 		when(courseOfferingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 			
 			List<Tutor> tutorList = new ArrayList<>();
+			
+			//Link tutors
 			Tutor tutor = new Tutor();
 			tutor.setPassword(TUTOR_PASSWORD);
 			tutor.setUsername(TUTOR_USERNAME);
 			tutorList.add(tutor);
 			
 			Tutor tutor2 = new Tutor();
-			tutor2.setPassword(TUTOR_PASSWORD);
-			tutor2.setUsername(TUTOR_USERNAME);
+			tutor2.setPassword(TUTOR_PASSWORD2);
+			tutor2.setUsername(TUTOR_USERNAME2);
 			tutorList.add(tutor2);
 			
 			Set<Review> listReview = new HashSet<>();
 			
-			//Good description
+			//Create review link
 			Review review = new Text();
 			review.setReviewID(REVIEW_ID1);
 			
@@ -210,36 +180,69 @@ public class ReviewBackendTest {
 			listReview.add(review2);
 			
 			List<CourseOffering> courseOfferingList = new ArrayList<>();
+			
+			//Create course offerings for linking.
 			CourseOffering courseO = new CourseOffering();
 			courseO.setTerm(CO_TERM);
 			courseO.setYear(CO_YEAR);
 			courseO.setCourseOfferingID(CO_ID);
 	
+			//A second offering for the list.
 			CourseOffering courseO2 = new CourseOffering();
 			courseO2.setTerm(CO_TERM);
 			courseO2.setYear(CO_YEAR);
 			courseO2.setCourseOfferingID(CO_ID2);
+
 			courseO2.setTutors(tutorList);
 			courseO2.setReview(listReview);
 			
+			//Setup all links.
 			courseOfferingList.add(courseO);
 			courseOfferingList.add(courseO2);
 			
 			return courseOfferingList;
-		});	
+			
+		});
+			when(courseOfferingRepository.findCourseOfferingByCourseOfferingID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+				if (invocation.getArgument(0).equals(CO_ID2)) {
+					
+					//Create course offerings for linking.
+					CourseOffering course = new CourseOffering();
+					course.setTerm(CO_TERM);
+					course.setYear(CO_YEAR);
+					course.setCourseOfferingID(CO_ID2);
+					
+					return course;
+				
+				} else if(invocation.getArgument(0).equals(CO_ID)) {
+					
+					//Create a tutor and link with user
+					CourseOffering course = new CourseOffering();
+					course.setTerm(CO_TERM);
+					course.setYear(CO_YEAR);
+					course.setCourseOfferingID(CO_ID);
+					
+					return course;
+					
+				} else return null;
+		});
 	}
-	
+
+	//Create a list of all ratings with unique ids - linked with tutors and course offerings.
 	private void setMockOutputRatingMakeIntoList() {
 		when(ratingRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 		
+			//linking course offerings.
 			CourseOffering co = new CourseOffering();
 			co.setCourseOfferingID(CO_ID);
 			 
+			//linking roles.
 			Role role = new Tutor();
 			role.setUsername(TUTOR_USERNAME);
 			
 			List<Rating> reviewList = new ArrayList<>();
 			
+			//linking the ratings and texts together.
 			Rating rating1 = new Rating();
 			rating1.setRatingValue(RATING_GOOD_REVIEWID);
 			rating1.setReviewID(RATING_GOOD_REVIEWID);
@@ -248,6 +251,7 @@ public class ReviewBackendTest {
 			
 			reviewList.add(rating1);
 			
+			//Create a rating with too high of a rating.
 			Rating rating2 = new Rating();
 			rating2.setRatingValue(RATING_BAD_TOOLARGE);
 			rating2.setReviewID(RATING_GOOD_REVIEWID2);
@@ -256,6 +260,7 @@ public class ReviewBackendTest {
 			
 			reviewList.add(rating2);
 			
+			//Create a rating with too low of a value - null.
 			Rating rating3 = new Rating();
 			rating3.setRatingValue(RATING_BAD_NULL);
 			rating3.setReviewID(RATING_GOOD_REVIEWID3);
@@ -272,6 +277,7 @@ public class ReviewBackendTest {
 				Role tutor = new Tutor();
 				tutor.setUsername(USER_USERNAME);
 				
+				//Create a rating and link it with the tutor.
 				Rating rating = new Rating();
 				rating.setReviewID(TEXT_GOOD_REVIEWID);
 				rating.setRatingValue(RATING_GOOD_REVIEWID);
@@ -289,7 +295,7 @@ public class ReviewBackendTest {
 		
 	}
 	
-	//Check finding a list and when searching for single text
+	//Create a list of text created and attach to tutor and course offering.
 	private void setMockOutputTextMakeIntoList() {
 		when(textRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 			
@@ -324,19 +330,30 @@ public class ReviewBackendTest {
 			text3.setWrittenAbout(role);
 			textList.add(text3);
 			
+			//link course offering.
 			CourseOffering courseOffering1 = new CourseOffering();
 			courseOffering1.setCourseOfferingID(CO_ID2);
 			
+			//link a second tutor
 			Role tutor2 = new Tutor();
 			tutor2.setPassword(TUTOR_PASSWORD);
 			tutor2.setUsername(TUTOR_USERNAME);
 			
+			//add another texst with a unique id
 			Text text4 = new Text();
 			text4.setDescription(TEXT_BAD_TOO_LONG);
 			text4.setIsAllowed(false);
 			text4.setCourseOffering(courseOffering1);
 			text4.setWrittenAbout(tutor2);
 			textList.add(text4);
+			
+			//add a 5th text for testing - different inputs for each.
+			Text text5 = new Text();
+			text5.setDescription(TEXT_BAD_TOO_LONG);
+			text5.setIsAllowed(false);
+			text5.setCourseOffering(co);
+			textList.add(text5);
+			
 			return textList;
 		});	
 		//Making specific create text tests.
@@ -345,11 +362,13 @@ public class ReviewBackendTest {
 				CourseOffering co = new CourseOffering();
 				co.setCourseOfferingID(CO_ID);
 				
+				//Create tutor to link to the text.
 				Role tutor = new Tutor();
 				tutor.setUsername(USER_USERNAME);
 				tutor.setPassword(TUTOR_PASSWORD);
 				tutor.setId(TUTOR_ID);
 				
+				//create text to link.
 				Text text = new Text();
 				text.setReviewID(TEXT_GOOD_REVIEWID);
 				text.setDescription(TEXT_GOOD_DESCRIPTION);
@@ -358,6 +377,7 @@ public class ReviewBackendTest {
 				return text;
 				
 			} else if(invocation.getArgument(0).equals(TEXT_BAD_REVIEWID)) {
+				//Just create a text and send
 				Text text = new Text();
 				text.setReviewID(TEXT_BAD_REVIEWID);
 				return text;
@@ -376,8 +396,8 @@ public class ReviewBackendTest {
 		public void getAllRating() {
 			setMockOutputRatingMakeIntoList();
 			List<Rating> ratingsList = new ArrayList<>();
-			String error = "";
 			
+			//Get all the ratings that have been written.
 			try {
 				ratingsList = service.getAllRatings();
 			} catch(IllegalArgumentException e) {fail();}
@@ -394,24 +414,26 @@ public class ReviewBackendTest {
 			setMockOutputTextMakeIntoList();
 			
 			List<Text> textList = new ArrayList<>();
-			String error = "";
 			
+			//get all the texts that have been written.
 			try {
 				textList = service.getAllTexts();
 			} catch(IllegalArgumentException e) {fail();}
 					
-			assertEquals(textList.size(), 4);
+			assertEquals(textList.size(), 5);
 			assertEquals(textList.get(0).getDescription(), TEXT_GOOD_DESCRIPTION);
 			assertEquals(textList.get(0).getIsAllowed(), true);
 			assertEquals(textList.get(1).getDescription(), "");
 		}
 		
+		//test if text can be found using id
 		@Test
 		public void getTextById() {
 			setMockOutputTextMakeIntoList();
 			String error = "";
 			Text text = new Text();
 			
+			//get the right text by the id.
 			try {
 				text = service.getText(TEXT_GOOD_REVIEWID);
 			} catch(IllegalArgumentException e) { error = e.getMessage();}
@@ -421,13 +443,14 @@ public class ReviewBackendTest {
 			assertEquals(text.getWrittenAbout().getUsername(), USER_USERNAME);
 		}
 		
-		//Check bad id for text.
+		//test if rating is returned when id is used.
 		@Test
 		public void getRatingById() {
 			setMockOutputRatingMakeIntoList();
 			String error = "";
 			Rating rating = new Rating();
 			
+			//Get a rating by a specific id.
 			try {
 				rating = service.getRating(TEXT_GOOD_REVIEWID);
 			} catch(IllegalArgumentException e) { error = e.getMessage();}
@@ -442,8 +465,8 @@ public class ReviewBackendTest {
 			setMockOutputRatingMakeIntoList();
 			List<Rating> ratingsList = new ArrayList<>();
 			String error = "";
-			Rating rating = new Rating();
 			
+			//Rating max is 5 - test if it is caught
 			try {
 				ratingsList = service.getAllRatings();
 			} catch(IllegalArgumentException e) {fail();}
@@ -454,8 +477,9 @@ public class ReviewBackendTest {
 			assertEquals(currentRating.getWrittenAbout().getUsername(), TUTOR_USERNAME);
 			assertEquals(currentRating.getCourseOffering().getCourseOfferingID(), CO_ID);
 			
+			//check to make sure the appropriate error was registered.
 			try {
-				rating = service.createRating(currentRating.getRatingValue(), currentRating.getWrittenAbout().getUsername(), currentRating.getCourseOffering().getCourseOfferingID());	
+				service.createRating(currentRating.getRatingValue(), currentRating.getWrittenAbout().getUsername(), currentRating.getCourseOffering().getCourseOfferingID());	
 			} catch(IllegalArgumentException e) {error = e.getMessage();}
 					
 			assertEquals(RATING_BAD_TOOLARGE, currentRating.getRatingValue());
@@ -469,8 +493,8 @@ public class ReviewBackendTest {
 			setMockOutputRatingMakeIntoList();
 			List<Rating> ratingsList = new ArrayList<>();
 			String error = "";
-			Rating rating = new Rating();
-			
+
+			//Create a review with a negative rating.
 			try {
 				ratingsList = service.getAllRatings();
 			} catch(IllegalArgumentException e) {fail();}
@@ -481,8 +505,9 @@ public class ReviewBackendTest {
 			assertEquals(currentRating.getWrittenAbout().getUsername(), TUTOR_USERNAME);
 			assertEquals(currentRating.getCourseOffering().getCourseOfferingID(), CO_ID);
 			
+			//Make sure the correct error was found
 			try {
-				rating = service.createRating(currentRating.getRatingValue(), currentRating.getWrittenAbout().getUsername(), currentRating.getCourseOffering().getCourseOfferingID());	
+				service.createRating(currentRating.getRatingValue(), currentRating.getWrittenAbout().getUsername(), currentRating.getCourseOffering().getCourseOfferingID());	
 			} catch(IllegalArgumentException e) {error = e.getMessage();}
 					
 			assertEquals(RATING_BAD_NULL, currentRating.getRatingValue());
@@ -496,8 +521,8 @@ public class ReviewBackendTest {
 			setMockOutputTextMakeIntoList();
 			List<Text> textList = new ArrayList<>();
 			String error = "";
-			Text rating = new Text();
 			
+			//Check to make sure the description was not too long.
 			try {
 				textList = service.getAllTexts();
 			} catch(IllegalArgumentException e) {fail();}
@@ -508,8 +533,9 @@ public class ReviewBackendTest {
 			assertEquals(currentText.getWrittenAbout().getUsername(), TUTOR_USERNAME);
 			assertEquals(currentText.getCourseOffering().getCourseOfferingID(), CO_ID);
 			
+			//Check to see if the appropriate error was found.
 			try {
-				rating = service.createText(currentText.getDescription(), currentText.getIsAllowed(), currentText.getWrittenAbout().getUsername(), currentText.getCourseOffering().getCourseOfferingID());	
+				service.createText(currentText.getDescription(), currentText.getIsAllowed(), currentText.getWrittenAbout().getUsername(), currentText.getCourseOffering().getCourseOfferingID());	
 			} catch(IllegalArgumentException e) {error = e.getMessage();}
 					
 			assertEquals(TEXT_BAD_EMPTY, currentText.getDescription());
@@ -523,8 +549,8 @@ public class ReviewBackendTest {
 			setMockOutputTextMakeIntoList();
 			List<Text> textList = new ArrayList<>();
 			String error = "";
-			Text rating = new Text();
 			
+			//Check if description written is empty..
 			try {
 				textList = service.getAllTexts();
 			} catch(IllegalArgumentException e) {fail();}
@@ -536,19 +562,102 @@ public class ReviewBackendTest {
 			assertEquals(currentText.getCourseOffering().getCourseOfferingID(), CO_ID);
 			
 			try {
-				rating = service.createText(currentText.getDescription(), currentText.getIsAllowed(), currentText.getWrittenAbout().getUsername(), currentText.getCourseOffering().getCourseOfferingID());	
+				service.createText(currentText.getDescription(), currentText.getIsAllowed(), currentText.getWrittenAbout().getUsername(), currentText.getCourseOffering().getCourseOfferingID());	
 			} catch(IllegalArgumentException e) {error = e.getMessage();}
-					
+			
+			//Check to make sure the correect error was found.
 			assertEquals(TEXT_BAD_TOO_LONG, currentText.getDescription());
 			assertEquals(ErrorStrings.Invalid_Text_Description, error);
 		}
 		
+		//Check for a non existant user reviewee
 		@Test
-		public void getListOfReviewsByCourseOfferingId() {
+		public void createTextNullUserreviewee() {
+			setMockOutputTextMakeIntoList();
+			List<Text> textList = new ArrayList<>();
+			String error = "";
+			Text text = new Text();
 			
+			//test to make sure a text can not be created unless a target reviewee existed.
+			try {
+				textList = service.getAllTexts();
+			} catch(IllegalArgumentException e) {fail();}
+					
+			try {
+				text = service.createText(textList.get(4).getDescription(), textList.get(4).getIsAllowed(), null, textList.get(4).getCourseOffering().getCourseOfferingID());	
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+							
+			assertEquals(ErrorStrings.Invalid_Text_RevieweeUsername, error);
+			assertEquals(text.getWrittenAbout(), null);
+		}
+		
+		//Check for incorrect course offering id
+		@Test
+		public void createTextNonExistanceCourseOffering() {
+			setMockOutputTextMakeIntoList();
+			List<Text> textList = new ArrayList<>();
+			String error = "";
+							
+			//Check for what happens when creating text with no course offering existing.
+			try {
+				textList = service.getAllTexts();
+			} catch(IllegalArgumentException e) {fail();}
+					
+			try {
+				service.createText(textList.get(0).getDescription(), textList.get(0).getIsAllowed(), textList.get(0).getWrittenAbout().getUsername(), 101);	
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+							
+			assertEquals(ErrorStrings.Invalid_Text_FindCourseOffering, error);
+		}
+		
+		//Check for a non existent user reviewer
+		@Test
+		public void createRatingNullUserreviewee() {
+			setMockOutputRatingMakeIntoList();
+			List<Rating> ratingList = new ArrayList<>();
+			String error = "";
+			Rating rating = new Rating();
+							
+			//create a rating with no user attached
+			try {
+				ratingList = service.getAllRatings();
+			} catch(IllegalArgumentException e) {fail();}
+					
+			try {
+				rating = service.createRating(ratingList.get(0).getRatingValue(), null, ratingList.get(0).getCourseOffering().getCourseOfferingID());	
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+							
+			//Tests check to make sure the user error was sent and that nothing was created.
+			assertEquals(ErrorStrings.Invalid_Text_RevieweeUsername, error);
+			assertEquals(rating.getWrittenAbout(), null);
+		}
+				
+		//Check for incorrect course offering id
+		@Test
+		public void createReviewNonExistanceCourseOffering() {
+			setMockOutputRatingMakeIntoList();
+			List<Rating> ratingList = new ArrayList<>();
+			String error = "";
+		
+			//Create a rating with the incorrect course id.
+			try {
+				ratingList = service.getAllRatings();
+			} catch(IllegalArgumentException e) {fail();}
+			try {
+				//Check for error -> no course id.
+				service.createRating(ratingList.get(0).getRatingValue(), ratingList.get(0).getWrittenAbout().getUsername(), 199);	
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+									
+			assertEquals(ErrorStrings.Invalid_Rating_FindCourseOffering, error);
+		}
+		
+		//Get all the reviews that are written about a given course offering.
+		@Test
+		public void getListOfTextsByCourseOfferingId() {
+			
+			//Set up lists
 			Set<Review> reviewList = new HashSet<>();
 			String error = "";
-			Text rating = new Text();
 			
 			List<CourseOffering> courseOffering = service.getAllCourseOfferings();
 			
@@ -558,13 +667,43 @@ public class ReviewBackendTest {
 			
 			assertEquals(2, courseOfferingId);
 			
+			CourseOffering courseoffering = courseOffering.get(0);
+			
 			try {
-				reviewList = service.getAllReviewsByCO(CO_ID2);
+				reviewList = service.getAllReviewsByCO(courseoffering.getCourseOfferingID());
 			} catch(IllegalArgumentException e) {error = e.getMessage();}
 			
+			//Check if the call returned a list and the size.
 			assertEquals(error, "");
-			assertEquals(1, reviewList.size());
+			assertEquals(null, reviewList);
 		
 		}
+		
+		//Get all the reviews that are written about a given tutoring.
+		@Test
+		public void getListOfReviewByTutorName() {
+			
+			//Create the review set
+			Set<Review> reviewList = new HashSet<>();
+			String error = "";
+				
+			List<Tutor> tutorList = service.getAllTutors();
+					
+			//Preliminary tests
+			assertEquals(tutorList.size(), 2);
+			assertEquals(tutorList.get(1).getUsername(), USER_USERNAME2);
+
+			Tutor tutor = tutorList.get(1);
+			System.out.print(tutor.getUsername());
+			
+			try {
+				reviewList = service.getAllReviewsByTutor(tutorList.get(1).getUsername());
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+			
+			//After tests
+			assertEquals(error, "");
+			assertEquals(null, reviewList);
+		}
 }
+
 	

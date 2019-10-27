@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -56,7 +57,7 @@ public abstract class Role{
 
 	private Set<Review> review;
 
-	@OneToMany(mappedBy="writtenAbout" )
+	@OneToMany(mappedBy="writtenAbout", cascade={CascadeType.ALL} )
 	public Set<Review> getReview() {
 		return this.review;
 	}

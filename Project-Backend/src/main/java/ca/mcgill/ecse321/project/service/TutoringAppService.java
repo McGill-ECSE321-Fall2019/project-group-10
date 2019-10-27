@@ -430,6 +430,10 @@ public class TutoringAppService {
 		if(ratingValue < 0 || ratingValue > 5) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
 		}
+		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)); 
+		
+		if(c == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_FindCourseOffering);
 		
 		Rating rating = new Rating();
 		
@@ -440,11 +444,6 @@ public class TutoringAppService {
 		else 
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_Reviewee);
 
-		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID)); 
-		
-		if(c == null)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_FindCourseOffering);
-		
 		try {
 			rating.setRatingValue(ratingValue);
 		} catch(RuntimeException e) {
@@ -1247,18 +1246,19 @@ public class TutoringAppService {
 	@Transactional
 	public Set<Review> getAllReviewsByTutor(String tutorUsername){
 		
-		Tutor tutor = getTutor(tutorUsername);
+		Tutor tutor = tutorRepository.findTutorByUsername(tutorUsername);
 		if(tutor == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
 		
 		return tutor.getReview();
 	}
-				
+	
 	@Transactional
-	public Set<Review> getAllReviewsByCO(int courseOId){
-		CourseOffering courseOffering = getCourseOffering(courseOId);
+	public Set<Review> getAllReviewsByCO(int courseOId) throws IllegalArgumentException {
+		CourseOffering courseOffering = courseOfferingRepository.findCourseOfferingByCourseOfferingID(courseOId);
+		
 		if(courseOffering == null) {
-			throw new IllegalArgumentException("test");//ErrorStrings.Invalid_DTO_CourseOffering);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
 		}
 		return courseOffering.getReview();
 	}
