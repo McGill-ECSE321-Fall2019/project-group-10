@@ -87,6 +87,10 @@ public abstract class Role{
 	private boolean loggedIn;
 
 	public boolean isLoggedIn() { return loggedIn;}
+	
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
 
 	public void logIn() { loggedIn = true; }
 
