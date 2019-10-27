@@ -306,7 +306,7 @@ public class TutoringServiceRestController {
 	 */
 	
 	@PutMapping(value = {"/availability/update", "/availability/update/"})
-	public AvailabilityDTO updateAvailability(@RequestParam(name = "id") Integer aId, @RequestParam(name = "date") Date aD, @RequestParam(name = "time") Time aT, @RequestParam(name = "tutorUsername") String tutorUsername) throws IllegalArgumentException{
+	public AvailabilityDTO updateAvailability(@RequestParam(name = "id") Integer aId, @RequestParam(name = "date") Date aD, @RequestParam(name = "startTime") Time aT, @RequestParam(name = "tutorUsername") String tutorUsername) throws IllegalArgumentException{
 		//Checks
 		if(service.getAvailability(aId) == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Availability);
@@ -314,6 +314,27 @@ public class TutoringServiceRestController {
 		Availability availability = service.updateAvailability(aId, aD, aT, tutorUsername);
 		return convertToDto(availability);
 	}
+	
+	//if session doesn't have a room assigned, this method will randomly assign a room. Unless there are no rooms available.
+	@PutMapping(value = {"/session/room", "/session/room/"})
+	public List<SessionDTO> updateRoom(@RequestParam(name = "date") Date aD, @RequestParam(name = "startTime") Time aT,@RequestParam(name="endTime") Time eT) throws IllegalArgumentException{
+		boolean isRoomAvailable = checkRoomAvailability(aD,aT, eT );
+		List<SessionDTO> sessionDtos = new ArrayList<SessionDTO>();
+		List<RoomDTO> roomDtos = new ArrayList<>();
+		Room r = new Room();
+
+			for (Session s : service.getAllSessions()) {
+				if(s.getRoom()==null && isRoomAvailable) {
+					s.setRoom(r);
+					roomDtos.add(convertToDto(r));
+					
+				}
+				sessionDtos.add(convertToDto(s));
+			}
+			return sessionDtos;
+	}
+	
+	
 	
 	@PutMapping(value = {"/session/update", "/session/update/"})
 	public SessionDTO update(@RequestParam(name = "sessionId") Integer sId, @RequestParam(name = "date") Date sD, @RequestParam(name = "time") Time sT, @RequestParam(name = "amountPaid") double amountPaid, @RequestParam(name = "studentUser") String studentUser, @RequestParam(name = "tutorUser") String tutorUser, @RequestParam(name = "coId") Integer coId) throws IllegalArgumentException{
