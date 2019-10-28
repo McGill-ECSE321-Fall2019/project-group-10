@@ -1,18 +1,11 @@
 package ca.mcgill.ecse321.project.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
 
 import ca.mcgill.ecse321.project.model.TSUser;
 import org.hibernate.validator.constraints.UniqueElements;
 
-import javax.persistence.ManyToOne;
-
 import java.util.Set;
-import javax.persistence.OneToMany;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
@@ -29,7 +22,9 @@ public abstract class Role{
 	}
 
 	private String username;
-	
+
+
+	@Column(unique = true)
 	public String getUsername() {
 		return this.username;
 	}
@@ -83,13 +78,11 @@ public abstract class Role{
 		this.authoredReview = authoredReviews;
 	}
 
+
 	private boolean loggedIn;
 
+	@Transient
 	public boolean isLoggedIn() { return loggedIn;}
-	
-	public void setLoggedIn(boolean loggedIn) {
-		this.loggedIn = loggedIn;
-	}
 
 	public void logIn() { loggedIn = true; }
 
