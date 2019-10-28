@@ -29,8 +29,7 @@ public abstract class Role{
 	}
 
 	private String username;
-
-	@UniqueElements
+	
 	public String getUsername() {
 		return this.username;
 	}
