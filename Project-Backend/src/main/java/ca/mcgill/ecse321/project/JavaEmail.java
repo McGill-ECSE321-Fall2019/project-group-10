@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.project;
 
 import ca.mcgill.ecse321.project.model.CourseOffering;
+import ca.mcgill.ecse321.project.model.Tutor;
 import com.sun.mail.smtp.SMTPTransport;
 
 import javax.activation.DataHandler;
@@ -25,13 +26,18 @@ public class JavaEmail {
 
     private Session mailSession;
     private String targetEmail = "";
-    private String emailTitle = "";
-    private String emailDescription = "";
 
     public static void NotifyTutor(String tutorEmail, ca.mcgill.ecse321.project.model.Session session) throws  MessagingException
     {
         JavaEmail javaEmail = CreateEmail(tutorEmail);
         MimeMessage emailMessage = javaEmail.draftTutorEmailMessage(session);
+        javaEmail.sendEmail(emailMessage);
+    }
+
+    public static void NotifyStudent(String tutorEmail, ca.mcgill.ecse321.project.model.Session session) throws  MessagingException
+    {
+        JavaEmail javaEmail = CreateEmail(tutorEmail);
+        MimeMessage emailMessage = javaEmail.draftStudentEmailMessage(session);
         javaEmail.sendEmail(emailMessage);
     }
 
@@ -55,32 +61,35 @@ public class JavaEmail {
         String emailSubject = "New Tutoring Booking";
         String emailBody = "A new booking has been reserved on "
                 + session.getDate() + " " + session.getTime()
-                + ".\n The class demanded is " + session.getCourseOffering().getCourse().getCourseName()
+                + ".\n The class demanded is" + session.getCourseOffering().getCourse().getCourseName()
+                //TODO Insert correct api call here
                 + "\n<a href='www.google.com'>Click here to confirm</a>";
+        MimeMessage emailMessage = draftEmail(emailSubject, emailBody);
+        return emailMessage;
+    }
+
+    private MimeMessage draftStudentEmailMessage(ca.mcgill.ecse321.project.model.Session session) throws MessagingException {
+        String emailSubject = "Session confirmed";
+        String emailBody = "Your session, "
+                + session.getCourseOffering()
+                + "at " + session.getTime()
+                + " on " + session.getDate()
+                + " with " + session.getTutor().getUsername()
+                + ", has been confirmed.";
+        MimeMessage emailMessage = draftEmail(emailSubject, emailBody);
+        return emailMessage;
+    }
+
+    private MimeMessage draftEmail( String emailSubject, String emailBody) throws MessagingException
+    {
         MimeMessage emailMessage = new MimeMessage(mailSession);
         emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(targetEmail));
         emailMessage.setSubject(emailSubject);
         emailMessage.setContent(emailBody, "text/html");
-
         return emailMessage;
     }
 
-    private MimeMessage draftStudentEmailMessage() throws MessagingException {
-        String[] toEmails = { "ypoulmarck@gmail.com" };
-        String emailSubject = "Test email subject";
-        String emailBody = "This is an email sent by <b>//howtodoinjava.com</b>.";
-        MimeMessage emailMessage = new MimeMessage(mailSession);
-
-        emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress());
-
-        emailMessage.setSubject(emailSubject);
-
-        emailMessage.setContent(emailBody, "text/html");
-
-        return emailMessage;
-    }
-
-    public void sendEmail(MimeMessage emailMessage) throws MessagingException {
+    private void sendEmail(MimeMessage emailMessage) throws MessagingException {
 
         Transport transport = mailSession.getTransport("smtp");
         transport.connect(EMAIL_HOST, SENDER_EMAIL, SENDER_PASSWORD);
