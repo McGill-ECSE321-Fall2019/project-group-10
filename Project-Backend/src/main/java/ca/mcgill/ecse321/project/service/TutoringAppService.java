@@ -1392,6 +1392,7 @@ public class TutoringAppService {
 		
 	}
 	
+	@Transactional
 	public Role getRoleByUsername(String username) {
 		Role role = null;
 		try {
@@ -1405,5 +1406,15 @@ public class TutoringAppService {
 		}
 
 		return role;
+	}
+	
+	@Transactional
+	public Set<Review> getAllReviewsByCO(int courseOId) throws IllegalArgumentException {
+		CourseOffering courseOffering = courseOfferingRepository.findCourseOfferingByCourseOfferingID(courseOId);
+		
+		if(courseOffering == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
+		}
+		return courseOffering.getReview();
 	}
 }
