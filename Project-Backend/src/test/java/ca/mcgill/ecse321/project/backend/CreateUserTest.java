@@ -2,30 +2,34 @@ package ca.mcgill.ecse321.project.backend;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.Invocation;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import ca.mcgill.ecse321.project.ErrorStrings;
-import ca.mcgill.ecse321.project.dao.*;
-import ca.mcgill.ecse321.project.model.*;
+import ca.mcgill.ecse321.project.dao.AvailabilityRepository;
+import ca.mcgill.ecse321.project.dao.CourseOfferingRepository;
+import ca.mcgill.ecse321.project.dao.CourseRepository;
+import ca.mcgill.ecse321.project.dao.ReviewRepository;
+import ca.mcgill.ecse321.project.dao.RoomRepository;
+import ca.mcgill.ecse321.project.dao.SessionRepository;
+import ca.mcgill.ecse321.project.dao.StudentRepository;
+import ca.mcgill.ecse321.project.dao.TutorRepository;
+import ca.mcgill.ecse321.project.dao.UniversityRepository;
+import ca.mcgill.ecse321.project.dao.UserRepository;
+import ca.mcgill.ecse321.project.model.Role;
+import ca.mcgill.ecse321.project.model.Student;
+import ca.mcgill.ecse321.project.model.TSUser;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -240,7 +244,21 @@ public class CreateUserTest {
 
 
 	//	----------------------------------------------------- Student tests ------------------------------------------------
+//	tests to see if the student is a valid student
+	@Test
+	public void testCreateValidStudent() {
+		Student s = null;
+		try {
+			s = service.createStudent(STUDENT_USERNAME,STUDENT_PASSWORD,STUDENT_EMAIL);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		assertEquals(STUDENT_USERNAME,s.getUsername());
+		assertEquals(STUDENT_PASSWORD,s.getPassword());
+		assertEquals(USER_EMAIL,s.getUser().getEmail());
 
+	}
 	@Test
 	public void testCreateStudentNullName() {
 		String error = null;
@@ -261,7 +279,7 @@ public class CreateUserTest {
 	public void testCreateStudentInvalidName() {
 		String error = null;
 		try {
-			service.createStudent(" ", STUDENT_PASSWORD, STUDENT_EMAIL);
+			service.createStudent("", STUDENT_PASSWORD, STUDENT_EMAIL);
 		}
 
 		catch (IllegalArgumentException e) {
@@ -333,21 +351,7 @@ public class CreateUserTest {
 	}
 
 	
-//	tests to see if the student is a valid student
-	@Test
-	public void testCreateValidStudent() {
-		Student s = null;
-		try {
-			s = service.createStudent(STUDENT_USERNAME,STUDENT_PASSWORD,STUDENT_EMAIL);
-		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
-			fail();
-		}
-		assertEquals(STUDENT_USERNAME,s.getUsername());
-		assertEquals(STUDENT_PASSWORD,s.getPassword());
-		assertEquals(STUDENT_EMAIL,s.getUser().getEmail());
 
-	}
 
 
 }

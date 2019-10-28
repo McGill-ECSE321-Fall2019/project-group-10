@@ -1062,7 +1062,7 @@ public class TutoringAppService {
 		}
 		
 		//Special phone number check.
-		if(!phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
+		if(phoneNum==null || !phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_User_PhoneNumber);
 		}
 

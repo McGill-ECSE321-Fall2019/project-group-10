@@ -6,7 +6,9 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
@@ -314,7 +316,8 @@ public class TutoringServiceRestController {
 		Availability availability = service.updateAvailability(aId, aD, aT, tutorUsername);
 		return convertToDto(availability);
 	}
-	
+
+	/*
 	//if session doesn't have a room assigned, this method will randomly assign a room. Unless there are no rooms available.
 	@PutMapping(value = {"/session/room", "/session/room/"})
 	public List<SessionDTO> updateRoom(@RequestParam(name = "date") Date aD, @RequestParam(name = "startTime") Time aT,@RequestParam(name="endTime") Time eT) throws IllegalArgumentException{
@@ -334,7 +337,38 @@ public class TutoringServiceRestController {
 			return sessionDtos;
 	}
 	
+	*/
 	
+	
+	
+	// if session doesn't have a room assigned, this method will randomly assign a
+	// room. Unless there are no rooms available.
+	@PutMapping(value = { "/session/room/{sessionid}", "/session/room/{sessionid}/" })
+	public Set<SessionDTO> updateRoom(@PathVariable("sessionid") int sId, @RequestParam(name = "date") Date aD,
+			@RequestParam(name = "startTime") Time aT) throws IllegalArgumentException {
+		
+		boolean isRoomAvailable = service.isRoomAvailable(aD, aT);
+		Set<SessionDTO> sessionDtos = new HashSet<SessionDTO>();
+		List<RoomDTO> roomDtos = new ArrayList<>();
+
+		if (!isRoomAvailable)
+			throw new IllegalArgumentException("There are no rooms available!");
+
+		Session s = service.getSession(sId);
+		if (s.getRoom() == null) {
+			for (Room r : service.getAllRooms()) {
+				if (r.getSession() == null) {
+					s.setRoom(r);
+					r.addSession(s);
+					roomDtos.add(convertToDto(r));
+					break;
+				}
+			}
+			sessionDtos.add(convertToDto(s));
+
+		}
+		return sessionDtos;
+	}
 	
 	@PutMapping(value = {"/session/update", "/session/update/"})
 	public SessionDTO update(@RequestParam(name = "sessionId") Integer sId, @RequestParam(name = "date") Date sD, @RequestParam(name = "time") Time sT, @RequestParam(name = "amountPaid") double amountPaid, @RequestParam(name = "studentUser") String studentUser, @RequestParam(name = "tutorUser") String tutorUser, @RequestParam(name = "coId") Integer coId) throws IllegalArgumentException{
