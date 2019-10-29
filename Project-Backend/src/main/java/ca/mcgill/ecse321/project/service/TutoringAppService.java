@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.project.service;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
@@ -1467,13 +1467,10 @@ public class TutoringAppService {
 	}
 	
 	@Transactional
-	public TSUser getReviewer(Review review) {
-		//always run this error.
+	public void getReviewer(Review review) {
 		if(true) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Review_CANTRETURN);
 		}
-		
-		TSUser user = new TSUser();
-		return user;
+
 	}
 }
