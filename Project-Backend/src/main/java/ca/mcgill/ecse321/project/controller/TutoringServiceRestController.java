@@ -6,6 +6,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,6 +162,29 @@ public class TutoringServiceRestController {
 		TutorDTO tDTO = convertToDto(tutor);
 
 		return tDTO;
+	}
+	
+	@GetMapping(value = {"/allavailabilities/{tutorname}", "/allavailabilities/{tutorname}/"})
+	public List<AvailabilityDTO> getAllAvailabilitiesByTutor(@PathVariable("tutorname") String username) throws IllegalArgumentException {
+		
+		if (username == null) {
+			throw new IllegalArgumentException("Tutor name invalid");
+		}
+		
+		List<AvailabilityDTO> aDtos = new ArrayList<>();
+		
+		Tutor t = service.findTutorByUsername(username);
+		
+		Iterator<Availability> aIt = t.getAvailability().iterator();
+		
+		while(aIt.hasNext()) {
+			Availability a = aIt.next();
+			
+			// convert model class to a data transfer object
+			aDtos.add(convertToDto(a));
+		}
+		return aDtos;
+		
 	}
 
 	// ******************************************* PUT AND POST MAPPINGS ********************************************* \\
