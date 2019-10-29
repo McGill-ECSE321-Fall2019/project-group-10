@@ -347,7 +347,7 @@ public class TutoringAppService {
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_RevieweeUsername);
 		}
-		if(description == null || description.equals("")){
+		if(description == null || description.equals("") || description.length() > 250){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Description);
 		}
 		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
@@ -438,6 +438,9 @@ public class TutoringAppService {
 
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_RevieweeUsername);
+		}
+		if(ratingValue > 5 || ratingValue < 1) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
 		}
 		
 		Rating rating = new Rating();
@@ -1416,5 +1419,61 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
 		}
 		return courseOffering.getReview();
+	}
+	
+	@Transactional
+	public Room getFirstAvailableRoom(Date date, Time time) {
+		// check all rooms
+		boolean available;
+		
+		Set<Session> sessions = new HashSet<>();
+		
+		List<Room> rooms = getAllRooms();
+		if(rooms != null) {
+			for(Room r: rooms) {
+				available = true;
+				
+				//Check if a session is assigned to a room.
+				sessions = r.getSession();
+				if(sessions == null) {
+					//if no session exists for room, the room is empty
+					return r;
+				}
+				for(Session s : sessions) {
+					//just care about the time
+					if(s.getTime() == time && s.getDate() == date) {
+						available = false;
+					}
+				}
+				//return the room  if no dates exist at the given time;
+				if(available) return r;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional
+	public Session updateSessionWithRoomFromTutorSuccessAndRoomAvailable(int sessionid, Room room) {
+		Session session = sessionRepository.findSessionBySessionID(sessionid);
+		if(session == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
+		}
+		
+		if(room == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Room);
+		}
+		session.setRoom(room);
+		return session;
+	}
+	
+	@Transactional
+	public TSUser getReviewer(Review review) {
+		//always run this error.
+		if(true) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Review_CANTRETURN);
+		}
+		
+		TSUser user = new TSUser();
+		return user;
 	}
 }

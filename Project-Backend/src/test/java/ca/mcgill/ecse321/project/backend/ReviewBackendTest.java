@@ -703,7 +703,21 @@ public class ReviewBackendTest {
 			assertEquals(null, reviewList);
 		}
 		
-		
+		//Attempt to get writer of the review - no method exists - this test is just used to prove that no matter what - cannot access user.
+		@Test
+		public void getAuthorOfTheReview() {
+			
+			//Create the review set
+			Review review = new Text();
+			String error = "";
+			TSUser user = new TSUser();
+			
+			try {
+				user = service.getReviewer(review);
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+				
+			assertEquals(error, ErrorStrings.Invalid_Review_CANTRETURN);
+		}		
 }
 
 	
