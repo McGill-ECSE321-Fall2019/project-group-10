@@ -162,6 +162,14 @@ public class TutoringServiceRestController {
 
 		return tDTO;
 	}
+	
+	// Check room availability
+
+	@GetMapping(value = {"/checkavailability", "/checkavailability/"})
+	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date,
+			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
+		return service.isRoomAvailable(date, startTime);
+	}
 
 	// ******************************************* PUT AND POST MAPPINGS ********************************************* \\
 	
@@ -215,15 +223,6 @@ public class TutoringServiceRestController {
 		return convertToDto(s);
 		
 	}
-
-	// Check room availability
-
-	@PostMapping(value = {"/checkavailability", "/checkavailability/"})
-	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date,
-			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
-		return service.isRoomAvailable(date, startTime);
-	}
-
 
 	@PostMapping(value = {"/login", "/login/"})
 	public boolean login(@RequestParam String username, @RequestParam String password) {
