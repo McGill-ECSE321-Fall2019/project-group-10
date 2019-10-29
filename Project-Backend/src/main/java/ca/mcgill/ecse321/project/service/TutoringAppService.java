@@ -347,7 +347,7 @@ public class TutoringAppService {
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_RevieweeUsername);
 		}
-		if(description == null || description.equals("")){
+		if(description == null || description.equals("") || description.length() > 250){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Description);
 		}
 		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
@@ -438,6 +438,9 @@ public class TutoringAppService {
 
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_RevieweeUsername);
+		}
+		if(ratingValue > 5 || ratingValue < 1) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
 		}
 		
 		Rating rating = new Rating();
