@@ -1297,6 +1297,26 @@ public class TutoringAppService {
 		return t;
 	}
 	
+  
+	// find a student by the username
+  @Transactional
+	public Student findStudentByUsername(String username) {
+		Student s = new Student();
+		
+		// find the correct tutor by the given username
+		s = studentRepository.findStudentByUsername(username);
+		
+		// check if it is null
+		if (s == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Student);
+		
+		// otherwise return the found student
+		return s;
+	}
+  
+  
+  
+  
 	// check is there is a room available at the give time
   @Transactional
 	public boolean isRoomAvailable(Date date, Time startTime) {

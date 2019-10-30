@@ -212,12 +212,18 @@ public class TutoringServiceRestController {
 	}
 	
 // ******************************************** POST MAPPINGS ********************************************** \\
-//	Uses request parameter to get the Age, name, email, and phone number of the user.
-	@PostMapping(value = { "/user/{name}/{userAge}/{userName}/{userEmail}/{userPhoneNumber}", "/user/{name}/{userAge}/{userName}/{userEmail}/{userPhoneNumber}" })
-	public UserDTO registerUser(@PathVariable("name") String name, @PathVariable("userAge") int userAge, @PathVariable("userName") String userName, @PathVariable("userEmail") String userEmail, @PathVariable("userPhoneNumber") String userPhoneNumber) throws IllegalArgumentException {
-		TSUser user = service.createUser(userName, userEmail, userAge, userPhoneNumber); //link the user to the student
+//	Uses request parameter to get the name,age,user name,password,email,phone number of the user.
+	@PostMapping(value = { "/user/{name}/{userAge}/{userName}/{userPassword}{userEmail}/{userPhoneNumber}", "/user/{name}/{userAge}/{userName}/{userEmail}/{userPhoneNumber}" })
+	public UserDTO registerUser(@PathVariable("name") String name, @PathVariable("userAge") int userAge, @PathVariable("userName") String userName, @PathVariable("userEmail") String userEmail, @PathVariable("userPhoneNumber") String userPhoneNumber, @PathVariable("userPassword") String userPassword) throws IllegalArgumentException {
+		
+		if(service.findStudentByUsername(userName)!=null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Student);
+		
+		TSUser user = service.createUser(name, userEmail, userAge, userPhoneNumber); 
 		Student student = new Student();
-		student.setUser(user);
+		student.setUser(user); //link the user to the student
+		student.setUsername(userName);
+		student.setPassword(userPassword);
 		return convertToDto(user);
 	}
 	
@@ -355,7 +361,8 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException("There are no rooms available!");
 
 		Session s = service.getSession(sId);
-		if (s.getRoom() == null) {
+		if (s.getRoom() == null) 
+			throw new IllegalArgumentException("Room is already assigned");
 			for (Room r : service.getAllRooms()) {
 				if (r.getSession() == null) {
 					s.setRoom(r);
@@ -365,9 +372,7 @@ public class TutoringServiceRestController {
 				}
 			}
 			sessionDtos.add(convertToDto(s));
-
-		}
-		return sessionDtos;
+			return sessionDtos;
 	}
 	
 	@PutMapping(value = {"/session/update", "/session/update/"})
