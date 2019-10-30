@@ -228,7 +228,7 @@ public class TutoringServiceRestController {
 	@PostMapping(value = {"/login", "/login/"})
 	public boolean login(@RequestParam String username, @RequestParam String password) {
 		Role role = service.getRoleByUsername(username);
-		if (role.isPassword(password) && !role.isLoggedIn()) {
+		if (role != null && role.isPassword(password) && !role.isLoggedIn()) {
 			role.logIn();
 			return true;
 		}
@@ -238,7 +238,8 @@ public class TutoringServiceRestController {
 	@PostMapping(value = {"/logout", "/logout/"})
 	public void logout(@RequestParam String username) {
 		Role role = service.getRoleByUsername(username);
-		role.logOut();
+		if(role != null)
+			role.logOut();
 	}
 	
 	
