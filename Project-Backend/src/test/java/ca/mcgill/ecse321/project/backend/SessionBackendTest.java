@@ -175,7 +175,6 @@ public class SessionBackendTest {
 			Room r = new Room();
 			r.setRoomNumber(ROOM_NUM);
 			
-			
 			rooms.add(r);
 			return rooms;
 		});
@@ -592,6 +591,36 @@ public class SessionBackendTest {
 		//check it was the correct error
 		assertEquals(error, "There is no room available at this time");
 		
+		
+	}
+	
+	//try to add first available room to the session.
+	@Test
+	public void testUpdateSessionWithAvailableRoomBooking() {
+		setMockOutputRoom();
+		
+		String error = null;
+		
+		Session session = new Session();
+		
+		try {
+			session = service.createSession(CO_ID, SESSION_DATE, SESSION_TIME, SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		try {
+			//Now we must update the session with adding a room.
+			session.setRoom(service.getFirstAvailableRoom(SESSION_DATE, SESSION_TIME));
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		int roomId = session.getRoom().getRoomNumber();
+
+		//check it was the correct error
+		assertEquals(error, null);
+		assertEquals(session.getRoom().getRoomNumber(), roomId);
 		
 	}
 	

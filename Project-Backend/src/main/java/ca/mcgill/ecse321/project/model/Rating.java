@@ -14,14 +14,6 @@ public class Rating extends Review{
 
 	public void setRatingValue(int ratingValue) {
 
-		if(ratingValue > 5 || ratingValue < 1) {
-
-			throw new RuntimeException();
-
-		} else {
-
-			this.ratingValue = ratingValue;
-
-		}
+		this.ratingValue = ratingValue;
 	}
 }
