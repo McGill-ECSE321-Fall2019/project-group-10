@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.project.service;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
@@ -403,6 +403,20 @@ public class TutoringAppService {
 	@Transactional
 	public List<Text> getAllTexts() {
 		return toList(textRepository.findAll());
+	}
+	
+	//Get all texts that are allowed.
+	@Transactional
+	public List<Text> getAllTextsThatAreAllowed() {
+		List<Text> textList = toList(textRepository.findAll());
+		List<Text> cleanList = new ArrayList<>();
+		
+		for(Text t : textList) {
+			if(t.getIsAllowed()) {
+				cleanList.add(t);
+			}
+		}
+		return cleanList;
 	}
 	
 	//Checking to make sure we can get text.
@@ -1419,5 +1433,58 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
 		}
 		return courseOffering.getReview();
+	}
+	
+	@Transactional
+	public Room getFirstAvailableRoom(Date date, Time time) {
+		// check all rooms
+		boolean available;
+		
+		Set<Session> sessions = new HashSet<>();
+		
+		List<Room> rooms = getAllRooms();
+		if(rooms != null) {
+			for(Room r: rooms) {
+				available = true;
+				
+				//Check if a session is assigned to a room.
+				sessions = r.getSession();
+				if(sessions == null) {
+					//if no session exists for room, the room is empty
+					return r;
+				}
+				for(Session s : sessions) {
+					//just care about the time
+					if(s.getTime() == time && s.getDate() == date) {
+						available = false;
+					}
+				}
+				//return the room  if no dates exist at the given time;
+				if(available) return r;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional
+	public Session updateSessionWithRoomFromTutorSuccessAndRoomAvailable(int sessionid, Room room) {
+		Session session = sessionRepository.findSessionBySessionID(sessionid);
+		if(session == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
+		}
+		
+		if(room == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Room);
+		}
+		session.setRoom(room);
+		return session;
+	}
+	
+	@Transactional
+	public void getReviewer(Review review) {
+		if(true) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Review_CANTRETURN);
+		}
+
 	}
 }

@@ -341,7 +341,7 @@ public class ReviewBackendTest {
 			//add another texst with a unique id
 			Text text4 = new Text();
 			text4.setDescription(TEXT_BAD_TOO_LONG);
-			text4.setIsAllowed(false);
+			text4.setIsAllowed(true);
 			text4.setCourseOffering(courseOffering1);
 			text4.setWrittenAbout(tutor2);
 			textList.add(text4);
@@ -409,7 +409,24 @@ public class ReviewBackendTest {
 		
 		// Check to make sure all the tests are present.
 		@Test
-		public void getAllTexts() {
+		public void getAllTextsWithoutBannedOnes() {
+			setMockOutputTextMakeIntoList();
+			
+			List<Text> textList = new ArrayList<>();
+			
+			//get all the texts that have been written.
+			try {
+				textList = service.getAllTextsThatAreAllowed();
+			} catch(IllegalArgumentException e) {fail();}
+					
+			assertEquals(textList.size(), 2);
+			assertEquals(textList.get(0).getDescription(), TEXT_GOOD_DESCRIPTION);
+			assertEquals(textList.get(0).getIsAllowed(), true);
+		}
+		
+		// Check to make sure all the tests are present.
+		@Test
+		public void getAllTextsIncludingBannedOnes() {
 			setMockOutputTextMakeIntoList();
 			
 			List<Text> textList = new ArrayList<>();
@@ -703,7 +720,22 @@ public class ReviewBackendTest {
 			assertEquals(null, reviewList);
 		}
 		
+		//Attempt to get writer of the review - no method exists - this test is just used to prove that no matter what - cannot access user.
+		@Test
+		public void getAuthorOfTheReview() {
+			
+			//Create the review set
+			Review review = new Text();
+			String error = "";
+			
+			try {
+				service.getReviewer(review);
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+				
+			assertEquals(error, ErrorStrings.Invalid_Review_CANTRETURN);
+		}	
 		
+		                    
 }
 
 	
