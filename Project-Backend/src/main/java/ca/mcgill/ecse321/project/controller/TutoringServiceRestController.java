@@ -546,6 +546,7 @@ public class TutoringServiceRestController {
 		return aDTO;
 	}
 
+	//convert room model to the room DTO
 	private RoomDTO convertToDto(Room room) {
 
 		if (room == null) {
