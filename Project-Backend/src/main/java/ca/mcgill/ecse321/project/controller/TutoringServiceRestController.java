@@ -82,6 +82,48 @@ public class TutoringServiceRestController {
 		return convertToDtoSetup(tutor);
 	}
 	
+	//Create the given reviews - text and rating
+		@PostMapping(value = {"/setup/3", "/setup/3/"})
+		public CourseOfferingDTO setupCreateCourseOffering(@RequestParam("year") int year,
+				@RequestParam("courseId") int courseId) throws IllegalArgumentException {
+			
+			CourseOffering courseOffering = service.createCourseOffering(Term.Summer, year, courseId);
+			return convertToDto(courseOffering);
+		}
+	
+	//Create the given reviews - text and rating
+	@PostMapping(value = {"/setup/4", "/setup/4/"})
+	public ReviewDTO setupCreateReviewRating(@RequestParam("rating") int rating,
+			@RequestParam("tutorEmail") String tutorEmail,
+			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
+		
+		Tutor tutor = service.getTutor(tutorEmail);
+		if(tutor == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+		}
+		
+		Review reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
+		
+		return convertToDto(reviewRating);
+	}
+	
+
+	//Create the given reviews - text and rating
+	@PostMapping(value = {"/setup/5", "/setup/5/"})
+	public ReviewDTO setupCreateReviewText(@RequestParam("rating") int rating,
+			@RequestParam("tutorEmail") String tutorEmail,
+			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
+		
+		Tutor tutor = service.getTutor(tutorEmail);
+		if(tutor == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+		}
+		
+		Review reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
+		
+		return convertToDto(reviewRating);
+	}
+	
 // ******************************************** GET MAPPINGS ********************************************** \\
 	
 	

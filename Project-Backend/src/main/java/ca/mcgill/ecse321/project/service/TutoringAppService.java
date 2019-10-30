@@ -405,6 +405,20 @@ public class TutoringAppService {
 		return toList(textRepository.findAll());
 	}
 	
+	//Get all texts that are allowed.
+	@Transactional
+	public List<Text> getAllTextsThatAreAllowed() {
+		List<Text> textList = toList(textRepository.findAll());
+		List<Text> cleanList = new ArrayList<>();
+		
+		for(Text t : textList) {
+			if(t.getIsAllowed()) {
+				cleanList.add(t);
+			}
+		}
+		return cleanList;
+	}
+	
 	//Checking to make sure we can get text.
 	@Transactional
 	public Text getText(int id) {
