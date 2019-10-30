@@ -1,8 +1,5 @@
 package ca.mcgill.ecse321.project.dto;
 
-import ca.mcgill.ecse321.project.model.CourseOffering;
-import ca.mcgill.ecse321.project.model.Role;
-
 public class TextDTO extends ReviewDTO{
 
 	private boolean isAllowed;
