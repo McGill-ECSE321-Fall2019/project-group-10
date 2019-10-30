@@ -6,6 +6,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import ca.mcgill.ecse321.project.JavaEmail;
 import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dto.*;
 import ca.mcgill.ecse321.project.model.*;
@@ -268,6 +271,29 @@ public class TutoringServiceRestController {
 		TutorDTO tDTO = convertToDto(tutor);
 
 		return tDTO;
+	}
+	
+	@GetMapping(value = {"/allavailabilities/{tutorname}", "/allavailabilities/{tutorname}/"})
+	public List<AvailabilityDTO> getAllAvailabilitiesByTutor(@PathVariable("tutorname") String username) throws IllegalArgumentException {
+		
+		if (username == null) {
+			throw new IllegalArgumentException("Tutor name invalid");
+		}
+		
+		List<AvailabilityDTO> aDtos = new ArrayList<>();
+		
+		Tutor t = service.findTutorByUsername(username);
+		
+		Iterator<Availability> aIt = t.getAvailability().iterator();
+		
+		while(aIt.hasNext()) {
+			Availability a = aIt.next();
+			
+			// convert model class to a data transfer object
+			aDtos.add(convertToDto(a));
+		}
+		return aDtos;
+		
 	}
 
 	//Get mapping to get both the text and rating for the review. 1) Text 2) Rating
