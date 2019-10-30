@@ -1,15 +1,13 @@
 package ca.mcgill.ecse321.project.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import ca.mcgill.ecse321.project.model.TSUser;
-import javax.persistence.ManyToOne;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.Set;
-import javax.persistence.OneToMany;
 
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 public abstract class Role{
 	private int id;
@@ -25,13 +23,17 @@ public abstract class Role{
 
 	private String username;
 
+
+	@Column(unique = true)
+	public String getUsername() {
+		return this.username;
+	}
+
 	public void setUsername(String value) {
 		this.username = value;
 	}
 
-	public String getUsername() {
-		return this.username;
-	}
+	public boolean isPassword(String password) { return password.equals(getPassword()); }
 
 	private String password;
 
@@ -75,5 +77,15 @@ public abstract class Role{
 	public void setAuthoredReview(Set<Review> authoredReviews) {
 		this.authoredReview = authoredReviews;
 	}
+
+
+	private boolean loggedIn;
+
+	@Transient
+	public boolean isLoggedIn() { return loggedIn;}
+
+	public void logIn() { loggedIn = true; }
+
+	public void logOut() { loggedIn = false; }
 
 }

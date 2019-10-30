@@ -11,6 +11,7 @@ import java.sql.Time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class AvailabilityTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TutorRepository tutorRepository; 
+	@Autowired
+	private StudentRepository studentRepository; 
 	
 	private String USERNAME = "cmc";
 	private String PASSWORD = "dogs";
@@ -67,6 +72,8 @@ public class AvailabilityTest {
 		universityRepository.deleteAll();
 		availabilityRepository.deleteAll();
 		roleRepository.deleteAll();
+		tutorRepository.deleteAll();
+		studentRepository.deleteAll();
 		userRepository.deleteAll();
 	}
 	
@@ -76,7 +83,6 @@ public class AvailabilityTest {
 		
 		Date date = DATE;
 		Time time = TIME;
-		int id;
 		
 		try {
 			service.createUser("aName", EMAIL, 22, "5145555555");
@@ -93,9 +99,11 @@ public class AvailabilityTest {
 		assertEquals(1, allAvailabilities.size());
 		assertEquals(date.toString(), allAvailabilities.get(0).getDate().toString());
 		assertEquals(time.toString(), allAvailabilities.get(0).getTime().toString());
+		List<Availability> as = new ArrayList<>(service.getAllTutors().get(0).getAvailability());
+		assertEquals(as.get(0).getDate().toString(), date.toString());
 
 		date = new java.sql.Date(3333333333l);
-		id = allAvailabilities.get(0).getId();
+		int id = allAvailabilities.get(0).getId();
 		time = new java.sql.Time(123456798l);
 
 

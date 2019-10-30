@@ -1,9 +1,18 @@
 package ca.mcgill.ecse321.project.service;
 
+
 import java.sql.Date;
 import java.sql.Time;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Period;
 import java.util.ArrayList;
+
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,20 +66,29 @@ public class TutoringAppService {
 		if(time == null){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Time);
 		}
-			
-		// set the 
-		Availability availability = new Availability();
-		availability.setTime(time);
-		availability.setDate(date);
-		availability.setTutor(tutorRepository.findTutorByUsername(tName));
 		
-		if (availability.getTutor() == null){
+		
+		// set the 
+		Tutor t = tutorRepository.findTutorByUsername(tName);
+		
+		if (t == null){
 			
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Tutor);
 			
 		}
 		
+		Availability availability = new Availability();
+		availability.setTime(time);
+		availability.setDate(date);
+		
+		checkAvailabilityUniqueForTutor(t, availability);
+		
+		availability.setTutor(t);
 		availabilityRepository.save(availability);
+		
+		
+		t.getAvailability().add(availability);
+		tutorRepository.save(t);
 		return availability;
 	}
 
@@ -138,6 +156,7 @@ public class TutoringAppService {
 		boolean done = false;
 		Availability a = getAvailability(id);
 		if (a != null) {
+			a.getTutor().getAvailability().remove(a);
 			availabilityRepository.delete(a);
 			done = true;
 		}
@@ -152,16 +171,15 @@ public class TutoringAppService {
 //		}
 //
 //		boolean done = false;
-//		//List<Availability> availList = getAvailabilityByTutor(username);
-//		for(Availability a: getAvailabilityByTutor(username)) {
-//			if (a != null) {
-//				availabilityRepository.delete(a);
-//			}
-//		}
-//		done = true;
-//		
-//		return done;
-//	}
+	@Transactional
+	public List<Availability>getAvailabilityByTutor(String tName) {
+		
+		List<Availability> availabilitylList = new ArrayList<>();
+		Tutor t = tutorRepository.findTutorByUsername(tName);
+		availabilitylList = (Arrays.asList((t.getAvailability().toArray(new Availability[0]))));
+		
+		return availabilitylList;
+	}
 	
 	//Checking to make sure we can create a course offering.
 	@Transactional
@@ -215,7 +233,10 @@ public class TutoringAppService {
 	//Checking to make sure we can get the list of all the course offerings.
 	@Transactional
 	public List<CourseOffering> getAllCourseOfferings() {
-		return toList(courseOfferingRepository.findAll());
+		if(courseOfferingRepository.findAll() != null)
+			return toList(courseOfferingRepository.findAll());
+		else
+			return null;
 	}
 	
 	//Checking to make sure we can get all the course offerings.
@@ -314,7 +335,10 @@ public class TutoringAppService {
 	//Checking to make sure we can get all course.
 	@Transactional
 	public List<Course> getAllCourses() {
-		return toList(courseRepository.findAll());
+		if(courseRepository.findAll() != null)
+			return toList(courseRepository.findAll());
+		else
+			return null;
 	}
 	
 	//Checking to make sure we can create a text.
@@ -323,7 +347,7 @@ public class TutoringAppService {
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_RevieweeUsername);
 		}
-		if(description == null || description.equals("")){
+		if(description == null || description.equals("") || description.length() > 250){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Description);
 		}
 		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
@@ -381,6 +405,20 @@ public class TutoringAppService {
 		return toList(textRepository.findAll());
 	}
 	
+	//Get all texts that are allowed.
+	@Transactional
+	public List<Text> getAllTextsThatAreAllowed() {
+		List<Text> textList = toList(textRepository.findAll());
+		List<Text> cleanList = new ArrayList<>();
+		
+		for(Text t : textList) {
+			if(t.getIsAllowed()) {
+				cleanList.add(t);
+			}
+		}
+		return cleanList;
+	}
+	
 	//Checking to make sure we can get text.
 	@Transactional
 	public Text getText(int id) {
@@ -414,6 +452,9 @@ public class TutoringAppService {
 
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_RevieweeUsername);
+		}
+		if(ratingValue > 5 || ratingValue < 1) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
 		}
 		
 		Rating rating = new Rating();
@@ -700,41 +741,139 @@ public class TutoringAppService {
 		return done;
 	}
 
-	//Checking to make sure we can create a session.
+	//Create (Or book) a session
 	@Transactional
 	public Session createSession(int coID, Date date, Time time, Double amountPaid, String sName, String tName) {
-
+		
+		//if the tutor's name is null, throw an error
 		if(tName == null || tName.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_TutorName);
 		}
+		//if the student name is null, throw an error
 		if(sName == null || sName.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_StudentName);
 		}
+		
+		//if the date or time is null, throw an error
 		if(date == null || time == null){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_DateTime);
 		}
+		
+		//if the amount paid is negative, throw an error
 		if(amountPaid < 0){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_NegativeAmountPaid);
 		}
-
+		
+		//If there is no room available at the time, throw an error
+		if(!isRoomAvailable(date, time)) {
+			
+			throw new IllegalArgumentException("There is no room available at this time");
+			
+		}
+		
+		//If the time is outside the valid booking time (between 9am-8pm) throw an error
+		if((time.compareTo(Time.valueOf("09:00:00")) < 0) || time.compareTo(Time.valueOf("20:00:00")) > 0) {
+			
+			throw new IllegalArgumentException("This is not a valid time");
+			
+		}
+		
+		LocalDate currentDate = LocalDate.now();
+		//Check that it is not the same day for a booking
+		if(Period.between(currentDate, date.toLocalDate()).getDays() <= 0) {
+			
+			throw new IllegalArgumentException("Can not book a session on the same day, or in the past!");
+			
+		}
+		//check that it is not more than two weeks away
+		if(Period.between(currentDate, date.toLocalDate()).getDays() > 14) {
+			
+			throw new IllegalArgumentException("Can not book a session more than 14 days in advance");
+			
+		}
+		
+		//get the tutor
+		Tutor t = tutorRepository.findTutorByUsername(tName);
+		//if no such tutor, throw an error
+		if (t == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindTutorByUsername);
+		}
+		
+		boolean tIsAvailable = false;
+		int tId = 0;
+		List<Availability> tutorAvailabilities = getAvailabilityByTutor(tName);
+		if(tutorAvailabilities == null || tutorAvailabilities.size() == 0)
+			tIsAvailable = false;
+		Availability av = null;
+		//Check that the tutor is available
+		for (Availability a : tutorAvailabilities) {
+			
+			
+			Date avDate = a.getDate();
+			Time avTime = a.getTime();
+			
+			if (date.toString().equals(avDate.toString()) && (time.toString().equals(avTime.toString()))) {
+				
+				
+				tIsAvailable = true;
+				tId = a.getId();
+				av = a;
+				
+				break;
+				
+			}
+			
+		}
+		
+		//If the tutor is not available, throw an exception
+		if(!tIsAvailable) {
+			
+			throw new IllegalArgumentException("The Tutor is busy during this time.");
+			
+		}
+		//create an empty session
 		Session session = new Session();
+		//Get the course offering
 		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
+		//If the course offering is null, throw an exception
 		if (co == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindCourseOfferingByID);
+		//set the values of the new session
 		session.setCourseOffering(co);
 		session.setDate(date);
 		session.setTime(time);
 		session.setAmountPaid(amountPaid);
+		session.setConfirmed(false);
+		//empty student list
 		List<Student> student = new ArrayList<Student>();
-		if(studentRepository.findStudentByUsername(sName) == null)
+		
+		//if there is no student by the student name, throw an exception
+		if(studentRepository.findStudentByUsername(sName) == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindStudentByUsername);
-		student.add(studentRepository.findStudentByUsername(sName));
-		session.setStudent(student);
-		Tutor t = tutorRepository.findTutorByUsername(tName);
-		if (t == null)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindTutorByUsername);
+		}
+		
+		//set the tutor
 		session.setTutor(t);
+		student.add(studentRepository.findStudentByUsername(sName));
+		//seet the students
+		session.setStudent(student);
+		
+		//double check that the tutor is available
+		if(tIsAvailable) {
+			
+			//delete the availability from the tutor
+			availabilityRepository.deleteById(tId);
+			t.getAvailability().remove(av);
+			
+		}
+		co.getSession().add(session);
+		//save everything
+		studentRepository.findStudentByUsername(sName).getSession().add(session);
 		sessionRepository.save(session);
+		courseOfferingRepository.save(co);
+		studentRepository.save(studentRepository.findStudentByUsername(sName));
+		
+		//return the created session
 		return session;
 	}
 	
@@ -776,35 +915,127 @@ public class TutoringAppService {
 		return session;
 	}
 	
-	//Checking to make sure we can get all sessions.
+	//Getting all sessions.
 	@Transactional
 	public List<Session> getAllSessions() {
 		return toList(sessionRepository.findAll());
 	}
 	
-	//Checking to make sure we can get a session.
+	//Getting a session by an ID.
 	@Transactional
 	public Session getSession(int id) {
-		if(id < 0){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_ID);
-		}
+		
 		Session a = sessionRepository.findSessionBySessionID(new Integer(id));
 		return a;
 	}
 	
-	//Checking to make sure we can delete a session.
+	//Get the list of session by student name
+	@Transactional
+	public List<Session> getSessionByStudent(String sName) {
+		
+		//If null, throw an error
+		if(sName == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_StudentName);
+		}
+		
+		Student stu = studentRepository.findStudentByUsername(sName);
+		
+		//If the student is null, throw an error
+		if(stu == null) {
+			
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindStudentByUsername);
+		}
+		
+		return toList(stu.getSession());
+		
+	}
+	
+	//Delete a session from the database.
 	@Transactional
 	public boolean deleteSession(int id) {
-		if(id < 0){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_ID);
-		}
+		
 		boolean done = false;
 		Session a = getSession(id);
-		if (a != null) {
-			sessionRepository.delete(a);
-			done = true;
+		
+		//If the session is not found or null, throw an error
+		if(a == null) {
+			
+			throw new IllegalArgumentException("Invalid Session ID");
 		}
+		
+		LocalDate currentDate = LocalDate.now();
+		LocalTime currentTime = LocalTime.now();
+		
+		//check that it is at least 24 hours before the session will start
+		//Throw an error if this is not in range
+		if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() == 1) {
+			
+			int currentMinutes = Integer.parseInt(currentTime.toString().substring(0, 2));
+			currentMinutes = currentMinutes * 60;
+			currentMinutes = currentMinutes + Integer.parseInt(currentTime.toString().substring(3, 5));
+			
+			int sMinutes = Integer.parseInt(a.getTime().toString().substring(0, 2));
+			sMinutes = sMinutes * 60;
+			sMinutes = sMinutes + Integer.parseInt(a.getTime().toString().substring(3, 5));
+			
+			if(currentMinutes > sMinutes) {
+				
+				throw new IllegalArgumentException("It is too late to cancel a session!");
+				
+			}
+		
+		//Check for same day or the past, throw an error if this is the case
+		} else if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() <= 0) {
+			
+			throw new IllegalArgumentException("It is too late to cancel a session! Please do it at least the day before!");
+			
+		}
+		
+		//create an availability for the tutor at this time
+		createAvailability(a.getDate(), a.getTime(), a.getTutor().getUsername());
+		
+		a.getTutor().getSession().remove(a);
+		
+		
+		tutorRepository.save(a.getTutor());
+		
+		//remove room assigned, if one has already been assigned
+		if (a.getRoom() != null) {
+			a.getRoom().getSession().remove(a);
+			roomRepository.save(a.getRoom());
+			
+		}
+		
+		//remove the session from each student
+		for (Student s: a.getStudent()) {
+			if(s.getSession() != null) {
+				s.getSession().remove(a);
+				studentRepository.save(s);
+			}
+			
+		}
+		
+		sessionRepository.delete(a);
+		done = true;
+		
 		return done;
+	}
+	
+	@Transactional
+	public boolean checkAvailabilityUniqueForTutor(Tutor t, Availability av) {
+		
+		for (Availability tAv : t.getAvailability()) {
+			
+			if(tAv.getDate().toString().equals(av.getDate().toString()) && tAv.getTime().toString().equals(av.getTime().toString())) {
+				
+				throw new IllegalArgumentException("Availability already exists");
+				
+			} 
+			
+		}
+		
+		return true;
+		
 	}
 	
 	//Checking to make sure we can create a university.
@@ -963,7 +1194,6 @@ public class TutoringAppService {
 
 //	 <----University---->
 
-
 	//Checking to make sure we can update a university.
 	@Transactional
 	public University updateUniversity(int oldID, String newName, String newAddress) {
@@ -1006,10 +1236,14 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_University_FindCourse);
 		
 		// filter by university name
-		for(Course c : getAllCourses()) {
-			if(c.getUniversity().getName() == name)
+		for(Course c : allcourses) {
+			University u = c.getUniversity();
+			if(u != null && u.getName().equals(name))
 				courses.add(c);
 		}
+		
+		if(courses.size() == 0)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_CourseOfferedUni);
 		
 		return courses;
 	}
@@ -1020,70 +1254,237 @@ public class TutoringAppService {
 		List<CourseOffering> courseOs = new ArrayList<>();
 		
 		// get all course offerings
-		for(CourseOffering co : getAllCourseOfferings()) {
+		List<CourseOffering> allcourseOs = getAllCourseOfferings();
+		if(allcourseOs == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_CONone);
+		
+		for(CourseOffering co : allcourseOs) {
 			// check name and university names that they are what we are looking for
 			if(co.getCourse().getCourseName().equals(cname) 
-					&& co.getCourse().getUniversity().getName().equals(uniName))
+					&& co.getCourse().getUniversity().getName().equals(uniName)) {
 				courseOs.add(co);
+			}
 		}
+
+		if(courseOs.size() == 0)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_TutorForCO);
+		
 		return courseOs;
 	}
 	
-	//For better reading of code - method made to find the reviews for given tutor in the course.
+
 	@Transactional
-	public List<Review[]> getAllReviewsByCoIDForTutor(String tutorUsername, int coID){
-		List<Tutor> tutorList = getAllTutorsByCourseOfferings(coID);
-		for(Tutor t : tutorList) {
-			if(t.getUsername().equals(tutorUsername)) {
-				return getAllReviewsByTutorUsername(tutorUsername);
-			}
-		}	
-		return null;
+	public boolean checkSessionConfirmed(Session s) {
+		
+		return s.isConfirmed();
+		
 	}
 
-	//Get package of text and ratings. 1) text 2) rating
+	// get tutors for specified course offering from associated course and university
 	@Transactional
-	public List<Review[]> getAllReviewsByTutorUsername(String tutorUsername){
-		List<Review[]> reviewList = new ArrayList<>();
-		Review[] reviewPackage = new Review[2];
+  public List<Tutor> getAllTutorsByCourseOffering(int id) {
+		// find course offering from repository
+		CourseOffering co = courseOfferingRepository.findCourseOfferingByCourseOfferingID(id);
+		if(co == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_COBad);
 		
-		for(Text t: getAllTexts()) {
-			for(Rating r : getAllRatings()) {
-				if(r.getReviewID() == t.getReviewID()) {}
-				reviewPackage[0] = t; //text position 1
-				reviewPackage[1] = r; //rating position 2
+		List<Tutor> tutors = new ArrayList<>();
+		// get the tutors associated with it
+		tutors = co.getTutors();
+
+		if(tutors == null || tutors.size() == 0)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_TutorForCO);
+
+		return tutors;
+	}
+
+	// find a tutor by the username
+  @Transactional
+	public Tutor findTutorByUsername(String username) {
+		Tutor t = new Tutor();
+		
+		// find the correct tutor by the given username
+		t = tutorRepository.findTutorByUsername(username);
+		
+		// check if it is null
+		if (t == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Tutor);
+		
+		// otherwise return the found tutor
+		return t;
+	}
+	
+	// check is there is a room available at the give time
+  @Transactional
+	public boolean isRoomAvailable(Date date, Time startTime) {
+		// check all rooms
+		List<Room> rooms = getAllRooms();
+		if(rooms != null) {
+			for(Room r: rooms) {
+				// set preliminary availability to true
+				boolean isAvail = true;
+				// look at all sessions of the room
+				Set<Session> sessions = r.getSession();
+				if(sessions != null) {
+					for(Session s: new ArrayList<Session>(sessions)) {
+						// if one of the sessions is at the same time, set available to false and move 
+						// to the next room
+						if((s.getTime().equals(startTime) && s.getDate().equals(date))) {
+							isAvail = false;
+							break;
+						}
+					}
+				}
+				// if none of the sessions for a room are at that time, then it is available
+				if(isAvail == true)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	//Gets all the reviews.
+	@Transactional
+	public Set<Review> getAllReviewsByTutor(String tutorUsername){
+		
+		Tutor tutor = getTutor(tutorUsername);
+		if(tutor == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+		
+		return tutor.getReview();
+	}
 				
-				reviewList.add(reviewPackage);
+	
+	
+	@Transactional
+	public boolean isSessionActive(Session s) {
+		if(s == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Availability);
+		}
+		//Compare the date.
+		long millis=System.currentTimeMillis(); 
+		Date currentDate = (Date) new java.util.Date(millis);
+		
+		if(s.getDate().compareTo(currentDate) > 0) {
+			return true;
+		} 
+		return false;
+	}
+	
+	
+	// Add a student to an already existing session
+	@Transactional
+	public Student addStudentToSession(int sessionId, String studentName) {
+		
+		Student stu = studentRepository.findStudentByUsername(studentName);
+		Session session = sessionRepository.findSessionBySessionID(sessionId);
+		
+		//invalid if student is null
+		if(stu == null) {
+			throw new IllegalArgumentException("Student is null!");
+		}
+		
+		//invalid if session is null
+		if(session == null) {
+			
+			throw new IllegalArgumentException("Session is null!");
+			
+		}
+		
+		//Check that the student has not already been added to the session
+		for (Student s : session.getStudent()) {
+			
+			if(s.getId() == stu.getId()) {
+				throw new IllegalArgumentException("Student is already added to this session.");
+				
 			}
 		}
 		
-		return reviewList;
+		//Add the session to the student, and the student to the session
+		session.getStudent().add(stu);
+		stu.getSession().add(session);
+		
+		return stu;
+		
+		
 	}
 	
-	//Get all the required tutors for the specific courseOffering.
 	@Transactional
-	public List<Tutor> getAllTutorsByCourseOfferings(int coID){
-		for(CourseOffering c : getAllCourseOfferings()) {
-			if(c.getCourseOfferingID() == coID) {
-				return c.getTutors();
-			}			
+	public Role getRoleByUsername(String username) {
+		Role role = null;
+		try {
+			role = getStudent(username);
+
+			if (role == null)
+				role = getTutor(username);
+
+		} catch (Exception e) {
+
+		}
+
+		return role;
+	}
+	
+	@Transactional
+	public Set<Review> getAllReviewsByCO(int courseOId) throws IllegalArgumentException {
+		CourseOffering courseOffering = courseOfferingRepository.findCourseOfferingByCourseOfferingID(courseOId);
+		
+		if(courseOffering == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
+		}
+		return courseOffering.getReview();
+	}
+	
+	@Transactional
+	public Room getFirstAvailableRoom(Date date, Time time) {
+		// check all rooms
+		boolean available;
+		
+		Set<Session> sessions = new HashSet<>();
+		
+		List<Room> rooms = getAllRooms();
+		if(rooms != null) {
+			for(Room r: rooms) {
+				available = true;
+				
+				//Check if a session is assigned to a room.
+				sessions = r.getSession();
+				if(sessions == null) {
+					//if no session exists for room, the room is empty
+					return r;
+				}
+				for(Session s : sessions) {
+					//just care about the time
+					if(s.getTime() == time && s.getDate() == date) {
+						available = false;
+					}
+				}
+				//return the room  if no dates exist at the given time;
+				if(available) return r;
+			}
 		}
 		return null;
 	}
 	
+	@Transactional
+	public Session updateSessionWithRoomFromTutorSuccessAndRoomAvailable(int sessionid, Room room) {
+		Session session = sessionRepository.findSessionBySessionID(sessionid);
+		if(session == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
+		}
+		
+		if(room == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Room);
+		}
+		session.setRoom(room);
+		return session;
+	}
 	
-	
-//	// get course offerings from specified course from associated university
-//	public List<CourseOffering> getAllTutorsByCourseOffering(String cname, String uniName, String coname) {
-//		List<CourseOffering> courseOs = getAllCourseOfferingsByCourse(cname, coname);
-//		
-//		// get all tutors
-//		for(Tutor t : getAllTutors()) {
-//			// check name and university names that they are what we are looking for
-//			if(getCourse().getCourseName().equals(cname) 
-//					&& co.getCourse().getUniversity().getName().equals(uniName))
-//				courseOs.add(co);
-//		}
-//		return courseOs;
-//	}
+	@Transactional
+	public void getReviewer(Review review) {
+		if(true) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Review_CANTRETURN);
+		}
+
+	}
 }

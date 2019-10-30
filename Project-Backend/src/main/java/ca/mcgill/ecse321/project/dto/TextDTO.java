@@ -1,20 +1,27 @@
 package ca.mcgill.ecse321.project.dto;
 
+import ca.mcgill.ecse321.project.model.CourseOffering;
+import ca.mcgill.ecse321.project.model.Role;
 
 public class TextDTO extends ReviewDTO{
 
 	private boolean isAllowed;
 	private String description;	
+	private int reviewId;
+	private RoleDTO role;
+	private CourseOfferingDTO co;
 	
 	//Data transfer object session.
 	public TextDTO() {
 	}
 
-	public TextDTO(boolean isAllowed, String description) {
-		this.isAllowed = isAllowed;
-		this.description = description;
+	public TextDTO(int reviewId) {
+		this.reviewId = reviewId;
 	}
 
+	public int getReviewId() {
+		return reviewId;
+	}
 	//get rating
 	public boolean getIsAllowed() {
 		return isAllowed;
@@ -23,6 +30,29 @@ public class TextDTO extends ReviewDTO{
 	public String getDescription() {
 		return description;
 	}
-
+	
+	public RoleDTO getRoleDTO() {
+		return role;
+	}
+	
+	public CourseOfferingDTO getCourseOfferingDTO() {
+		return co;
+	}
+	
+	public void setIsAllowed(boolean isAllowed) {
+		this.isAllowed = isAllowed;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public void setRole(RoleDTO role) {
+		this.role = role;
+	}
+	
+	public void setCourseOffering(CourseOfferingDTO co) {
+		this.co = co;
+	}
 
 }

@@ -4,13 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.OneToMany;
 
 @Entity
 public class Room{
 	private Set<Session> session;
-	//private boolean isAvailable;
 
 	@OneToMany(mappedBy="room" )
 	public Set<Session> getSession() {
@@ -19,6 +20,13 @@ public class Room{
 
 	public void setSession(Set<Session> session1s) {
 		this.session = session1s;
+	}
+	
+	public void addSession(Session s) {
+		if(session == null) {
+			session = new HashSet<>();
+		}
+		this.session.add(s);
 	}
 
 	private int roomNumber;
@@ -41,9 +49,5 @@ public class Room{
 	public int getId() {
 		return this.id;
 	}
-	
-	//public boolean isAvailable() {
-	//	return isAvailable;
-	//}
 
 }

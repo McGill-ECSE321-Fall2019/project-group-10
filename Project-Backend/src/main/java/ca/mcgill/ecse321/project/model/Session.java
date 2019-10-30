@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -7,8 +8,10 @@ import javax.persistence.Id;
 
 import java.sql.Date;
 import java.sql.Time;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -16,7 +19,16 @@ import javax.persistence.ManyToOne;
 public class Session{
 	private Date date;
 	private Time time;
-	//private boolean isActive = true;
+
+	
+	private boolean isConfirmed;
+	
+	public boolean isConfirmed() {
+		return isConfirmed;
+	}
+	public void setConfirmed(boolean isConfirmed) {
+		this.isConfirmed = isConfirmed;
+	}
 
 	public void setDate(Date value) {
 		this.date = value;
@@ -51,7 +63,7 @@ public class Session{
 	}
 	private List<Student> student;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	public List<Student> getStudent() {
 		return this.student;
 	}
@@ -62,7 +74,7 @@ public class Session{
 
 	private Tutor tutor;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional=false)
+	@ManyToOne(fetch = FetchType.EAGER, optional=true, cascade = CascadeType.ALL)
 	public Tutor getTutor() {
 		return this.tutor;
 	}
@@ -73,7 +85,7 @@ public class Session{
 
 	private CourseOffering courseOffering;
 
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=true, cascade = CascadeType.ALL)
 	public CourseOffering getCourseOffering() {
 		return this.courseOffering;
 	}
@@ -81,7 +93,6 @@ public class Session{
 	public void setCourseOffering(CourseOffering co2) {
 		this.courseOffering = co2;
 	}
-
 
 	private Room room;
 
@@ -93,13 +104,4 @@ public class Session{
 	public void setRoom(Room room) {
 		this.room = room;
 	}
-
-	//public boolean getIsActive() {
-	//	return isActive;
-	//}
-	
-	//public void setActivity(boolean isActive) {
-	//	this.isActive = isActive;
-	//}
-	
 }

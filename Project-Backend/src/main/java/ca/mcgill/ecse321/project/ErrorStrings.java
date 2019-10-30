@@ -2,6 +2,9 @@ package ca.mcgill.ecse321.project;
 
 public class ErrorStrings {
     
+	public static String Invalid_NULL = null;
+	public static String Invalid_EMPTY = "";
+	
 //============ AVAILABILITY ===========\\
 	public static String Invalid_Availability_Name = "Invalid name...";
     public static String Invalid_Availability_Date = "Invalid date parameters...";
@@ -35,7 +38,7 @@ public class ErrorStrings {
     public static String Invalid_Text_Reviewee = "Please enter a valid Reviewee";
     public static String Invalid_Text_FindTextReview = "Please enter a valid Text Review to update";
     public static String Invalid_Text_ID = "Incorrect id value for the text request...";
-    
+    public static String Invalid_Review_CANTRETURN = "You do not have permission to access the author of the review.";
     
 //================ RATING ===================\\
     public static String Invalid_Rating_RevieweeUsername = "Please insert a reviewee username...";
@@ -99,4 +102,22 @@ public class ErrorStrings {
     public static String Invalid_DTO_Rating = "There is no such rating!";
     public static String Invalid_DTO_Text = "There is no such text!";
     public static String Invalid_DTO_Session = "There is no such session!";
+    public static String Invalid_DTO_Tutor = "There is no such tutor!";
+    public static String Invalid_DTO_Student = "There is no such student!";
+    public static String Invalid_DTO_Room = "There is no such room!";
+    public static String Invalid_DTO_User = "Thre is no such user!";
+    public static String Invalid_DTO_Availability = "There is no such availability!";
+    public static String Invalid_DTO_Review = "There is no such review!";
+    public static String Invalid_DTO_Role = "There is no such role!";
+    
+//=================== SERVICE ERRORS ======================\\
+    public static String Invalid_Service_Tutor = "No tutor by that username";
+    public static String Invalid_Service_TutorForCO = "No tutors for this course offering";
+    public static String Invalid_Service_CO = "No course offerings offered for this course";
+    public static String Invalid_Service_CONone = "No courses offerings offered yet";
+    public static String Invalid_Service_CourseOfferedUni = "No courses offered for this university";
+    public static String Invalid_Service_COBad = "This course offering does not exist";
+
+
+
 }

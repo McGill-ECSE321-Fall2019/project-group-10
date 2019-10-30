@@ -1,12 +1,19 @@
 package ca.mcgill.ecse321.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -27,7 +34,7 @@ public class Tutor extends Role{
 
 	private Set<Session> session;
 
-	@OneToMany(mappedBy="tutor" )
+	@OneToMany(mappedBy="tutor", cascade = CascadeType.ALL)
 	public Set<Session> getSession() {
 		return this.session;
 	}
@@ -54,8 +61,9 @@ public class Tutor extends Role{
 	}
 
 	private Set<Availability> availability;
-
-	@OneToMany
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	public Set<Availability> getAvailability() {
 		return this.availability;
 	}
@@ -66,7 +74,7 @@ public class Tutor extends Role{
 
 	private List<CourseOffering> courseOfferings;
 
-	@ManyToMany(mappedBy="tutors" )
+	@ManyToMany(mappedBy="tutors", cascade = CascadeType.ALL)
 	public List<CourseOffering> getCourseOfferings(){
 		return this.courseOfferings;
 	}
@@ -75,59 +83,13 @@ public class Tutor extends Role{
 		this.courseOfferings = courseOfferings;
 	}
 
-	//   private String username;
-	//   
-	//   public void setUsername(String value) {
-	//      this.username = value;
-	//   }
-	//   @Id
-	//   @GeneratedValue
-	//   public String getUsername() {
-	//      return this.username;
-	//   }
-	//   
-	//   private String password;
-	//   
-	//   public void setPassword(String value) {
-	//      this.password = value;
-	//   }
-	//   
-	//   public String getPassword() {
-	//      return this.password;
-	//   }
-	//   
-	//   private User user;
-	//   
-	//   @ManyToOne(optional=false)
-	//   public User getUser() {
-	//      return this.user;
-	//   }
-	//   
-	//   public void setUser(User user) {
-	//      this.user = user;
-	//   }
-	//   
-	//   private Set<Review> review;
-	//   
-	//   @OneToMany(mappedBy="writtenAbout" )
-	//   public Set<Review> getReview() {
-	//      return this.review;
-	//   }
-	//   
-	//   public void setReview(Set<Review> reviews) {
-	//      this.review = reviews;
-	//   }
-	//   
-	//   private Set<Review> authoredReview;
-	//   
-	//   @OneToMany
-	//   public Set<Review> getAuthoredReview() {
-	//      return this.authoredReview;
-	//   }
-	//   
-	//   public void setAuthoredReview(Set<Review> authoredReviews) {
-	//      this.authoredReview = authoredReviews;
-	//   }
+	public void addAvailability(Availability a) {
+		// TODO Auto-generated method stub
+		if(availability == null) {
+			availability = new HashSet<>();
+		}
+		this.availability.add(a);
+	}
 
 
 }

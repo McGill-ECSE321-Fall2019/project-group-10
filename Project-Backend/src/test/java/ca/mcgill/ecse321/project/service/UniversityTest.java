@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.project.service;
 
-import org.junit.After; 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -20,7 +21,6 @@ import ca.mcgill.ecse321.project.service.TutoringAppService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-
 public class UniversityTest {
 
 	@Autowired
@@ -43,7 +43,26 @@ public class UniversityTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TutorRepository tutorRepository; 
+	@Autowired
+	private StudentRepository studentRepository; 
 
+	@Before
+	public void clearDatabase1() {
+		// clear in order of dependencies
+		sessionRepository.deleteAll();
+		roomRepository.deleteAll();
+		reviewRepository.deleteAll();
+		courseOfferingRepository.deleteAll();
+		courseRepository.deleteAll();
+		universityRepository.deleteAll();
+		availabilityRepository.deleteAll();
+		roleRepository.deleteAll();
+		tutorRepository.deleteAll();
+		studentRepository.deleteAll();
+		userRepository.deleteAll();
+	}
 
 	@After
 	public void clearDatabase() {

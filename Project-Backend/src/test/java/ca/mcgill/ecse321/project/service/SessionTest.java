@@ -46,6 +46,10 @@ public class SessionTest {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private TutorRepository tutorRepository; 
+	@Autowired
+	private StudentRepository studentRepository; 
 	
 	
 	@Before
@@ -58,10 +62,13 @@ public class SessionTest {
 		service.createUser("aName_student", "student.tester@mcgill.ca", 22, "5145555555");
 		service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
 		service.createStudent("studentUser", "password2", "student.tester@mcgill.ca");
+		service.createAvailability(Date.valueOf("2019-10-31"), Time.valueOf("11:11:11"), "username");
+		service.createRoom(4);
 	}
 	
 	@After
 	public void clearDatabase() {
+		// clear in order of dependencies
 		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
@@ -70,13 +77,15 @@ public class SessionTest {
 		universityRepository.deleteAll();
 		availabilityRepository.deleteAll();
 		roleRepository.deleteAll();
+		tutorRepository.deleteAll();
+		studentRepository.deleteAll();
 		userRepository.deleteAll();
 	}
 	
 	@Test
 	public void testCreateSession() {
 		 		
-		Date date = Date.valueOf("2018-02-01");
+		Date date = Date.valueOf("2019-10-31");
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -108,7 +117,7 @@ public class SessionTest {
 	public void testUpdateSession() {
 		//assertEquals(0, service.getAllSessions().size());
 				
-		Date date = Date.valueOf("2019-02-01");
+		Date date = Date.valueOf("2019-10-31");
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -130,7 +139,7 @@ public class SessionTest {
 		assertEquals("studentUser", allSessions.get(0).getStudent().get(0).getUsername());
 		assertEquals("username", allSessions.get(0).getTutor().getUsername());
 		
-		date = Date.valueOf("2019-02-01");
+		date = Date.valueOf("2021-02-01");
 		time = Time.valueOf("10:10:10");
 		amountPaid = 24;
 		
@@ -157,8 +166,8 @@ public class SessionTest {
 	public void testDeleteSession() {
 		assertEquals(0, service.getAllSessions().size());
 		
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
+		 		
+		Date date = Date.valueOf("2019-10-31");
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -189,9 +198,8 @@ public class SessionTest {
 	public void testCreateSessionNullCourseOffering() {
 		assertEquals(0, service.getAllSessions().size());
 
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
+		Date date = Date.valueOf("2019-10-31");
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 
 		String error = null;
@@ -214,9 +222,8 @@ public class SessionTest {
 	public void testCreateSessionNullTutor() {
 		assertEquals(0, service.getAllSessions().size());
 
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
+		Date date = Date.valueOf("2020-02-01");
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
@@ -240,9 +247,8 @@ public class SessionTest {
 	public void testCreateSessionNullStudent() {
 		assertEquals(0, service.getAllSessions().size());
 
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
-		Time time = new java.sql.Time(millis);
+		Date date = Date.valueOf("2019-10-31");
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 
@@ -291,8 +297,8 @@ public class SessionTest {
 	public void testCreateSessionNullTime() {
 		assertEquals(0, service.getAllSessions().size());
 
-		long millis=System.currentTimeMillis();  		
-		Date date = new java.sql.Date(millis);
+		Date date = Date.valueOf("2020-02-01");
+		
 		Time time = null;
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -315,10 +321,10 @@ public class SessionTest {
 	@Test
 	public void testCreateSessionNullDate() {
 		assertEquals(0, service.getAllSessions().size());
-
-		long millis=System.currentTimeMillis();  		
+		
 		Date date = null;
-		Time time = new java.sql.Time(millis);
+		
+		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
 

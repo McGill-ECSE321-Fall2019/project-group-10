@@ -39,7 +39,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Chelsea M-C</td>
     <td>Documentation Manager</td>
     <td>20</td>
-    <td>[tbh]</td>
+    <td>37</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -48,7 +48,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Taylor Lynn Curtis</td>
     <td>Software Consulting Lead</td>
     <td>19</td>
-    <td>[tbh]</td>
+    <td>45</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -76,7 +76,7 @@ Below can be found the role of each member and the number of hours spent on each
 <h3>Sprint 1</h3>
 <ul>
   <li>Alex: Responsible for UML Lab modelling and generating of model code. Proofreading expert. </li>
-  <li>Chelsea: Responsible for meeting minutes and writing tests.</li>
+  <li>Chelsea: Responsible for meeting minutes and writing persistence tests.</li>
   <li>Taylor: Responsible for dependency injections and writing JPA Tag code.</li>
   <li>Anas: Responsible for writing tests and fixing bugs.</li>
   <li>Yoan: Set up database and connected other applications together.</li>
@@ -85,6 +85,10 @@ Below can be found the role of each member and the number of hours spent on each
 <ul>
   <li>Alex:</li>
   <li>Chelsea:</li>
+    <ul 1>
+      <li> Responsible for meeting minutes and creating templates for the wiki pages</li>
+      <li> Business methods, restful services and unit tests for R2, R3, and R4. </li>
+    </ul 1>
   <li>Taylor: </li>
   <li>Anas:</li>
   <li>Yoan:</li>
@@ -100,9 +104,11 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <li>In the terminal, enter the "Project-Backend" folder by typing in - cd Project-Backend/ <br>
 <li>Once in the folder, type and enter - "gradle build". <br>
 <li>This should automatically start running and testing all tests written in the test directory.
+<li>To run gralde without tests: "gradle -xtest"
 </ol>
 
 <h2>Heroku Setup</h2><br>
 <ol>
-<li>All the Heroku information is set in the "resource" directory, in the "application.properties" folder.
+  <li>All the Heroku information is set in the "resource" directory, in the "application.properties" folder.</li>
+  <li>The password and username information is not disclosed in the readme for privacy reasons. </li>
 <ol>
