@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -82,17 +81,34 @@ public class TutoringServiceRestController {
 		return convertToDtoSetup(tutor);
 	}
 	
-	//Create the given reviews - text and rating
-		@PostMapping(value = {"/setup/3", "/setup/3/"})
-		public CourseOfferingDTO setupCreateCourseOffering(@RequestParam("year") int year,
-				@RequestParam("courseId") int courseId) throws IllegalArgumentException {
-			
-			CourseOffering courseOffering = service.createCourseOffering(Term.Summer, year, courseId);
-			return convertToDto(courseOffering);
-		}
+	//Create the given university.
+	@PostMapping(value = {"/setup/3", "/setup/3/"})
+	public UniversityDTO setupCreateUniversity(@RequestParam("name") String name,
+			@RequestParam("address") String address) throws IllegalArgumentException {
+		
+		University university = service.createUniversity(name, address);
+		return convertToDto(university);
+	}
 	
-	//Create the given reviews - text and rating
+	//Create the given course.
 	@PostMapping(value = {"/setup/4", "/setup/4/"})
+	public CourseDto setupCreateCourse(@RequestParam("courseDescription") String description,
+			@RequestParam("courseName") String courseName,
+			@RequestParam("uniName") String uniName) throws IllegalArgumentException {			
+		Course course = service.createCourse(description, courseName, service.getUniversityByName(uniName).getUniversityID());
+		return convertToDto(course);
+	}
+	
+	//Create the given course offering.
+	@PostMapping(value = {"/setup/5", "/setup/5/"})
+	public CourseOfferingDTO setupCreateCourseOffering(@RequestParam("year") int year,
+			@RequestParam("courseName") String courseName) throws IllegalArgumentException {			
+		CourseOffering courseO = service.createCourseOffering(Term.Winter, year, service.getCourseByName(courseName).getCourseID());
+		return convertToDto(courseO);
+	}
+		
+	//Create the given reviews - text and rating
+	@PostMapping(value = {"/setup/6", "/setup/6/"})
 	public ReviewDTO setupCreateReviewRating(@RequestParam("rating") int rating,
 			@RequestParam("tutorEmail") String tutorEmail,
 			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
@@ -109,7 +125,7 @@ public class TutoringServiceRestController {
 	
 
 	//Create the given reviews - text and rating
-	@PostMapping(value = {"/setup/5", "/setup/5/"})
+	@PostMapping(value = {"/setup/7", "/setup/7/"})
 	public ReviewDTO setupCreateReviewText(@RequestParam("rating") int rating,
 			@RequestParam("tutorEmail") String tutorEmail,
 			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
