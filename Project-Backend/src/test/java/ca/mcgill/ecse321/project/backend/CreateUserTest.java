@@ -5,9 +5,6 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +24,6 @@ import ca.mcgill.ecse321.project.dao.StudentRepository;
 import ca.mcgill.ecse321.project.dao.TutorRepository;
 import ca.mcgill.ecse321.project.dao.UniversityRepository;
 import ca.mcgill.ecse321.project.dao.UserRepository;
-import ca.mcgill.ecse321.project.model.Role;
 import ca.mcgill.ecse321.project.model.Student;
 import ca.mcgill.ecse321.project.model.TSUser;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
@@ -86,7 +82,7 @@ public class CreateUserTest {
 		// run all setups for mock outputs
 
 		setMockOutputUser();
-		setMockOutputStudent();
+	//	setMockOutputStudent();
 	}
 
 	//********************************************* MOCK OUTPUTS *********************************************//
@@ -121,29 +117,6 @@ public class CreateUserTest {
 			}
 		});
 	}
-
-
-	
-	
-	private void setMockOutputStudent() {
-		when(studentRepository.findStudentByUsername((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
-			if (invocation.getArgument(0).equals(STUDENT_USERNAME)) {
-				//create a Tutor with the right name
-				
-				Student s = new Student();
-				s.setUsername(STUDENT_USERNAME);
-				s.setPassword(STUDENT_PASSWORD);
-				s.getUser().setAge(STUDENT_AGE);
-				s.getUser().setEmail(STUDENT_EMAIL);
-				s.getUser().setPhoneNumber(STUDENT_PHONENUMBER);
-				return s;
-			} 
-			else {
-				return null;
-			}
-		});
-	}
-
 
 	//************************************************* TESTS *************************************************//
 
