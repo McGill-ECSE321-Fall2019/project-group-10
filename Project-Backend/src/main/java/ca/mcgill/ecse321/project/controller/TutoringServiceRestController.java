@@ -443,29 +443,18 @@ public class TutoringServiceRestController {
 	// if session doesn't have a room assigned, this method will randomly assign a
 	// room. Unless there are no rooms available.
 	@PutMapping(value = { "/session/room/{sessionid}", "/session/room/{sessionid}/" })
-	public Set<SessionDTO> updateRoom(@PathVariable("sessionid") int sId, @RequestParam(name = "date") Date aD,
+	public SessionDTO updateRoom(@PathVariable("sessionid") int sId, @RequestParam(name = "date") Date aD,
 			@RequestParam(name = "startTime") Time aT) throws IllegalArgumentException {
-		
-		boolean isRoomAvailable = service.isRoomAvailable(aD, aT);
+	
 		Set<SessionDTO> sessionDtos = new HashSet<SessionDTO>();
 		List<RoomDTO> roomDtos = new ArrayList<>();
-
-		if (!isRoomAvailable)
-			throw new IllegalArgumentException("There are no rooms available!");
-
 		Session s = service.getSession(sId);
-		if (s.getRoom() == null) 
-			throw new IllegalArgumentException("Room is already assigned");
-			for (Room r : service.getAllRooms()) {
-				if (r.getSession() == null) {
-					s.setRoom(r);
-					r.addSession(s);
-					roomDtos.add(convertToDto(r));
-					break;
-				}
-			}
-			sessionDtos.add(convertToDto(s));
-			return sessionDtos;
+		Room r = service.getFirstAvailableRoom(aD, aT);
+		if(r==null)
+			throw new IllegalArgumentException("There are no rooms available!");
+		r.addSession(s);
+		roomDtos.add(convertToDto(r));
+		return convertToDto(s);
 	}
 	
 

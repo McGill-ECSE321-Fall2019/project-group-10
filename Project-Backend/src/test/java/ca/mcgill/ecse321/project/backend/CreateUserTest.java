@@ -74,8 +74,11 @@ public class CreateUserTest {
 	//	Constants for Students
 	private static final String STUDENT_USERNAME = "teddy";
 	private static final String STUDENT_PASSWORD = "123";
-	private static final String STUDENT_EMAIL = "student.test@mcgill.ca";
+	private static final String STUDENT_EMAIL = "user.tester@mcgill.ca";
 	private static final String BAD_STUDENT_EMAIL = "student.tester";
+
+	private static final int STUDENT_AGE = 18;
+	private static final String STUDENT_PHONENUMBER = "5146754321";
 
 	@Before
 	public void setMockOutput() {
@@ -120,21 +123,27 @@ public class CreateUserTest {
 	}
 
 
-	//	mock output for student
-
+	
+	
 	private void setMockOutputStudent() {
-		when(studentRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
-
-			TSUser user = new TSUser();
-			Student s = new Student();
-			Set<Role> student = new HashSet<Role>();
-			s.setUsername(STUDENT_USERNAME);
-			s.setPassword(STUDENT_PASSWORD);
-			s.setUser(user);
-			user.setRole(student);
-			return user;
-		});	
+		when(studentRepository.findStudentByUsername((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(STUDENT_USERNAME)) {
+				//create a Tutor with the right name
+				
+				Student s = new Student();
+				s.setUsername(STUDENT_USERNAME);
+				s.setPassword(STUDENT_PASSWORD);
+				s.getUser().setAge(STUDENT_AGE);
+				s.getUser().setEmail(STUDENT_EMAIL);
+				s.getUser().setPhoneNumber(STUDENT_PHONENUMBER);
+				return s;
+			} 
+			else {
+				return null;
+			}
+		});
 	}
+
 
 	//************************************************* TESTS *************************************************//
 
