@@ -1,20 +1,8 @@
 package ca.mcgill.ecse321.project;
 
-import ca.mcgill.ecse321.project.model.CourseOffering;
-import ca.mcgill.ecse321.project.model.Tutor;
-import com.sun.mail.smtp.SMTPTransport;
-
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
 import java.util.Properties;
 
 public class JavaEmail {
