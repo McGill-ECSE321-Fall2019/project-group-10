@@ -162,7 +162,7 @@ public class SessionTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testDeleteSession() {
 		assertEquals(0, service.getAllSessions().size());
 		

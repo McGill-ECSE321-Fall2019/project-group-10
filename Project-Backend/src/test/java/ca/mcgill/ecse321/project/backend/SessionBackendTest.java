@@ -808,7 +808,7 @@ public class SessionBackendTest {
 	}
 	
 	//Test a valid delete 
-	//@Test
+	@Test
 	public void testValidDeleteSession() {
 		
 		setMockOutputSession();
@@ -828,7 +828,7 @@ public class SessionBackendTest {
 	}
 	
 	//Test deleting a session the day before the session is to take palce
-	//@Test
+	@Test
 	public void testDeleteSessionValidWithinOneDay() {
 		
 		setMockOutputSession();
@@ -849,7 +849,7 @@ public class SessionBackendTest {
 	
 	//test that it is too late on a different day then the session is suppose to be on 
 	//to cancel.
-	//@Test
+	@Test
 	public void testDeleteTooLateOnAnotherDateSession() {
 		
 		setMockOutputSession();
@@ -963,7 +963,7 @@ public class SessionBackendTest {
 	}
 	
 	//Test trying to create a session more than two weeks from now
-	//@Test
+	@Test
 	public void createSessionInFutureFar() {
 		
 		String error = null;
