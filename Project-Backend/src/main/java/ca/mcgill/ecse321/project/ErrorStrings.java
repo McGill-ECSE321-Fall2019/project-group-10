@@ -38,7 +38,7 @@ public class ErrorStrings {
     public static String Invalid_Text_Reviewee = "Please enter a valid Reviewee";
     public static String Invalid_Text_FindTextReview = "Please enter a valid Text Review to update";
     public static String Invalid_Text_ID = "Incorrect id value for the text request...";
-    
+    public static String Invalid_Review_CANTRETURN = "You do not have permission to access the author of the review.";
     
 //================ RATING ===================\\
     public static String Invalid_Rating_RevieweeUsername = "Please insert a reviewee username...";
