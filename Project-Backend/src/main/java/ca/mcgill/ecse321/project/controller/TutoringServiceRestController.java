@@ -36,8 +36,12 @@ public class TutoringServiceRestController {
 	@Autowired
 	TutoringAppService service;
 
+// ******************************************** GET MAPPINGS ********************************************** \\
+	
+	// get all users
 	@GetMapping(value = {"/users", "/users/"})
 	public List<UserDTO> getAllUsers(){
+		// get all users from the business service
 		List<TSUser> listOfUsers = service.getAllUsers();
 		List<UserDTO> userListDto = new ArrayList<>();
 		for(TSUser user : listOfUsers) {
@@ -46,88 +50,18 @@ public class TutoringServiceRestController {
 		return userListDto;
 	}
 	
+	// get all tutors registered on the application
 	@GetMapping(value = {"/tutors", "/tutors/"})
 	public List<TutorDTO> getAllTutors(){
+		// get all the tutors from the business service
 		List<Tutor> listOfTutors = service.getAllTutors();
 		List<TutorDTO> tutorList = new ArrayList<>();
+		// convert to DTO objects
 		for(Tutor tutor : listOfTutors) {
 			tutorList.add(convertToDtoSetup(tutor));
 		}
 		return tutorList;
 	}
-	
-
-	@PostMapping(value = {"/setup/1", "/setup/1/"})
-	public UserDTO setupCreateUser(@RequestParam("age") int age,
-			@RequestParam("name") String name,
-			@RequestParam("email") String email,
-			@RequestParam("phonenumber") String phonenumber) throws IllegalArgumentException{
-		TSUser user = service.createUser(name, email, age, phonenumber);
-		return convertToDto(user);
-	}
-	
-	//Create tutor
-	@PostMapping(value = {"/setup/2", "/setup/2/"})
-	public TutorDTO setupCreateRole(@RequestParam("username") String username,
-			@RequestParam("password") String password,
-			@RequestParam("useremail") String email,
-			@RequestParam("amountPaid") double amountPaid,
-			@RequestParam("hourlyRate") int hourlyRate,
-			@RequestParam("experience") int experience) throws IllegalArgumentException{
-			
-		TSUser user = service.getUser(email);
-		if(user == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_User);
-		}
-		Tutor tutor = service.createTutor(username, password, user.getEmail(), hourlyRate, experience, Education.bachelor);
-		tutor.setUser(user);
-		return convertToDtoSetup(tutor);
-	}
-	
-	//Create the given reviews - text and rating
-		@PostMapping(value = {"/setup/3", "/setup/3/"})
-		public CourseOfferingDTO setupCreateCourseOffering(@RequestParam("year") int year,
-				@RequestParam("courseId") int courseId) throws IllegalArgumentException {
-			
-			CourseOffering courseOffering = service.createCourseOffering(Term.Summer, year, courseId);
-			return convertToDto(courseOffering);
-		}
-	
-	//Create the given reviews - text and rating
-	@PostMapping(value = {"/setup/4", "/setup/4/"})
-	public ReviewDTO setupCreateReviewRating(@RequestParam("rating") int rating,
-			@RequestParam("tutorEmail") String tutorEmail,
-			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
-		
-		Tutor tutor = service.getTutor(tutorEmail);
-		if(tutor == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
-		}
-		
-		Review reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
-		
-		return convertToDto(reviewRating);
-	}
-	
-
-	//Create the given reviews - text and rating
-	@PostMapping(value = {"/setup/5", "/setup/5/"})
-	public ReviewDTO setupCreateReviewText(@RequestParam("rating") int rating,
-			@RequestParam("tutorEmail") String tutorEmail,
-			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
-		
-		Tutor tutor = service.getTutor(tutorEmail);
-		if(tutor == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
-		}
-		
-		Review reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
-		
-		return convertToDto(reviewRating);
-	}
-	
-// ******************************************** GET MAPPINGS ********************************************** \\
-	
 	
 	// Get all the schools offered by the application
 	@GetMapping(value = {"/universities", "/universities/"})
@@ -287,6 +221,75 @@ public class TutoringServiceRestController {
 	
 // ******************************************** POST MAPPINGS ********************************************** \\
 
+	@PostMapping(value = {"/setup/1", "/setup/1/"})
+	public UserDTO setupCreateUser(@RequestParam("age") int age,
+			@RequestParam("name") String name,
+			@RequestParam("email") String email,
+			@RequestParam("phonenumber") String phonenumber) throws IllegalArgumentException{
+		TSUser user = service.createUser(name, email, age, phonenumber);
+		return convertToDto(user);
+	}
+	
+	//Create tutor
+	@PostMapping(value = {"/setup/2", "/setup/2/"})
+	public TutorDTO setupCreateRole(@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("useremail") String email,
+			@RequestParam("amountPaid") double amountPaid,
+			@RequestParam("hourlyRate") int hourlyRate,
+			@RequestParam("experience") int experience) throws IllegalArgumentException{
+			
+		TSUser user = service.getUser(email);
+		if(user == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_User);
+		}
+		Tutor tutor = service.createTutor(username, password, user.getEmail(), hourlyRate, experience, Education.bachelor);
+		tutor.setUser(user);
+		return convertToDtoSetup(tutor);
+	}
+	
+	//Create the given reviews - text and rating
+		@PostMapping(value = {"/setup/3", "/setup/3/"})
+		public CourseOfferingDTO setupCreateCourseOffering(@RequestParam("year") int year,
+				@RequestParam("courseId") int courseId) throws IllegalArgumentException {
+			
+			CourseOffering courseOffering = service.createCourseOffering(Term.Summer, year, courseId);
+			return convertToDto(courseOffering);
+		}
+	
+	//Create the given reviews - text and rating
+	@PostMapping(value = {"/setup/4", "/setup/4/"})
+	public ReviewDTO setupCreateReviewRating(@RequestParam("rating") int rating,
+			@RequestParam("tutorEmail") String tutorEmail,
+			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
+		
+		Tutor tutor = service.getTutor(tutorEmail);
+		if(tutor == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+		}
+		
+		Review reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
+		
+		return convertToDto(reviewRating);
+	}
+	
+
+	//Create the given reviews - text and rating
+	@PostMapping(value = {"/setup/5", "/setup/5/"})
+	public ReviewDTO setupCreateReviewText(@RequestParam("rating") int rating,
+			@RequestParam("tutorEmail") String tutorEmail,
+			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
+		
+		Tutor tutor = service.getTutor(tutorEmail);
+		if(tutor == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
+		}
+		
+		Review reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
+		
+		return convertToDto(reviewRating);
+	}
+	
 	//Upon tutor response, update session information or delete session.
 	@PostMapping(value = {"/sessionresponse/{response}", "/sessionresponse/{response}/}"})
 	public void sessionCreationUponTutorResponse(@PathVariable("response") boolean response,

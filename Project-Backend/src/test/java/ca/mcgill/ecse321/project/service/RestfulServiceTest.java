@@ -270,7 +270,7 @@ public class RestfulServiceTest {
 //		String response = null;
 //		
 //		try {
-//			httpCon = doGETRequest("/courseofferings/" + COid1);
+//			httpCon = doGETRequest("/courseoffering/" + COid1);
 //			response = readMultipleLinesRespone(httpCon);
 //	    } catch (MalformedURLException e) {
 //            System.out.println("The specified URL is malformed: " + e.getMessage());
@@ -291,7 +291,7 @@ public class RestfulServiceTest {
 		String response = null;
 		
 		try {
-			httpCon = doGETRequest("/tutors/username");
+			httpCon = doGETRequest("/tutor/username");
 			response = readMultipleLinesRespone(httpCon);
 	    } catch (MalformedURLException e) {
             System.out.println("The specified URL is malformed: " + e.getMessage());
