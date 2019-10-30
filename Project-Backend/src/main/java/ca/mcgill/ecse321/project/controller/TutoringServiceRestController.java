@@ -544,12 +544,6 @@ public class TutoringServiceRestController {
 
 	}
 	
-	// Check room availability
-	@PostMapping(value = { "/checkavailability", "/checkavailability/"})
-	public boolean checkRoomAvailability(@RequestParam Date date, @RequestParam Time startTime,	@RequestParam Time endTime)	throws IllegalArgumentException {
-		return service.isRoomAvailable(date, startTime);
-	}
-	
 	private ReviewDTO convertToDto(Review r) {
 		if(r == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Review);
