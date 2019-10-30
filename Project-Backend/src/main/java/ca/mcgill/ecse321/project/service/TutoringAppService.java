@@ -1485,7 +1485,6 @@ public class TutoringAppService {
 		if(true) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Review_CANTRETURN);
 		}
-
 	}
 	
 	@Transactional
