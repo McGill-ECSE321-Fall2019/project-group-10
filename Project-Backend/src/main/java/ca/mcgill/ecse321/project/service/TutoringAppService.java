@@ -1298,20 +1298,46 @@ public class TutoringAppService {
 	}
 	
   
-	// find a student by the username
+	// find a user by email
+  @Transactional
+	public TSUser findUserByEmail(String email) {
+		TSUser u = new TSUser();
+		
+		// find the correct user by the given username
+		u = userRepository.findTSuserByEmail(email);
+		
+		// otherwise return the found student
+		return u;
+	}
+  
+  
+  //find student by username
   @Transactional
 	public Student findStudentByUsername(String username) {
 		Student s = new Student();
 		
-		// find the correct tutor by the given username
+		// find the correct student by the given username
 		s = studentRepository.findStudentByUsername(username);
-		
-		// check if it is null
-		if (s == null)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Student);
 		
 		// otherwise return the found student
 		return s;
+	}
+  
+  
+  
+  
+  
+//find a user by username
+ @Transactional
+	public TSUser findUserbyUsername(String name) {
+	TSUser user = new TSUser();
+	for(TSUser u: getAllUsers()) {	
+			for(Role r: u.getRole()) {
+				if(r.getUsername().equals(name))
+					 user=u;
+			}
+		}
+	return user;
 	}
   
   

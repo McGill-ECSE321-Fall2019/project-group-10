@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -212,21 +213,40 @@ public class TutoringServiceRestController {
 	}
 	
 // ******************************************** POST MAPPINGS ********************************************** \\
-//	Uses request parameter to get the name,age,user name,password,email,phone number of the user.
-	@PostMapping(value = { "/user/{name}/{userAge}/{userName}/{userPassword}{userEmail}/{userPhoneNumber}", "/user/{name}/{userAge}/{userName}/{userEmail}/{userPhoneNumber}" })
-	public UserDTO registerUser(@PathVariable("name") String name, @PathVariable("userAge") int userAge, @PathVariable("userName") String userName, @PathVariable("userEmail") String userEmail, @PathVariable("userPhoneNumber") String userPhoneNumber, @PathVariable("userPassword") String userPassword) throws IllegalArgumentException {
-		
-		if(service.findStudentByUsername(userName)!=null)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Student);
-		
-		TSUser user = service.createUser(name, userEmail, userAge, userPhoneNumber); 
-		Student student = new Student();
-		student.setUser(user); //link the user to the student
-		student.setUsername(userName);
-		student.setPassword(userPassword);
-		return convertToDto(user);
+//	Uses request parameter to get the name,age,email,phone number of the user.
+	@PostMapping(value = { "/user/{name}/{userEmail}/{age}/{phoneNum}", "/user/{name}/{userEmail}/{age}/{phoneNum}/" })
+	public UserDTO registerUser(@PathVariable("name") String name, @PathVariable("age") int userAge, @PathVariable("userEmail") String userEmail, @PathVariable("phoneNum") String userPhoneNumber) throws IllegalArgumentException {
+	
+		if(service.findUserByEmail(userEmail)!=null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_User);
+		TSUser u = service.createUser(name, userEmail, userAge, userPhoneNumber);
+		return convertToDto(u);
 	}
 	
+//	Uses request parameter to get the user-name,password,email,phone number, and age  of the student.
+	@PostMapping(value= {"/student/{userName}/{userPassword}/{userEmail}/{name}/{phoneNum}/{age}", "/student/{userName}/{userPassword}/{userEmail}/{name}/{phoneNum}/{age}/"})
+	public StudentDTO registerStudent(
+			@PathVariable("userName") String username, 
+			@PathVariable("userPassword") String userpassword, 
+			@PathVariable("userEmail") String useremail,
+			@PathVariable("name") String name,
+			@PathVariable("phoneNum") String phonenum,
+			@PathVariable("age") int age) 
+					throws IllegalArgumentException {
+		
+		if(service.findStudentByUsername(username)!=null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Student);
+		
+		Student s = service.createStudent(username, userpassword, useremail);
+		s.getUser().setName(name);
+		s.getUser().setPhoneNumber(phonenum);
+		s.getUser().setAge(age);
+		return convertToDto(s);
+	}
+	
+	
+	
+
 
 	//Creates a text
 	@PostMapping(value = { "/text", "/text/" })
