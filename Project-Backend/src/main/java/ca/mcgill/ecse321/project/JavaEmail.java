@@ -6,8 +6,6 @@ import javax.mail.internet.MimeMessage;
 
 import java.util.Properties;
 
-
-
 public class JavaEmail {
 
     static String SENDER_EMAIL = "project.group.10.email@gmail.com";
