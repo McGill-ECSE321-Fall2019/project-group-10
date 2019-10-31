@@ -5,6 +5,9 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +29,7 @@ import ca.mcgill.ecse321.project.dao.UniversityRepository;
 import ca.mcgill.ecse321.project.dao.UserRepository;
 import ca.mcgill.ecse321.project.model.Student;
 import ca.mcgill.ecse321.project.model.TSUser;
+import ca.mcgill.ecse321.project.model.University;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -72,7 +76,7 @@ public class CreateUserTest {
 	private static final String STUDENT_PASSWORD = "123";
 	private static final String STUDENT_EMAIL = "user.tester@mcgill.ca";
 	private static final String BAD_STUDENT_EMAIL = "student.tester";
-
+	private static final String STUDENT_USER_EMAIL = "user123.tester@mcgill.ca";
 	private static final int STUDENT_AGE = 18;
 	private static final String STUDENT_PHONENUMBER = "5146754321";
 
@@ -119,7 +123,7 @@ public class CreateUserTest {
 	}
 
 	//************************************************* TESTS *************************************************//
-
+	
 	//	Creates a user with valid parameters
 	@Test
 	public void testCreateValidUser() {
@@ -172,8 +176,26 @@ public class CreateUserTest {
 		//check it was the correct error
 
 		assertEquals(error, ErrorStrings.Invalid_User_Name);
-
 	}
+	
+	//Test Null User Name
+	@Test
+	public void testCreateUserEmptyName (){
+
+		String error = null;
+		try {
+			service.createUser("", USER_EMAIL, USER_AGE,USER_PHONE_NUMBER);
+		} 
+		catch (IllegalArgumentException e) {
+
+			error = e.getMessage();
+		}
+		//check it was the correct error
+
+		assertEquals(error, ErrorStrings.Invalid_User_Name);
+	}
+	
+	
 	//Creates a user who is underage (Age <12)
 	@Test
 	public void testCreateUserInvalidAge() {
@@ -222,6 +244,37 @@ public class CreateUserTest {
 		assertEquals(error, ErrorStrings.Invalid_User_PhoneNumber);
 	}
 
+	//tests if the phone number is invalid
+		@Test
+		public void testCreateUserNullEmail() {
+
+			String error = null;
+			try {
+				service.createUser(USER_NAME, null, USER_AGE,USER_PHONE_NUMBER);
+			}
+			catch (IllegalArgumentException e) {
+
+				error = e.getMessage();
+			}
+			//check it was the correct error
+			assertEquals(error, ErrorStrings.Invalid_User_Email);
+		}
+		
+		//tests if the phone number is invalid
+		@Test
+		public void testCreateUserInvalidEmail() {
+
+			String error = null;
+			try {
+				service.createUser(USER_NAME, USER_EMAIL_BAD, USER_AGE,USER_PHONE_NUMBER);
+			}
+			catch (IllegalArgumentException e) {
+
+				error = e.getMessage();
+			}
+			//check it was the correct error
+			assertEquals(error, ErrorStrings.Invalid_User_Email);
+		}
 
 
 
@@ -331,9 +384,38 @@ public class CreateUserTest {
 		//		checks if the error is correct
 		assertEquals(error, ErrorStrings.Invalid_Student_UserEmail);
 	}
-
 	
+	@Test
+	public void testCreateStudentIncorrectEmail() {
+		String error = null;
+		try {
+			service.createStudent(STUDENT_USERNAME, STUDENT_PASSWORD, STUDENT_USER_EMAIL);
+		}
 
+		catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		//		checks if the error is correct
+		assertEquals(error, ErrorStrings.Invalid_Student_FindUserByEmail);
+	}
+	
+	
+	@Test
+	public void testCreateStudentEmptyEmail() {
+		String error = null;
+		try {
+			service.createStudent(STUDENT_USERNAME, STUDENT_PASSWORD, "");
+		}
+
+		catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		//		checks if the error is correct
+		assertEquals(error, ErrorStrings.Invalid_Student_UserEmail);
+	}
+	
 
 
 }

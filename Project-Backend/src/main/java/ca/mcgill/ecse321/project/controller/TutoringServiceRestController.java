@@ -233,24 +233,19 @@ public class TutoringServiceRestController {
 		return convertToDto(u);
 	}
 	
-//	Uses request parameter to get the user-name,password,email,phone number, and age  of the student.
-	@PostMapping(value= {"/student/{userName}/{userPassword}/{userEmail}/{name}/{phoneNum}/{age}", "/student/{userName}/{userPassword}/{userEmail}/{name}/{phoneNum}/{age}/"})
+	
+//	Uses request parameter to get the user-name,password,email of the student.
+	@PostMapping(value= {"/student/{userName}/{userPassword}/{userEmail}", "/student/{userName}/{userPassword}/{userEmail}/"})
 	public StudentDTO registerStudent(
 			@PathVariable("userName") String username, 
 			@PathVariable("userPassword") String userpassword, 
-			@PathVariable("userEmail") String useremail,
-			@PathVariable("name") String name,
-			@PathVariable("phoneNum") String phonenum,
-			@PathVariable("age") int age) 
-					throws IllegalArgumentException {
+			@PathVariable("userEmail") String useremail) 
+			throws IllegalArgumentException {
 		
 		if(service.findStudentByUsername(username)!=null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Student);
 		
 		Student s = service.createStudent(username, userpassword, useremail);
-		s.getUser().setName(name);
-		s.getUser().setPhoneNumber(phonenum);
-		s.getUser().setAge(age);
 		return convertToDto(s);
 	}
 
