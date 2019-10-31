@@ -1417,11 +1417,12 @@ public class TutoringAppService {
 		Role role = null;
 		try {
 			role = getStudent(username);
-
+			//If role isn't a student
 			if (role == null)
 				role = getTutor(username);
 
 		} catch (Exception e) {
+			//if the role is neither than return null
 			return null;
 		}
 
