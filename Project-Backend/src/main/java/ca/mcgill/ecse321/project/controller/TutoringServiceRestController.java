@@ -86,6 +86,45 @@ public class TutoringServiceRestController {
 		return universityDtos;
 	}
 	
+	//Get all the appropriate texts.
+	@GetMapping(value = {"/textA", "/textA/"})
+	public List<TextDTO> getAllAppropriateText() {
+		List<TextDTO> textDtos = new ArrayList<>();
+
+		// get universities from the tutoring service
+		for (Text text : service.getAllTextsThatAreAllowed()) {
+			// convert model class to a data transfer object
+			textDtos.add(convertToDto(text));
+		}
+		return textDtos;
+	}
+
+	//Get all the texts.
+		@GetMapping(value = {"/texts", "/texts/"})
+		public List<TextDTO> getAllText() {
+			List<TextDTO> textDtos = new ArrayList<>();
+
+			// get universities from the tutoring service
+			for (Text text : service.getAllTexts()) {
+				// convert model class to a data transfer object
+				textDtos.add(convertToDto(text));
+			}
+			return textDtos;
+		}
+	
+	//Get all the appropriate texts.
+	@GetMapping(value = {"/ratings", "/ratings/"})
+	public List<RatingDTO> getAllRatings() {
+		List<RatingDTO> ratingDto = new ArrayList<>();
+
+		// get universities from the tutoring service
+		for (Rating rating : service.getAllRatings()) {
+			// convert model class to a data transfer object
+			ratingDto.add(convertToDto(rating));
+		}
+		return ratingDto;
+	}
+	
 	// Get all the courses for a chosen university
 	@GetMapping(value = { "/universities/{universityname}", "/universities/{universityname}/" })
 	public List<CourseDto> getCoursesforUni(@PathVariable("universityname") String name) throws IllegalArgumentException {
@@ -264,13 +303,13 @@ public class TutoringServiceRestController {
 		return convertToDto(u);
 	}
 	
-	
+
 //	Uses request parameter to get the user-name,password,email of the student.
-	@PostMapping(value= {"/student/{userName}/{userPassword}/{userEmail}", "/student/{userName}/{userPassword}/{userEmail}/"})
+	@PostMapping(value= {"/createstudent", "/createstudent/"})
 	public StudentDTO registerStudent(
-			@PathVariable("userName") String username, 
-			@PathVariable("userPassword") String userpassword, 
-			@PathVariable("userEmail") String useremail) 
+			@RequestParam("userName") String username, 
+			@RequestParam("userPassword") String userpassword, 
+			@RequestParam("userEmail") String useremail) 
 			throws IllegalArgumentException {
 		
 		if(service.findStudentByUsername(username)!=null)
@@ -280,7 +319,6 @@ public class TutoringServiceRestController {
 		return convertToDto(s);
 	}
 
-  
 	//Create tutor
 	@PostMapping(value = {"/createtutor", "/createtutor/"})
 	public TutorDTO setupCreateRole(@RequestParam("username") String username,
@@ -503,12 +541,10 @@ public class TutoringServiceRestController {
 		if(user == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_User);
 		}
-		user.setAge(age);
-		user.setEmail(userEmail);
-		user.setPhoneNumber(phonenumber);
-		user.setName(name);
 		
-		return convertToDto(user);
+		TSUser newUser = service.updateUser(name, user.getEmail(), user.getEmail(), age, phonenumber);
+		
+		return convertToDto(newUser);
 	}
 	
 	@PutMapping(value = {"/student/{username}", "/student/{username}/"})
@@ -522,9 +558,10 @@ public class TutoringServiceRestController {
 		if(student == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Student);
 		}
-		student.setUsername(nusername);
-		student.setPassword(npassword);
-		return convertToDto(student);
+		
+		Student studentUpdate = service.createStudent(nusername, npassword, student.getUser().getEmail());
+	
+		return convertToDto(studentUpdate);
 	}
 
 	//Update text or rating or both for the review.
@@ -536,7 +573,8 @@ public class TutoringServiceRestController {
 		if(text == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
 		text.setDescription(description);
-		
+		//set to false and wait for manager response.
+		text.setIsAllowed(false);
 		return convertToDto(text);
 					
 	}
