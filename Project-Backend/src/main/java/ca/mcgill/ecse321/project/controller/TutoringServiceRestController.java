@@ -254,15 +254,7 @@ public class TutoringServiceRestController {
 		return convertToDto(s);
 	}
 
-	@PostMapping(value = {"/setup/1", "/setup/1/"})
-	public UserDTO setupCreateUser(@RequestParam("age") int age,
-			@RequestParam("name") String name,
-			@RequestParam("email") String email,
-			@RequestParam("phonenumber") String phonenumber) throws IllegalArgumentException{
-		TSUser user = service.createUser(name, email, age, phonenumber);
-		return convertToDto(user);
-	}
-	
+
 	//Create tutor
 	@PostMapping(value = {"/setup/2", "/setup/2/"})
 	public TutorDTO setupCreateRole(@RequestParam("username") String username,
