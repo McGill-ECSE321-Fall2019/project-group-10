@@ -1,12 +1,14 @@
 package ca.mcgill.ecse321.project.service;
 
-import org.junit.After; 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,15 @@ public class UserTest {
 	@Autowired
 	private StudentRepository studentRepository; 
 	
+	private String email = "test.test@test.com";
+	private String name = "aName";
+	private String phone = "5145555555";
+	private int age = 22;
+	
+//	@Before
+//	public void setUp(){
+//		service.createUser(name, email, age,phone );
+//	}
 	
 	@After
 	public void clearDatabase() {
@@ -63,6 +74,22 @@ public class UserTest {
 		tutorRepository.deleteAll();
 		studentRepository.deleteAll();
 		userRepository.deleteAll();
+	}
+	
+	//finds the user by user name
+	@Test
+	public void testFindUserByEmail() {
+		List<TSUser> u = new ArrayList<TSUser>();
+		TSUser user = new TSUser();
+		user = service.createUser(name, email, age, phone);
+		u.add(user);
+		try {
+			
+			service.findUserByEmail(email);
+		}
+		catch (IllegalArgumentException e){
+			fail();
+		}
 	}
 	
 	// test to create a new user
