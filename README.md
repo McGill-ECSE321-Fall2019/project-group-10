@@ -102,7 +102,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <ol>
 <li>We have chosen to test our RESTful api tests using Postman.
 <li>Once in the wiki page, follow the steps for setting up the mock database to actually test the PUT and GET queries / statements.
-<li>Click on <b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">here</a></b> to access this page.
+<li>Click on <b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki/RESTful-API-Tests-using-a-Client-(Postman)">here</a></b> to access this page.
 </ol>
 
 <h2>Instructions for setting up the tests</h2><br>
