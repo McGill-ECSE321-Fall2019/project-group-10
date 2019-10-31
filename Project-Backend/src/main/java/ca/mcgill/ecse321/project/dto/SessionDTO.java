@@ -15,6 +15,7 @@ public class SessionDTO {
 	private RoomDTO room;
 	private TutorDTO tutor;
 	private boolean isConfirmed;
+	private int sessionId;
 	
 	public boolean isConfirmed() {
 		return isConfirmed;
@@ -23,7 +24,15 @@ public class SessionDTO {
 	public void setConfirmed(boolean isConfirmed) {
 		this.isConfirmed = isConfirmed;
 	}
+	
+	public void setSessionId(int sessionid) {
+		this.sessionId = sessionid;
+	}
 
+	public int getSessionid() {
+		return sessionId;
+	}
+	
 	//Data transfer object session.
 	public SessionDTO() {
 	}

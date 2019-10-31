@@ -210,7 +210,7 @@ public class TutoringServiceRestController {
 
 	@DeleteMapping(value = {"/session/delete", "/session/delete/"})
 	public boolean removeSession(@RequestParam(name = "session_id") Integer sessionId) {
-
+		
 		return service.deleteSession(sessionId);
 		//Insert notification
 
@@ -741,7 +741,12 @@ public class TutoringServiceRestController {
 		sDTO.setAmountPaid(s.getAmountPaid());
 		sDTO.setCourseOfferingDTO(convertToDto(s.getCourseOffering()));
 		sDTO.setDate(s.getDate());
-		sDTO.setRoomDTO(convertToDto(s.getRoom()));
+		sDTO.setSessionId(s.getSessionID());
+		
+		if(s.getRoom() != null) {
+			sDTO.setRoomDTO(convertToDto(s.getRoom()));
+		}
+		
 		sDTO.setTutorDTO(convertToDto(s.getTutor()));
 		
 		ArrayList<StudentDTO> students = new ArrayList<>();
