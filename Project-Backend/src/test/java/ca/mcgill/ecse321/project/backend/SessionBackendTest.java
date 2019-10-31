@@ -64,6 +64,7 @@ public class SessionBackendTest {
 	private static final String TUTOR_NAME_BAD = "bad username";
 	private static final double SESSION_AMOUNT_PAID = 15.00;
 	private static final String TUTOR_NAME_UNAVAILABLE = "unavUsername";
+	private static final String TUTOR_NAME_NO_AVAILABILITIES = "noAvUsername";
 	
 	// constant for room
 	private static final int ROOM_NUM = 203;
@@ -160,6 +161,13 @@ public class SessionBackendTest {
 				Set<Session> sessions = new HashSet<Session>();
 				sessions.add(sessionRepository.findSessionBySessionID(0));
 				return t;
+			} else if (invocation.getArgument(0).equals(TUTOR_NAME_NO_AVAILABILITIES)){
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME_NO_AVAILABILITIES);
+				Set<Availability> avSet = null;
+				t.setAvailability(avSet);
+				return t;
+				
 			} else {
 				return null;
 			}
@@ -295,7 +303,7 @@ public class SessionBackendTest {
 				Session s = new Session();
 				s.setAmountPaid(SESSION_AMOUNT_PAID);
 				s.setDate(Date.valueOf(LocalDate.now().plusDays(1)));
-				s.setTime(Time.valueOf(LocalTime.now().now().plusMinutes(5)));
+				s.setTime(Time.valueOf(LocalTime.now().plusMinutes(5)));
 				
 				Tutor t = new Tutor();
 				t.setUsername(TUTOR_NAME_UNAVAILABLE);
@@ -475,9 +483,101 @@ public class SessionBackendTest {
 				
 				return s;
 				
+			} else if (invocation.getArgument(0).equals(6)) {
+				
+				Session s = new Session();
+				s.setAmountPaid(SESSION_AMOUNT_PAID);
+				s.setDate(SESSION_DATE);
+				s.setTime(SESSION_TIME);
+				
+				Room r = new Room();
+				r.setRoomNumber(5);
+				s.setRoom(r);
+				
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME_UNAVAILABLE);
+				Set<Availability> avSet = new HashSet<Availability>();
+				t.setAvailability(avSet);
+				Availability a = new Availability();
+				a.setDate(SESSION_DATE_DIFF);
+				a.setTime(SESSION_TIME_DIFF);
+				a.setTutor(t);
+				t.getAvailability().add(a);
+				
+				Student student = new Student();
+				student.setUsername(STUDENT_NAME);
+				
+				Set<Session> sessions = new HashSet<Session>();
+				sessions.add(s);
+				student.setSession(sessions);
+				
+				List<Student> students = (new ArrayList<Student>());
+				students.add(student);
+				s.setStudent(students);
+				s.setAmountPaid(12.00);
+				s.setTutor(t);
+				CourseOffering co = new CourseOffering();
+				
+				r.setSession(sessions);
+				
+				t.setSession(sessions);
+				
+				List<Session> sessions2 = new ArrayList<Session>();
+				
+				sessions2.add(s);
+				
+				co.setSession(sessions2);
+				
+				
+				s.setCourseOffering(co);
+				
+				return s;
+				
+			} else if (invocation.getArgument(0).equals(7)) {
+				
+				Session s = new Session();
+				s.setAmountPaid(SESSION_AMOUNT_PAID);
+				s.setDate(SESSION_DATE);
+				s.setTime(SESSION_TIME);
+				
+				Tutor t = new Tutor();
+				t.setUsername(TUTOR_NAME);
+				Set<Availability> avSet = new HashSet<Availability>();
+				t.setAvailability(avSet);
+				Availability a = new Availability();
+				a.setDate(SESSION_DATE);
+				a.setTime(SESSION_TIME);
+				a.setTutor(t);
+				t.getAvailability().add(a);
+				
+				Student student = new Student();
+				student.setUsername(STUDENT_NAME);
+				
+				Set<Session> sessions = new HashSet<Session>();
+				sessions.add(s);
+				student.setSession(sessions);
+				
+				List<Student> students = (new ArrayList<Student>());
+				students.add(student);
+				s.setStudent(students);
+				s.setAmountPaid(12.00);
+				s.setTutor(t);
+				CourseOffering co = new CourseOffering();
+				
+				t.setSession(sessions);
+				
+				List<Session> sessions2 = new ArrayList<Session>();
+				
+				sessions2.add(s);
+				
+				co.setSession(sessions2);
+				
+				
+				s.setCourseOffering(co);
+				
+				return s;
+				
 			}
-			
-			
 			
 			return null;
 			
@@ -589,7 +689,7 @@ public class SessionBackendTest {
 			error = e.getMessage();
 		}
 		//check it was the correct error
-		assertEquals(error, "There is no room available at this time");
+		assertEquals(error, ErrorStrings.Invalid_Session_No_Room);
 		
 		
 	}
@@ -637,7 +737,7 @@ public class SessionBackendTest {
 			error = e.getMessage();
 		}
 		//check it was the correct error
-		assertEquals(error, "This is not a valid time");
+		assertEquals(error, ErrorStrings.Invalid_Session_Time);
 		
 	}
 	
@@ -654,7 +754,7 @@ public class SessionBackendTest {
 			error = e.getMessage();
 		}
 		//check it was the correct error
-		assertEquals(error, "This is not a valid time");
+		assertEquals(error, ErrorStrings.Invalid_Session_Time);
 		
 	}
 	
@@ -671,7 +771,7 @@ public class SessionBackendTest {
 			error = e.getMessage();
 		}
 		//check it was the correct error
-		assertEquals(error, "Can not book a session on the same day, or in the past!");
+		assertEquals(error, ErrorStrings.Invalid_Session_Date_Same_Day);
 		
 	}
 	
@@ -705,7 +805,7 @@ public class SessionBackendTest {
 			error = e.getMessage();
 		}
 		//check it was the correct error
-		assertEquals(error, "The Tutor is busy during this time.");
+		assertEquals(error, ErrorStrings.Invalid_Session_Tutor_Busy);
 		
 	}
 	
@@ -866,7 +966,7 @@ public class SessionBackendTest {
 		}
 		
 		//Check that the error occurred
-		assertEquals( error, "It is too late to cancel a session!" );
+		assertEquals( error, ErrorStrings.Invalid_Session_Too_Late_To_Cancel);
 		
 	}
 	
@@ -886,7 +986,7 @@ public class SessionBackendTest {
 		}
 		
 		//Check that the error occurred, and that it is correct
-		assertEquals( error, "It is too late to cancel a session! Please do it at least the day before!");
+		assertEquals( error, ErrorStrings.Invalid_Session_Cancel_Same_Date);
 		
 	}
 	
@@ -906,7 +1006,7 @@ public class SessionBackendTest {
 		}
 		
 		//check that it was the correct error
-		assertEquals( error, "Invalid Session ID");
+		assertEquals( error, ErrorStrings.Invalid_Session_FindSessionByID);
 		
 		
 	}
@@ -976,7 +1076,7 @@ public class SessionBackendTest {
 			error = e.getMessage();
 		}
 		//check it was the correct error
-		assertEquals(error, "Can not book a session more than 14 days in advance");
+		assertEquals(error, ErrorStrings.Invalid_Session_Date_Too_Far);
 		
 	}
 	
@@ -996,7 +1096,7 @@ public class SessionBackendTest {
 		}
 		
 		//check for correct error
-		assertEquals(error, "Student is already added to this session.");
+		assertEquals(error, ErrorStrings.Invalid_Session_Has_Student_Already);
 		
 	}
 	
@@ -1016,7 +1116,7 @@ public class SessionBackendTest {
 		}
 		
 		//check that it is the correct error
-		assertEquals(error, "Session is null!");
+		assertEquals(error, ErrorStrings.Invalid_Session_FindSessionByID);
 		
 	}
 	
@@ -1061,17 +1161,73 @@ public class SessionBackendTest {
 	@Test
 	public void testGetSesstionByStudentNullStudent() {
 			
-			String error = null;
-			
-			try {
-				service.getSessionByStudent(STUDENT_NAME_BAD);
-			} catch (IllegalArgumentException e) {
-				// get error message
-				error = e.getMessage();
-			}
-			
-			//check that it is the correct error
-			assertEquals(error, ErrorStrings.Invalid_Student_FindStudentByUsername);
-			
+		String error = null;
+		
+		try {
+			service.getSessionByStudent(STUDENT_NAME_BAD);
+		} catch (IllegalArgumentException e) {
+			// get error message
+			error = e.getMessage();
 		}
+		
+		//check that it is the correct error
+		assertEquals(error, ErrorStrings.Invalid_Student_FindStudentByUsername);
+			
+	}
+	
+	@Test
+	public void testCreateSessionNullTutorAvailabilityList() {
+		
+		String error = null;
+		
+		try {
+			service.createSession(CO_ID, SESSION_DATE, SESSION_TIME, SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME_NO_AVAILABILITIES);
+		} catch (IllegalArgumentException e) {
+			// get error message
+			error = e.getMessage();
+		}
+		
+		//check that it is the correct error
+		assertEquals(error, ErrorStrings.Invalid_Availability_List);
+		
+	}
+	
+	@Test
+	public void testRemoveRoomDeleteSession() {
+		
+		setMockOutputSession();
+		
+		boolean result = false;
+		
+		try {
+			//check that the session was successfully deleted
+			result = service.deleteSession(6);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		//check that the method returned true
+		assertEquals(result, true);
+		
+	}
+	
+	@Test
+	public void testDeleteWhenTutorAlreadyHasAvailability() {
+		
+		setMockOutputSession();
+		
+		String error = null;
+		
+		try {
+			//check that the session was successfully deleted
+			service.deleteSession(7);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			error = e.getMessage();
+		}
+		//check that the method returned true
+		assertEquals(error, ErrorStrings.Invalid_Availability_Already_Exists);
+		
+	}
+	
 }
