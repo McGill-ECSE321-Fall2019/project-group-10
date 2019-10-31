@@ -390,6 +390,57 @@ public class ReviewBackendTest {
 
 //************************************************* TESTS *************************************************//
 
+		@Test
+		public void createText() {
+			Text text = new Text();
+		
+			//Get all the ratings that have been written.
+			try {
+				text = service.createText(TEXT_GOOD_DESCRIPTION, true, TUTOR_USERNAME2, CO_ID2);
+			} catch(IllegalArgumentException e) {fail();}
+			
+			assertEquals(text.getDescription(), TEXT_GOOD_DESCRIPTION);
+			assertEquals(text.getWrittenAbout().getUsername(), TUTOR_USERNAME2);
+			assertEquals(text.getCourseOffering().getCourseOfferingID(), CO_ID2);
+		}	
+	
+		@Test
+		public void createTextWithNonExistantTutor() {
+			String error = "";
+			//Get all the ratings that have been written.
+			try {
+				service.createText(TEXT_GOOD_DESCRIPTION, true, TUTOR_PASSWORD, CO_ID2);
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+			
+			assertEquals(ErrorStrings.Invalid_Text_Reviewee, error);
+		}	
+		
+
+		@Test
+		public void createRating() {
+			Rating rating = new Rating();
+		
+			//Get all the ratings that have been written.
+			try {
+				rating = service.createRating(3, TUTOR_USERNAME2, CO_ID2);
+			} catch(IllegalArgumentException e) {fail();}
+			
+			assertEquals(rating.getRatingValue(), 3);
+			assertEquals(rating.getWrittenAbout().getUsername(), TUTOR_USERNAME2);
+			assertEquals(rating.getCourseOffering().getCourseOfferingID(), CO_ID2);
+		}	
+	
+		@Test
+		public void createRatingWithNonExistantTutor() {
+			String error = "";
+			//Get all the ratings that have been written.
+			try {
+				service.createRating(3, TUTOR_PASSWORD, CO_ID2);
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+			
+			assertEquals(ErrorStrings.Invalid_Rating_Reviewee, error);
+		}	
+		
 		
 		@Test
 		public void getAllRating() {

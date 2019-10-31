@@ -3,7 +3,12 @@ package ca.mcgill.ecse321.project;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import ca.mcgill.ecse321.project.model.*;
+
 import java.util.Properties;
+
+
 
 public class JavaEmail {
 
