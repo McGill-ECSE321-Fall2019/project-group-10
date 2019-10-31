@@ -1571,15 +1571,4 @@ public class TutoringAppService {
 		return null;
 	}
 	
-	//find student by username
-	  @Transactional
-		public Student findStudentByUsername(String username) {
-			Student s = new Student();
-			
-			// find the correct student by the given username
-			s = studentRepository.findStudentByUsername(username);
-			
-			// otherwise return the found student
-			return s;
-		}
 }
