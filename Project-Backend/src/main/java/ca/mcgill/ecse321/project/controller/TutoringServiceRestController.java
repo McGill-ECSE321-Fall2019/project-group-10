@@ -293,10 +293,33 @@ public class TutoringServiceRestController {
 
 // ***************************************** POST CREATE ******************************************* \\
 
+//	Create room.
+	@PostMapping(value = {"/createroom", "/createroom/"})
+	public RoomDTO createRoom(@RequestParam("roomNumber") int roomNumber) throws IllegalArgumentException{
+		
+		Room r = service.createRoom(roomNumber);
+		return convertToDto(r);
+	}
+	
+//	Create availability for tutor.
+	@PostMapping(value = {"/createavailability", "/createavailability/"})
+	public AvailabilityDTO bookSession(@RequestParam(name = "tutor_name") String tName,  
+			@RequestParam(name = "booking_date") Date bookingDate, 
+			@RequestParam(name = "booking_time") 
+			@DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime bookingTime) throws IllegalArgumentException {
+		Availability s = service.createAvailability(bookingDate, Time.valueOf(bookingTime), tName);
+		
+		return convertToDto(s);
+	}
+	
+	
 //	Uses request parameter to get the name,age,email,phone number of the user.
-	@PostMapping(value = { "/user/{name}/{userEmail}/{age}/{phoneNum}", "/user/{name}/{userEmail}/{age}/{phoneNum}/" })
-	public UserDTO registerUser(@PathVariable("name") String name, @PathVariable("age") int userAge, @PathVariable("userEmail") String userEmail, @PathVariable("phoneNum") String userPhoneNumber) throws IllegalArgumentException {
-
+	@PostMapping(value = { "/createuser", "/createuser/" })
+	public UserDTO registerUser(@RequestParam("name") String name, 
+			@RequestParam("age") int userAge, 
+			@RequestParam("userEmail") String userEmail, 
+			@RequestParam("phoneNum") String userPhoneNumber) throws IllegalArgumentException {
+	
 		if(service.findUserByEmail(userEmail)!=null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_User);
 		TSUser u = service.createUser(name, userEmail, userAge, userPhoneNumber);
@@ -392,10 +415,15 @@ public class TutoringServiceRestController {
 
   	//Creates a review
 	@PostMapping(value = {"/session", "/session/"})
-	public SessionDTO bookSession(@RequestParam(name = "tutor_name") String tName, @RequestParam(name = "student_name") String sName, @RequestParam(name = "booking_date") @DateTimeFormat(pattern = "MMddyyyy") LocalDate bookingDate,
-			@RequestParam(name = "booking_time") @DateTimeFormat(pattern = "HH:mm") LocalTime bookingTime, @RequestParam(name = "course_offering_id") Integer courseOfferingId, @RequestParam(name = "amount_paid") Double amountPaid) {
+	public SessionDTO bookSession(@RequestParam(name = "tutor_name") String tName, 
+			@RequestParam(name = "student_name") String sName, 
+			@RequestParam(name = "booking_date") Date bookingDate, 
+			@RequestParam(name = "booking_time") 
+			@DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime bookingTime, 
+			@RequestParam(name = "course_offering_id") Integer courseOfferingId, 
+			@RequestParam(name = "amount_paid") Double amountPaid) {
 
-		Session s = service.createSession(courseOfferingId, Date.valueOf(bookingDate), Time.valueOf(bookingTime), amountPaid, sName, tName);
+		Session s = service.createSession(courseOfferingId, bookingDate, Time.valueOf(bookingTime), amountPaid, sName, tName);
 
 		return convertToDto(s);
 	}
