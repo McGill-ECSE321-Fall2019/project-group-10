@@ -30,7 +30,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Alex Gruenwald</td>
     <td>Technical(ly) Intern</td>
     <td>19</td>
-    <td>[tbh]</td>
+    <td>53</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -39,7 +39,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Chelsea M-C</td>
     <td>Documentation Manager</td>
     <td>20</td>
-    <td>37</td>
+    <td>50</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -57,7 +57,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Anas Shahid</td>
     <td>Software Developer</td>
     <td>11</td>
-    <td>[tbh]</td>
+    <td>49</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -66,7 +66,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Yoan Poulmarc'k</td>
     <td>Software Architecture Lead</td>
     <td>17</td>
-    <td>[tbh]</td>
+    <td>51</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -83,15 +83,15 @@ Below can be found the role of each member and the number of hours spent on each
 </ul>
 <h3>Sprint 2</h3>
 <ul>
-  <li>Alex:</li>
+  <li>Alex: Business methods, restful services and unit tests for R13, R14, and R15. </li>
   <li>Chelsea:</li>
     <ul 1>
       <li> Responsible for meeting minutes and creating templates for the wiki pages</li>
       <li> Business methods, restful services and unit tests for R2, R3, and R4. </li>
     </ul 1>
-  <li>Taylor: </li>
-  <li>Anas:</li>
-  <li>Yoan:</li>
+  <li>Taylor: Business methods, restful services and unit tests for R5, R7, and R8.</li>
+  <li>Anas: Business methods, restful services and unit tests for R10, R11, and R12.</li>
+  <li>Yoan: Business methods, restful services and unit tests for R1, R6, and R9.</li>
 </ul>
 
 <br>To see our meeting minutes, including key design decisions and architecture
