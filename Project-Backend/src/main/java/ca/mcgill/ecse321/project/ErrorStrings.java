@@ -113,6 +113,8 @@ public class ErrorStrings {
     
 //=================== SERVICE ERRORS ======================\\
     public static String Invalid_Service_Tutor = "No tutor by that username";
+    public static String Invalid_Service_Student = "No student by that username";
+    public static String Invalid_Service_User = "No user by that username";
     public static String Invalid_Service_TutorForCO = "No tutors for this course offering";
     public static String Invalid_Service_CO = "No course offerings offered for this course";
     public static String Invalid_Service_CONone = "No courses offerings offered yet";

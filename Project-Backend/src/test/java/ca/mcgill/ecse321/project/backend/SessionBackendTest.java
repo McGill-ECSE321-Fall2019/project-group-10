@@ -218,6 +218,7 @@ public class SessionBackendTest {
 		
 	}
 	// mock output for students
+	@SuppressWarnings("static-access")
 	private void setMockOutputSession() {
 		//mock Find all
 		when(sessionRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {

@@ -1082,7 +1082,7 @@ public class TutoringAppService {
 		}
 		
 		//Special phone number check.
-		if(!phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
+		if(phoneNum==null || !phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_User_PhoneNumber);
 		}
 
@@ -1329,6 +1329,52 @@ public class TutoringAppService {
 		return t;
 	}
 	
+  
+	// find a user by email
+  @Transactional
+	public TSUser findUserByEmail(String email) {
+		TSUser u = new TSUser();
+		
+		// find the correct user by the given username
+		u = userRepository.findTSuserByEmail(email);
+		
+		// otherwise return the found student
+		return u;
+	}
+  
+  
+  //find student by username
+  @Transactional
+	public Student findStudentByUsername(String username) {
+		Student s = new Student();
+		
+		// find the correct student by the given username
+		s = studentRepository.findStudentByUsername(username);
+		
+		// otherwise return the found student
+		return s;
+	}
+  
+  
+  
+  
+  
+//find a user by username
+ @Transactional
+	public TSUser findUserbyUsername(String name) {
+	TSUser user = new TSUser();
+	for(TSUser u: getAllUsers()) {	
+			for(Role r: u.getRole()) {
+				if(r.getUsername().equals(name))
+					 user=u;
+			}
+		}
+	return user;
+	}
+  
+  
+  
+  
 	// check is there is a room available at the give time
   @Transactional
 	public boolean isRoomAvailable(Date date, Time startTime) {

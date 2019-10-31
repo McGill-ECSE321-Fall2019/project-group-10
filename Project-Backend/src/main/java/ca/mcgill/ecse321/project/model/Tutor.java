@@ -16,6 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.ManyToMany;
 
+@SuppressWarnings("unused")
 @Entity
 public class Tutor extends Role{
 
