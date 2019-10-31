@@ -633,7 +633,7 @@ public class TutoringAppService {
 	//Checking to make sure we can get a tutor.
 	@Transactional
 	public Tutor getTutor(String username) {
-		if(username.equals("") || username == null){
+		if(username == null || username.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Tutor_Username);
 		}
 		Tutor a = tutorRepository.findTutorByUsername(username);
@@ -643,7 +643,7 @@ public class TutoringAppService {
 	//Checking to make sure we can delete a tutor.
 	@Transactional
 	public boolean deleteTutor(String username) {
-		if(username.equals("") || username == null){
+		if(username == null || username.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Tutor_Username);
 		}
 		boolean done = false;
@@ -725,7 +725,7 @@ public class TutoringAppService {
 	//Checking to make sure we can get a student.
 	@Transactional
 	public Student getStudent(String username) {
-		if(username.equals("") || username == null){
+		if(username == null || username.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Student_Username);
 		}
 		Student a = studentRepository.findStudentByUsername(username);
@@ -735,7 +735,7 @@ public class TutoringAppService {
 	//Checking to make sure we can delete a student.
 	@Transactional
 	public boolean deleteStudent(String username) {
-		if(username.equals("") || username == null){
+		if(username == null || username.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Student_Username);
 		}
 		boolean done = false;
@@ -1476,12 +1476,13 @@ public class TutoringAppService {
 		Role role = null;
 		try {
 			role = getStudent(username);
-
+			//If role isn't a student
 			if (role == null)
 				role = getTutor(username);
 
 		} catch (Exception e) {
-
+			//if the role is neither than return null
+			return null;
 		}
 
 		return role;
