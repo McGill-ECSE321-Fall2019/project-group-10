@@ -111,6 +111,22 @@ public class RoleBackendTest {
         assertEquals(error, ErrorStrings.Invalid_Student_Username);
     }
 
+    // Check that getStudent fails with incorrect username
+    @Test
+    public void getStudentIncorrectUsername() {
+        Student student = null;
+
+        try {
+            student = service.getStudent("wrongUsername");
+        } catch(IllegalArgumentException e)
+        {
+            fail();
+        }
+
+        // check that it returns the correct student
+        assertEquals(null, student);
+    }
+
     // Check that getStudent fails with correct username
     @Test
     public void getStudentCorrectUsername() {
@@ -157,6 +173,22 @@ public class RoleBackendTest {
 
         // check that error message is correct
         assertEquals(error, ErrorStrings.Invalid_Tutor_Username);
+    }
+
+    // Check that getTutor returns null with incorrect username
+    @Test
+    public void getTutorIncorrectUsername() {
+        Tutor tutor = null;
+
+        try {
+            tutor = service.getTutor("wrongUsername");
+        } catch(IllegalArgumentException e)
+        {
+            fail();
+        }
+
+        // check that it returns the correct tutor
+        assertEquals(null  , tutor);
     }
 
     // Check that getTutor works with correct username
