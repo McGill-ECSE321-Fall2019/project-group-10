@@ -8,10 +8,7 @@ import javax.persistence.Id;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 

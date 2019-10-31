@@ -13,8 +13,9 @@ public class ErrorStrings {
     public static String Invalid_Availability_Tutor = "Please specify a valid Tutor";
     public static String Invalid_Availability_ID_Get = "Incorrect id value for the availability...";
     public static String Invalid_Availability_ID_Delete = "You are searching for an invalid id...";
+    public static String Invalid_Availability_Already_Exists = "Availability already exists";
+    public static String Invalid_Availability_List = "The Tutor you picked has no Availabilities";
     
-
 //=========== COURSEOFFERING ===========\\
     public static String Invalid_CourseOffering_Year = "That is far too long ago...";
     public static String Invalid_CourseOffering_CourseID = "Invalid courseID...";
@@ -80,6 +81,14 @@ public class ErrorStrings {
     public static String Invalid_Session_FindStudentByUsername = "Please input a valid student";
     public static String Invalid_Session_FindSessionByID = "Please input a valid session";
     public static String Invalid_Session_ID = "Incorrect id value for the session...";
+    public static String Invalid_Session_No_Room = "There is no room available at this time";
+    public static String Invalid_Session_Time = "This is not a valid time";
+    public static String Invalid_Session_Date_Same_Day = "Can not book a session on the same day, or in the past!";
+    public static String Invalid_Session_Date_Too_Far = "Can not book a session more than 14 days in advance";
+    public static String Invalid_Session_Tutor_Busy = "The Tutor is busy during this time.";
+    public static String Invalid_Session_Too_Late_To_Cancel = "It is too late to cancel a session!";
+    public static String Invalid_Session_Cancel_Same_Date = "It is too late to cancel a session! Please do it at least the day before!";
+    public static String Invalid_Session_Has_Student_Already = "Student is already added to this session.";
     
 //================= UNIVERSITY =================\\
     public static String Invalid_University_Name = "Invalid name...";
@@ -113,12 +122,13 @@ public class ErrorStrings {
     
 //=================== SERVICE ERRORS ======================\\
     public static String Invalid_Service_Tutor = "No tutor by that username";
+    public static String Invalid_Service_Student = "No student by that username";
+    public static String Invalid_Service_User = "No user by that username";
     public static String Invalid_Service_TutorForCO = "No tutors for this course offering";
     public static String Invalid_Service_CO = "No course offerings offered for this course";
     public static String Invalid_Service_CONone = "No courses offerings offered yet";
     public static String Invalid_Service_CourseOfferedUni = "No courses offered for this university";
     public static String Invalid_Service_COBad = "This course offering does not exist";
-
 
 
 }

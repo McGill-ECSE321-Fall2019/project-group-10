@@ -175,6 +175,9 @@ public class TutoringAppService {
 		
 		List<Availability> availabilitylList = new ArrayList<>();
 		Tutor t = tutorRepository.findTutorByUsername(tName);
+		if(t.getAvailability() == null || t.getAvailability().size() == 0) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_List);
+		}
 		availabilitylList = (Arrays.asList((t.getAvailability().toArray(new Availability[0]))));
 		
 		return availabilitylList;
@@ -770,14 +773,14 @@ public class TutoringAppService {
 		//If there is no room available at the time, throw an error
 		if(!isRoomAvailable(date, time)) {
 			
-			throw new IllegalArgumentException("There is no room available at this time");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_No_Room);
 			
 		}
 		
 		//If the time is outside the valid booking time (between 9am-8pm) throw an error
 		if((time.compareTo(Time.valueOf("09:00:00")) < 0) || time.compareTo(Time.valueOf("20:00:00")) > 0) {
 			
-			throw new IllegalArgumentException("This is not a valid time");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_Time);
 			
 		}
 		
@@ -785,13 +788,13 @@ public class TutoringAppService {
 		//Check that it is not the same day for a booking
 		if(Period.between(currentDate, date.toLocalDate()).getDays() <= 0) {
 			
-			throw new IllegalArgumentException("Can not book a session on the same day, or in the past!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_Date_Same_Day);
 			
 		}
 		//check that it is not more than two weeks away
 		if(Period.between(currentDate, date.toLocalDate()).getDays() > 14) {
 			
-			throw new IllegalArgumentException("Can not book a session more than 14 days in advance");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_Date_Too_Far);
 			
 		}
 		
@@ -805,8 +808,6 @@ public class TutoringAppService {
 		boolean tIsAvailable = false;
 		int tId = 0;
 		List<Availability> tutorAvailabilities = getAvailabilityByTutor(tName);
-		if(tutorAvailabilities == null || tutorAvailabilities.size() == 0)
-			tIsAvailable = false;
 		Availability av = null;
 		//Check that the tutor is available
 		for (Availability a : tutorAvailabilities) {
@@ -831,7 +832,7 @@ public class TutoringAppService {
 		//If the tutor is not available, throw an exception
 		if(!tIsAvailable) {
 			
-			throw new IllegalArgumentException("The Tutor is busy during this time.");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_Tutor_Busy);
 			
 		}
 		//create an empty session
@@ -963,7 +964,7 @@ public class TutoringAppService {
 		//If the session is not found or null, throw an error
 		if(a == null) {
 			
-			throw new IllegalArgumentException("Invalid Session ID");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindSessionByID);
 		}
 		
 		LocalDate currentDate = LocalDate.now();
@@ -983,14 +984,14 @@ public class TutoringAppService {
 			
 			if(currentMinutes > sMinutes) {
 				
-				throw new IllegalArgumentException("It is too late to cancel a session!");
+				throw new IllegalArgumentException(ErrorStrings.Invalid_Session_Too_Late_To_Cancel);
 				
 			}
 		
 		//Check for same day or the past, throw an error if this is the case
 		} else if (Period.between(currentDate, a.getDate().toLocalDate()).getDays() <= 0) {
 			
-			throw new IllegalArgumentException("It is too late to cancel a session! Please do it at least the day before!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_Cancel_Same_Date);
 			
 		}
 		
@@ -1031,7 +1032,7 @@ public class TutoringAppService {
 			
 			if(tAv.getDate().toString().equals(av.getDate().toString()) && tAv.getTime().toString().equals(av.getTime().toString())) {
 				
-				throw new IllegalArgumentException("Availability already exists");
+				throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_Already_Exists);
 				
 			} 
 			
@@ -1082,7 +1083,7 @@ public class TutoringAppService {
 		}
 		
 		//Special phone number check.
-		if(!phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
+		if(phoneNum==null || !phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_User_PhoneNumber);
 		}
 
@@ -1098,6 +1099,18 @@ public class TutoringAppService {
 	//Checking to make sure we can update a user.
 	@Transactional
 	public TSUser updateUser(String name, String oldEmail,String newEmail, int age, String phoneNum) {
+		if(age < 12){
+			throw new IllegalArgumentException(ErrorStrings.Invalid_User_AgeTooYoung);
+		}
+		if(name == null || name.equals("")){
+			throw new IllegalArgumentException(ErrorStrings.Invalid_User_Name);
+		}
+		
+		//Special phone number check.
+		if(!phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
+			throw new IllegalArgumentException(ErrorStrings.Invalid_User_PhoneNumber);
+		}
+		
 		TSUser user = userRepository.findTSuserByEmail(oldEmail);
 		user.setAge(age);
 		user.setEmail(newEmail);
@@ -1317,6 +1330,52 @@ public class TutoringAppService {
 		return t;
 	}
 	
+  
+	// find a user by email
+  @Transactional
+	public TSUser findUserByEmail(String email) {
+		TSUser u = new TSUser();
+		
+		// find the correct user by the given username
+		u = userRepository.findTSuserByEmail(email);
+		
+		// otherwise return the found student
+		return u;
+	}
+  
+  
+  //find student by username
+  @Transactional
+	public Student findStudentByUsername(String username) {
+		Student s = new Student();
+		
+		// find the correct student by the given username
+		s = studentRepository.findStudentByUsername(username);
+		
+		// otherwise return the found student
+		return s;
+	}
+  
+  
+  
+  
+  
+//find a user by username
+ @Transactional
+	public TSUser findUserbyUsername(String name) {
+	TSUser user = new TSUser();
+	for(TSUser u: getAllUsers()) {	
+			for(Role r: u.getRole()) {
+				if(r.getUsername().equals(name))
+					 user=u;
+			}
+		}
+	return user;
+	}
+  
+  
+  
+  
 	// check is there is a room available at the give time
   @Transactional
 	public boolean isRoomAvailable(Date date, Time startTime) {
@@ -1384,13 +1443,13 @@ public class TutoringAppService {
 		
 		//invalid if student is null
 		if(stu == null) {
-			throw new IllegalArgumentException("Student is null!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindStudentByUsername);
 		}
 		
 		//invalid if session is null
 		if(session == null) {
 			
-			throw new IllegalArgumentException("Session is null!");
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_FindSessionByID);
 			
 		}
 		
@@ -1398,7 +1457,7 @@ public class TutoringAppService {
 		for (Student s : session.getStudent()) {
 			
 			if(s.getId() == stu.getId()) {
-				throw new IllegalArgumentException("Student is already added to this session.");
+				throw new IllegalArgumentException(ErrorStrings.Invalid_Session_Has_Student_Already);
 				
 			}
 		}
@@ -1512,4 +1571,5 @@ public class TutoringAppService {
 		}
 		return null;
 	}
+	
 }

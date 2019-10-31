@@ -760,6 +760,7 @@ public class ReviewBackendTest {
 			assertEquals(tutorList.size(), 2);
 			assertEquals(tutorList.get(1).getUsername(), USER_USERNAME2);
 
+			@SuppressWarnings("unused")
 			Tutor tutor = tutorList.get(1);
 			
 			try {
