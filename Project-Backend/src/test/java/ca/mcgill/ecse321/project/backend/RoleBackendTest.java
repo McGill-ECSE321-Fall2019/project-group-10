@@ -123,7 +123,7 @@ public class RoleBackendTest {
             fail();
         }
 
-        // check that it returns the correct student
+        // check that it returns the incorrect student
         assertEquals(null, student);
     }
 
@@ -187,7 +187,7 @@ public class RoleBackendTest {
             fail();
         }
 
-        // check that it returns the correct tutor
+        // check that it returns the incorrect tutor
         assertEquals(null  , tutor);
     }
 
