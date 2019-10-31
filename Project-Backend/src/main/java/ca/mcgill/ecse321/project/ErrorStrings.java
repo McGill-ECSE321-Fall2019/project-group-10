@@ -42,13 +42,14 @@ public class ErrorStrings {
     
 //================ RATING ===================\\
     public static String Invalid_Rating_RevieweeUsername = "Please insert a reviewee username...";
-    public static String Invalid_Rating_Reviewee = "Please enter a valid course offering...";
+    public static String Invalid_Rating_Reviewee = "Please enter a valid username for the tutor...";
     public static String Invalid_Rating_NegativeRatingValue = "You can't give your tutor a negative rating... [1,5]";
     public static String Invalid_Rating_FindCourseOffering = "Please enter a valid course offering...";
     public static String Invalid_Rating_FindRatingByReview = "Please enter a valid Rating Review to update";
     public static String Invalid_Rating_CourseOfferingID = "Please enter a valid Course Offering";
     public static String Invalid_Rating_IncorrectRatingValue = "Rating value must be between 1 and 5";
     public static String Invalid_Rating_ID = "Incorrect id value for the rating...";
+    public static String Invalid_Rating_CourseOffering = "";
 
 //================ TUTOR =====================\\  
     public static String Invalid_Tutor_Username = "Please insert a username...";

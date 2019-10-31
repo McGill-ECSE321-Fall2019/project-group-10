@@ -356,12 +356,16 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_FindCourseOffering);
 		
 		Text text = new Text();
+
+		if(tutorRepository.findTutorByUsername(revieweeUsername) == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);
+	
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
 		else if (studentRepository.findStudentByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
-		else 
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);
+		else {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);}
 		text.setDescription(description);
 		text.setIsAllowed(isAllowed);
 		text.setCourseOffering(c);
@@ -456,6 +460,9 @@ public class TutoringAppService {
 		if(ratingValue > 5 || ratingValue < 1) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
 		}
+		
+		if(tutorRepository.findTutorByUsername(revieweeUsername) == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_Reviewee);
 		
 		Rating rating = new Rating();
 		
