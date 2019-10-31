@@ -100,7 +100,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
 
 <h2>Instructions for setting RESTful APIs and running Spring</h2><br>
 <ol>
-<li>To start the RESTful, we must first being the running of Spring.
+<li>To start testing the RESTfula apis, we must first begin running of Spring.
 <li>First, open up your SpringToolSuiteIDE and open your designated workspace.
 <li>Import the required project.
 <li>Make your way into the project-group-10/Project-Backend/src/main/java/ca/mcgill/ecse321/project/ProjectApplication.java
