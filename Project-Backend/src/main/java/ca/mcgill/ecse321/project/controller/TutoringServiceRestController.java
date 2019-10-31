@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-//import ca.mcgill.ecse321.project.JavaEmail;
+import ca.mcgill.ecse321.project.JavaEmail;
 import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dto.*;
 import ca.mcgill.ecse321.project.model.*;
@@ -36,8 +36,12 @@ public class TutoringServiceRestController {
 	@Autowired
 	TutoringAppService service;
 
+// ******************************************** GET MAPPINGS ********************************************** \\
+	
+	// get all users
 	@GetMapping(value = {"/users", "/users/"})
 	public List<UserDTO> getAllUsers(){
+		// get all users from the business service
 		List<TSUser> listOfUsers = service.getAllUsers();
 		List<UserDTO> userListDto = new ArrayList<>();
 		for(TSUser user : listOfUsers) {
@@ -46,19 +50,18 @@ public class TutoringServiceRestController {
 		return userListDto;
 	}
 	
+	// get all tutors registered on the application
 	@GetMapping(value = {"/tutors", "/tutors/"})
 	public List<TutorDTO> getAllTutors(){
+		// get all the tutors from the business service
 		List<Tutor> listOfTutors = service.getAllTutors();
 		List<TutorDTO> tutorList = new ArrayList<>();
+		// convert to DTO objects
 		for(Tutor tutor : listOfTutors) {
 			tutorList.add(convertToDtoSetup(tutor));
 		}
 		return tutorList;
 	}
-	
-	
-// ******************************************** GET MAPPINGS ********************************************** \\
-	
 	
 	// Get all the schools offered by the application
 	@GetMapping(value = {"/universities", "/universities/"})
@@ -186,7 +189,14 @@ public class TutoringServiceRestController {
 
 		return tDTO;
 	}
-	
+
+	// Check room availability
+	@GetMapping(value = {"/checkavailability", "/checkavailability/"})
+	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date,
+			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
+		return service.isRoomAvailable(date, startTime);
+}
+
 	@GetMapping(value = {"/allavailabilities/{tutorname}", "/allavailabilities/{tutorname}/"})
 	public List<AvailabilityDTO> getAllAvailabilitiesByTutor(@PathVariable("tutorname") String username) throws IllegalArgumentException {
 		
@@ -207,7 +217,6 @@ public class TutoringServiceRestController {
 			aDtos.add(convertToDto(a));
 		}
 		return aDtos;
-		
 	}
 
 	//Get mapping to get both the text and rating for the review. 1) Text 2) Rating
@@ -296,7 +305,6 @@ public class TutoringServiceRestController {
 		if(tutor == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
 		}
-		
 		Rating reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
 		
 		return convertToDto(reviewRating);
@@ -360,15 +368,6 @@ public class TutoringServiceRestController {
 		
 		return convertToDto(s);
 	}
-
-	// Check room availability
-
-	@PostMapping(value = {"/checkavailability", "/checkavailability/"})
-	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date,
-			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
-		return service.isRoomAvailable(date, startTime);
-	}
-
 
 	@PostMapping(value = {"/login", "/login/"})
 	public boolean login(@RequestParam String username, @RequestParam String password) {
