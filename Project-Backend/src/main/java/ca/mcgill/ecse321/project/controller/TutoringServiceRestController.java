@@ -133,7 +133,7 @@ public class TutoringServiceRestController {
 		return cDTOs;
 	}
 
-
+//	gets all the sessions
 	@GetMapping(value= { "/sessions", "/sessions/"})
 	public List<SessionDTO> getAllSessions() {
 

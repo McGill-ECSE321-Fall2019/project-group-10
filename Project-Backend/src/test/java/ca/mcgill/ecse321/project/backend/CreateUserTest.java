@@ -5,9 +5,6 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +29,7 @@ import ca.mcgill.ecse321.project.model.TSUser;
 import ca.mcgill.ecse321.project.model.University;
 import ca.mcgill.ecse321.project.service.TutoringAppService;
 
+@SuppressWarnings("unused")
 @RunWith(MockitoJUnitRunner.class)
 public class CreateUserTest {
 
