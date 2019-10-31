@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.project.service;
 
 import java.sql.Date;
 import java.sql.Time;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
@@ -1531,6 +1530,27 @@ public class TutoringAppService {
 		if(true) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Review_CANTRETURN);
 		}
-
+	}
+	
+	@Transactional
+	public University getUniversityByName(String name) {
+		University university = universityRepository.findUniversityByName(name);
+		if(university == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_University);
+		}
+		return university;
+	}
+	
+	@Transactional
+	public Course getCourseByName(String name) {
+		List<Course> courseList = getAllCourses();
+		if(courseList == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Course);
+		}
+		for(Course c : courseList) {
+			if(c != null && c.getCourseName().equals(name))
+				return c;
+		}
+		return null;
 	}
 }

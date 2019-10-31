@@ -6,13 +6,13 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,6 +61,7 @@ public class TutoringServiceRestController {
 		return tutorList;
 	}
 
+
 	//			Gets all the students
 	@GetMapping(value = { "/students", "/students/" })
 	public List<StudentDTO> getAllStudents() {
@@ -72,6 +73,7 @@ public class TutoringServiceRestController {
 		}
 		return studentDtos;
 	}
+
 	
 	// Get all the schools offered by the application
 	@GetMapping(value = {"/universities", "/universities/"})
@@ -201,6 +203,34 @@ public class TutoringServiceRestController {
 		return tDTO;
 	}
 
+	// Check room availability
+	@GetMapping(value = {"/checkavailability", "/checkavailability/"})
+	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date,
+			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
+		return service.isRoomAvailable(date, startTime);
+}
+	@GetMapping(value = {"/allavailabilities/{tutorname}", "/allavailabilities/{tutorname}/"})
+	public List<AvailabilityDTO> getAllAvailabilitiesByTutor(@PathVariable("tutorname") String username) throws IllegalArgumentException {
+		
+		if (username == null) {
+			throw new IllegalArgumentException("Tutor name invalid");
+		}
+		
+		List<AvailabilityDTO> aDtos = new ArrayList<>();
+		
+		Tutor t = service.findTutorByUsername(username);
+		
+		Iterator<Availability> aIt = t.getAvailability().iterator();
+		
+		while(aIt.hasNext()) {
+			Availability a = aIt.next();
+			
+			// convert model class to a data transfer object
+			aDtos.add(convertToDto(a));
+		}
+		return aDtos;
+	}
+
 	//Get mapping to get both the text and rating for the review. 1) Text 2) Rating
 	@GetMapping(value = { "/tutor/{tutorUsername}/reviews", "/tutor/{tutorUsername}/reviews/" })
 	public List<ReviewDTO> getAllReviewsForTutor(@PathVariable("tutorUsername") String tutorUsername) throws IllegalArgumentException {
@@ -222,7 +252,9 @@ public class TutoringServiceRestController {
 		return reviewListDto;
 	}
 	
-// ******************************************** POST MAPPINGS ********************************************** \\
+
+// ***************************************** POST CREATE ******************************************* \\
+
 //	Uses request parameter to get the name,age,email,phone number of the user.
 	@PostMapping(value = { "/user/{name}/{userEmail}/{age}/{phoneNum}", "/user/{name}/{userEmail}/{age}/{phoneNum}/" })
 	public UserDTO registerUser(@PathVariable("name") String name, @PathVariable("age") int userAge, @PathVariable("userEmail") String userEmail, @PathVariable("phoneNum") String userPhoneNumber) throws IllegalArgumentException {
@@ -254,9 +286,9 @@ public class TutoringServiceRestController {
 		return convertToDto(s);
 	}
 
-
+  
 	//Create tutor
-	@PostMapping(value = {"/setup/2", "/setup/2/"})
+	@PostMapping(value = {"/createtutor", "/createtutor/"})
 	public TutorDTO setupCreateRole(@RequestParam("username") String username,
 			@RequestParam("password") String password,
 			@RequestParam("useremail") String email,
@@ -273,52 +305,95 @@ public class TutoringServiceRestController {
 		return convertToDtoSetup(tutor);
 	}
 	
-	//Create the given reviews - text and rating
-		@PostMapping(value = {"/setup/3", "/setup/3/"})
-		public CourseOfferingDTO setupCreateCourseOffering(@RequestParam("year") int year,
-				@RequestParam("courseId") int courseId) throws IllegalArgumentException {
-			
-			CourseOffering courseOffering = service.createCourseOffering(Term.Summer, year, courseId);
-			return convertToDto(courseOffering);
-		}
+	//Create the given university.
+	@PostMapping(value = {"/createuniversity", "/createuniversity/"})
+	public UniversityDTO setupCreateUniversity(@RequestParam("name") String name,
+			@RequestParam("address") String address) throws IllegalArgumentException {
+		
+		University university = service.createUniversity(name, address);
+		return convertToDto(university);
+	}
 	
+	//Create the given course.
+	@PostMapping(value = {"/createcourse", "/createcourse/"})
+	public CourseDto setupCreateCourse(@RequestParam("courseDescription") String description,
+			@RequestParam("courseName") String courseName,
+			@RequestParam("uniName") String uniName) throws IllegalArgumentException {			
+		Course course = service.createCourse(description, courseName, service.getUniversityByName(uniName).getUniversityID());
+		return convertToDto(course);
+	}
+	
+	//Create the given course offering.
+	@PostMapping(value = {"/createcourseoffering", "/createcourseoffering"})
+	public CourseOfferingDTO setupCreateCourseOffering(@RequestParam("year") int year,
+			@RequestParam("courseName") String courseName) throws IllegalArgumentException {			
+		CourseOffering courseO = service.createCourseOffering(Term.Winter, year, service.getCourseByName(courseName).getCourseID());
+		return convertToDto(courseO);
+	}
+		
 	//Create the given reviews - text and rating
-	@PostMapping(value = {"/setup/4", "/setup/4/"})
-	public ReviewDTO setupCreateReviewRating(@RequestParam("rating") int rating,
-			@RequestParam("tutorEmail") String tutorEmail,
+	@PostMapping(value = {"/createrating", "/createrating/"})
+	public RatingDTO setupCreateReviewRating(@RequestParam("rating") int rating,
+			@RequestParam("username") String username,
 			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
 		
-		Tutor tutor = service.getTutor(tutorEmail);
+		Tutor tutor = service.getTutor(username);
 		if(tutor == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
 		}
 		
-		Review reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
+		Rating reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
 		
 		return convertToDto(reviewRating);
 	}
-
 	
-
 	//Create the given reviews - text and rating
-	@PostMapping(value = {"/setup/5", "/setup/5/"})
-	public ReviewDTO setupCreateReviewText(@RequestParam("rating") int rating,
-			@RequestParam("tutorEmail") String tutorEmail,
-			@RequestParam("courseId") int courseId) throws IllegalArgumentException {
+	@PostMapping(value = {"/createtext", "/createtext/"})
+	public TextDTO setupCreateReviewText(@RequestParam("description") String description,
+			@RequestParam("isAllowed") boolean isAllowed,
+			@RequestParam("username") String username,
+			@RequestParam("courseOfferingId") int courseOfferingId) throws IllegalArgumentException {
 		
-		Tutor tutor = service.getTutor(tutorEmail);
-		if(tutor == null) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
-		}
+		Text reviewText = service.createText(description, isAllowed, username, courseOfferingId);
 		
-		Review reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
-		
-		return convertToDto(reviewRating);
+		return convertToDto(reviewText);
+	}
+  
+  	//Creates a review
+	@PostMapping(value = {"/session", "/session/"})
+	public SessionDTO bookSession(@RequestParam(name = "tutor_name") String tName, @RequestParam(name = "student_name") String sName, @RequestParam(name = "booking_date") @DateTimeFormat(pattern = "MMddyyyy") LocalDate bookingDate, 
+			@RequestParam(name = "booking_time") @DateTimeFormat(pattern = "HH:mm") LocalTime bookingTime, @RequestParam(name = "course_offering_id") Integer courseOfferingId, @RequestParam(name = "amount_paid") Double amountPaid) {
+
+		Session s = service.createSession(courseOfferingId, Date.valueOf(bookingDate), Time.valueOf(bookingTime), amountPaid, sName, tName);
+
+		return convertToDto(s);
 	}
 	
+  
+  	// Check room availability
 
+	@PostMapping(value = {"/checkavailability", "/checkavailability/"})
+	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date,
+			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
+		return service.isRoomAvailable(date, startTime);
+	}
 
+	@PostMapping(value = {"/login", "/login/"})
+	public boolean login(@RequestParam String username, @RequestParam String password) {
+		Role role = service.getRoleByUsername(username);
+		if (role.isPassword(password) && !role.isLoggedIn()) {
+			role.logIn();
+			return true;
+		}
+		return false;
+	}
 
+	@PostMapping(value = {"/logout", "/logout/"})
+	public void logout(@RequestParam String username) {
+		Role role = service.getRoleByUsername(username);
+		role.logOut();
+	}
+  
 	//Upon tutor response, update session information or delete session.
 	@PostMapping(value = {"/sessionresponse/{response}", "/sessionresponse/{response}/}"})
 	public void sessionCreationUponTutorResponse(@PathVariable("response") boolean response,
@@ -344,7 +419,7 @@ public class TutoringServiceRestController {
 			//Email the user of rejection.
 		}
 	}
-	
+
 
 	//Creates a text
 	@PostMapping(value = { "/text", "/text/" })
@@ -376,17 +451,7 @@ public class TutoringServiceRestController {
 		}
 		return convertToDto(rating);
 	}
-	
-	//Creates a review
-	@PostMapping(value = {"/session", "/session/"})
-	public SessionDTO bookSession(@RequestParam(name = "tutor_name") String tName, @RequestParam(name = "student_name") String sName, @RequestParam(name = "booking_date") @DateTimeFormat(pattern = "MMddyyyy") LocalDate bookingDate, 
-			@RequestParam(name = "booking_time") @DateTimeFormat(pattern = "HH:mm") LocalTime bookingTime, @RequestParam(name = "course_offering_id") Integer courseOfferingId, @RequestParam(name = "amount_paid") Double amountPaid) {
 
-		Session s = service.createSession(courseOfferingId, Date.valueOf(bookingDate), Time.valueOf(bookingTime), amountPaid, sName, tName);
-
-		return convertToDto(s);
-	}
-	
 	@PutMapping(value = {"/addstudent", "/addstudent/"})
 	public StudentDTO addStudentToSession(@RequestParam(name = "student_name") String studentName, @RequestParam(name = "session_id") Integer sessionId) throws IllegalArgumentException {
 		
@@ -396,30 +461,6 @@ public class TutoringServiceRestController {
 	}
 
 
-	// Check room availability
-
-	@PostMapping(value = {"/checkavailability", "/checkavailability/"})
-	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date,
-			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
-		return service.isRoomAvailable(date, startTime);
-	}
-
-
-	@PostMapping(value = {"/login", "/login/"})
-	public boolean login(@RequestParam String username, @RequestParam String password) {
-		Role role = service.getRoleByUsername(username);
-		if (role.isPassword(password) && !role.isLoggedIn()) {
-			role.logIn();
-			return true;
-		}
-		return false;
-	}
-
-	@PostMapping(value = {"/logout", "/logout/"})
-	public void logout(@RequestParam String username) {
-		Role role = service.getRoleByUsername(username);
-		role.logOut();
-	}
 	
 	@PutMapping(value = {"/availability/update", "/availability/update/"})
 	public AvailabilityDTO updateAvailability(@RequestParam(name = "id") Integer aId, @RequestParam(name = "date") Date aD, @RequestParam(name = "startTime") Time aT, @RequestParam(name = "tutorUsername") String tutorUsername) throws IllegalArgumentException{
@@ -622,6 +663,7 @@ public class TutoringServiceRestController {
 		return aDTO;
 	}
 
+	//convert room model to the room DTO
 	private RoomDTO convertToDto(Room room) {
 
 		if (room == null) {
@@ -677,9 +719,11 @@ public class TutoringServiceRestController {
 	}
 	
 	private RatingDTO convertToDto(Rating r) {
+		//check if rating actually exists.
 		if (r == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Rating);
 		}
+		//Copy all rating attributes into the new dto.
 		RatingDTO rDTO = new RatingDTO();
 		rDTO.setRatingValue(r.getRatingValue());
 		rDTO.setReviewID(r.getReviewID());
