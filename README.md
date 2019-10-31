@@ -105,6 +105,14 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <li>Click on <b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki/RESTful-API-Tests-using-a-Client-(Postman)">here</a></b> to access this page.
 </ol>
 
+<h2>Instructions for email on Eclipse</h2><br>
+<ol>
+  <li> If the email class poses erorrs on Eclipse do the following on the git repo on command line: </li>
+  <li> gradle cleanEclipse </li>
+  <li> gradle Eclipse </li>
+  <li> gradle build -x test </li>
+</ol>
+
 <h2>Instructions for setting up the tests</h2><br>
 <ol>
 <li>Once you have successfully cloned the repository, make your way into the project folder.<br>
