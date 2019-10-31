@@ -8,10 +8,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,12 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import ca.mcgill.ecse321.project.JavaEmail;
 import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dto.*;
 import ca.mcgill.ecse321.project.model.*;
@@ -367,14 +362,6 @@ public class TutoringServiceRestController {
 		return convertToDto(s);
 	}
 	
-  
-  	// Check room availability
-
-	@PostMapping(value = {"/checkavailability", "/checkavailability/"})
-	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date,
-			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
-		return service.isRoomAvailable(date, startTime);
-	}
 
 	@PostMapping(value = {"/login", "/login/"})
 	public boolean login(@RequestParam String username, @RequestParam String password) {
@@ -477,7 +464,6 @@ public class TutoringServiceRestController {
 	public SessionDTO updateRoom(@PathVariable("sessionid") int sId, @RequestParam(name = "date") Date aD,
 			@RequestParam(name = "startTime") Time aT) throws IllegalArgumentException {
 	
-		Set<SessionDTO> sessionDtos = new HashSet<SessionDTO>();
 		List<RoomDTO> roomDtos = new ArrayList<>();
 		Session s = service.getSession(sId);
 		Room r = service.getFirstAvailableRoom(aD, aT);

@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.project.dto;
 import ca.mcgill.ecse321.project.model.CourseOffering;
 import ca.mcgill.ecse321.project.model.Role;
 
+@SuppressWarnings("unused")
 public class RoleDTO extends ReviewDTO{
 
 	private String username;

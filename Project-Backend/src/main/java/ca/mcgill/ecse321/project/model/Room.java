@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.OneToMany;
