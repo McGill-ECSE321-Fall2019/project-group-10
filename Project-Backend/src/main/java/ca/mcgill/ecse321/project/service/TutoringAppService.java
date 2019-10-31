@@ -1098,6 +1098,18 @@ public class TutoringAppService {
 	//Checking to make sure we can update a user.
 	@Transactional
 	public TSUser updateUser(String name, String oldEmail,String newEmail, int age, String phoneNum) {
+		if(age < 12){
+			throw new IllegalArgumentException(ErrorStrings.Invalid_User_AgeTooYoung);
+		}
+		if(name == null || name.equals("")){
+			throw new IllegalArgumentException(ErrorStrings.Invalid_User_Name);
+		}
+		
+		//Special phone number check.
+		if(!phoneNum.matches("\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")){
+			throw new IllegalArgumentException(ErrorStrings.Invalid_User_PhoneNumber);
+		}
+		
 		TSUser user = userRepository.findTSuserByEmail(oldEmail);
 		user.setAge(age);
 		user.setEmail(newEmail);
@@ -1511,4 +1523,16 @@ public class TutoringAppService {
 		}
 		return null;
 	}
+	
+	//find student by username
+	  @Transactional
+		public Student findStudentByUsername(String username) {
+			Student s = new Student();
+			
+			// find the correct student by the given username
+			s = studentRepository.findStudentByUsername(username);
+			
+			// otherwise return the found student
+			return s;
+		}
 }
