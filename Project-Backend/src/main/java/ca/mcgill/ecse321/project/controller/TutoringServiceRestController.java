@@ -41,8 +41,10 @@ public class TutoringServiceRestController {
 
 // ******************************************** GET MAPPINGS ********************************************** \\
 
+	// get all users
 	@GetMapping(value = {"/users", "/users/"})
 	public List<UserDTO> getAllUsers(){
+		// get all users from the business service
 		List<TSUser> listOfUsers = service.getAllUsers();
 		List<UserDTO> userListDto = new ArrayList<>();
 		for(TSUser user : listOfUsers) {
@@ -51,16 +53,18 @@ public class TutoringServiceRestController {
 		return userListDto;
 	}
 	
+	// get all tutors registered on the application
 	@GetMapping(value = {"/tutors", "/tutors/"})
 	public List<TutorDTO> getAllTutors(){
+		// get all the tutors from the business service
 		List<Tutor> listOfTutors = service.getAllTutors();
 		List<TutorDTO> tutorList = new ArrayList<>();
+		// convert to DTO objects
 		for(Tutor tutor : listOfTutors) {
 			tutorList.add(convertToDtoSetup(tutor));
 		}
 		return tutorList;
 	}
-
 
 	//			Gets all the students
 	@GetMapping(value = { "/students", "/students/" })
@@ -74,7 +78,6 @@ public class TutoringServiceRestController {
 		return studentDtos;
 	}
 
-	
 	// Get all the schools offered by the application
 	@GetMapping(value = {"/universities", "/universities/"})
 	public List<UniversityDTO> getAllUniversities() {
@@ -209,6 +212,7 @@ public class TutoringServiceRestController {
 			@RequestParam(name = "time") Time startTime) throws IllegalArgumentException {
 		return service.isRoomAvailable(date, startTime);
 }
+
 	@GetMapping(value = {"/allavailabilities/{tutorname}", "/allavailabilities/{tutorname}/"})
 	public List<AvailabilityDTO> getAllAvailabilitiesByTutor(@PathVariable("tutorname") String username) throws IllegalArgumentException {
 		
@@ -341,7 +345,6 @@ public class TutoringServiceRestController {
 		if(tutor == null) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Tutor);
 		}
-		
 		Rating reviewRating = service.createRating(rating, tutor.getUsername(), courseId);
 		
 		return convertToDto(reviewRating);

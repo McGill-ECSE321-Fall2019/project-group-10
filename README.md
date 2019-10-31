@@ -30,7 +30,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Alex Gruenwald</td>
     <td>Technical(ly) Intern</td>
     <td>19</td>
-    <td>[tbh]</td>
+    <td>53</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -39,7 +39,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Chelsea M-C</td>
     <td>Documentation Manager</td>
     <td>20</td>
-    <td>37</td>
+    <td>50</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -57,7 +57,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Anas Shahid</td>
     <td>Software Developer</td>
     <td>11</td>
-    <td>[tbh]</td>
+    <td>49</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -66,7 +66,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Yoan Poulmarc'k</td>
     <td>Software Architecture Lead</td>
     <td>17</td>
-    <td>[tbh]</td>
+    <td>51</td>
     <td>[tbh]</td>
     <td>[tbh]</td>
   </tr>
@@ -83,20 +83,27 @@ Below can be found the role of each member and the number of hours spent on each
 </ul>
 <h3>Sprint 2</h3>
 <ul>
-  <li>Alex:</li>
+  <li>Alex: Business methods, restful services and unit tests for R13, R14, and R15. </li>
   <li>Chelsea:</li>
     <ul 1>
       <li> Responsible for meeting minutes and creating templates for the wiki pages</li>
       <li> Business methods, restful services and unit tests for R2, R3, and R4. </li>
     </ul 1>
-  <li>Taylor: </li>
-  <li>Anas:</li>
-  <li>Yoan:</li>
+  <li>Taylor: Business methods, restful services and unit tests for R5, R7, and R8.</li>
+  <li>Anas: Business methods, restful services and unit tests for R10, R11, and R12.</li>
+  <li>Yoan: Business methods, restful services and unit tests for R1, R6, and R9.</li>
 </ul>
 
 <br>To see our meeting minutes, including key design decisions and architecture
 framework, head over to our wiki page and select any page titled with a date:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<h2><b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a></b></h2>
+
+<h2>Instructions for setting RESTful APIs</h2><br>
+<ol>
+<li>We have chosen to test our RESTful api tests using Postman.
+<li>Once in the wiki page, follow the steps for setting up the mock database to actually test the PUT and GET queries / statements.
+<li>Click on <b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki/RESTful-API-Tests-using-a-Client-(Postman)">here</a></b> to access this page.
+</ol>
 
 <h2>Instructions for setting up the tests</h2><br>
 <ol>
@@ -104,7 +111,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <li>In the terminal, enter the "Project-Backend" folder by typing in - cd Project-Backend/ <br>
 <li>Once in the folder, type and enter - "gradle build". <br>
 <li>This should automatically start running and testing all tests written in the test directory.
-<li>To run gralde without tests: "gradle -xtest"
+<li>To run gradle without tests: "gradle -xtest"
 </ol>
 
 <h2>Heroku Setup</h2><br>
