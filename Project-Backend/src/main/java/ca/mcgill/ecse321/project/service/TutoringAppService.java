@@ -477,12 +477,9 @@ public class TutoringAppService {
 		
 		if(c == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_FindCourseOffering);
+	
+		rating.setRatingValue(ratingValue);
 		
-		try {
-			rating.setRatingValue(ratingValue);
-		} catch(RuntimeException e) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
-		}
 		
 		rating.setCourseOffering(c);
 		ratingRepository.save(rating);
