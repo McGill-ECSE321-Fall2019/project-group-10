@@ -98,8 +98,13 @@ Below can be found the role of each member and the number of hours spent on each
 framework, head over to our wiki page and select any page titled with a date:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<h2><b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a></b></h2>
 
-<h2>Instructions for setting RESTful APIs</h2><br>
+<h2>Instructions for setting RESTful APIs and running Spring</h2><br>
 <ol>
+<li>To start testing the RESTfula apis, we must first begin running of Spring.
+<li>First, open up your SpringToolSuiteIDE and open your designated workspace.
+<li>Import the required project.
+<li>Make your way into the project-group-10/Project-Backend/src/main/java/ca/mcgill/ecse321/project/ProjectApplication.java
+<li>Start running the Spring application "Spring Boot App". Once it is loaded, you can begin running the restful tests.
 <li>We have chosen to test our RESTful api tests using Postman.
 <li>Once in the wiki page, follow the steps for setting up the mock database to actually test the PUT and GET queries / statements.
 <li>Click on <b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki/RESTful-API-Tests-using-a-Client-(Postman)">here</a></b> to access this page.
