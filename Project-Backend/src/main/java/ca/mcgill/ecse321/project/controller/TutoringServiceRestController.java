@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-//import ca.mcgill.ecse321.project.JavaEmail;
+import ca.mcgill.ecse321.project.JavaEmail;
 import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dto.*;
 import ca.mcgill.ecse321.project.model.*;
@@ -189,7 +189,7 @@ public class TutoringServiceRestController {
 
 		return tDTO;
 	}
-	
+
 	// Check room availability
 	@GetMapping(value = {"/checkavailability", "/checkavailability/"})
 	public boolean checkRoomAvailability(@RequestParam(name = "date") Date date,
