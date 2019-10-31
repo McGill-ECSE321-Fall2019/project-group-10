@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.project.service;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
@@ -347,7 +346,7 @@ public class TutoringAppService {
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_RevieweeUsername);
 		}
-		if(description == null || description.equals("")){
+		if(description == null || description.equals("") || description.length() > 250){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Description);
 		}
 		CourseOffering c = courseOfferingRepository.findCourseOfferingByCourseOfferingID(new Integer(coID));
@@ -356,12 +355,16 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_FindCourseOffering);
 		
 		Text text = new Text();
+
+		if(tutorRepository.findTutorByUsername(revieweeUsername) == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);
+	
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
 		else if (studentRepository.findStudentByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
-		else 
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);
+		else {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);}
 		text.setDescription(description);
 		text.setIsAllowed(isAllowed);
 		text.setCourseOffering(c);
@@ -405,6 +408,20 @@ public class TutoringAppService {
 		return toList(textRepository.findAll());
 	}
 	
+	//Get all texts that are allowed.
+	@Transactional
+	public List<Text> getAllTextsThatAreAllowed() {
+		List<Text> textList = toList(textRepository.findAll());
+		List<Text> cleanList = new ArrayList<>();
+		
+		for(Text t : textList) {
+			if(t.getIsAllowed()) {
+				cleanList.add(t);
+			}
+		}
+		return cleanList;
+	}
+	
 	//Checking to make sure we can get text.
 	@Transactional
 	public Text getText(int id) {
@@ -439,6 +456,12 @@ public class TutoringAppService {
 		if(revieweeUsername == null || revieweeUsername.equals("")){
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_RevieweeUsername);
 		}
+		if(ratingValue > 5 || ratingValue < 1) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
+		}
+		
+		if(tutorRepository.findTutorByUsername(revieweeUsername) == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_Reviewee);
 		
 		Rating rating = new Rating();
 		
@@ -453,12 +476,9 @@ public class TutoringAppService {
 		
 		if(c == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_FindCourseOffering);
+	
+		rating.setRatingValue(ratingValue);
 		
-		try {
-			rating.setRatingValue(ratingValue);
-		} catch(RuntimeException e) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
-		}
 		
 		rating.setCourseOffering(c);
 		ratingRepository.save(rating);
@@ -1392,6 +1412,7 @@ public class TutoringAppService {
 		
 	}
 	
+	@Transactional
 	public Role getRoleByUsername(String username) {
 		Role role = null;
 		try {
@@ -1405,5 +1426,89 @@ public class TutoringAppService {
 		}
 
 		return role;
+	}
+	
+	@Transactional
+	public Set<Review> getAllReviewsByCO(int courseOId) throws IllegalArgumentException {
+		CourseOffering courseOffering = courseOfferingRepository.findCourseOfferingByCourseOfferingID(courseOId);
+		
+		if(courseOffering == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
+		}
+		return courseOffering.getReview();
+	}
+	
+	@Transactional
+	public Room getFirstAvailableRoom(Date date, Time time) {
+		// check all rooms
+		boolean available;
+		
+		Set<Session> sessions = new HashSet<>();
+		
+		List<Room> rooms = getAllRooms();
+		if(rooms != null) {
+			for(Room r: rooms) {
+				available = true;
+				
+				//Check if a session is assigned to a room.
+				sessions = r.getSession();
+				if(sessions == null) {
+					//if no session exists for room, the room is empty
+					return r;
+				}
+				for(Session s : sessions) {
+					//just care about the time
+					if(s.getTime() == time && s.getDate() == date) {
+						available = false;
+					}
+				}
+				//return the room  if no dates exist at the given time;
+				if(available) return r;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional
+	public Session updateSessionWithRoomFromTutorSuccessAndRoomAvailable(int sessionid, Room room) {
+		Session session = sessionRepository.findSessionBySessionID(sessionid);
+		if(session == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Session);
+		}
+		
+		if(room == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Room);
+		}
+		session.setRoom(room);
+		return session;
+	}
+	
+	@Transactional
+	public void getReviewer(Review review) {
+		if(true) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Review_CANTRETURN);
+		}
+	}
+	
+	@Transactional
+	public University getUniversityByName(String name) {
+		University university = universityRepository.findUniversityByName(name);
+		if(university == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_University);
+		}
+		return university;
+	}
+	
+	@Transactional
+	public Course getCourseByName(String name) {
+		List<Course> courseList = getAllCourses();
+		if(courseList == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Course);
+		}
+		for(Course c : courseList) {
+			if(c != null && c.getCourseName().equals(name))
+				return c;
+		}
+		return null;
 	}
 }

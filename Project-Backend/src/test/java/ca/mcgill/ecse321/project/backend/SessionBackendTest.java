@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -67,7 +69,7 @@ public class SessionBackendTest {
 	private static final int ROOM_NUM = 203;
 	
 	// constants for session
-	private static final Date SESSION_DATE = Date.valueOf("2019-10-31");
+	private static final Date SESSION_DATE = Date.valueOf(LocalDate.now().plusDays(3)) ;//Date.valueOf("2019-10-31");
 	private static final Time SESSION_TIME = Time.valueOf("11:11:11");
 	private static final Date SESSION_DATE_DIFF = Date.valueOf("2020-03-02");
 	private static final Time SESSION_TIME_DIFF = Time.valueOf("03:02:32");
@@ -78,7 +80,7 @@ public class SessionBackendTest {
 	private static final String STUDENT_NAME_DIFF = "DiffUsername";
 	
 	// constants for availability
-	private static final Date AVAILABILITY_DATE = Date.valueOf("2019-10-31");
+	private static final Date AVAILABILITY_DATE = Date.valueOf(LocalDate.now().plusDays(3));
 	private static final Time AVAILABILITY_TIME = Time.valueOf("11:11:11");
 	private static final Date AVAILABILITY_DATE_2 = Date.valueOf("2021-02-01");
 	private static final Time AVAILABILITY_TIME_2 = Time.valueOf("10:10:00");
@@ -172,7 +174,6 @@ public class SessionBackendTest {
 			List<Room> rooms = new ArrayList<>();
 			Room r = new Room();
 			r.setRoomNumber(ROOM_NUM);
-			
 			
 			rooms.add(r);
 			return rooms;
@@ -293,8 +294,8 @@ public class SessionBackendTest {
 				
 				Session s = new Session();
 				s.setAmountPaid(SESSION_AMOUNT_PAID);
-				s.setDate(Date.valueOf("2019-10-27"));
-				s.setTime(Time.valueOf("21:00:00"));
+				s.setDate(Date.valueOf(LocalDate.now().plusDays(1)));
+				s.setTime(Time.valueOf(LocalTime.now().now().plusMinutes(5)));
 				
 				Tutor t = new Tutor();
 				t.setUsername(TUTOR_NAME_UNAVAILABLE);
@@ -339,8 +340,8 @@ public class SessionBackendTest {
 				
 				Session s = new Session();
 				s.setAmountPaid(SESSION_AMOUNT_PAID);
-				s.setDate(Date.valueOf("2019-10-27"));
-				s.setTime(Time.valueOf("12:00:00"));
+				s.setDate(Date.valueOf(LocalDate.now().plusDays(1)));
+				s.setTime(Time.valueOf(LocalTime.now().minusMinutes(5)));
 				
 				Tutor t = new Tutor();
 				t.setUsername(TUTOR_NAME_UNAVAILABLE);
@@ -384,7 +385,7 @@ public class SessionBackendTest {
 				
 				Session s = new Session();
 				s.setAmountPaid(SESSION_AMOUNT_PAID);
-				s.setDate(Date.valueOf("2019-10-26"));
+				s.setDate(Date.valueOf(LocalDate.now()));
 				s.setTime(Time.valueOf("07:00:00"));
 				
 				Tutor t = new Tutor();
@@ -590,6 +591,36 @@ public class SessionBackendTest {
 		//check it was the correct error
 		assertEquals(error, "There is no room available at this time");
 		
+		
+	}
+	
+	//try to add first available room to the session.
+	@Test
+	public void testUpdateSessionWithAvailableRoomBooking() {
+		setMockOutputRoom();
+		
+		String error = null;
+		
+		Session session = new Session();
+		
+		try {
+			session = service.createSession(CO_ID, SESSION_DATE, SESSION_TIME, SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		try {
+			//Now we must update the session with adding a room.
+			session.setRoom(service.getFirstAvailableRoom(SESSION_DATE, SESSION_TIME));
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		int roomId = session.getRoom().getRoomNumber();
+
+		//check it was the correct error
+		assertEquals(error, null);
+		assertEquals(session.getRoom().getRoomNumber(), roomId);
 		
 	}
 	
@@ -935,11 +966,11 @@ public class SessionBackendTest {
 	
 	//Test trying to create a session more than two weeks from now
 	@Test
-	public void createSessionInFutureFar() {
+	public void testCreateSessionInMoreThanTwoWeeks() {
 		
 		String error = null;
 		try {
-			service.createSession(CO_ID, Date.valueOf("2019-11-10"), SESSION_TIME,SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
+			service.createSession(CO_ID, Date.valueOf(LocalDate.now().plusDays(15)), SESSION_TIME,SESSION_AMOUNT_PAID, STUDENT_NAME, TUTOR_NAME);
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();

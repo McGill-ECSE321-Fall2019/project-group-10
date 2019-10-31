@@ -6,8 +6,6 @@ public class CourseOfferingDTO {
 
 	private Term term;
 	private int year;
-	private String cname;
-	private String uniName;
 	private int id;
 	
 	//Data transfer object session.
@@ -21,17 +19,18 @@ public class CourseOfferingDTO {
 	}
 
 	//get attributes
-	public Term getIsAllowed() {
+	public Term getTerm() {
 		return term;
 	}
 	
-	public int getDescription() {
+	public int getYear() {
 		return year;
 	}
 	
 	public int getID() {
 		return id;
 	}
-
-
+	public void setYear(int year) {
+		this.year = year;
+	}
 }
