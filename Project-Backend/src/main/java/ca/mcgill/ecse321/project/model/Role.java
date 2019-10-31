@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.Set;
 
+@SuppressWarnings("unused")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 public abstract class Role{

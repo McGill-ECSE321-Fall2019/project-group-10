@@ -11,4 +11,5 @@ public interface UserRepository extends CrudRepository<TSUser, Integer>{
 	TSUser findTSuserById(Integer id);
 	TSUser findTSuserByEmail(String email);
 
+
 }
