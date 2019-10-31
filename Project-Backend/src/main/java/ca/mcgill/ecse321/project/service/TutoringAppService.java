@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.project.service;
 
 import java.sql.Date;
 import java.sql.Time;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
@@ -356,12 +355,16 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_FindCourseOffering);
 		
 		Text text = new Text();
+
+		if(tutorRepository.findTutorByUsername(revieweeUsername) == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);
+	
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
 		else if (studentRepository.findStudentByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
-		else 
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);
+		else {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);}
 		text.setDescription(description);
 		text.setIsAllowed(isAllowed);
 		text.setCourseOffering(c);
@@ -457,6 +460,9 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
 		}
 		
+		if(tutorRepository.findTutorByUsername(revieweeUsername) == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_Reviewee);
+		
 		Rating rating = new Rating();
 		
 		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
@@ -470,12 +476,9 @@ public class TutoringAppService {
 		
 		if(c == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_FindCourseOffering);
+	
+		rating.setRatingValue(ratingValue);
 		
-		try {
-			rating.setRatingValue(ratingValue);
-		} catch(RuntimeException e) {
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_NegativeRatingValue);
-		}
 		
 		rating.setCourseOffering(c);
 		ratingRepository.save(rating);
@@ -1531,6 +1534,27 @@ public class TutoringAppService {
 		if(true) {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Review_CANTRETURN);
 		}
-
+	}
+	
+	@Transactional
+	public University getUniversityByName(String name) {
+		University university = universityRepository.findUniversityByName(name);
+		if(university == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_University);
+		}
+		return university;
+	}
+	
+	@Transactional
+	public Course getCourseByName(String name) {
+		List<Course> courseList = getAllCourses();
+		if(courseList == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_Course);
+		}
+		for(Course c : courseList) {
+			if(c != null && c.getCourseName().equals(name))
+				return c;
+		}
+		return null;
 	}
 }

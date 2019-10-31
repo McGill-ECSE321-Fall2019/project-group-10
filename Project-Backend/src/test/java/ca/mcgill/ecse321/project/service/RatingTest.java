@@ -198,7 +198,7 @@ public class RatingTest {
 			error = e.getMessage();
 		}
 		// check that the correct error was generated
-		assertEquals(error, ErrorStrings.Invalid_Rating_Reviewee);
+		assertEquals(error, ErrorStrings.Invalid_Rating_FindCourseOffering);
 		List<Rating> allRatings = service.getAllRatings();
 
 		assertEquals(0, allRatings.size());

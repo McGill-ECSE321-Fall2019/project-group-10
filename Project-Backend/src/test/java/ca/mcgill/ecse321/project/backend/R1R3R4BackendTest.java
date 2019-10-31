@@ -104,6 +104,24 @@ public class R1R3R4BackendTest {
 			unis.add(uni);
 			return unis;
 		});	
+		when(universityRepository.findUniversityByName((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(UNI_NAME)) {
+				//create university
+				University uni = new University();
+				uni.setName(UNI_NAME);
+				uni.setAddress(UNI_ADDR);
+				return uni;
+	
+			} else if(invocation.getArgument(0).equals(UNI_NAME_BAD)){
+				//create university
+				University uni = new University();
+				uni.setName(UNI_NAME_BAD);
+				uni.setAddress(UNI_ADDR);
+				return uni;
+			} else {
+				return null;
+			}
+		});
 	}
 	
 	// mock output for an empty university list
@@ -828,4 +846,15 @@ public class R1R3R4BackendTest {
 		assert(!isAvail);
 	}
 	
+	//Check test to find university by name
+	@Test
+	public void checkUniversityFindByName() {
+		University university = new University();
+		try {
+			university = service.getUniversityByName(UNI_NAME);
+		} catch(IllegalArgumentException e) { fail();}
+		
+		assertEquals(university.getName(),UNI_NAME);
+		assertEquals(university.getAddress(), UNI_ADDR);
+	}
 }

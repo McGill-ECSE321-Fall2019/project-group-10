@@ -13,7 +13,6 @@ public class Rating extends Review{
 	}
 
 	public void setRatingValue(int ratingValue) {
-
 		this.ratingValue = ratingValue;
 	}
 }

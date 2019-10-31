@@ -11,6 +11,7 @@ import static org.junit.Assert.fail;
 import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,7 +63,7 @@ public class SessionTest {
 		service.createUser("aName_student", "student.tester@mcgill.ca", 22, "5145555555");
 		service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
 		service.createStudent("studentUser", "password2", "student.tester@mcgill.ca");
-		service.createAvailability(Date.valueOf("2019-10-31"), Time.valueOf("11:11:11"), "username");
+		service.createAvailability(Date.valueOf(LocalDate.now().plusDays(2)), Time.valueOf("11:11:11"), "username");
 		service.createRoom(4);
 	}
 	
@@ -85,7 +86,7 @@ public class SessionTest {
 	@Test
 	public void testCreateSession() {
 		 		
-		Date date = Date.valueOf("2019-10-31");
+		Date date = Date.valueOf(LocalDate.now().plusDays(2));
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -117,7 +118,7 @@ public class SessionTest {
 	public void testUpdateSession() {
 		//assertEquals(0, service.getAllSessions().size());
 				
-		Date date = Date.valueOf("2019-10-31");
+		Date date = Date.valueOf(LocalDate.now().plusDays(2));
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -167,7 +168,7 @@ public class SessionTest {
 		assertEquals(0, service.getAllSessions().size());
 		
 		 		
-		Date date = Date.valueOf("2019-10-31");
+		Date date = Date.valueOf(LocalDate.now().plusDays(2));
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
@@ -198,7 +199,7 @@ public class SessionTest {
 	public void testCreateSessionNullCourseOffering() {
 		assertEquals(0, service.getAllSessions().size());
 
-		Date date = Date.valueOf("2019-10-31");
+		Date date = Date.valueOf(LocalDate.now().plusDays(2));
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 
@@ -247,7 +248,7 @@ public class SessionTest {
 	public void testCreateSessionNullStudent() {
 		assertEquals(0, service.getAllSessions().size());
 
-		Date date = Date.valueOf("2019-10-31");
+		Date date = Date.valueOf(LocalDate.now().plusDays(2));
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
