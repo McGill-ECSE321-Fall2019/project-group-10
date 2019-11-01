@@ -53,6 +53,10 @@ public class StudentTest {
 	private String USERNAME = "cmc";
 	private String PASSWORD = "dogs";
 	private String EMAIL = "test.tester@mcgill.ca";
+	
+	private String Studentname = "bName";
+	private String password = "password12";
+
 
 	@Before
 	public void setUp(){
@@ -74,6 +78,17 @@ public class StudentTest {
 		studentRepository.deleteAll();
 		userRepository.deleteAll();
 	}
+	@Test
+	//test if it is finding user by userName
+	public void testStudentByUsername() {
+		try {
+			service.findStudentByUsername(Studentname);
+		}
+		catch (IllegalArgumentException e){
+			fail();
+		}
+	}
+	
 	
 	@Test
 	//Test if creating and retrieving a student works
