@@ -55,7 +55,6 @@ public class StudentTest {
 	private String EMAIL = "test.tester@mcgill.ca";
 	
 	private String Studentname = "bName";
-	private String password = "password12";
 
 
 	@Before

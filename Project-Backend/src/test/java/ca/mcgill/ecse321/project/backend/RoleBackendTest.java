@@ -2,13 +2,7 @@ package ca.mcgill.ecse321.project.backend;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
