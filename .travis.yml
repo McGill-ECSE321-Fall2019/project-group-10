@@ -1,20 +1,18 @@
-matrix:
-  include:
-	
-    # Backend
-       - language: java
-         env:
-          SPRING_DATASOURCE_URL=jdbc:postgresql://ec2-54-225-196-93.compute-1.amazonaws.com:5432/d5ksi2qvsth896?user=thwuxwhgwbamlu&password=919f4b2118b73d87dfc0ebeb2838494d9d672b403165232fc077ffd712779a03&sslmode=require
 
-      before_install:
-      - chmod +x gradlew
-      script:
-      - ./gradlew build
+# Backend
+  - language: java
+    env:
+    SPRING_DATASOURCE_URL=jdbc:postgresql://ec2-54-225-196-93.compute-1.amazonaws.com:5432/d5ksi2qvsth896?user=thwuxwhgwbamlu&password=919f4b2118b73d87dfc0ebeb2838494d9d672b403165232fc077ffd712779a03&sslmode=require
 
-      deploy:
-        provider: heroku
-        api_key:
-          secure: 6233a280-e5a5-4627-927c-6e37802675c0 
-        app: project-backend-10
-        on:
-          repo: McGill-ECSE321-Fall2019/project-group-10 
+  before_install:
+  - chmod +x gradlew
+  script:
+  - ./gradlew build
+
+  deploy:
+    provider: heroku
+    api_key:
+      secure: 6233a280-e5a5-4627-927c-6e37802675c0 
+    app: project-backend-10
+    on:
+      repo: McGill-ECSE321-Fall2019/project-group-10
