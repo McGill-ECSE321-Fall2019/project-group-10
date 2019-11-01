@@ -12,6 +12,7 @@ import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.Period;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -223,7 +224,7 @@ public class SessionTest {
 	public void testCreateSessionNullTutor() {
 		assertEquals(0, service.getAllSessions().size());
 
-		Date date = Date.valueOf("2020-02-01");
+		Date date = Date.valueOf(LocalDate.now().plusDays(3));
 		Time time = Time.valueOf("11:11:11");
 		double amountPaid = 23;
 		int coID = service.getAllCourseOfferings().get(0).getCourseOfferingID();
