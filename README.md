@@ -130,5 +130,6 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <h2>Heroku Setup</h2><br>
 <ol>
   <li>All the Heroku information is set in the "resource" directory, in the "application.properties" folder.</li>
+  <li>The Heroku database information can be found <a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/blob/master/Project-Backend/src/main/resources/application.properties">here.</a>
   <li>The password and username information is not disclosed in the readme for privacy reasons. </li>
 <ol>
