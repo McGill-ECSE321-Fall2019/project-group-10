@@ -787,7 +787,31 @@ public class ReviewBackendTest {
 			assertEquals(error, ErrorStrings.Invalid_Review_CANTRETURN);
 		}	
 		
-		                    
+		//Get all reviews with null tutor.
+		@Test
+		public void getAllReviewsWithNullUser() {
+			
+			String error = "";
+			
+			try {
+				service.getAllReviewsByTutor(TUTOR_PASSWORD2);
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+				
+			assertEquals(error, ErrorStrings.Invalid_DTO_Tutor);
+		}	
+		
+		//Get all reviews with null co.
+		@Test
+		public void getAllReviewsWithNullCourseOffering() {
+					
+			String error = "";
+					
+			try {
+				service.getAllReviewsByCO(-1);
+			} catch(IllegalArgumentException e) {error = e.getMessage();}
+						
+			assertEquals(error, ErrorStrings.Invalid_DTO_CourseOffering);
+		}                    
 }
 
 	
