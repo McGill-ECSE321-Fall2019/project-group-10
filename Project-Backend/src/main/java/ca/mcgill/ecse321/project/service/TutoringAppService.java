@@ -428,10 +428,6 @@ public class TutoringAppService {
 	//Checking to make sure we can get text.
 	@Transactional
 	public Text getText(int id) {
-		if(id < 0){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_ID);
-		}
-
 		Text a = textRepository.findTextByReviewID(id);
 		return a;
 	}
@@ -530,10 +526,6 @@ public class TutoringAppService {
 	//Checking to make sure we can get a rating.
 	@Transactional
 	public Rating getRating(int id) {
-		if(id < 0){
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Rating_ID);
-		}
-		
 		Rating a = ratingRepository.findRatingByReviewID(id);
 		return a;
 	}
