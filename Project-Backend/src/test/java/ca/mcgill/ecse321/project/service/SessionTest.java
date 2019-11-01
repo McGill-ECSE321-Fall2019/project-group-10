@@ -12,7 +12,6 @@ import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.time.Period;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
