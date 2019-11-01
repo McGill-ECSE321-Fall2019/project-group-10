@@ -13,6 +13,3 @@
     provider: heroku
     api_key:
       secure: 6233a280-e5a5-4627-927c-6e37802675c0 
-    app: project-backend-10
-    on:
-      repo: project-group-10
