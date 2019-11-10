@@ -16,7 +16,7 @@
  			    <b-button id='uni-button' variant="primary" type='button' v-bind:disabled="!selectedUniversity" @click="generateCourses(selectedUniversity.name)">Select University</b-button>
  			</td>
  		</tr>
- 		<tr>
+ 		<tr height="50px">
  			<td></td>
  			<td>
  				<br><span style="color:red">{{errorUniversity}}</span>
@@ -35,7 +35,7 @@
  				<b-button id='course-button' variant="primary" v-bind:disabled="!selectedUniversity || !selectedCourse" type='button' @click="generateCourseOfferings(selectedCourse.courseName, selectedCourse.uniName)">Select Course</b-button>
  			</td>
  		</tr>
- 		<tr>
+ 		<tr height="50px">
  			<td></td>
  			<td>
  				<br><span style="color:red">{{errorCourse}}</span>
@@ -54,7 +54,7 @@
  				<b-button id='selection-button' variant="success" type='button' v-bind:disabled="!selectedUniversity || !selectedCourse || !selectedCourseOffering" @click="submit(selectedCourseOffering.id)">Submit</b-button>
  			</td>			
  		</tr>
- 		<tr>
+ 		<tr height="50px">
  			<td></td>
  			<td>
  				<br><span style="color:red">{{errorCourseOffering}}</span>
