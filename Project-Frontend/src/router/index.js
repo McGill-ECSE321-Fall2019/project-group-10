@@ -14,13 +14,18 @@ export default new Router({
       component: Hello
     },
     {
-      path: '/app',
+      path: '/session',
       name: 'BookSession',
       component: BookSession
     },
     {
       path: '/tutors/:id',
       name: 'TutorAvailabilities',
+      component: TutorAvailabilities
+    },
+    {
+      path: '/tutors/',
+      name: 'TutorAvailabilities2',
       component: TutorAvailabilities
     }
   ]

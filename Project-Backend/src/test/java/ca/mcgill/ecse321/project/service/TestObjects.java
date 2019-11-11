@@ -85,31 +85,31 @@ public class TestObjects {
 //		service.createRoom(2);
 //		service.createRoom(3);
 //		
-//		// create a tutor
-//		service.createUser("aName", "tutor.tester@mcgill.ca", 22, "5145555555");
-//		Tutor t = service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
-//		List<CourseOffering> tutoredCourses = new ArrayList<>();
-//		tutoredCourses.add(c1);
-//		tutoredCourses.add(c2);
-//		tutoredCourses.add(c3);
-//		tutoredCourses.add(c4);
-//		t.setCourseOfferings(tutoredCourses);
-//		c1.addTutor(t);
-//		c2.addTutor(t);
-//		c3.addTutor(t);
-//		c4.addTutor(t);
-//
-//		// create some reviews
-//		service.createText("Best tutor ever", true, "username", c1.getCourseOfferingID());
-//		service.createRating(5, "username", c1.getCourseOfferingID());
-//		service.createText("Worst tutor ever", true, "username", c2.getCourseOfferingID());
-//		service.createRating(1, "username", c3.getCourseOfferingID());
-//		
-//		courseOfferingRepository.save(c1);
-//		courseOfferingRepository.save(c2);
-//		courseOfferingRepository.save(c3);
-//		courseOfferingRepository.save(c4);
-//		tutorRepository.save(t);
+		// create a tutor
+		service.createUser("aName", "tutor.tester@mcgill.ca", 22, "5145555555");
+		Tutor t = service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
+		List<CourseOffering> tutoredCourses = new ArrayList<>();
+		tutoredCourses.add(c1);
+		tutoredCourses.add(c2);
+		tutoredCourses.add(c3);
+		tutoredCourses.add(c4);
+		t.setCourseOfferings(tutoredCourses);
+		c1.addTutor(t);
+		c2.addTutor(t);
+		c3.addTutor(t);
+		c4.addTutor(t);
+
+		// create some reviews
+		service.createText("Best tutor ever", true, "username", c1.getCourseOfferingID());
+		service.createRating(5, "username", c1.getCourseOfferingID());
+		service.createText("Worst tutor ever", true, "username", c2.getCourseOfferingID());
+		service.createRating(1, "username", c3.getCourseOfferingID());
+		
+		courseOfferingRepository.save(c1);
+		courseOfferingRepository.save(c2);
+		courseOfferingRepository.save(c3);
+		courseOfferingRepository.save(c4);
+		tutorRepository.save(t);
 	}
 	
 	public void deleteAll() {

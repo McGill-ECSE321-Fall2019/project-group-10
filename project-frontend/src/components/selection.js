@@ -119,8 +119,10 @@ export default {
       });
       },
     submit: function (id){
-      window.location.href = frontendUrl + '/tutors/' + id
-      //this.$router.push({ name: 'TutorAvailabilities', params: { id } })
+      window.location.href = frontendUrl + '/#/tutors/' + id
     },
+    goHome: function (){
+      window.location.href = frontendUrl + '/#/home/'
+    }
   }
 }

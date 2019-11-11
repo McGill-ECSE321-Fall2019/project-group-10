@@ -1,5 +1,5 @@
 <template>
- <div id=selection class="separate">
+ <div id=selection>
 
  <h2>Select a Course Offering for a Tutoring Session</h2>
  <br>
@@ -16,10 +16,10 @@
  			    <b-button id='uni-button' variant="primary" type='button' v-bind:disabled="!selectedUniversity" @click="generateCourses(selectedUniversity.name)">Select University</b-button>
  			</td>
  		</tr>
- 		<tr height="50px">
+ 		<tr height="30px">
  			<td></td>
  			<td>
- 				<br><span style="color:red">{{errorUniversity}}</span>
+ 				<span style="color:red">{{errorUniversity}}</span>
  			</td>
  			<td></td>
  		</tr>
@@ -35,10 +35,10 @@
  				<b-button id='course-button' variant="primary" v-bind:disabled="!selectedUniversity || !selectedCourse" type='button' @click="generateCourseOfferings(selectedCourse.courseName, selectedCourse.uniName)">Select Course</b-button>
  			</td>
  		</tr>
- 		<tr height="50px">
+ 		<tr height="30px">
  			<td></td>
  			<td>
- 				<br><span style="color:red">{{errorCourse}}</span>
+ 				<span style="color:red">{{errorCourse}}</span>
  			</td>
  			<td></td>
  		</tr>
@@ -54,17 +54,17 @@
  				<b-button id='selection-button' variant="success" type='button' v-bind:disabled="!selectedUniversity || !selectedCourse || !selectedCourseOffering" @click="submit(selectedCourseOffering.id)">Submit</b-button>
  			</td>			
  		</tr>
- 		<tr height="50px">
+ 		<tr height="30px">
  			<td></td>
  			<td>
- 				<br><span style="color:red">{{errorCourseOffering}}</span>
+ 				<span style="color:red">{{errorCourseOffering}}</span>
  			</td>
  			<td></td>
  		</tr>
     </table>
 
     <hr>
-    <router-link to="http://127.0.0.1:8087/home" tag="button">Return</router-link>
+    <b-button id='home-button' variant="outline-secondary" type='button' @click="goHome()">Return</b-button>
 
     
  </div>
@@ -86,13 +86,4 @@
   tr {
   	text-align: left;
   }
-  .seperate{
-    display: inline-block;
-    width: 25%;
-  }
-  .dropdown {
-  	position: relative;
-  	alight-right: 20%;
-  	top: 50%;
-}
 </style>
