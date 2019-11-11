@@ -73,7 +73,7 @@ export default {
         });
       },       
       fetchData() {
-        axios.get(backendUrl + '/courseoffering/' + this.$route.params.id+'/')
+        axios.get(backendUrl + '/courseoffering/' + this.$route.params.id +'/')
         .then((resp) => {
           this.tutors = resp.data
           console.log(resp)
