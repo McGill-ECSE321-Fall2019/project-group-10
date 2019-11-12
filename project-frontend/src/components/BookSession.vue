@@ -83,7 +83,7 @@
   table {
   	width: 50%;
   }
-  tr {
+  tr, th {
   	text-align: left;
   }
 </style>

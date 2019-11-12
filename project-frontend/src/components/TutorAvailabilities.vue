@@ -13,7 +13,7 @@
 	    <hr>
 	    <h2>Tutor Information</h2><br>
 
-	    <table align="center">
+	    <table align="center" width="75%">
 	    	<tr>
 	    		<th>Hourly Rate</th>
 	    		<th>Availabilities</th>
@@ -69,15 +69,8 @@
   table {
   	width: 75%;
   	border-collapse: collapse;
-  	border: 1px solid black;
   }
-  tr {
-  	text-align: center;
-  	border: 1px solid black;
-  }
-  td, th {
-  	border: 1px solid black;
-  }
+
   ul {
   	list-style-type: none;
   	text-align: left;
