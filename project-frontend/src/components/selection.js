@@ -29,28 +29,6 @@ function CourseOfferingDto(term, year, id) {
   this.id = id;
 }
 
-function url_redirect(url){
-    var X = setTimeout(function(){
-        window.location.replace(url);
-        return true;
-    },300);
-
-    if( window.location = url ){
-        clearTimeout(X);
-        return true;
-    } else {
-        if( window.location.href = url ){
-            clearTimeout(X);
-            return true;
-        }else{
-            clearTimeout(X);
-            window.location.replace(url);
-            return true;
-        }
-    }
-    return false;
-};
-
 export default {
   name: 'booksession',
   data () {
@@ -91,7 +69,7 @@ export default {
       this.unis = response.data
     })
     .catch(e => {
-      this.errorUniversity = e;
+      this.errorUniversity = e.response.data.message;
     });
   },
   methods: {
@@ -103,9 +81,10 @@ export default {
         // JSON responses are automatically parsed.
         this.errorUniversity = 'Selected: ' + uniName
         this.courses = response.data 
+        this.errorCourse = ''
       })
       .catch(e => {
-        this.errorUniversity = e;
+        this.errorUniversity = e.response.data.message;
       });
     },   
     generateCourseOfferings: function(courseName, uniName){
@@ -118,14 +97,14 @@ export default {
         this.courseOfferings = response.data
       })
       .catch(e => {
-        this.errorCourse = e;
+        this.errorCourse = e.response.data.message;
       });
       },
     submit: function (id){
       window.location.href = frontendUrl + '/#/tutors/' + id +'/' + this.username
     },
     goHome: function (){
-      window.location.href = frontendUrl + '/#/home/'
+      window.location.href = frontendUrl + '/#/home/' + this.username
     }
   }
 }

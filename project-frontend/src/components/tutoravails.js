@@ -32,6 +32,7 @@ export default {
 
     data() {
       return {
+        errorCourseOffering: '',
         tutors: [],
         tutor: {},
         selectedTutor: '',
@@ -42,7 +43,8 @@ export default {
         selectedAvailability: {},
         username: '',
         errorSession: '',
-        response: []
+        response: [],
+        resp: []
       }
     },
 
@@ -78,13 +80,14 @@ export default {
         });
       },       
       fetchData() {
-        axios.get(backendUrl + '/courseoffering/' + this.$route.params.id +'/')
+        AXIOS.get(backendUrl + '/courseoffering/' + this.$route.params.id +'/')
         .then((resp) => {
           this.tutors = resp.data
           console.log(resp)
         })
         .catch((err) => {
           console.log(err)
+          this.errorCourseOffering = err.response.data.message
         })
       },
       goBack: function (){
@@ -95,16 +98,16 @@ export default {
       },
       createSession: function(){
         // add axios post
-        AXIOS.post(`/session?tutor_name=`+ selectedTutor.name + `&student_name=` + this.username
-          + `&booking_date=` + selectedAvailability.date + `&booking_time=` + selectedAvailability.time 
-          + `&course_offering_id=` + this.$route.params.id + `&amount_paid=` + selectedTutor.amount_paid, {}, {})
+        AXIOS.post(`/session?tutor_name=`+ this.selectedTutor.name + `&student_name=` + this.username
+          + `&booking_date=` + this.selectedAvailability.date + `&booking_time=` + this.selectedAvailability.time 
+          + `&course_offering_id=` + this.$route.params.id + `&amount_paid=` + this.selectedTutor.amount_paid, {}, {})
           .then(response => {
             // JSON responses are automatically parsed.
           })
           .catch(e => {
             var errorMsg = e.message
             console.log(errorMsg)
-            this.errorSession = errorMsg
+            this.errorSession = e.response.data.message
           });
         // then return to home page
         window.location.href = frontendUrl + '/#/home/'

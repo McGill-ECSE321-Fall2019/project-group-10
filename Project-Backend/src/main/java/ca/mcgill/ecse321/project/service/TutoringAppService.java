@@ -721,6 +721,8 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Student_Username);
 		}
 		Student a = studentRepository.findStudentByUsername(username);
+		if (a == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Student);
 		return a;
 	}
 	

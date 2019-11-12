@@ -47,6 +47,19 @@ public class TutoringServiceRestController {
 		return userListDto;
 	}
 	
+	// get student by username
+	@GetMapping(value = {"/students/{username}", "/students/{username}/"})
+	public UserDTO getStudentByUsername(@PathVariable("username") String name) throws IllegalArgumentException{
+		TSUser u;
+		try {
+			Student s = service.getStudent(name);
+			u = s.getUser();
+		}
+		catch(IllegalArgumentException e){throw new IllegalArgumentException(e.getMessage());};
+		
+		return convertToDto(u);
+	}
+	
 	// get all tutors registered on the application
 	@GetMapping(value = {"/tutors", "/tutors/"})
 	public List<TutorDTO> getAllTutors(){

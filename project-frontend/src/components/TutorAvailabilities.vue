@@ -1,6 +1,8 @@
 <template>
 	<div id=tutors>
 
+    <p>{{errorCourseOffering}}</p>
+
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -26,7 +28,7 @@
 	    <hr>
 	    <h2>Tutor Information</h2><br>
 
-	    <table align="center" width="75%">
+	    <table align="center" width="100%">
 	    	<tr>
 	    		<th>Hourly Rate</th>
 	    		<th>Availabilities</th>
@@ -82,14 +84,14 @@
     margin-top: 60px;
   }
   table {
-  	width: 75%;
+  	width: 100%;
   	border-collapse: collapse;
   }
   tr, td, th {
-  	text-align: left;
+  	text-align: center;
   }
   ul {
   	list-style-type: none;
-  	text-align: left;
+  	text-align: center;
   }
 </style>
