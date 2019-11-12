@@ -39,12 +39,15 @@ export default {
         tutorratings: [],
         tutortexts: [],
         errorTutor:'',
-        selectedAvailability: {}
+        selectedAvailability: {},
+        username: '',
+        response: []
       }
     },
 
     created() {
       this.fetchData()
+      this.username = this.$route.params.username
     },
 
     watch: {
@@ -84,7 +87,7 @@ export default {
         })
       },
       goBack: function (){
-        window.location.href = frontendUrl + '/#/session/'
+        window.location.href = frontendUrl + '/#/session/' + this.username
       },
       goHome: function (){
         window.location.href = frontendUrl + '/#/home/'

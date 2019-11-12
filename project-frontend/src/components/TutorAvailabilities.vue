@@ -1,5 +1,18 @@
 <template>
 	<div id=tutors>
+
+	<table width="100%" align="center">
+		<tr>
+			<td>
+			<p left-margin="0" right-margin="100%">Currently logged in as {{username}}</p>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+
 		<h2>Select a Tutor for the Session</h2><br>
 		<label>Available tutors:
 			<select id='session-tutor-select' v-model="selectedTutor">
@@ -70,7 +83,9 @@
   	width: 75%;
   	border-collapse: collapse;
   }
-
+  tr, td, th {
+  	text-align: left;
+  }
   ul {
   	list-style-type: none;
   	text-align: left;

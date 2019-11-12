@@ -1,6 +1,18 @@
 <template>
  <div id=selection>
 
+	<table width="100%" align="center">
+		<tr>
+			<td>
+			<p left-margin="100">Currently logged in as {{username}}</p>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+
  <h2>Select a Course Offering for a Tutoring Session</h2>
  <br>
  	<table align="center">

@@ -5,8 +5,8 @@ import BookSession from '@/components/BookSession'
 import TutorAvailabilities from '@/components/TutorAvailabilities'
 import Home from '@/components/Home'
 import Startup from '@/components/Startup'
-import Login from '@/compoents/Login'
-import Registration from '@/compoents/Registration'
+import Login from '@/components/Login'
+import Registration from '@/components/Registration'
 
 Vue.use(Router)
 
@@ -18,17 +18,17 @@ export default new Router({
       component: Hello
     },
     {
-      path: '/session',
+      path: '/session/:username',
       name: 'BookSession',
       component: BookSession
     },
     {
-      path: '/tutors/:id',
+      path: '/tutors/:id/:username',
       name: 'TutorAvailabilities',
       component: TutorAvailabilities
     },
     {
-      path: '/home',
+      path: '/home/:username',
       name: 'Home',
       component: Home
     },

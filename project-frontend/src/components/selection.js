@@ -64,7 +64,8 @@ export default {
       courseOfferings: [],
       errorCourseOffering: " ",
       selectedCourseOffering: '',
-      response: []
+      response: [],
+      username:''
     }
   },
   created: function() {
@@ -80,6 +81,7 @@ export default {
   // this.courses = [c1, c2]
   // this.courseOfferings = [co1, co2]
     // get all the universities available
+    this.username = this.$route.params.username
     this.unis = []
     this.courses = []
     this.courseOfferings = []
@@ -120,7 +122,7 @@ export default {
       });
       },
     submit: function (id){
-      window.location.href = frontendUrl + '/#/tutors/' + id
+      window.location.href = frontendUrl + '/#/tutors/' + id +'/' + this.username
     },
     goHome: function (){
       window.location.href = frontendUrl + '/#/home/'
