@@ -41,6 +41,7 @@ export default {
         errorTutor:'',
         selectedAvailability: {},
         username: '',
+        errorSession: '',
         response: []
       }
     },
@@ -92,8 +93,19 @@ export default {
       goHome: function (){
         window.location.href = frontendUrl + '/#/home/'
       },
-      createSession: function(username, availability){
+      createSession: function(){
         // add axios post
+        AXIOS.post(`/session?tutor_name=`+ selectedTutor.name + `&student_name=` + this.username
+          + `&booking_date=` + selectedAvailability.date + `&booking_time=` + selectedAvailability.time 
+          + `&course_offering_id=` + this.$route.params.id + `&amount_paid=` + selectedTutor.amount_paid, {}, {})
+          .then(response => {
+            // JSON responses are automatically parsed.
+          })
+          .catch(e => {
+            var errorMsg = e.message
+            console.log(errorMsg)
+            this.errorSession = errorMsg
+          });
         // then return to home page
         window.location.href = frontendUrl + '/#/home/'
       }

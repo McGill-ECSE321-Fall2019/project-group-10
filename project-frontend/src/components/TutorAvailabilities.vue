@@ -61,11 +61,13 @@
 	    </table>
 
 	    <br><br>
-        <b-button id='select-avail' variant="primary" type='button' v-bind:disabled="!selectedAvailability || !selectedTutor" @click="createSession(selectedTutor.username, selectedAvailability)">Request Session</b-button>
+        <b-button id='select-avail' variant="primary" type='button' v-bind:disabled="!selectedAvailability || !selectedTutor" @click="createSession()">Request Session</b-button>
 
         <hr>
 		<b-button id='home-button' variant="outline-secondary" type='button' @click="goHome()">Return</b-button>
 		<b-button id='back-button' variant="outline-secondary" type='button' @click="goBack()">Back To Course Selection</b-button>
+
+		<p>{{errorSession}}</p>
 	</div>
 </template>
 
