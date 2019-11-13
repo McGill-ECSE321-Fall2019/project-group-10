@@ -3,6 +3,7 @@
     <!-- <Startup /> -->
     <!-- <Login /> -->
     <!-- <TutorAvail /> -->
+    <BookSession />
     <router-view></router-view>
   </div>
 </template>
@@ -11,10 +12,12 @@
 import Startup from './components/Startup'
 import Login from './components/login'
 import TutorAvail from './components/TutorAvail'
+import Home from './components/Home'
+import BookSession from './components/BookSession'
 export default {
   name: 'app',
   components: {
-    Startup, Login, TutorAvail
+    Startup, Login, TutorAvail, Home, BookSession
   }
 }
 </script>
