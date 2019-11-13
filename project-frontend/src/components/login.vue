@@ -2,54 +2,35 @@
 
 <template>
 <span class="container">
-<!-- "class="signin"" -->
+<!-- "class="signin/signup"" -->
 
-  <div>
         <div class="wrapper fadeInDown">
             <div id="formContent">
             <!-- Tabs Titles -->
-            <h2  @click="signInClick" class="active"> Sign In </h2>
-            <h2   @click="toggleClass"  class="inactive underlineHover signingup">Sign Up </h2>
+            <h2  @click="signInClick" v-bind:class="{'active': available, 'inactive': !available, 'underlineHover': true}"> Sign In </h2>
+            <h2   @click="toggleClass"  class="signingup" v-bind:class="{'active': !available, 'inactive': available, 'underlineHover': true}">Sign Up </h2>
 
             <!-- Login Form -->
             <form>
-            <input type="text" id="username" class="fadeIn second" name="login" placeholder="username">
-            <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-            <input type="submit" class="fadeIn fourth" value="Log In">
-            <div class="signup" v-bind:class="{'available': available}">
-              <input type="text" id="name"  name="login" placeholder="name">
-              <input type="text" id="password"  name="login" placeholder="email">
-              <input type="text" id="age"  name="login" placeholder="age">
-              <input type="text" id="phonenumber"  name="login" placeholder="phonenumber">
-              <input type="submit" class="fadeIn fourth" value="Sign Up">
-            </div>
+                <input type="text" id="username" class="fadeIn second" name="login" placeholder="Username">
+                <input type="text" id="password" class="fadeIn second" name="login" placeholder="Password">
+                <div v-bind:class="{'available': !available}"><input type="submit" value="Log In"></div>
+                <div class="signup" v-bind:class="{'available': available}">
+                    <input type="text" id="name"  name="login" placeholder="Name">
+                    <input type="text" id="email"  name="login" placeholder="Email">
+                    <input type="text" id="age"  name="login" placeholder="Age">
+                    <input type="text" id="phonenumber"  name="login" placeholder="Phonenumber">
+                    <input type="submit" value="Sign Up">
+                </div>
             </form>
+
+            <div id="formFooter">
+                    <a class="underlineHover">Error/Success String</a>
+            </div>
+
         </div>
             </div>
-    </div>
-
     
-
-<!--         
-     <div class="signup hidden">
-          <div class="wrapper">  
-              <div id="formContent"> -->
-              <!-- Tabs Titles -->
-              <!-- <h2 class="inactive underlineHover signingIn"> Sign In </h2>
-              <h2 class="active">Sign Up </h2> -->
-
-          
-              <!-- Signup Form -->
-              <!-- <form>
-              <input type="text" id="name"  name="login" placeholder="name">
-              <input type="text" id="password"  name="login" placeholder="email">
-              <input type="text" id="age"  name="login" placeholder="age">
-              <input type="text" id="phonenumber"  name="login" placeholder="phonenumber">
-              <input type="submit" class="fadeIn fourth" value="Log In">
-              </form>
-              </div>
-          </div>
-      </div>  -->
 
 </span>
 </template>
@@ -64,19 +45,11 @@ export default {
     }
   },
   methods:{
-      // selectSignup(){
-      //   var signin = document.getElementsByClassName("signin");
-      //   var signup = document.getElementsByClassName("signup");
-      //   signin.classList.add("hidden");
-      //   signup.classList.remove("hidden");
-      // }
+ 
 
       toggleClass(){
         this.available = false;
-        // if(this.available==false){
-        //   this.available=true;
-        // }else{
-        // this.available = false;}
+       
       },
 
       signInClick(){
@@ -87,12 +60,6 @@ export default {
 }
 </script>
  
-
-
-
-
-
-
 
 
 <style scoped>
@@ -320,17 +287,6 @@ input[type=text]:placeholder {
   animation-delay: 0.6s;
 }
 
-.fadeIn.third {
-  -webkit-animation-delay: 0.8s;
-  -moz-animation-delay: 0.8s;
-  animation-delay: 0.8s;
-}
-
-.fadeIn.fourth {
-  -webkit-animation-delay: 1s;
-  -moz-animation-delay: 1s;
-  animation-delay: 1s;
-}
 
 /* Simple CSS3 Fade-in Animation */
 .underlineHover:after {
