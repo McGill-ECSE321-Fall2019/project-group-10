@@ -19,24 +19,32 @@
      <div class="wrapper">
             <div id="formContent">
             <!-- Tabs Titles -->
-            <h2  @click="signInClick" class="active" v-bind:class="{}"> University </h2>
-            <h2   @click="toggleClass" class="active" v-bind:class="{}">Course </h2>
-            <h2   @click="toggleClass" class="active" v-bind:class="{}">CourseOffering </h2>
+            <h2  class="active"> Book A Session </h2><br>
+            
 
             <!-- Login Form -->
-            <form>
-                <input type="text" id="username" class="fadeIn second" name="login" placeholder="Username">
-                <input type="text" id="password" class="fadeIn second" name="login" placeholder="Password">
-                <div v-bind:class="{'available': !available}"><input type="submit" value="Log In"></div>
-                <div class="signup" v-bind:class="{'available': available}">
-                    <input type="text" id="name"  name="login" placeholder="Name">
-                    <input type="text" id="email"  name="login" placeholder="Email">
-                    <input type="text" id="age"  name="login" placeholder="Age">
-                    <input type="text" id="phonenumber"  name="login" placeholder="Phonenumber">
-                    <input type="submit" value="Sign Up">
-                </div>
-            </form>
-
+        
+              <label>University: </label> <br>
+              <select id='session-university-select' v-model="selectedUniversity" @change="generateCourses(selectedUniversity.name)">
+		       		  <option disabled value="">Please select a university</option>
+		        		<option v-for="(university, i) in unis" v-bind:key="`university-${i}`" v-bind:value="{ name: university.name, address: university.address }">{{university.name}}</option>
+		      		</select>
+                <br>
+              <label>Courses: </label> <br>
+              <select id='session-course-select' v-model="selectedCourse"  @change="generateCourseOfferings(selectedCourse.courseName, selectedCourse.uniName)">
+                <option disabled value="">Please select a course</option>
+                <option v-for="(course, i) in courses" v-bind:key="`course-${i}`" v-bind:value="{ courseName: course.courseName, uniName: course.uniName, description: course.description }">{{course.courseName}}</option>
+			        </select>
+                <br>
+              <label>Course Offerings: </label> <br>
+              <select id='session-co-select' v-model="selectedCourseOffering">
+                <option disabled value="">Please select a course offering</option>
+                <option v-for="(co, i) in courseOfferings" v-bind:key="`co-${i}`" v-bind:value="{ term: co.term, year: co.year, id: co.id }">{{co.term}} {{co.year}}</option>
+			        </select>
+                <br><br>
+              <b-button id='selection-button' variant="success" type='button' v-bind:disabled="!selectedUniversity || !selectedCourse || !selectedCourseOffering" @click="submit(selectedCourseOffering.id)">Submit</b-button>
+                <br>
+                <br>
             <div id="formFooter">
                     <a class="underlineHover">Error/Success String</a>
             </div>
@@ -55,7 +63,7 @@
  		<tr>
  			<td><label>Universities:</label></td>
  			<td>
-		      		<select id='session-university-select' v-model="selectedUniversity">
+		      		<select id='session-university-select' v-model="selectedUniversity" @change="generateCourses(selectedUniversity.name)">
 		       			<option disabled value="">Please select a university</option>
 		        		<option v-for="(university, i) in unis" v-bind:key="`university-${i}`" v-bind:value="{ name: university.name, address: university.address }">{{university.name}}</option>
 		      		</select>
