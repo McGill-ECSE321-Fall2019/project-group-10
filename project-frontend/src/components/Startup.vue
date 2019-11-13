@@ -64,7 +64,7 @@
 
 
 <section class="contact" id="contact">
-<h3>"In order to reach out to us, you can simply email us at <br><a href="#">group-10@mail.mcgill.ca</a>"</h3>
+<h4>"In order to reach out to us, you can simply email us at <br><a href="#">group-10@mail.mcgill.ca</a>"</h4>
 
 </section>
 
@@ -136,11 +136,6 @@ export default {
 .intro img{
     max-width:60%;
     height:auto;
-}
-
-.intro img:hover{
-        transition: 0.7s;
-	transform: scale(1.05);
 }
 
 button{
