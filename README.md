@@ -93,6 +93,19 @@ Below can be found the role of each member and the number of hours spent on each
   <li>Anas: Business methods, restful services and unit tests for R10, R11, and R12.</li>
   <li>Yoan: Business methods, restful services and unit tests for R1, R6, and R9.</li>
 </ul>
+<h3>Sprint 3</h3>
+<ul>
+  <li>Alex: </li>
+  <li>Chelsea:</li>
+    <ul 1>
+      <li> Responsible for meeting minutes and creating templates for the wiki pages and general documentation upkeep</li>
+      <li> University, Course, Course offering and Tutor selection page for web frontend </li>
+      <li> Linking selection page to backend services </li>
+    </ul 1>
+  <li>Taylor: </li>
+  <li>Anas: </li>
+  <li>Yoan: </li>
+</ul>
 
 <br>To see our meeting minutes, including key design decisions and architecture
 framework, head over to our wiki page and select any page titled with a date:<br>
