@@ -65,6 +65,7 @@ export default {
           // JSON responses are automatically parsed.
           this.errorTutor = 'Selected: ' + username
           this.tutor = response.data 
+          this.avails = response.data.avails
         })
         .catch(e => {
           this.errorTutor = e;
@@ -94,7 +95,7 @@ export default {
         window.location.href = frontendUrl + '/#/session/' + this.username
       },
       goHome: function (){
-        window.location.href = frontendUrl + '/#/home/'
+        window.location.href = frontendUrl + '/#/home/' + this.username
       },
       createSession: function(){
         // add axios post
@@ -110,7 +111,7 @@ export default {
             this.errorSession = e.response.data.message
           });
         // then return to home page
-        window.location.href = frontendUrl + '/#/home/'
+        window.location.href = frontendUrl + '/#/home/' + this.username
       }
     }
   }

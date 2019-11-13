@@ -2,6 +2,9 @@ package ca.mcgill.ecse321.project.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -41,6 +44,10 @@ public class TestObjects {
 	private UniversityRepository universityRepository; 
 	@Autowired
 	private UserRepository userRepository;
+	private static final Date AVAILABILITY_DATE = Date.valueOf(LocalDate.now().plusDays(3));
+	private static final Time AVAILABILITY_TIME = Time.valueOf("11:11:11");
+	private static final Date AVAILABILITY_DATE2 = Date.valueOf(LocalDate.now().plusDays(4));
+	private static final Time AVAILABILITY_TIME2 = Time.valueOf("11:11:11");
 	
 	@Test
 	public void runApplication() {
@@ -48,10 +55,10 @@ public class TestObjects {
 		// first delete everything from the repositories
 		// then run the setup code
 		// then delete again
-		String purpose = "end";
+		String purpose = "create";
 		switch(purpose) {
 			case "startup": deleteAll(); break;
-			case "create": createObjects(); break;
+			case "create": deleteAll(); createObjects(); break;
 			case "end": deleteAll(); break;
 			default: break;
 		}
@@ -98,7 +105,21 @@ public class TestObjects {
 		c2.addTutor(t);
 		c3.addTutor(t);
 		c4.addTutor(t);
-
+		
+		Availability a = service.createAvailability(AVAILABILITY_DATE, AVAILABILITY_TIME, "username");
+		Availability a2 = service.createAvailability(AVAILABILITY_DATE2, AVAILABILITY_TIME2, "username");
+		
+		// create a student
+		service.createUser("Student", "student.tester@mcgill.ca", 24, "5145555552");
+		Student s = service.createStudent("cmc", "dogs", "student.tester@mcgill.ca");
+		studentRepository.save(s);
+		
+		// create a room
+		service.createRoom(1);
+		
+		// create a session
+		Session session = service.createSession(c1.getCourseOfferingID(), AVAILABILITY_DATE, AVAILABILITY_TIME, 12.0, "cmc", "username");
+		
 		// create some reviews
 		service.createText("Best tutor ever", true, "username", c1.getCourseOfferingID());
 		service.createRating(5, "username", c1.getCourseOfferingID());
@@ -114,9 +135,9 @@ public class TestObjects {
 	
 	public void deleteAll() {
 		// clear in order of dependencies
-		sessionRepository.deleteAll();
 		roomRepository.deleteAll();
 		reviewRepository.deleteAll();
+		sessionRepository.deleteAll();
 		courseOfferingRepository.deleteAll();
 		courseRepository.deleteAll();
 		universityRepository.deleteAll();

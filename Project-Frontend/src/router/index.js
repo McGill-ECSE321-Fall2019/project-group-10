@@ -3,10 +3,9 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import BookSession from '@/components/BookSession'
 import TutorAvailabilities from '@/components/TutorAvailabilities'
-import Home from '@/components/Home'
 import Home2 from '@/components/Home2'
 import Startup from '@/components/Startup'
-import Login from '@/components/Login'
+import Login from '@/components/login'
 import Registration from '@/components/Registration'
 
 Vue.use(Router)
@@ -15,8 +14,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Startup',
+      component: Startup
     },
     {
       path: '/session/:username',
@@ -30,17 +29,12 @@ export default new Router({
     },
     {
       path: '/home/:username',
-      name: 'Home',
+      name: 'Home2',
       component: Home2
     },
     {
-      path: '/startup',
-      name: 'Startup',
-      component: Startup
-    },
-    {
       path: '/login',
-      name: 'Login',
+      name: 'login',
       component: Login
     },
     {

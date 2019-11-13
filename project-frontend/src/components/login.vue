@@ -12,23 +12,24 @@
 
             <!-- Login Form -->
             <form>
-                <input type="text" id="username" class="fadeIn second" name="login" placeholder="Username">
-                <input type="text" id="password" class="fadeIn second" name="login" placeholder="Password">
-                <div v-bind:class="{'available': !available}"><input type="submit" value="Log In"></div>
+                <input type="text" id="username" v-model="username" class="fadeIn second" placeholder="Username">
+                <input type="text" id="password" v-model="password" class="fadeIn second" placeholder="Password">
+                <div v-bind:class="{'available': !available}"><input type="button" value="Log In" @click="logIn()"></div>
                 <div class="signup" v-bind:class="{'available': available}">
-                    <input type="text" id="name"  name="login" placeholder="Name">
-                    <input type="text" id="email"  name="login" placeholder="Email">
-                    <input type="text" id="age"  name="login" placeholder="Age">
-                    <input type="text" id="phonenumber"  name="login" placeholder="Phonenumber">
-                    <input type="submit" value="Sign Up">
+                    <input type="text" id="name" v-model="Name" placeholder="Name">
+                    <input type="text" id="email" v-model="email" placeholder="Email">
+                    <input type="text" id="age" v-model="age" placeholder="Age">
+                    <input type="text" id="phonenumber" v-model="number" placeholder="Phonenumber">
+                    <input type="submit" @click="signUp()" value="Sign Up">
                 </div>
             </form>
 
             <div id="formFooter">
-                    <a class="underlineHover">Error/Success String</a>
+                    <a class="underlineHover">{{SignUpError}}</a>
             </div>
 
         </div>
+          {{SignUpError}}
             </div>
     
 
@@ -37,11 +38,32 @@
 
 
  <script>
+
+import axios from 'axios'
+var config = require('../../config')
+
+// define urls for front and backend
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
+
 export default {
   name: "formContent",
   data(){
     return{
-    available:true,
+    Name: '',
+    SignUpError: '',
+    email: '',
+    age: '',
+    number: '',
+    username: '',
+    password: '',
+    available: true,
+    response: []
     }
   },
   methods:{
@@ -53,9 +75,68 @@ export default {
       },
 
       signInClick(){
-          this.available=true;
+        this.available = true;
+      },
+
+    signUp: function () {
+
+      AXIOS.post(`/createuser2/?userName=` + this.username + `&userPassword=` +
+        this.password + `&userEmail=` + this.email + `&age=` + this.age + `&phoneNum=` + this.number + `&name=` + this.Name, {}, {})
+        .then(response => {
+          // JSON responses are automatically parsed.
+
+          this.username = response.data.username
+          this.password = response.data.password
+          })
+          .catch(e => {
+            var errorMsg = e.message
+            console.log(errorMsg)
+            this.SignUpError = e.response.data.message
+          });
+
+      AXIOS.post(`/login?username=`+ this.username + `&password=` + this.password, {}, {})
+        .then(response => {
+          // JSON responses are automatically parsed.
+
+        })
+        .catch(e => {
+          var errorMsg = e.message
+          console.log(errorMsg)
+          this.SignUpError = e.response.data.message
+        });
+
+        window.location.href = frontendUrl + '/#/home/' + this.username
         
-      }
+    },
+
+    createStudent: function () {
+      // create the student
+        AXIOS.post(`/createstudent/?userName=`+ this.username + `&userPassword=` + this.password
+          + `&userEmail=` + this.email, {}, {})
+          .then(response => {
+            // JSON responses are automatically parsed.
+            //logIn()
+          })
+          .catch(e => {
+            var errorMsg = e.message
+            console.log(errorMsg)
+            this.SignUpError = e.response.data.message
+          });
+    },
+
+    logIn: function () {
+      AXIOS.post(`/login?username=`+ this.username + `&password=` + this.password, {}, {})
+        .then(response => {
+          // JSON responses are automatically parsed.
+
+          window.location.href = frontendUrl + '/#/home/' + this.username
+        })
+        .catch(e => {
+          var errorMsg = e.message
+          console.log(errorMsg)
+          this.SignUpError = e.response.data.message
+        });
+    }
   }    
 }
 </script>

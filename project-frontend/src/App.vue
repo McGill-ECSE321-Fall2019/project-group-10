@@ -10,10 +10,7 @@
 import Startup from './components/Startup'
 import Login from './components/login'
 export default {
-  name: 'app',
-  components: {
-    Startup, Login
-  }
+  name: 'app'
 }
 </script>
 

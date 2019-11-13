@@ -33,13 +33,22 @@ export default {
       AXIOS.get(backendUrl + '/students/' + this.$route.params.username)
         .then((response) => {
           this.User = response.data
-          console.log(resp)
+          console.log(response)
         })
         .catch((err) => {
           console.log(err)
           this.errorUser = err.response.data.message
         })
-        getSessions()
+        response = []
+      AXIOS.get(`/sessionsbystudent?student_name=` + this.username)
+      .then((response) => {
+          //this.sessions = response.data
+          this.errorSessions = response.data
+        })
+        .catch((err) => {
+          console.log(err)
+          this.errorSessions = err.response.data.message
+        })
     },
     methods: {
     	goToSession: function (){
@@ -57,7 +66,7 @@ export default {
 	          console.log(err)
 	          this.errorUser = err.response.data.message
 	        })
-      		window.location.href = frontendUrl + '/#/startup/'
+      		window.location.href = frontendUrl + '/#/'
     	},
     	updateName: function(newName){
     	  AXIOS.put(`/user/` + this.User.email +`?name=`+ newName + `&phonenumber=` + this.User.phoneNumber
@@ -97,16 +106,9 @@ export default {
             console.log(errorMsg)
             this.errorUpdate = e.response.data.message
           });
-    	},
-    	getSessions: function(){
-    		AXIOS.get(`/sessionsbystudent?student_name=` + this.username)
-    		.then((response) => {
-	          this.sessions = response.data
-	        })
-	        .catch((err) => {
-	          console.log(err)
-	          this.errorSessions = err.response.data.message
-	        })
     	}
     }
   }
+
+
+

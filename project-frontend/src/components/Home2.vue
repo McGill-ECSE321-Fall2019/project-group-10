@@ -62,6 +62,7 @@
 
 		</div>
 
+		<hr>
 		<div>
 			<ul>
               <li v-for="(session, i) in sessions" v-bind:key="`session-${i}`" style="list-style-type: disc;">
@@ -69,7 +70,10 @@
               </li>
             </ul>
 		</div>
+		<span style="color:red">{{errorSessions}}</span>
+		{{sessions}}
 
+		<hr>
 		<b-button id='review' variant="outline-primary" type='button' @click="goToReview()">Write a Review</b-button>
 
 		<b-button id='session' variant="outline-success" type='button' @click="goToSession()">Create a Session</b-button>

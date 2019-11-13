@@ -1,13 +1,15 @@
 {
   "name": "project-frontend",
   "version": "1.0.0",
-  "description": "Vue FrontEnd",
-  "author": "Anas Shahid <muhammad.shahid@mail.mcgill.ca>",
+  "description": "Vue.js frontend for tutoring application",
+  "author": "team 10",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "e2e": "node test/e2e/runner.js",
+    "test": "npm run e2e"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -16,6 +18,7 @@
     "jquery": "^3.4.1",
     "popper.js": "^1.12.9",
     "vue": "^2.5.2",
+    "vue-multiselect": "^2.1.6",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -39,6 +42,10 @@
     "html-webpack-plugin": "^2.28.0",
     "http-proxy-middleware": "^0.17.3",
     "webpack-bundle-analyzer": "^2.2.1",
+    "chromedriver": "^2.27.2",
+    "cross-spawn": "^5.0.1",
+    "nightwatch": "^0.9.12",
+    "selenium-server": "^3.0.1",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
     "opn": "^5.1.0",
