@@ -853,7 +853,8 @@ public class TutoringAppService {
 		
 		//set the tutor
 		session.setTutor(t);
-		student.add(studentRepository.findStudentByUsername(sName));
+		Student student1 = studentRepository.findStudentByUsername(sName);
+		student.add(student1);
 		//seet the students
 		session.setStudent(student);
 		
@@ -867,11 +868,11 @@ public class TutoringAppService {
 		}
 		co.getSession().add(session);
 		//save everything
-		Student student1 = studentRepository.findStudentByUsername(sName);
+		
 		student1.addSession(session);
 		sessionRepository.save(session);
 		courseOfferingRepository.save(co);
-		studentRepository.save(studentRepository.findStudentByUsername(sName));
+		studentRepository.save(student1);
 		
 		//return the created session
 		return session;

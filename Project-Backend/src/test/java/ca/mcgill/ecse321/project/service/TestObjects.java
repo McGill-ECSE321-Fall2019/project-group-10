@@ -55,7 +55,7 @@ public class TestObjects {
 		// first delete everything from the repositories
 		// then run the setup code
 		// then delete again
-		String purpose = "create";
+		String purpose = "end";
 		switch(purpose) {
 			case "startup": deleteAll(); break;
 			case "create": deleteAll(); createObjects(); break;
