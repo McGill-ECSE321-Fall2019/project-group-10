@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <!-- <Startup />
-    <hr>
+    <Startup />
+    <!-- <hr>
     <Login />
     <hr>
     <TutorAvail />
     <hr> -->
-    <BookSession />
     <!-- <br> -->
     <router-view></router-view>
   </div>
