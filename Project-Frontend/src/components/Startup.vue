@@ -16,7 +16,7 @@
         <button @click="gotoLogin()">Get Started</button>
         </div>
 
-        <div class="image"><img src="../images/Tutoring.jpg" alt="Tutoring image"></div>
+        <div class="image"><img src="../images/Tutoring.png" alt="Tutoring image"/></div>
     </div>
 
 
@@ -25,7 +25,7 @@
         <h2>Why Choose Us As Your Official Tutoring Service</h2>
             <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit</h5>
         <div class="qualities">
- 
+
             <div class="personalized ">
                 <div class="image-1 icon"><img src="../images/user.png" alt=""></div>
                 <div class="c-text">
@@ -39,8 +39,8 @@
                 <div class="image-2 icon"><img src="../images/happy.png" alt=""></div>
                 <div class="c-text">
                     <h4 class="pad">Convenience</h4>
-                    <p>With our new and improved mobile application, 
-                        booking a qualified instructor can be done in a matter of seconds.</p>  
+                    <p>With our new and improved mobile application,
+                        booking a qualified instructor can be done in a matter of seconds.</p>
                 </div>
             </div>
 
@@ -48,7 +48,7 @@
                 <div class="image-3 icon"><img src="../images/thumbs.png" alt=""></div>
                 <div class="c-text">
                     <h4 class="pad">Satisfaction Guaranteed</h4>
-                    <p>We guarantee a refund if you were not satisfied with your lesson.  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, tempora?</p>  
+                    <p>We guarantee a refund if you were not satisfied with your lesson.  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, tempora?</p>
                 </div>
             </div>
 
@@ -56,7 +56,7 @@
                 <div class="image-4 icon"><img src="../images/star.png" alt=""></div>
                 <div class="c-text">
                     <h4 class="pad">Results Driven</h4>
-                    <p>97% of all our lessons have over a 4.5/5 star rating.</p>  
+                    <p>97% of all our lessons have over a 4.5/5 star rating.</p>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
 
 <!-- Calendar -->
 <!-- <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet"> -->
-	
+
 <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'> -->
 
 <div class="planner">
@@ -82,7 +82,7 @@
 			</span>
 
 			<span class="">July</span>
-			
+
 			<span class="btn btn-next">
 				<i class="icon-angle-right"></i>
 			</span>
@@ -155,10 +155,10 @@
 			<li class="tab"><a href="#">Reminders</a></li>
 			<li class="tab"><a href="#">Notes</a></li>
 			</ul>
-			
+
 		<div class="tab-pane">
 			<div class="schedule-list">
-				
+
 				<div class="schedule-item">
 					<div class="time">
 						<span>9</span>
@@ -182,7 +182,7 @@
 						</div>
 					</div>
 				</div>
-	
+
 				<div class="schedule-item free">
 					<div class="time">
 						<span>10</span>
@@ -247,7 +247,7 @@
     justify-content: center;
 }
 
-.nav-bar li a{ 
+.nav-bar li a{
     color: rgb(53, 53, 53);
 }
 
@@ -372,7 +372,7 @@ div, ul, li{
 	font-size: 0px;
 	padding-bottom: 10px;
   }
-	
+
 	.calendar-header span{
 		display: inline-block;
 		font-size: 36px;
@@ -380,12 +380,12 @@ div, ul, li{
 		text-align: center;
 		line-height: 36px;
 	}
-	
+
 	.calendar-header:after{
 		content: '';
 		display: inline-block;
 		width: 100%;
-	}   
+	}
 
 
 table{
@@ -414,11 +414,11 @@ td > span{
 	width: 20px; height: 20px;
   line-height: 20px;
 }
-	
+
 td > span:hover{
-		 font-weight: bold; 
+		 font-weight: bold;
 	}
-	
+
 td > span.active{
 		border: 1px solid #98cd60;
 		border-radius: 30px;
@@ -440,7 +440,7 @@ td > span:active{
 	line-height: 0px;
 	font-size: 0px;
   background-color: #6b6b6b;
-}	
+}
 .tabs	.tab{
 		display: inline-block;
 		width: 33.3333%;
@@ -453,32 +453,32 @@ td > span:active{
 		font-size: 14px;
 		transition: background 0.2s;
 }
-	 
+
 .tab:active{
 			background-color: #999999;
 			color: #ffffff;
 			font-weight: 600;
 }
-			
+
 .tab:avtive:hover{
 			background-color: #999999;
 }
 
-		
+
 .tabs	.tab:hover{
 			background-color: #777777;
 		}
-		
+
 		a{
 			color: inherit;
 			text-decoration: none;
 		}
-  
+
 	.tabs:after{
 		content: '';
 		width: 100%;
 		display: inline-block;
-	}  
+	}
 
 
 .schedule-list{
@@ -487,7 +487,7 @@ td > span:active{
 	border-left: 2px solid #cccccc;
 	display: block;
 }
-	
+
 .schedule-item{
 	display: block;
 	margin-bottom: 50px;
@@ -496,12 +496,12 @@ td > span:active{
   min-height: 100px;
   overflow: visible;
 }
-	
+
 .schedule-item:last-child{
 		margin-bottom: 10px;
     min-height: 30px;
 	}
-	
+
 .time{
 		display: block;
 		float: left;
@@ -514,14 +514,14 @@ td > span:active{
 		text-align: center;
 		padding: 0px;
 		line-height: 25px;
-}	
+}
 .time	span{
 			font-size: 12px;
 			height: 10px;
 			margin: auto;
 			display: block;
 		}
-	
+
 .description{
 		display: block;
     float: left;
@@ -532,7 +532,7 @@ td > span:active{
 		font-size: 14px;
     overflow: visible;
 }
-		
+
 .description	.description-content{
 		margin-top: 5px;
 }
@@ -541,7 +541,7 @@ td > span:active{
 				margin: 0;
 				color: #c5c5c5;
 			}
-			
+
 .description	.description-content	ul.contact-list{
 				margin: 0;
 				margin-top: 10px;
@@ -563,11 +563,11 @@ td > span:active{
 .description	.description-content	ul.contact-list	li.contact	img{
 						width: 60px; height: 60px;
 					}
-					
+
 .description	.description-content	ul.contact-list	li.contact:hover{
-						border: 2px solid #98cd60;          
+						border: 2px solid #98cd60;
 					}
-					
+
 .description	.description-content	ul.contact-list	li.contact.add-contact{
 						color: #98cd60;
 						font-size: 20px;
@@ -577,7 +577,7 @@ td > span:active{
 							color: inherit;
 							text-decoration: none;
 						}
-						
+
 .description .description-content	ul.contact-list	li.contact .add-contact a:hover{
 							background-color: fadeout(#98cd60, 75%);
 						}
@@ -585,7 +585,7 @@ td > span:active{
 .schedule-item.free .time{
 			border: 2px solid #98cd60;
 		}
-      
+
 .schedule-item.free .description .description-header{
         background-color: #ffffff;
         color: #c5c5c5;
@@ -593,16 +593,16 @@ td > span:active{
         float: left;
 
 			}
-      
+
 .schedule-item.free .description .description-content{
         margin-left: 5px;
         margin-top: 0;
         content: '';
         width: 215px;
         display: block;
-        float: right;        
+        float: right;
         background-image:  url(https://dl.dropboxusercontent.com/u/2915418/filler.png);
         background-repeat: no-repeat;
-        background-position: right center;        
+        background-position: right center;
       }
 </style>
