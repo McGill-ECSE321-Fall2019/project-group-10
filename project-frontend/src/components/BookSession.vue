@@ -1,17 +1,7 @@
 <template>
  <div id=selection>
 
-	<table width="100%" align="left">
-		<tr>
-			<td>
-			<p>Currently logged in as {{username}}</p>
-			</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-	</table>
+	<p class="currentLogin">Currently logged in as {{username}}</p>
 
      <div class="wrapper">
             <div id="formContent">
@@ -27,7 +17,7 @@
 		        		<option v-for="(university, i) in unis" v-bind:key="`university-${i}`" v-bind:value="{ name: university.name, address: university.address }">{{university.name}}</option>
 		      		</select>
                 <br>
-              <label>Courses: </label> <br>
+              <label >Courses: </label> <br>
               <select id='session-course-select' v-model="selectedCourse"  @change="generateCourseOfferings(selectedCourse.courseName, selectedCourse.uniName)">
                 <option disabled value="">Please select a course</option>
                 <option v-for="(course, i) in courses" v-bind:key="`course-${i}`" v-bind:value="{ courseName: course.courseName, uniName: course.uniName, description: course.description }">{{course.courseName}}</option>
@@ -39,7 +29,7 @@
                 <option v-for="(co, i) in courseOfferings" v-bind:key="`co-${i}`" v-bind:value="{ term: co.term, year: co.year, id: co.id }">{{co.term}} {{co.year}}</option>
 			        </select>
                 <br><br>
-              <b-button id='selection-button' variant="success" type='button' v-bind:disabled="!selectedUniversity || !selectedCourse || !selectedCourseOffering" @click="submit(selectedCourseOffering.id)">Submit</b-button>
+              <b-button id='selection-button' class="btn btn-info" variant="success" type='button' v-bind:disabled="!selectedUniversity || !selectedCourse || !selectedCourseOffering" @click="submit(selectedCourseOffering.id)">Submit</b-button>
                 <br>
                 <br>
             <div id="formFooter">
@@ -52,67 +42,7 @@
     </div>
 
  <br><br>
- <h2>Select a Course Offering for a Tutoring Session</h2>
- <br>
- 	<table align="center">
- 		<tr>
- 			<td><label>Universities:</label></td>
- 			<td>
-		      		<select id='session-university-select' v-model="selectedUniversity" @change="generateCourses(selectedUniversity.name)">
-		       			<option disabled value="">Please select a university</option>
-		        		<option v-for="(university, i) in unis" v-bind:key="`university-${i}`" v-bind:value="{ name: university.name, address: university.address }">{{university.name}}</option>
-		      		</select>
- 			</td>
- 			<td>
- 			    <b-button id='uni-button' variant="primary" type='button' v-bind:disabled="!selectedUniversity" @click="generateCourses(selectedUniversity.name)">Select University</b-button>
- 			</td>
- 		</tr>
- 		<tr height="30px">
- 			<td></td>
- 			<td>
- 				<span style="color:red">{{errorUniversity}}</span>
- 			</td>
- 			<td></td>
- 		</tr>
- 		<tr>
- 			<td><label>Courses:</label></td>
- 			<td>
-			      <select id='session-course-select' v-model="selectedCourse">
-			        <option disabled value="">Please select a course</option>
-			        <option v-for="(course, i) in courses" v-bind:key="`course-${i}`" v-bind:value="{ courseName: course.courseName, uniName: course.uniName, description: course.description }">{{course.courseName}}</option>
-			      </select>
- 			</td>
- 			<td>
- 				<b-button id='course-button' variant="primary" v-bind:disabled="!selectedUniversity || !selectedCourse" type='button' @click="generateCourseOfferings(selectedCourse.courseName, selectedCourse.uniName)">Select Course</b-button>
- 			</td>
- 		</tr>
- 		<tr height="30px">
- 			<td></td>
- 			<td>
- 				<span style="color:red">{{errorCourse}}</span>
- 			</td>
- 			<td></td>
- 		</tr>
- 		<tr>
- 			<td><label>Course Offerings:</label></td>
- 			<td>
-			      <select id='session-co-select' v-model="selectedCourseOffering">
-			        <option disabled value="">Please select a course offering</option>
-			        <option v-for="(co, i) in courseOfferings" v-bind:key="`co-${i}`" v-bind:value="{ term: co.term, year: co.year, id: co.id }">{{co.term}} {{co.year}}</option>
-			      </select>
- 			</td>
- 			<td>
- 				<b-button id='selection-button' variant="success" type='button' v-bind:disabled="!selectedUniversity || !selectedCourse || !selectedCourseOffering" @click="submit(selectedCourseOffering.id)">Submit</b-button>
- 			</td>			
- 		</tr>
- 		<tr height="30px">
- 			<td></td>
- 			<td>
- 				<span style="color:red">{{errorCourseOffering}}</span>
- 			</td>
- 			<td></td>
- 		</tr>
-    </table>
+ 
 
     <hr>
     <b-button id='home-button' variant="outline-secondary" type='button' @click="goHome()">Return</b-button>
@@ -176,7 +106,10 @@ h2 {
 
 
 /* STRUCTURE */
-
+.currentLogin{
+  text-align: right;
+  opacity: 0.6;
+}
 .wrapper {
   display: flex;
   align-items: center;
@@ -222,12 +155,12 @@ h2.active {
 }
 
 /* FORM TYPOGRAPHY*/
-
-input[type=button], input[type=submit], input[type=reset]  {
+/* input[type=button], input[type=submit], input[type=reset]  */
+ select{
   background-color: #56baed;
   border: none;
   color: white;
-  padding: 15px 80px;
+  padding: 15px 40px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -241,31 +174,31 @@ input[type=button], input[type=submit], input[type=reset]  {
 
 }
 
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-  background-color: #39ace7;
-}
-
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
-  -moz-transform: scale(0.95);
-  -webkit-transform: scale(0.95);
-  -o-transform: scale(0.95);
-  -ms-transform: scale(0.95);
-  transform: scale(0.95);
-}
-
-input[type=text] {
-  background-color: #f6f6f6;
+label{
   border: none;
-  color: #0d0d0d;
-  padding: 15px 32px;
+  color: #353535;
+  padding: 10px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 5px;
   width: 85%;
-  border: 2px solid #f6f6f6;
+ -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
+}
+
+option {
+  background-color: #56baed;
+  border: none;
+  color: #f6f6f6;
+  padding: 15px 32px;
+  text-align: center;
+
 }
 
 input[type=text]:focus {

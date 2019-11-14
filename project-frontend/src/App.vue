@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-    <!-- <Startup /> -->
-    <!-- <Login /> -->
-    <!-- <TutorAvail /> -->
     <router-view></router-view>
   </div>
 </template>
