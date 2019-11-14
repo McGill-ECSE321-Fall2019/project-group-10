@@ -803,6 +803,9 @@ public class TutoringAppService {
 		boolean tIsAvailable = false;
 		int tId = 0;
 		List<Availability> tutorAvailabilities = getAvailabilityByTutorName(tName);
+		if(tutorAvailabilities == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Session_Tutor_Busy);
+		}
 		Availability av = null;
 		//Check that the tutor is available
 		for (Availability a : tutorAvailabilities) {
@@ -887,8 +890,6 @@ public class TutoringAppService {
 			}
 		}
 		
-		if(avails == null || avails.size() == 0)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_List);
 		return avails;
 	}
 	
