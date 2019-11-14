@@ -6,14 +6,14 @@
         <li><a href="#intro">Home</a></li>
         <li><a href="#choose">About</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="#">Login</a></li>
+        <li><a id="hyperlink" href="#" @click="myFunction()">Login</a></li>
     </div>
 
     <div class="intro" id="intro">
         <div class="text">
         <h1>Welcome To Tutoring Website!</h1>
         <h3>the way learning should be</h3>
-        <button>Get Started</button>
+        <button @click="gotoLogin()">Get Started</button>
         </div>
 
         <div class="image"><img src="../images/Tutoring.jpg" alt="Tutoring image"></div>
@@ -89,9 +89,20 @@
 
 
 <script>
-export default {
-    name:'Startup'
-}
+  var config = require('../../config')
+  var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+  export default {
+    name: 'Startup',
+    methods: {
+      gotoLogin: function() {
+        window.location.href = frontendUrl + '/#/login/1'
+      },
+      myFunction() { //Call this function whenever you want to update the href
+        var link = document.getElementById("hyperlink");
+        link.href = frontendUrl + '/#/login/0';
+      }
+    }
+  }
 </script>
 
 <style scoped>

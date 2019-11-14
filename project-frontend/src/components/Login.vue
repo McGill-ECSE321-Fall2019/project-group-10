@@ -29,7 +29,6 @@
             </div>
 
         </div>
-          {{SignUpError}}
             </div>
     
 
@@ -55,15 +54,20 @@ export default {
   name: "formContent",
   data(){
     return{
-    Name: '',
-    SignUpError: '',
-    email: '',
-    age: '',
-    number: '',
-    username: '',
-    password: '',
-    available: true,
-    response: []
+      Name: '',
+      SignUpError: '',
+      email: '',
+      age: '',
+      number: '',
+      username: '',
+      password: '',
+      available: true,
+      response: []
+    }
+  },
+  created() {
+    if (this.$route.params.id == "1") {
+      this.available = false;
     }
   },
   methods:{
@@ -129,13 +133,14 @@ export default {
         .then(response => {
           // JSON responses are automatically parsed.
 
-          window.location.href = frontendUrl + '/#/home/' + this.username
         })
         .catch(e => {
           var errorMsg = e.message
           console.log(errorMsg)
           this.SignUpError = e.response.data.message
         });
+
+        window.location.href = frontendUrl + '/#/home/' + this.username
     }
   }    
 }
