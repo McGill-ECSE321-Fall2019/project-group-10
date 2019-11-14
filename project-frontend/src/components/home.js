@@ -42,8 +42,8 @@ export default {
         response = []
       AXIOS.get(`/sessionsbystudent?student_name=` + this.username)
       .then((response) => {
-          //this.sessions = response.data
-          this.errorSessions = response.data
+          this.sessions = response.data
+          //this.errorSessions = response.data
         })
         .catch((err) => {
           console.log(err)
@@ -66,6 +66,7 @@ export default {
 	          console.log(err)
 	          this.errorUser = err.response.data.message
 	        })
+          
       		window.location.href = frontendUrl + '/#/'
     	},
     	updateName: function(newName){
@@ -109,6 +110,4 @@ export default {
     	}
     }
   }
-
-
 

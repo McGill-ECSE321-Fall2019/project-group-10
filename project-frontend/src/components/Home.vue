@@ -57,8 +57,8 @@
 						<td></td><td></td><td></td><td></td><td></td><td></td>
 					</tr>
 				</table>
+				<span style="color:red">{{errorUpdate}}</span>
 			</label>
-			 <span style="color:red">{{errorUpdate}}</span>
 
 		</div>
 
