@@ -48,16 +48,6 @@ export default {
   },
   created: function() {
       // Test data
-  // const u1 = new UniversityDTO('McGill2', '123 Main')
-  // const u2 = new UniversityDTO('Concordia2', '456 Test')
-  // const c1 = new CourseDto('ECSE 321', 'Intro to Software', 'McGill')
-  // const c2 = new CourseDto('ECSE 325', 'Digital Systems', 'McGill')
-  // const co1 = new CourseOfferingDto('Fall', 2019, 1)
-  // const co2 = new CourseOfferingDto('Winter', 2020, 2)
-  // Sample initial content
-  // this.unis = [u1, u2]
-  // this.courses = [c1, c2]
-  // this.courseOfferings = [co1, co2]
     // get all the universities available
     this.username = this.$route.params.username
     this.unis = []
@@ -79,7 +69,6 @@ export default {
       AXIOS.get(`/universities/`+ uniName)
       .then(response => {
         // JSON responses are automatically parsed.
-        this.errorUniversity = 'Selected: ' + uniName
         this.courses = response.data 
         this.errorCourse = ''
       })
@@ -93,7 +82,6 @@ export default {
       AXIOS.get(`/courses/`+ uniName + `/` + courseName)
       .then(response => {
         // JSON responses are automatically parsed.
-        this.errorCourse = 'Selected: ' + courseName + ' at ' + uniName
         this.courseOfferings = response.data
       })
       .catch(e => {

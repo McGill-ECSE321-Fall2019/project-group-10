@@ -43,7 +43,9 @@
                 <br>
                 <br>
             <div id="formFooter">
-                    <a class="underlineHover">Error/Success String</a>
+                    <a v-bind:disabled="!errorUniversity" class="underlineHover">{{errorUniversity}}</a>
+                    <a v-bind:disabled="!errorCourse" class="underlineHover">{{errorCourse}}</a>
+                    <a v-bind:disabled="!errorCourseOffering" class="underlineHover">{{errorCourseOffering}}</a>
             </div>
 
         </div>

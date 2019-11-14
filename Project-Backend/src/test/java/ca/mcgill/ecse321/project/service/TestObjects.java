@@ -45,9 +45,9 @@ public class TestObjects {
 	@Autowired
 	private UserRepository userRepository;
 	private static final Date AVAILABILITY_DATE = Date.valueOf(LocalDate.now().plusDays(3));
-	private static final Time AVAILABILITY_TIME = Time.valueOf("11:11:11");
+	private static final Time AVAILABILITY_TIME = Time.valueOf("11:30:00");
 	private static final Date AVAILABILITY_DATE2 = Date.valueOf(LocalDate.now().plusDays(4));
-	private static final Time AVAILABILITY_TIME2 = Time.valueOf("11:11:11");
+	private static final Time AVAILABILITY_TIME2 = Time.valueOf("12:30:00");
 	
 	@Test
 	public void runApplication() {

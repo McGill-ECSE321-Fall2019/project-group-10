@@ -684,8 +684,7 @@ public class TutoringAppService {
 		student.setPassword(password);
 		student.setUser(u);
 		studentRepository.save(student);
-		Student s_check = studentRepository.findStudentByUsername(username);
-		return s_check;
+		return student;
 	}
 
 	//Checking to make sure we can update a student.
@@ -868,7 +867,8 @@ public class TutoringAppService {
 		}
 		co.getSession().add(session);
 		//save everything
-		studentRepository.findStudentByUsername(sName).getSession().add(session);
+		Student student1 = studentRepository.findStudentByUsername(sName);
+		student1.addSession(session);
 		sessionRepository.save(session);
 		courseOfferingRepository.save(co);
 		studentRepository.save(studentRepository.findStudentByUsername(sName));

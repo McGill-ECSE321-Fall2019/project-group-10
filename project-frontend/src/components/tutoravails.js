@@ -4,7 +4,6 @@ var config = require('../../config')
 
 var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-//var backendUrl = 'http://localhost:8080'
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -68,16 +67,17 @@ export default {
           this.avails = response.data.avails
         })
         .catch(e => {
-          this.errorTutor = e;
+            this.errorTutor = e.response.data.message;
         });
 
         AXIOS.get(`/allavailabilities/`+ username)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.avails = response.data 
+
+            this.avails = response.data 
         })
         .catch(e => {
-          this.errorTutor = e;
+          this.errorTutor = e.response.data.message;
         });
       },       
       fetchData() {
@@ -104,6 +104,8 @@ export default {
           + `&course_offering_id=` + this.$route.params.id + `&amount_paid=` + this.selectedTutor.amount_paid, {}, {})
           .then(response => {
             // JSON responses are automatically parsed.
+              this.errorSession = response.data
+              //window.location.href = frontendUrl + '/#/home/' + this.username
           })
           .catch(e => {
             var errorMsg = e.message
@@ -111,7 +113,7 @@ export default {
             this.errorSession = e.response.data.message
           });
         // then return to home page
-        window.location.href = frontendUrl + '/#/home/' + this.username
+        
       }
     }
   }

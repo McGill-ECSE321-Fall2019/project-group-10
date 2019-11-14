@@ -94,15 +94,17 @@ export default {
         window.location.href = frontendUrl + '/#/session/' + this.username
       },
       goHome: function (){
-        window.location.href = frontendUrl + '/#/home/'
+        window.location.href = frontendUrl + '/#/home/' + this.username
       },
       createSession: function(){
         // add axios post
-        AXIOS.post(`/session?tutor_name=`+ this.selectedTutor.name + `&student_name=` + this.username
+          AXIOS.post(`/session?tutor_name=` + this.selectedTutor.username + `&student_name=` + this.$route.params.username
           + `&booking_date=` + this.selectedAvailability.date + `&booking_time=` + this.selectedAvailability.time 
-          + `&course_offering_id=` + this.$route.params.id + `&amount_paid=` + this.selectedTutor.amount_paid, {}, {})
+            + `&course_offering_id=` + this.$route.params.id + `&amount_paid=` + Number(this.selectedTutor.hourlyRate), {}, {})
           .then(response => {
             // JSON responses are automatically parsed.
+
+            this.errorSession = response.data
           })
           .catch(e => {
             var errorMsg = e.message
@@ -110,7 +112,7 @@ export default {
             this.errorSession = e.response.data.message
           });
         // then return to home page
-        window.location.href = frontendUrl + '/#/home/'
+        //window.location.href = frontendUrl + '/#/home/' + this.username
       }
     }
   }

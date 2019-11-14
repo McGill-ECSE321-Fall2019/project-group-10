@@ -461,7 +461,7 @@ public class TutoringServiceRestController {
 			@RequestParam(name = "student_name") String sName, 
 			@RequestParam(name = "booking_date") Date bookingDate, 
 			@RequestParam(name = "booking_time") 
-			@DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime bookingTime, 
+			@DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm:ss") LocalTime bookingTime, 
 			@RequestParam(name = "course_offering_id") Integer courseOfferingId, 
 			@RequestParam(name = "amount_paid") Double amountPaid) {
 

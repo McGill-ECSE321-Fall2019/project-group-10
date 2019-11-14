@@ -50,7 +50,7 @@
 
 							<td class="column2"> <select id='session-avail-select' class="custom-dropdown" v-model="selectedAvailability"> 
 				        		<option disabled value="">Please select an availability</option>
-				        		<option v-for="(a, i) in selectedTutor.avails" v-bind:key="`a-${i}`" v-bind:value="{ time: a.time, date: a.date }">{{a.date}} {{a.time}}Hello World</option>
+				        		<option v-for="(a, i) in selectedTutor.avails" v-bind:key="`a-${i}`" v-bind:value="{ time: a.time, date: a.date }">{{a.date}} {{a.time}}</option>
 				    			</select></td>
 
 							<td class="column3"> <ul>
