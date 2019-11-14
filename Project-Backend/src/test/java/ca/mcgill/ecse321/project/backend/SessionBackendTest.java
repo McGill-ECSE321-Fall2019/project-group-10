@@ -1223,7 +1223,7 @@ public class SessionBackendTest {
 		}
 		
 		//check that it is the correct error
-		assertEquals(error, ErrorStrings.Invalid_Availability_List);
+		assertEquals(error, ErrorStrings.Invalid_Session_Tutor_Busy);
 		
 	}
 	
