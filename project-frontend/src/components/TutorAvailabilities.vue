@@ -1,0 +1,97 @@
+<template>
+	<div id=tutors>
+
+    <p>{{errorCourseOffering}}</p>
+
+	<table width="100%" align="center">
+		<tr>
+			<td>
+			<p left-margin="0" right-margin="100%">Currently logged in as {{username}}</p>
+			</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+
+		<h2>Select a Tutor for the Session</h2><br>
+		<label>Available tutors:
+			<select id='session-tutor-select' v-model="selectedTutor">
+		        <option disabled value="">Please select a tutor</option>
+		        <option v-for="(tutor, i) in tutors" v-bind:key="`tutor-${i}`" v-bind:value="{ username: tutor.username, education: tutor.education, hourlyRate: tutor.hourlyRate, experience: tutor.experience, avails: tutor.avails, ratings: tutor.ratings, texts: tutor.texts }">{{tutor.username}}</option>
+		    </select>
+	    </label>
+
+	    <br> <span style="color:red">{{errorTutor}}</span>
+
+	    <hr>
+	    <h2>Tutor Information</h2><br>
+
+	    <table align="center" width="100%">
+	    	<tr>
+	    		<th>Hourly Rate</th>
+	    		<th>Availabilities</th>
+	    		<th>Ratings</th>
+	    		<th>Comments</th>
+	    	</tr>
+	    	<tr>
+	    		<td>
+	    			{{selectedTutor.hourlyRate}}
+	    		</td>
+	    		<td>
+					<select id='session-avail-select' v-model="selectedAvailability">
+				        <option disabled value="">Please select an availability</option>
+				        <option v-for="(a, i) in selectedTutor.avails" v-bind:key="`a-${i}`" v-bind:value="{ time: a.time, date: a.date }">{{a.date}} {{a.time}}</option>
+				    </select>
+	    		</td>
+	    		<td>
+				    <ul>
+			            <li v-for="(r, i) in selectedTutor.ratings" v-bind:key="`r-${i}`" style="list-style-type: disc;">
+			                <span class='ratings'>{{r.rating}}</span>
+			            </li>
+			        </ul>
+	    		</td>
+	    		<td>
+				    <ul>
+			            <li v-for="(t, i) in selectedTutor.texts" v-bind:key="`t-${i}`" style="list-style-type: disc;">
+			                <span class='texts'>{{t.description}}</span>
+			            </li>
+			        </ul>
+	    		</td>
+	    	</tr>
+	    </table>
+
+	    <br><br>
+        <b-button id='select-avail' variant="primary" type='button' v-bind:disabled="!selectedAvailability || !selectedTutor" @click="createSession()">Request Session</b-button>
+
+        <hr>
+		<b-button id='home-button' variant="outline-secondary" type='button' @click="goHome()">Return</b-button>
+		<b-button id='back-button' variant="outline-secondary" type='button' @click="goBack()">Back To Course Selection</b-button>
+
+		<p>{{errorSession}}</p>
+	</div>
+</template>
+
+<script src="./tutoravails.js">
+</script>
+
+<style>
+  #tutors {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 60px;
+  }
+  table {
+  	width: 100%;
+  	border-collapse: collapse;
+  }
+  tr, td, th {
+  	text-align: center;
+  }
+  ul {
+  	list-style-type: none;
+  	text-align: center;
+  }
+</style>

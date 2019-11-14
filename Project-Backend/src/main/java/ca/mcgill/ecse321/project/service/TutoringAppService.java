@@ -86,12 +86,13 @@ public class TutoringAppService {
 		availabilityRepository.save(availability);
 		
 		
-		t.getAvailability().add(availability);
+		//t.getAvailability().add(availability);
+		t.addAvailability(availability);
 		tutorRepository.save(t);
 		return availability;
 	}
 
-	//Checking to make sure we can update an availability intances.
+	//Checking to make sure we can update an availability instances.
 	@Transactional
 	public Availability updateAvailability(int oldID, Date date, Time time,String tName) {
 		if(tName == null || tName.equals("")){
@@ -721,6 +722,8 @@ public class TutoringAppService {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Student_Username);
 		}
 		Student a = studentRepository.findStudentByUsername(username);
+		if (a == null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_Student);
 		return a;
 	}
 	
@@ -799,7 +802,7 @@ public class TutoringAppService {
 		
 		boolean tIsAvailable = false;
 		int tId = 0;
-		List<Availability> tutorAvailabilities = getAvailabilityByTutor(tName);
+		List<Availability> tutorAvailabilities = getAvailabilityByTutorName(tName);
 		Availability av = null;
 		//Check that the tutor is available
 		for (Availability a : tutorAvailabilities) {
@@ -850,7 +853,8 @@ public class TutoringAppService {
 		
 		//set the tutor
 		session.setTutor(t);
-		student.add(studentRepository.findStudentByUsername(sName));
+		Student student1 = studentRepository.findStudentByUsername(sName);
+		student.add(student1);
 		//seet the students
 		session.setStudent(student);
 		
@@ -864,13 +868,28 @@ public class TutoringAppService {
 		}
 		co.getSession().add(session);
 		//save everything
-		studentRepository.findStudentByUsername(sName).getSession().add(session);
+		
+		student1.addSession(session);
 		sessionRepository.save(session);
 		courseOfferingRepository.save(co);
-		studentRepository.save(studentRepository.findStudentByUsername(sName));
+		studentRepository.save(student1);
 		
 		//return the created session
 		return session;
+	}
+	
+	@Transactional
+	public List<Availability> getAvailabilityByTutorName(String tutorName){
+		List<Availability> avails = new ArrayList<>();
+		for(Availability a: getAllAvailabilities()) {
+			if(a.getTutor().getUsername().equals(tutorName)) {
+				avails.add(a);
+			}
+		}
+		
+		if(avails == null || avails.size() == 0)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Availability_List);
+		return avails;
 	}
 	
 	//Checking to make sure we can update a session.

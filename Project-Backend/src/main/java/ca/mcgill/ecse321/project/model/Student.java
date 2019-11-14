@@ -4,6 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.ManyToMany;
 
@@ -18,6 +19,13 @@ public class Student extends Role{
 
 	public void setSession(Set<Session> sessions) {
 		this.session = sessions;
+	}
+	
+	public void addSession(Session s) {
+		if(this.session == null) {
+			this.session = new HashSet<>();
+		}
+		this.session.add(s);
 	}
 
 }

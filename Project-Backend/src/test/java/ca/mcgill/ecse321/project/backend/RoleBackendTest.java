@@ -109,16 +109,17 @@ public class RoleBackendTest {
     @Test
     public void getStudentIncorrectUsername() {
         Student student = null;
+        String error = null;
 
         try {
             student = service.getStudent("wrongUsername");
         } catch(IllegalArgumentException e)
         {
-            fail();
+            error = e.getMessage();
         }
 
         // check that it returns the incorrect student
-        assertEquals(null, student);
+        assertEquals(ErrorStrings.Invalid_Service_Student, error);
     }
 
     // Check that getStudent fails with correct username

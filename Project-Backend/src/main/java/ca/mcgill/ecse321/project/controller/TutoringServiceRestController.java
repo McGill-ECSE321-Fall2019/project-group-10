@@ -47,6 +47,19 @@ public class TutoringServiceRestController {
 		return userListDto;
 	}
 	
+	// get student by username
+	@GetMapping(value = {"/students/{username}", "/students/{username}/"})
+	public UserDTO getStudentByUsername(@PathVariable("username") String name) throws IllegalArgumentException{
+		TSUser u;
+		try {
+			Student s = service.getStudent(name);
+			u = s.getUser();
+		}
+		catch(IllegalArgumentException e){throw new IllegalArgumentException(e.getMessage());};
+		
+		return convertToDto(u);
+	}
+	
 	// get all tutors registered on the application
 	@GetMapping(value = {"/tutors", "/tutors/"})
 	public List<TutorDTO> getAllTutors(){
@@ -267,6 +280,22 @@ public class TutoringServiceRestController {
 		}
 		return aDtos;
 	}
+	
+	@GetMapping(value = {"/allavailabilities/", "/allavailabilities/"})
+	public List<AvailabilityDTO> getAllAvailabilities() throws IllegalArgumentException {
+
+		List<AvailabilityDTO> aDtos = new ArrayList<>();
+		
+		List<Availability> aIt = service.getAllAvailabilities();
+		
+		for(Availability a : aIt) {
+			
+			// convert model class to a data transfer object
+			aDtos.add(convertToDto(a));
+			
+		}
+		return aDtos;
+	}
 
 	//Get mapping to get both the text and rating for the review. 1) Text 2) Rating
 	@GetMapping(value = { "/tutor/{tutorUsername}/reviews", "/tutor/{tutorUsername}/reviews/" })
@@ -323,6 +352,20 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_User);
 		TSUser u = service.createUser(name, userEmail, userAge, userPhoneNumber);
 		return convertToDto(u);
+	}
+	
+	@PostMapping(value = { "/createuser2", "/createuser2/" })
+	public StudentDTO registerUserandStudent(@RequestParam("name") String name, 
+			@RequestParam("age") int userAge, 
+			@RequestParam("userEmail") String userEmail, 
+			@RequestParam("phoneNum") String userPhoneNumber, @RequestParam("userName") String username,
+			@RequestParam("userPassword") String userpassword) throws IllegalArgumentException {
+	
+		if(service.findUserByEmail(userEmail)!=null)
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_User);
+		TSUser u = service.createUser(name, userEmail, userAge, userPhoneNumber);
+		Student s = service.createStudent(username, userpassword, userEmail);
+		return convertToDto(s);
 	}
 
 
@@ -418,7 +461,7 @@ public class TutoringServiceRestController {
 			@RequestParam(name = "student_name") String sName, 
 			@RequestParam(name = "booking_date") Date bookingDate, 
 			@RequestParam(name = "booking_time") 
-			@DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime bookingTime, 
+			@DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm:ss") LocalTime bookingTime, 
 			@RequestParam(name = "course_offering_id") Integer courseOfferingId, 
 			@RequestParam(name = "amount_paid") Double amountPaid) {
 
@@ -653,7 +696,7 @@ public class TutoringServiceRestController {
 
 		// get the availabilities
 		List<AvailabilityDTO> avails = new ArrayList<AvailabilityDTO>();
-		for(Availability a: new ArrayList<Availability>(t.getAvailability())) {
+		for(Availability a: service.getAvailabilityByTutorName(t.getUsername())) {
 			// convert to a DTO
 			avails.add(convertToDto(a));
 		}
