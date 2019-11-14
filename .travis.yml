@@ -8,9 +8,13 @@
   - chmod +x gradlew
   script:
   - ./gradlew build
+  - cd ./Project-Frontend
+  - npm install
+  - npm run build
+
 
   deploy:
     provider: heroku
     api_key:
       secure: 6233a280-e5a5-4627-927c-6e37802675c0
-    app: project-backend-10 
+    app: project-backend-10
