@@ -20,7 +20,7 @@
                     <input type="text" id="email" v-model="email" placeholder="Email">
                     <input type="text" id="age" v-model="age" placeholder="Age">
                     <input type="text" id="phonenumber" v-model="number" placeholder="Phonenumber">
-                    <input type="submit" @click="signUp()" value="Sign Up">
+                    <input type="button" @click="signUp()" value="Sign Up">
                 </div>
             </form>
 
@@ -62,6 +62,7 @@ export default {
       username: '',
       password: '',
       available: true,
+      loggedin: false,
       response: []
     }
   },
@@ -91,25 +92,15 @@ export default {
 
           this.username = response.data.username
           this.password = response.data.password
-          })
-          .catch(e => {
-            var errorMsg = e.message
-            console.log(errorMsg)
-            this.SignUpError = e.response.data.message
-          });
-
-      AXIOS.post(`/login?username=`+ this.username + `&password=` + this.password, {}, {})
-        .then(response => {
-          // JSON responses are automatically parsed.
-
+          //logIn()
+          window.location.href = frontendUrl + '/#/home/' + this.username;
+          this.loggedin = "true"
         })
         .catch(e => {
           var errorMsg = e.message
           console.log(errorMsg)
           this.SignUpError = e.response.data.message
         });
-
-        window.location.href = frontendUrl + '/#/home/' + this.username
         
     },
 
@@ -133,6 +124,8 @@ export default {
         .then(response => {
           // JSON responses are automatically parsed.
 
+          window.location.href = frontendUrl + '/#/home/' + this.username
+          this.loggedin = response.data
         })
         .catch(e => {
           var errorMsg = e.message
@@ -140,7 +133,6 @@ export default {
           this.SignUpError = e.response.data.message
         });
 
-        window.location.href = frontendUrl + '/#/home/' + this.username
     }
   }    
 }
