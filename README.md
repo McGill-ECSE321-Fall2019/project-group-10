@@ -31,8 +31,8 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Technical(ly) Intern</td>
     <td>19</td>
     <td>53</td>
-    <td>[tbh]</td>
-    <td>[tbh]</td>
+    <td>[tbd]</td>
+    <td>[tbd]</td>
   </tr>
   
   <tr>
@@ -40,8 +40,8 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Documentation Manager</td>
     <td>20</td>
     <td>50</td>
-    <td>[tbh]</td>
-    <td>[tbh]</td>
+    <td>34</td>
+    <td>[tbd]</td>
   </tr>
   
   <tr>
@@ -49,8 +49,8 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Software Consulting Lead</td>
     <td>19</td>
     <td>58</td>
-    <td>[tbh]</td>
-    <td>[tbh]</td>
+    <td>[tbd]</td>
+    <td>[tbd]</td>
   </tr>
   
   <tr>
@@ -58,8 +58,8 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Software Developer</td>
     <td>11</td>
     <td>49</td>
-    <td>[tbh]</td>
-    <td>[tbh]</td>
+    <td>[tbd]</td>
+    <td>[tbd]</td>
   </tr>
   
   <tr>
@@ -67,8 +67,8 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Software Architecture Lead</td>
     <td>17</td>
     <td>51</td>
-    <td>[tbh]</td>
-    <td>[tbh]</td>
+    <td>[tbd]</td>
+    <td>[tbd]</td>
   </tr>
 </table>
 
@@ -95,16 +95,35 @@ Below can be found the role of each member and the number of hours spent on each
 </ul>
 <h3>Sprint 3</h3>
 <ul>
-  <li>Alex: </li>
-  <li>Chelsea:</li>
-    <ul 1>
+  <li>Alex: 
+  <ul>
+      <li> Review page frontend </li>
+      <li> Linking review page to backend services </li>
+    </ul>
+  </li>
+  <li>Chelsea:
+    <ul>
       <li> Responsible for meeting minutes and creating templates for the wiki pages and general documentation upkeep</li>
-      <li> University, Course, Course offering and Tutor selection page for web frontend </li>
-      <li> Linking selection page to backend services </li>
-    </ul 1>
-  <li>Taylor: </li>
-  <li>Anas: </li>
-  <li>Yoan: </li>
+      <li> Initial University, Course, Course offering and Tutor selection page for web frontend </li>
+      <li> Linking login, startup, sign up, home, selection and tutor pages to backend services </li>
+    </ul>
+  </li>
+  <li>Taylor:
+    <ul>
+      <li> Fix sessions backend </li>
+      <li> Linking travis CI to frontend </li>
+    </ul>
+  </li>
+  <li>Anas:
+      <ul>
+      <li> Startup, login, sign up, home, selection and tutor page frontend (visually pleasing versions) </li>
+    </ul>
+    </li>
+  <li>Yoan:
+      <ul>
+        <li> Setting up Heroku frontend and linking to npm build/dev </li>
+    </ul>
+    </li>
 </ul>
 
 <br>To see our meeting minutes, including key design decisions and architecture
@@ -145,4 +164,13 @@ framework, head over to our wiki page and select any page titled with a date:<br
   <li>All the Heroku information is set in the "resource" directory, in the "application.properties" folder.</li>
   <li>The Heroku database information can be found <a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/blob/master/Project-Backend/src/main/resources/application.properties">here.</a>
   <li>The password and username information is not disclosed in the readme for privacy reasons. </li>
+</ol>
+
+<h2>Instructions for setting up objects to test the frontend web service</h2><br>
 <ol>
+  <li>Run the Spring backend.</li>
+  <li>Run the class TestObjects.java in src/test/java/ca/mcgill/ecse321/project/service as a JUnit test.</li>
+  <li>This will create test objects which can be used to interact with the frontend.</li>
+  <li>To log in, you can use the username "cmc" with password "dogs".</li>
+</ol>
+  
