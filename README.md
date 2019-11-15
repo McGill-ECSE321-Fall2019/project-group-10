@@ -31,7 +31,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Technical(ly) Intern</td>
     <td>19</td>
     <td>53</td>
-    <td>[tbd]</td>
+    <td>20</td>
     <td>[tbd]</td>
   </tr>
   
@@ -49,7 +49,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Software Consulting Lead</td>
     <td>19</td>
     <td>58</td>
-    <td>[tbd]</td>
+    <td>15</td>
     <td>[tbd]</td>
   </tr>
   
@@ -58,7 +58,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Software Developer</td>
     <td>11</td>
     <td>49</td>
-    <td>[tbd]</td>
+    <td>40</td>
     <td>[tbd]</td>
   </tr>
   
@@ -67,7 +67,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Software Architecture Lead</td>
     <td>17</td>
     <td>51</td>
-    <td>[tbd]</td>
+    <td>10</td>
     <td>[tbd]</td>
   </tr>
 </table>
