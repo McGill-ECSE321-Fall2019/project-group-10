@@ -17,7 +17,8 @@ matrix:
       app: project-backend-10
 
   - language: node_js
-
+    node_js:
+      - node --version
     before_install:
       - cd ./Project-Frontend
       - npm install
