@@ -6,7 +6,7 @@ module.exports = {
     env: require('./prod.env'),
     host: 'project-frontend-10.herokuapp.com',
     port: 443,
-    backendHost: 'project-frontend-10.herokuapp.com',
+    backendHost: 'project-backend-10.herokuapp.com',
     backendPort: 443,
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
