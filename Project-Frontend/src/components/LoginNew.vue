@@ -467,7 +467,6 @@ input[type=password]:placeholder {
   box-sizing: border-box;
 }
 .button-pos{
-  position: absolute;
-  left: 30px;
+  position: relative;
 }
 </style>

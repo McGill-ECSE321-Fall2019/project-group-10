@@ -360,9 +360,13 @@ public class TutoringServiceRestController {
 			@RequestParam("userEmail") String userEmail, 
 			@RequestParam("phoneNum") String userPhoneNumber, @RequestParam("userName") String username,
 			@RequestParam("userPassword") String userpassword) throws IllegalArgumentException {
+		
+		if(service.findStudentByUsername(username) != null) {
+			throw new IllegalArgumentException(ErrorStrings.Duplicate_Username);
+		}
 	
 		if(service.findUserByEmail(userEmail)!=null)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_User);
+			throw new IllegalArgumentException(ErrorStrings.Duplicate_Email);
 		TSUser u = service.createUser(name, userEmail, userAge, userPhoneNumber);
 		Student s = service.createStudent(username, userpassword, userEmail);
 		return convertToDto(s);
@@ -474,7 +478,7 @@ public class TutoringServiceRestController {
 	@PostMapping(value = {"/login", "/login/"})
 	public boolean login(@RequestParam String username, @RequestParam String password) {
 		Role role = service.getRoleByUsername(username);
-		if (role.isPassword(password) && !role.isLoggedIn()) {
+		if (role.isPassword(password)) {
 			role.logIn();
 			return true;
 		}
@@ -704,7 +708,7 @@ public class TutoringServiceRestController {
 
 		List<RatingDTO> ratings = new ArrayList<RatingDTO>();
 		List<TextDTO> texts = new ArrayList<TextDTO>();
-		// get all reviews
+	
 		for(Review r: new ArrayList<Review>(t.getReview())) {
 			// check whether its a rating or a text
 			if(r instanceof Rating)

@@ -1295,7 +1295,7 @@ public class TutoringAppService {
 		}
 
 		if(courseOs.size() == 0)
-			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_TutorForCO);
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Service_CO);
 		
 		return courseOs;
 	}
