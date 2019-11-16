@@ -1,18 +1,38 @@
-import axios from 'axios'
+import _ from 'lodash';
+import axios from 'axios';
+let config = require('../../config');
 
-var config = require('../../config')
+let backendConfigurer = function () {
+    switch (process.env.NODE_ENV) {
+        case 'testing':
+        case 'development':
+            return 'http://' + config.dev.backendHost + ':' + config.dev.backendPort;
+        case 'production':
+            return 'https://' + config.build.backendHost + ':' + config.build.backendPort;
+    }
+}
 
-var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-//var backendUrl = 'http://localhost:8080'
+let backendUrl = backendConfigurer();
 
+let frontendConfigurer = function () {
+    switch (process.env.NODE_ENV) {
+        case 'testing':
+        case 'development':
+            return 'http://' + config.dev.host + ':' + config.dev.port;
+        case 'production':
+            return 'https://' + config.build.host + ':' + config.build.port;
+    }
+}
+
+let frontendUrl = frontendConfigurer();
 var AXIOS = axios.create({
-  baseURL: backendUrl,
-  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+    baseURL: backendUrl,
+    headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
 
+
 export default {
-    name: 'Home',
+    name: 'Home2',
 
     data() {
       return {
@@ -23,7 +43,8 @@ export default {
        	newAge: '',
        	newName: '',
        	newNumber: '',
-       	sessions: [],
+        sessions: '',
+        sessions2: [],
        	errorSessions: '',
         response: []
       }
@@ -39,16 +60,22 @@ export default {
           console.log(err)
           this.errorUser = err.response.data.message
         })
-        response = []
-      AXIOS.get(`/sessionsbystudent?student_name=` + this.username)
-      .then((response) => {
-          this.sessions = response.data
-          //this.errorSessions = response.data
-        })
-        .catch((err) => {
-          console.log(err)
-          this.errorSessions = err.response.data.message
-        })
+
+
+        AXIOS.get(backendUrl + `/sessionbystudent?student_name=` + this.username)
+            .then(response => {
+                // JSON responses are automatically parsed.
+
+                //this.sessions = response.data
+
+                if (this.sessions == null) {
+                    this.errorSessions = 'There are no booked sessions yet...'
+                }
+                this.sessions2 = response.data
+            })
+            .catch(e => {
+                this.errorSessions = e.response.data.message;
+            });
     },
     methods: {
     	goToSession: function (){
@@ -74,7 +101,8 @@ export default {
           + `&age=` + this.User.age, {}, {})
           .then(response => {
             // JSON responses are automatically parsed.
-            this.User = response.data
+              this.User = response.data
+              this.errorUpdate = 'Name updated to ' + this.User.name
           })
           .catch(e => {
             var errorMsg = e.message
@@ -87,8 +115,10 @@ export default {
           + `&age=` + newAge, {}, {})
           .then(response => {
             // JSON responses are automatically parsed.
-            this.User = response.data
-          })
+
+              this.User = response.data
+              this.errorUpdate = 'Age updated to ' + this.User.age
+           })
           .catch(e => {
             var errorMsg = e.message
             console.log(errorMsg)
@@ -96,11 +126,13 @@ export default {
           });
     	},
     	updateNumber: function(newNumber){
-    	  AXIOS.put(`/user/` + this.User.email +`?name=`+ this.User.name + `&phonenumber=` + newNumber
+            AXIOS.put(`/user/` + this.User.email + `?name=` + this.User.name + `&phonenumber=` + newNumber
           + `&age=` + this.User.age, {}, {})
           .then(response => {
             // JSON responses are automatically parsed.
-            this.User = response.data
+
+              this.User = response.data
+              this.errorUpdate = 'Phone number updated to ' + this.User.phoneNumber
           })
           .catch(e => {
             var errorMsg = e.message
