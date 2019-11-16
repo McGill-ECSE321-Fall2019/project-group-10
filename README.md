@@ -49,7 +49,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Software Consulting Lead</td>
     <td>19</td>
     <td>58</td>
-    <td>25</td>
+    <td>27</td>
     <td>[tbd]</td>
   </tr>
   
