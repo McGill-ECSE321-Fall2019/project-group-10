@@ -19,8 +19,7 @@ matrix:
   - language: node_js
     node_js:
       - node --version
-    env: 
-      - PROJECT_PATH=Project-Frontend
+
     before_install:
       - cd ./Project-Frontend
       - npm install
