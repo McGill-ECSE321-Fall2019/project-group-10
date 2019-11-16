@@ -206,7 +206,7 @@ public class TutoringServiceRestController {
 
 	}
 	
-	@GetMapping(value = {"/sessionsbystudent", "/sessionbystudent/"})
+	@GetMapping(value = {"/sessionbystudent", "/sessionbystudent/"})
 	public List<SessionDTO> getSessionByStudent(@RequestParam(name = "student_name") String sName) {
 		
 		
@@ -725,6 +725,7 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_DTO_CourseOffering);
 		}
 		CourseOfferingDTO coDTO = new CourseOfferingDTO(co.getTerm(), co.getYear(), co.getCourseOfferingID());
+		coDTO.setCourseName(co.getCourse().getCourseName());
 		return coDTO;
 	}
 
