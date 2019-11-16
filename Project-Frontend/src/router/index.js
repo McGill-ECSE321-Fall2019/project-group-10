@@ -1,13 +1,16 @@
 import Vue from 'vue'
+
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+
 import BookSession from '@/components/BookSession'
-import TutorAvailabilities from '@/components/TutorAvailabilities'
+
 import TutorAvail from '@/components/TutorAvail'
 import Home2 from '@/components/Home2'
 import Startup from '@/components/Startup'
-import Login from '@/components/login'
-import Registration from '@/components/Registration'
+
+import LoginNew from '@/components/LoginNew'
+
+import Review from '@/components/WriteReview'
 
 Vue.use(Router)
 
@@ -36,12 +39,12 @@ export default new Router({
     {
       path: '/login/:id',
       name: 'login',
-      component: Login
+      component: LoginNew
     },
     {
-      path: '/register',
-      name: 'Registration',
-      component: Registration
+        path: '/review/:username',
+        name: 'Review',
+        component: Review
     }
   ]
 })
