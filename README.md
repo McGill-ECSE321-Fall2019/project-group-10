@@ -49,7 +49,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Software Consulting Lead</td>
     <td>19</td>
     <td>58</td>
-    <td>15</td>
+    <td>25</td>
     <td>[tbd]</td>
   </tr>
   
@@ -110,8 +110,9 @@ Below can be found the role of each member and the number of hours spent on each
   </li>
   <li>Taylor:
     <ul>
-      <li> Fix sessions backend </li>
+      <li> Fix sessions backend, and other backend issues </li>
       <li> Linking travis CI to frontend </li>
+      <li> Linking Heroku frontend, setting up npm dev build and managing auto deploy </li>
     </ul>
   </li>
   <li>Anas:
@@ -121,7 +122,8 @@ Below can be found the role of each member and the number of hours spent on each
     </li>
   <li>Yoan:
       <ul>
-        <li> Setting up Heroku frontend and linking to npm build/dev </li>
+        <li> Created Heroku frontend application </li>
+        <li> Responsible for debugging file system/structural errors </li>
     </ul>
     </li>
 </ul>
