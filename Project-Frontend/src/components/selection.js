@@ -1,15 +1,35 @@
-import axios from 'axios'
-var config = require('../../config')
+import _ from 'lodash';
+import axios from 'axios';
+let config = require('../../config');
 
-// define urls for front and backend
-var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-//var backendUrl = 'http://localhost:8080'
+let backendConfigurer = function () {
+    switch (process.env.NODE_ENV) {
+        case 'testing':
+        case 'development':
+            return 'http://' + config.dev.backendHost + ':' + config.dev.backendPort;
+        case 'production':
+            return 'https://' + config.build.backendHost + ':' + config.build.backendPort;
+    }
+}
 
+let backendUrl = backendConfigurer();
+
+let frontendConfigurer = function () {
+    switch (process.env.NODE_ENV) {
+        case 'testing':
+        case 'development':
+            return 'http://' + config.dev.host + ':' + config.dev.port;
+        case 'production':
+            return 'https://' + config.build.host + ':' + config.build.port;
+    }
+}
+
+let frontendUrl = frontendConfigurer();
 var AXIOS = axios.create({
-  baseURL: backendUrl,
-  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+    baseURL: backendUrl,
+    headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
+
 
 // define DTO objects
 function UniversityDTO(name, address) {

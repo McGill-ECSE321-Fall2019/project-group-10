@@ -3,7 +3,7 @@
 <template>
 <span class="container">
 <!-- "class="signin/signup"" -->
-
+    <div class="button-pos"><button type="button" class="btn btn-info" @click="goBack()">Go Back</button></div>
         <div class="wrapper fadeInDown">
             <div id="formContent">
             <!-- Tabs Titles -->
@@ -13,14 +13,14 @@
             <!-- Login Form -->
             <form>
                 <input type="text" id="username" v-model="username" class="fadeIn second" placeholder="Username">
-                <input type="text" id="password" v-model="password" class="fadeIn second" placeholder="Password">
-                <div v-bind:class="{'available': !available}"><input type="button" value="Log In" @click="logIn()"></div>
+                <input type="password" id="password" v-model="password" class="fadeIn second" placeholder="Password">
+                <div v-bind:class="{'available': !available}"><input type="button"  v-bind:disabled="!username || !password" value="Log In" @click="logIn()"></div>
                 <div class="signup" v-bind:class="{'available': available}">
                     <input type="text" id="name" v-model="Name" placeholder="Name">
                     <input type="text" id="email" v-model="email" placeholder="Email">
                     <input type="text" id="age" v-model="age" placeholder="Age">
                     <input type="text" id="phonenumber" v-model="number" placeholder="Phonenumber">
-                    <input type="button" @click="signUp()" value="Sign Up">
+                    <input type="button" v-bind:disabled="!username || !password || !Name || !email || !age || !number" @click="signUp()" value="Sign Up">
                 </div>
             </form>
 
@@ -38,17 +38,39 @@
 
  <script>
 
-import axios from 'axios'
-var config = require('../../config')
+     import _ from 'lodash';
+  import axios from 'axios';
+  let config = require('../../config');
 
-// define urls for front and backend
-var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+  let backendConfigurer = function () {
+  switch (process.env.NODE_ENV) {
+    case 'testing':
+    case 'development':
+      return 'http://' + config.dev.backendHost + ':' + config.dev.backendPort;
+    case 'production':
+      return 'https://' + config.build.backendHost + ':' + config.build.backendPort;
+  }
+}
+
+  let backendUrl = backendConfigurer();
+
+  let frontendConfigurer = function () {
+  switch (process.env.NODE_ENV) {
+    case 'testing':
+    case 'development':
+      return 'http://' + config.dev.host + ':' + config.dev.port;
+    case 'production':
+      return 'https://' + config.build.host + ':' + config.build.port;
+  }
+}
+
+let frontendUrl = frontendConfigurer();
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
+
 
 export default {
   name: "formContent",
@@ -82,6 +104,10 @@ export default {
       signInClick(){
         this.available = true;
       },
+
+    goBack: function (){
+      window.location.href = frontendUrl + '/#/'
+    },
 
     signUp: function () {
 
@@ -120,19 +146,32 @@ export default {
     },
 
     logIn: function () {
-      AXIOS.post(`/login?username=`+ this.username + `&password=` + this.password, {}, {})
+      AXIOS.post(`/login?username=` + this.username + `&password=` + this.password, {}, {})
         .then(response => {
           // JSON responses are automatically parsed.
 
-          window.location.href = frontendUrl + '/#/home/' + this.username
+          //window.location.href = frontendUrl + '/#/home/' + this.username
           this.loggedin = response.data
+          if (this.loggedin == true) {
+            window.location.href = frontendUrl + '/#/home/' + this.username
+          }else {
+            this.SignUpError = "Wrong username/password combo"
+          }
+          //this.SignUpError = this.loggedin
         })
         .catch(e => {
           var errorMsg = e.message
           console.log(errorMsg)
           this.SignUpError = e.response.data.message
         });
+      //this.SignUpError = this.loggedin
 
+      //if (this.loggedin == "true") {
+      //  window.location.href = frontendUrl + '/#/home/' + this.username
+      //}
+      //else {
+      //  //this.SignUpError = "Wrong username/password combo"
+      //}
     }
   }    
 }
@@ -289,6 +328,36 @@ input[type=text]:placeholder {
   color: #cccccc;
 }
 
+input[type=password] {
+  background-color: #f6f6f6;
+  border: none;
+  color: #0d0d0d;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  width: 85%;
+  border: 2px solid #f6f6f6;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+input[type=password]:focus {
+  background-color: #fff;
+  border-bottom: 2px solid #5fbae9;
+}
+
+input[type=password]:placeholder {
+  color: #cccccc;
+}
+
 
 
 /* ANIMATIONS */
@@ -396,5 +465,9 @@ input[type=text]:placeholder {
 
 * {
   box-sizing: border-box;
+}
+.button-pos{
+  position: absolute;
+  left: 30px;
 }
 </style>

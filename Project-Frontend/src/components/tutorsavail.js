@@ -1,16 +1,34 @@
-import axios from 'axios'
+import _ from 'lodash';
+import axios from 'axios';
+let config = require('../../config');
 
-var config = require('../../config')
+let backendConfigurer = function () {
+    switch (process.env.NODE_ENV) {
+        case 'testing':
+        case 'development':
+            return 'http://' + config.dev.backendHost + ':' + config.dev.backendPort;
+        case 'production':
+            return 'https://' + config.build.backendHost + ':' + config.build.backendPort;
+    }
+}
 
-var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-//var backendUrl = 'http://localhost:8080'
+let backendUrl = backendConfigurer();
 
+let frontendConfigurer = function () {
+    switch (process.env.NODE_ENV) {
+        case 'testing':
+        case 'development':
+            return 'http://' + config.dev.host + ':' + config.dev.port;
+        case 'production':
+            return 'https://' + config.build.host + ':' + config.build.port;
+    }
+}
+
+let frontendUrl = frontendConfigurer();
 var AXIOS = axios.create({
-  baseURL: backendUrl,
-  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+    baseURL: backendUrl,
+    headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
-
 // define DTO objects
 function TutorDTO(username, education, hourlyRate, experience, avails, ratings, texts) {
     this.username = username;
@@ -40,7 +58,7 @@ export default {
         tutorratings: [],
         tutortexts: [],
         errorTutor:'',
-        selectedAvailability: {},
+        selectedAvailability: '',
         username: '',
         errorSession: '',
         response: [],
@@ -96,21 +114,30 @@ export default {
       goHome: function (){
         window.location.href = frontendUrl + '/#/home/' + this.username
       },
-      createSession: function(){
-        // add axios post
-          AXIOS.post(`/session?tutor_name=` + this.selectedTutor.username + `&student_name=` + this.$route.params.username
-          + `&booking_date=` + this.selectedAvailability.date + `&booking_time=` + this.selectedAvailability.time 
-            + `&course_offering_id=` + this.$route.params.id + `&amount_paid=` + Number(this.selectedTutor.hourlyRate), {}, {})
-          .then(response => {
-            // JSON responses are automatically parsed.
+        createSession: function () {
 
-            this.errorSession = response.data
-          })
-          .catch(e => {
-            var errorMsg = e.message
-            console.log(errorMsg)
-            this.errorSession = e.response.data.message
-          });
+            //this.errorSession = this.selectedAvailability
+
+            if (this.selectedAvailability == {}) {
+                this.errorSession = "Please select an availability"
+            }
+            else {
+                // add axios post
+                AXIOS.post(`/session?tutor_name=` + this.selectedTutor.username + `&student_name=` + this.$route.params.username
+                    + `&booking_date=` + this.selectedAvailability.date + `&booking_time=` + this.selectedAvailability.time
+                    + `&course_offering_id=` + this.$route.params.id + `&amount_paid=` + Number(this.selectedTutor.hourlyRate), {}, {})
+                    .then(response => {
+                        // JSON responses are automatically parsed.
+
+                        this.errorSession = response.data
+                        window.location.href = frontendUrl + '/#/home/' + this.username
+                    })
+                    .catch(e => {
+                        var errorMsg = e.message
+                        console.log(errorMsg)
+                        //this.errorSession = e.response.data.message
+                    });
+            }
         // then return to home page
         //window.location.href = frontendUrl + '/#/home/' + this.username
       }
