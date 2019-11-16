@@ -13,7 +13,7 @@ matrix:
     deploy:
       provider: heroku
       api_key:
-        secure: 6233a280-e5a5-4627-927c-6e37802675c0
+        secure: fe0fc99a-957c-4728-91a6-b089b9aed71b
       app: project-backend-10
 
   - language: node_js
@@ -24,3 +24,9 @@ matrix:
       - npm install
     script:
       - npm run build
+    
+    deploy:
+      provider: heroku
+      api_key:
+        secure: fe0fc99a-957c-4728-91a6-b089b9aed71b
+      app: project-frontend-10

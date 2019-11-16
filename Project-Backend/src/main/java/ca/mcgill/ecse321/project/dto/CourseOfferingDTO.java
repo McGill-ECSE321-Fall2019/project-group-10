@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.project.dto;
 import ca.mcgill.ecse321.project.model.*;
 
+//Course Offering
 public class CourseOfferingDTO {
 	private Term term;
 	private int year;
