@@ -15,7 +15,7 @@
         <button type="button" class="btn btn-info" @click="gotoLogin()">Get Started</button>
         </div>
 
-        <div class="image"><img src="../images/Tutoring.jpg" alt="Tutoring image"></div>
+        <div class="image"><img src="../images/tutoring.jpg" alt="Tutoring image"></div>
     </div>
 
 
