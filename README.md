@@ -142,7 +142,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
   <li>Make your way into the Frontend directory -> cd ./project-group-10/Project-Frontend
   <li>Run "npm install"
   <li>Once the installation is complete, run "npm run dev" in the frontend directory. 
-  <li>Your default internet browser will laod with the introduction page. Use Chrome for the best visual.
+  <li>Your default internet browser will load with the introduction page. Use Chrome for the best visual.
   <li>To log in, you can use the username "cmc" with password "dogs".</li>
 </ol>
 
