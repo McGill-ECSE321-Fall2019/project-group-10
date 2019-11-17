@@ -221,9 +221,9 @@ public class TutoringServiceRestController {
 	}
 
 	@DeleteMapping(value = {"/session/delete", "/session/delete/"})
-	public boolean removeSession(@RequestParam(name = "session_id") Integer sessionId) {
+	public boolean removeSession(@RequestParam(name = "session_id") String sessionId) {
 		
-		return service.deleteSession(sessionId);
+		return service.deleteSession(Integer.parseInt(sessionId));
 		//Insert notification
 
 	}
@@ -367,7 +367,7 @@ public class TutoringServiceRestController {
 	
 		if(service.findUserByEmail(userEmail)!=null)
 			throw new IllegalArgumentException(ErrorStrings.Duplicate_Email);
-		TSUser u = service.createUser(name, userEmail, userAge, userPhoneNumber);
+		service.createUser(name, userEmail, userAge, userPhoneNumber);
 		Student s = service.createStudent(username, userpassword, userEmail);
 		return convertToDto(s);
 	}
@@ -478,6 +478,9 @@ public class TutoringServiceRestController {
 	@PostMapping(value = {"/login", "/login/"})
 	public boolean login(@RequestParam String username, @RequestParam String password) {
 		Role role = service.getRoleByUsername(username);
+		if (role == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Student_Username);
+		}
 		if (role.isPassword(password)) {
 			role.logIn();
 			return true;

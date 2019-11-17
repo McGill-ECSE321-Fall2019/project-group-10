@@ -45,7 +45,11 @@ export default {
        	newNumber: '',
         sessions: '',
         sessions2: [],
-       	errorSessions: '',
+        errorSessions: '',
+        deleteSession: '',
+        selectedRows: [],
+        selectedSession: '',
+        errorSession: '',
         response: []
       }
     },
@@ -139,7 +143,25 @@ export default {
             console.log(errorMsg)
             this.errorUpdate = e.response.data.message
           });
-    	}
+        },
+        deleteS: function () {
+            //this.errorSession = this.selectedSession.id
+
+            AXIOS.delete(`/session/delete?session_id=` + this.selectedSession.id, {}, {})
+               .then(response => {
+                   // JSON responses are automatically parsed.
+    
+                   this.deleteSession = response.data
+ 
+                   window.location.reload(true);
+
+               })
+               .catch(e => {
+                   var errorMsg = e.message
+                   console.log(errorMsg)
+                   this.errorSession = e.response.data.message
+               });
+        }
     }
   }
 

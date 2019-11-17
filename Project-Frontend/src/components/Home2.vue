@@ -86,7 +86,7 @@
 
 							<td class="column2"> {{session.tutorDTO.username}}</td>
 
-							<td class="column3"> {{session.courseOfferingDTO.term}} {{session.courseOfferingDTO.year}} {{session.courseOfferingDTO.courseName}}</td>
+							<td class="column3"> {{session.courseOfferingDTO.courseName}} {{session.courseOfferingDTO.term}} {{session.courseOfferingDTO.year}} </td>
 
 							<td class="column4"> {{session.date}} {{session.time}}</td>
 
@@ -98,6 +98,17 @@
 		</div>
 	</div>
 </div>
+
+    <div class="limiter">
+      <h5>Select a Session to Cancel</h5>
+      <select id='session-select' v-model="selectedSession">
+		    <option disabled value="">Selected a session to cancel</option>
+		    <option v-for="(session, i) in sessions2" v-bind:key="`session-${i}`" v-bind:value="{id: session.sessionid}">Tutor: {{session.tutorDTO.username}} | Date: {{session.date}} | Paid: ${{session.amountPaid}}</option>
+		  </select>
+      <b-button type="button" class="btn btn-info" v-bind:disabled="!selectedSession" @click="deleteS()">Cancel</b-button>
+      <p>{{errorSession}}</p>
+    </div>
+
 
 <!-- Booking ends here -->
 
@@ -393,6 +404,23 @@ li{
 
 .custom-dropdown::after {
   color: rgba(0,0,0,.4);
+}
+ select{
+  background-color: #56baed;
+  border: none;
+  color: white;
+  padding: 15px 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  margin: 5px 20px 40px 20px;
+
 }
 /*  */
 </style>

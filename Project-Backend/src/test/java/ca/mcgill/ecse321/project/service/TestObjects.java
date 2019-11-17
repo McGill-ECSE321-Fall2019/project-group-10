@@ -91,7 +91,7 @@ public class TestObjects {
 //		service.createRoom(1);
 //		service.createRoom(2);
 //		service.createRoom(3);
-//		
+		
 		// create a tutor
 		service.createUser("aName", "tutor.tester@mcgill.ca", 22, "5145555555");
 		Tutor t = service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
@@ -106,19 +106,19 @@ public class TestObjects {
 		c3.addTutor(t);
 		c4.addTutor(t);
 		
-		Availability a = service.createAvailability(AVAILABILITY_DATE, AVAILABILITY_TIME, "username");
-		Availability a2 = service.createAvailability(AVAILABILITY_DATE2, AVAILABILITY_TIME2, "username");
+		service.createAvailability(AVAILABILITY_DATE, AVAILABILITY_TIME, "username");
+		service.createAvailability(AVAILABILITY_DATE2, AVAILABILITY_TIME2, "username");
 		
-		// create a student
+//		// create a student
 		service.createUser("Student", "student.tester@mcgill.ca", 24, "5145555552");
 		Student s = service.createStudent("cmc", "dogs", "student.tester@mcgill.ca");
 		studentRepository.save(s);
 		
-		// create a room
+//		// create a room
 		service.createRoom(1);
 		
-		// create a session
-		Session session = service.createSession(c1.getCourseOfferingID(), AVAILABILITY_DATE, AVAILABILITY_TIME, 12.0, "cmc", "username");
+//		// create a session
+		service.createSession(c1.getCourseOfferingID(), AVAILABILITY_DATE, AVAILABILITY_TIME, 12.0, "cmc", "username");
 		
 		// create some reviews
 		service.createText("Best tutor ever", true, "username", c1.getCourseOfferingID());
