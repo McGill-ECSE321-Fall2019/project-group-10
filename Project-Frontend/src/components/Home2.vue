@@ -86,7 +86,7 @@
 
 							<td class="column2"> {{session.tutorDTO.username}}</td>
 
-							<td class="column3"> {{session.courseOfferingDTO.term}} {{session.courseOfferingDTO.year}} {{session.courseOfferingDTO.courseName}}</td>
+							<td class="column3"> {{session.courseOfferingDTO.courseName}} {{session.courseOfferingDTO.term}} {{session.courseOfferingDTO.year}} </td>
 
 							<td class="column4"> {{session.date}} {{session.time}}</td>
 

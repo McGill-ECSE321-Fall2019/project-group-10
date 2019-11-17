@@ -1018,6 +1018,7 @@ public class TutoringAppService {
 		//remove room assigned, if one has already been assigned
 		if (a.getRoom() != null) {
 			a.getRoom().getSession().remove(a);
+			a.setRoom(null);
 			roomRepository.save(a.getRoom());
 			
 		}
@@ -1031,6 +1032,9 @@ public class TutoringAppService {
 			
 		}
 		
+		a.setStudent(null);
+		a.setTutor(null);
+		a.setCourseOffering(null);
 		sessionRepository.delete(a);
 		done = true;
 		

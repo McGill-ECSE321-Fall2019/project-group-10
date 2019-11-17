@@ -69,7 +69,7 @@
 
 
 <section class="contact" id="contact">
-<h4>"In order to reach out to us, you can simply email us at <br><a href="#">group-10@mail.mcgill.ca</a>"</h4>
+<h4>In order to reach out to us, you can simply email us at <br><a href="#">group-10@mail.mcgill.ca</a></h4>
 
 </section>
 

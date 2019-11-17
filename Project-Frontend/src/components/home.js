@@ -146,35 +146,21 @@ export default {
         },
         deleteS: function () {
             //this.errorSession = this.selectedSession.id
+
             AXIOS.delete(`/session/delete?session_id=` + this.selectedSession.id, {}, {})
                .then(response => {
                    // JSON responses are automatically parsed.
-                   deleteSession = response.data;
-                   this.errorSession = "session 2"
-                   if(deleteSession == "true")
-                       window.location.href = frontendUrl + '/#/home/' + this.$route.params.username
+    
+                   this.deleteSession = response.data
+ 
+                   window.location.reload(true);
+
                })
                .catch(e => {
                    var errorMsg = e.message
                    console.log(errorMsg)
                    this.errorSession = e.response.data.message
                });
-        },
-        deleteSession: function() {
-            this.errorSession = "session 1"
-           //AXIOS.delete(`/session/delete?session_id=` + this.selectedSession.id, {}, {})
-           //    .then(response => {
-           //        // JSON responses are automatically parsed.
-           //        deleteSession = response.data;
-           //        this.errorSession = "session 2"
-           //        if(deleteSession == "true")
-           //            window.location.href = frontendUrl + '/#/home/' + this.$route.params.username
-           //    })
-           //    .catch(e => {
-           //        var errorMsg = e.message
-           //        console.log(errorMsg)
-           //        this.errorSession = e.response.data.message
-           //    });
         }
     }
   }

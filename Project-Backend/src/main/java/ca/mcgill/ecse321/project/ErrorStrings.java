@@ -53,7 +53,7 @@ public class ErrorStrings {
     public static String Invalid_Rating_CourseOffering = "";
 
 //================ TUTOR =====================\\  
-    public static String Invalid_Tutor_Username = "Please insert a username...";
+    public static String Invalid_Tutor_Username = "Please insert a valid username...";
     public static String Invalid_Tutor_Password = "Please insert a password...";
     public static String Invalid_Tutor_EmailCheck = "Please insert a proper email...";
     public static String Invalid_Tutor_NegativeHourlyRate = "Don't think you want to pay the student for your session...";

@@ -36,7 +36,8 @@ public class CourseOffering{
 	}
 	private Course course;
 
-	@ManyToOne(optional=true, cascade = CascadeType.ALL)
+	//@ManyToOne(optional=true, cascade = CascadeType.ALL)
+	@ManyToOne(optional=false)
 	public Course getCourse() {
 		return this.course;
 	}

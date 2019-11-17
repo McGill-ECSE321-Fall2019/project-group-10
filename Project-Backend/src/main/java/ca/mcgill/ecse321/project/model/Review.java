@@ -24,7 +24,8 @@ public abstract class Review{
 
 	private CourseOffering courseOffering;
 
-	@ManyToOne(optional=true, cascade = CascadeType.ALL)
+	//@ManyToOne(optional=true, cascade = CascadeType.ALL)
+	@ManyToOne(optional=false)
 	public CourseOffering getCourseOffering() {
 		return this.courseOffering;
 	}
@@ -35,7 +36,8 @@ public abstract class Review{
 
 	private Role writtenAbout;
 
-	@ManyToOne(optional=true, cascade = CascadeType.ALL)
+	//@ManyToOne(optional=true, cascade = CascadeType.ALL)
+	@ManyToOne(optional=false)
 	public Role getWrittenAbout() {
 		return this.writtenAbout;
 	}
