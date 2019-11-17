@@ -478,6 +478,9 @@ public class TutoringServiceRestController {
 	@PostMapping(value = {"/login", "/login/"})
 	public boolean login(@RequestParam String username, @RequestParam String password) {
 		Role role = service.getRoleByUsername(username);
+		if (role == null) {
+			throw new IllegalArgumentException(ErrorStrings.Invalid_Student_Username);
+		}
 		if (role.isPassword(password)) {
 			role.logIn();
 			return true;
