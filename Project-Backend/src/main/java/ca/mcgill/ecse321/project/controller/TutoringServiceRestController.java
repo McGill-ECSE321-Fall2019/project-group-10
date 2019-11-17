@@ -221,9 +221,9 @@ public class TutoringServiceRestController {
 	}
 
 	@DeleteMapping(value = {"/session/delete", "/session/delete/"})
-	public boolean removeSession(@RequestParam(name = "session_id") Integer sessionId) {
+	public boolean removeSession(@RequestParam(name = "session_id") String sessionId) {
 		
-		return service.deleteSession(sessionId);
+		return service.deleteSession(Integer.parseInt(sessionId));
 		//Insert notification
 
 	}
