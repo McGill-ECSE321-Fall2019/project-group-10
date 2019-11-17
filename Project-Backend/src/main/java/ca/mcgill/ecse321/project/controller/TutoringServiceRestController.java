@@ -367,7 +367,7 @@ public class TutoringServiceRestController {
 	
 		if(service.findUserByEmail(userEmail)!=null)
 			throw new IllegalArgumentException(ErrorStrings.Duplicate_Email);
-		TSUser u = service.createUser(name, userEmail, userAge, userPhoneNumber);
+		service.createUser(name, userEmail, userAge, userPhoneNumber);
 		Student s = service.createStudent(username, userpassword, userEmail);
 		return convertToDto(s);
 	}
