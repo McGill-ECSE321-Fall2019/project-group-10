@@ -40,7 +40,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Documentation Manager</td>
     <td>20</td>
     <td>50</td>
-    <td>37</td>
+    <td>40</td>
     <td>[tbd]</td>
   </tr>
   
@@ -110,7 +110,7 @@ Below can be found the role of each member and the number of hours spent on each
   </li>
   <li>Taylor:
     <ul>
-      <li> Fix sessions backend, and other backend issues that cause errors in the front end </li>
+      <li> Fix sessions backend, and other backend issues that cause errors in the frontend </li>
       <li> Linking travis CI to frontend </li>
       <li> Linking Heroku frontend, setting up npm dev build and managing auto deploy </li>
     </ul>
