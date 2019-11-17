@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Arrays;
 import java.util.List;
+
+import ca.mcgill.ecse321.project.JavaEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,6 +27,8 @@ import ca.mcgill.ecse321.project.ErrorStrings;
 import ca.mcgill.ecse321.project.dto.*;
 import ca.mcgill.ecse321.project.model.*;
 import ca.mcgill.ecse321.project.service.*;
+
+import javax.mail.MessagingException;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -467,9 +471,11 @@ public class TutoringServiceRestController {
 			@RequestParam(name = "booking_time") 
 			@DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm:ss") LocalTime bookingTime, 
 			@RequestParam(name = "course_offering_id") Integer courseOfferingId, 
-			@RequestParam(name = "amount_paid") Double amountPaid) {
+			@RequestParam(name = "amount_paid") Double amountPaid) throws MessagingException {
 
 		Session s = service.createSession(courseOfferingId, bookingDate, Time.valueOf(bookingTime), amountPaid, sName, tName);
+		String tutorEmail = service.getTutor(tName).getUser().getEmail();
+		JavaEmail.NotifyTutor(tutorEmail, s);
 
 		return convertToDto(s);
 	}
