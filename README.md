@@ -132,6 +132,20 @@ Below can be found the role of each member and the number of hours spent on each
 framework, head over to our wiki page and select any page titled with a date:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<h2><b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a></b></h2>
 
+<h2>Instructions for setting up objects to test the frontend web service</h2><br>
+<ol>
+  <li>Run the Spring backend.</li>
+  <li>Run the class TestObjects.java in src/test/java/ca/mcgill/ecse321/project/service as a JUnit test with the purpose string set to "create".</li>
+  <li>This will create test objects which can be used to interact with the frontend.</li>
+</ol>
+<h2>Setting up frontend</h2>
+  <li>Make your way into the Frontend directory -> cd ./project-group-10/Project-Frontend
+  <li>Run "npm install"
+  <li>Once the installation is complete, run "npm run dev" in the frontend directory. 
+  <li>Your default internet browser will laod with the introduction page. Use Chrome for the best visual.
+  <li>To log in, you can use the username "cmc" with password "dogs".</li>
+</ol>
+
 <h2>Instructions for setting RESTful APIs and running Spring</h2><br>
 <ol>
 <li>To start testing the RESTfula apis, we must first begin running of Spring.
@@ -168,12 +182,4 @@ framework, head over to our wiki page and select any page titled with a date:<br
   <li>The password and username information is not disclosed in the readme for privacy reasons. </li>
 </ol>
 
-<h2>Instructions for setting up objects to test the frontend web service</h2><br>
-<ol>
-  <li>Run the Spring backend.</li>
-  <li>Run the class TestObjects.java in src/test/java/ca/mcgill/ecse321/project/service as a JUnit test with the purpose string set to "create".</li>
-  <li>This will create test objects which can be used to interact with the frontend.</li>
-  <li>Run "npm run dev" in the frontend directory. 
-  <li>To log in, you can use the username "cmc" with password "dogs".</li>
-</ol>
   
