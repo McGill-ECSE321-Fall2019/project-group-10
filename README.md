@@ -40,7 +40,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>Documentation Manager</td>
     <td>20</td>
     <td>50</td>
-    <td>34</td>
+    <td>37</td>
     <td>[tbd]</td>
   </tr>
   
@@ -171,8 +171,9 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <h2>Instructions for setting up objects to test the frontend web service</h2><br>
 <ol>
   <li>Run the Spring backend.</li>
-  <li>Run the class TestObjects.java in src/test/java/ca/mcgill/ecse321/project/service as a JUnit test.</li>
+  <li>Run the class TestObjects.java in src/test/java/ca/mcgill/ecse321/project/service as a JUnit test with the purpose string set to "create".</li>
   <li>This will create test objects which can be used to interact with the frontend.</li>
+  <li>Run "npm run dev" in the frontend directory. 
   <li>To log in, you can use the username "cmc" with password "dogs".</li>
 </ol>
   
