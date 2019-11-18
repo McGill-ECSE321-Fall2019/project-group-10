@@ -8,7 +8,7 @@ Yoan Poulmarc'k<br>
 Anas Shahid<br>
 
 <h2>Scope of Project:</h2><br>
-The goal of our project is to create the student perspective of a tutoring application. 
+The goal of our project is to create the student perspective of a tutoring application.
 This will be accessible via an app on any Android device. The application
 will allow students to select a course and view all available tutors, their
 hourly rates, availabilities and reviews from other students.<br>
@@ -18,7 +18,7 @@ Below can be found the role of each member and the number of hours spent on each
 
 <table>
   <tr>
-    <th><b>NAME</th> 
+    <th><b>NAME</th>
     <th><b>ROLE</th>
     <th><b>SPRINT1</th>
     <th><b>SPRINT2</th>
@@ -34,7 +34,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>20</td>
     <td>[tbd]</td>
   </tr>
-  
+
   <tr>
     <td>Chelsea M-C</td>
     <td>Documentation Manager</td>
@@ -43,7 +43,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>40</td>
     <td>[tbd]</td>
   </tr>
-  
+
   <tr>
     <td>Taylor Lynn Curtis</td>
     <td>Software Consulting Lead</td>
@@ -52,7 +52,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>27</td>
     <td>[tbd]</td>
   </tr>
-  
+
   <tr>
     <td>Anas Shahid</td>
     <td>Software Developer</td>
@@ -61,7 +61,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>40</td>
     <td>[tbd]</td>
   </tr>
-  
+
   <tr>
     <td>Yoan Poulmarc'k</td>
     <td>Software Architecture Lead</td>
@@ -95,7 +95,7 @@ Below can be found the role of each member and the number of hours spent on each
 </ul>
 <h3>Sprint 3</h3>
 <ul>
-  <li>Alex: 
+  <li>Alex:
   <ul>
       <li> Review page frontend </li>
       <li> Linking review page to backend services </li>
@@ -123,7 +123,8 @@ Below can be found the role of each member and the number of hours spent on each
   <li>Yoan:
       <ul>
         <li> Created Heroku frontend application </li>
-        <li> Responsible for debugging file system/structural errors </li>
+        <li> Responsible for debugging file system/structural errors</li>
+        <li> Set up automated email notifications (check spam)</li>
     </ul>
     </li>
 </ul>
@@ -141,7 +142,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <h2>Setting up frontend</h2>
   <li>Make your way into the Frontend directory -> cd ./project-group-10/Project-Frontend
   <li>Run "npm install"
-  <li>Once the installation is complete, run "npm run dev" in the frontend directory. 
+  <li>Once the installation is complete, run "npm run dev" in the frontend directory.
   <li>Your default internet browser will load with the introduction page. Use Chrome for the best visual.
   <li>To log in, you can use the username "cmc" with password "dogs".</li>
 </ol>
@@ -181,5 +182,3 @@ framework, head over to our wiki page and select any page titled with a date:<br
   <li>The Heroku database information can be found <a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/blob/master/Project-Backend/src/main/resources/application.properties">here.</a>
   <li>The password and username information is not disclosed in the readme for privacy reasons. </li>
 </ol>
-
-  

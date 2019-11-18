@@ -50,7 +50,7 @@ public class JavaEmail {
         String emailSubject = "New Tutoring Booking";
         String emailBody = "A new booking has been reserved on "
                 + session.getDate() + " " + session.getTime()
-                + ".\n The class demanded is" + session.getCourseOffering().getCourse().getCourseName()
+                + ".\n The class demanded is " + session.getCourseOffering().getCourse().getCourseName()
                 //TODO Insert correct api call here
                 + "\n<a href='www.google.com'>Click here to confirm</a>";
         MimeMessage emailMessage = draftEmail(emailSubject, emailBody);
