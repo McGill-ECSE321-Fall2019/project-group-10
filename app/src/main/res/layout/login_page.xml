@@ -11,7 +11,7 @@
     android:background="#2f76ce">
 
 
-    <EditText
+    <TextView
         android:id="@+id/LoginHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
