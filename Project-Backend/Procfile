@@ -1,2 +1,2 @@
-web: java -jar ./build/libs/Project-Backend-0.0.1-SNAPSHOT.jar --server.port=8081
+web: java -jar ./build/libs/Project-Backend-0.0.1-SNAPSHOT.jar --server.port=$PORT
 
