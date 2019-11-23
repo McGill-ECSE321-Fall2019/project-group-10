@@ -28,6 +28,7 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
 
     private String error = null;
+    private String username = "";
 
     private List<String> universityNames = new ArrayList<>();
     private ArrayAdapter<String> universityAdapter;
@@ -41,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
- 
-    public void goToDashBoard (View v) {
 
+    public void goToDashBoard (View v) { }
+
+    public void goToLoginFromRegister(View v) {
         error = "";
         final TextView email = (TextView) findViewById(R.id.signupEmail);
         final TextView username = (TextView) findViewById(R.id.signupUser);
@@ -51,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         final TextView name = (TextView) findViewById(R.id.signupName);
         final TextView age = (TextView) findViewById(R.id.signupAge);
         final TextView phoneNumber = (TextView) findViewById(R.id.signupPhoneNumber);
+
+        //Store for use for username later.
+        this.username = username.getText().toString();
 
         HttpsUtils.post("createuser2/userName=" + username.getText().toString() +
                 "&userPassword=" + password.getText().toString() +
@@ -69,23 +74,25 @@ public class MainActivity extends AppCompatActivity {
                 phoneNumber.setText("");
                 name.setText("");
 
-                //setContentView(R.layout.dashboard_page);
+                setContentView(R.layout.login_page);
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
 
                 email.setText("FAILURE");
 
-
                 try {
                     error += errorResponse.get("message").toString();
                 } catch (JSONException e) {
                     error += e.getMessage();
                 }
+
                 refreshErrorMessage();
             }
         });
     }
+
+    public String getCurrentlyLoggedIn (){ return this.username; }
 
     public void goToSignUp(View v){ setContentView(R.layout.signup_page); }
 

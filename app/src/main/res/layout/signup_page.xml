@@ -112,7 +112,7 @@
         android:layout_height="50dp"
         android:background="@drawable/loginbutton"
         android:text="Register"
-        android:onClick="goToDashBoard"
+        android:onClick="goToLoginFromRegister"
         app:layout_constraintBottom_toBottomOf="@+id/signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
