@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -29,7 +30,14 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
 
     private String error = null;
-    private String username = "";
+
+    private String currentlySelectedUsername = "";
+    private String currentlySelectedUniversity = "";
+    private String currentlySelectedCourse = "";
+    private String currentlySelectedCourseOffering = "";
+    private String currentlySelectedTutor = "";
+    private String currentlySelectedAvailability = "";
+    private String currentlySelectedSession = "";
 
     private List<String> universityNames = new ArrayList<>();
     private ArrayAdapter<String> universityAdapter;
@@ -53,7 +61,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Spinner uniSpinner = (Spinner) findViewById(R.id.session_spinner);
+        Spinner courseSpinner = (Spinner) findViewById(R.id.course_spinner);
+        Spinner courseOfferingSpinner = (Spinner) findViewById(R.id.courseOffering_spinner);
+        Spinner tutorSpinner = (Spinner) findViewById(R.id.tutor_spinner);
+        Spinner availabilitySpinner = (Spinner) findViewById(R.id.availability_spinner);
+
+        Spinner sessionSpinner = (Spinner) findViewById(R.id.session_spinner);
+
+        //Update each list
+        universityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, universityNames);
+        universityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        uniSpinner.setAdapter(universityAdapter);
+
+        courseAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, courseNames);
+        courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        courseSpinner.setAdapter(courseAdapter);
+
+
+        refreshErrorMessage();
+
+        // Get initial content for spinners
+        refreshLists(this.getCurrentFocus());
+
+        setContentView(R.layout.activity_main);
     }
+
 
     public void goToDashBoard (View v) { }
 
@@ -140,8 +174,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Refresh each list.
     public void refreshAllLists(View view) {
-        refreshList(universityAdapter ,universityNames, "people");
-        refreshList(courseAdapter, courseNames, "events");
+        refreshList(universityAdapter ,universityNames, "universities/" + );
+        refreshList(courseAdapter, courseNames, "courses/" + getCurrentlyLoggedIn());
         refreshList(courseOfferingAdapter, courseOfferingNames, "events");
         refreshList(tutorAdapter, tutorNames, "events");
         refreshList(availabilityAdapter, availabilityNames, "events");
