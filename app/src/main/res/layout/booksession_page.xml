@@ -9,7 +9,7 @@
     android:background="@color/background">
 
     <Spinner
-        android:id="@+id/courseoffering-spinner"
+        android:id="@+id/courseoffering_spinner"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
@@ -36,7 +36,7 @@
         app:layout_constraintVertical_bias="0.432" />
 
     <Spinner
-        android:id="@+id/uni-spinner"
+        android:id="@+id/uni_spinner"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
@@ -63,7 +63,7 @@
         app:layout_constraintVertical_bias="0.131" />
 
     <Spinner
-        android:id="@+id/course-spinner"
+        android:id="@+id/course_spinner"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
@@ -120,7 +120,7 @@
         app:layout_constraintVertical_bias="0.944" />
 
     <TextView
-        android:id="@+id/editText"
+        android:id="@+id/logout"
         android:layout_width="74dp"
         android:layout_height="28dp"
         android:ems="10"
@@ -136,7 +136,7 @@
 
 
     <Spinner
-        android:id="@+id/tutor-spinner"
+        android:id="@+id/tutor_spinner"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
@@ -164,7 +164,7 @@
 
 
     <Spinner
-        android:id="@+id/availability-spinner"
+        android:id="@+id/availability_spinner"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"

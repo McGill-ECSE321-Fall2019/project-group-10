@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/dashboard-heading"
+        android:id="@+id/dashboard_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dashboard"
@@ -38,11 +38,13 @@
 
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:background="@android:color/darker_gray"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="152dp" />
+
 
     <TextView
         android:id="@+id/idSelect"
@@ -53,20 +55,22 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.246" />
+        app:layout_constraintVertical_bias="0.306" />
 
     <Spinner
-        android:id="@+id/session-spinner"
+        android:id="@+id/session_spinner"
         android:layout_width="123dp"
         android:layout_height="31dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
-        tools:layout_editor_absoluteX="144dp"
-        tools:layout_editor_absoluteY="173dp" />
-
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -76,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.529">
+        app:layout_constraintVertical_bias="0.638">
 
         <TableRow
             android:layout_width="wrap_content"
