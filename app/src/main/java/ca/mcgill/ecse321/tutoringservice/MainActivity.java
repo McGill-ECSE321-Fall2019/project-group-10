@@ -32,12 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private String error = null;
 
     private String currentlySelectedUsername = "";
-    private String currentlySelectedUniversity = "";
-    private String currentlySelectedCourse = "";
-    private String currentlySelectedCourseOffering = "";
-    private String currentlySelectedTutor = "";
-    private String currentlySelectedAvailability = "";
-    private String currentlySelectedSession = "";
 
     private List<String> universityNames = new ArrayList<>();
     private ArrayAdapter<String> universityAdapter;
@@ -62,13 +56,59 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Spinner uniSpinner = (Spinner) findViewById(R.id.session_spinner);
-        Spinner courseSpinner = (Spinner) findViewById(R.id.course_spinner);
-        Spinner courseOfferingSpinner = (Spinner) findViewById(R.id.courseOffering_spinner);
-        Spinner tutorSpinner = (Spinner) findViewById(R.id.tutor_spinner);
-        Spinner availabilitySpinner = (Spinner) findViewById(R.id.availability_spinner);
+       // onCreateSessionBooking(savedInstanceState);
+    }
+
+    protected void onCreateDashboardSessions() {
+
+        setContentView(R.layout.dashboard_page);
+
+        final TextView date = (TextView) findViewById(R.id.date);
+        final TextView time = (TextView) findViewById(R.id.time);
+        final TextView tutor = (TextView) findViewById(R.id.tutor);
+        final TextView course = (TextView) findViewById(R.id.course);
+        final TextView courseOffering = (TextView) findViewById(R.id.courseOffering);
 
         Spinner sessionSpinner = (Spinner) findViewById(R.id.session_spinner);
+
+        sessionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sessionNames);
+        sessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sessionSpinner.setAdapter(sessionAdapter);
+
+        //Fill in the table with session informtaion.
+        if(sessionSpinner.getSelectedItem() != null) {
+            //Get all session information from second call.
+            int sessionId = (int) sessionSpinner.getSelectedItem();
+
+            HttpsUtils.get("session?session_id=" + sessionId, new RequestParams(), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    //Read response.
+                    //date.setText(response.getJSONObject("date").getString("name").toString());
+
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    error = "";
+                }
+            });
+        }
+        //refreshes the list of sessions if new one was added.
+        refreshSessionList(this.getCurrentFocus());
+    }
+
+    protected void onCreateSessionBooking(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.booksession_page);
+
+        Spinner uniSpinner = (Spinner) findViewById(R.id.session_spinner);
+        Spinner courseSpinner = (Spinner) findViewById(R.id.course_spinner);
+        Spinner courseOfferingSpinner = (Spinner) findViewById(R.id.courseoffering_spinner);
+        Spinner tutorSpinner = (Spinner) findViewById(R.id.tutor_spinner);
+        Spinner availabilitySpinner = (Spinner) findViewById(R.id.availability_spinner);
 
         //Update each list
         universityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, universityNames);
@@ -79,20 +119,27 @@ public class MainActivity extends AppCompatActivity {
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         courseSpinner.setAdapter(courseAdapter);
 
+        courseOfferingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, courseOfferingNames);
+        courseOfferingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        courseOfferingSpinner.setAdapter(courseOfferingAdapter);
 
-        refreshErrorMessage();
+        tutorAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tutorNames);
+        tutorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tutorSpinner.setAdapter(tutorAdapter);
 
-        // Get initial content for spinners
-        refreshLists(this.getCurrentFocus());
+        availabilityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, availabilityNames);
+        availabilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        availabilitySpinner.setAdapter(availabilityAdapter);
 
-        setContentView(R.layout.activity_main);
+        refreshSessionCreationList(this.getCurrentFocus());
+        //refreshErrorMessage();
     }
-
 
     public void goToDashBoard (View v) { }
 
     public void goToLoginFromRegister(View v) {
         error = "";
+
         final TextView email = (TextView) findViewById(R.id.signupEmail);
         final TextView username = (TextView) findViewById(R.id.signupUser);
         final TextView password = (TextView) findViewById(R.id.signupPassword);
@@ -101,9 +148,9 @@ public class MainActivity extends AppCompatActivity {
         final TextView phoneNumber = (TextView) findViewById(R.id.signupPhoneNumber);
 
         //Store for use for username later.
-        this.username = username.getText().toString();
+        this.currentlySelectedUsername = username.getText().toString();
 
-        HttpsUtils.post("createuser2/userName=" + username.getText().toString() +
+        HttpsUtils.post("createuser2?userName=" + username.getText().toString() +
                 "&userPassword=" + password.getText().toString() +
                 "&userEmail=" + email.getText().toString() +
                 "&age=" + age.getText().toString() +
@@ -113,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
+                setContentView(R.layout.login_page);
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
                 email.setText("");
                 username.setText("");
                 password.setText("");
@@ -120,19 +172,11 @@ public class MainActivity extends AppCompatActivity {
                 phoneNumber.setText("");
                 name.setText("");
 
-                setContentView(R.layout.login_page);
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-
-                email.setText("FAILURE");
-
                 try {
                     error += errorResponse.get("message").toString();
                 } catch (JSONException e) {
                     error += e.getMessage();
                 }
-
                 refreshErrorMessage();
             }
         });
@@ -145,11 +189,30 @@ public class MainActivity extends AppCompatActivity {
         final TextView username = (TextView) findViewById(R.id.loginusername);
         final TextView password = (TextView) findViewById(R.id.loginpassword);
 
+        HttpsUtils.post("login?username=" + username.getText().toString() +
+                "&password=" + password.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
 
-        setContentView(R.layout.dashboard_page);
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                //Setup dashboard info and load page
+                onCreateDashboardSessions();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+                //Set all texts field to empty
+                username.setText("");
+                password.setText("");
+
+                try {
+                    error += errorResponse.get("message").toString();
+                } catch (JSONException e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
+        });
     }
-
-    public String getCurrentlyLoggedIn (){ return this.username; }
 
     public void goToSignUp(View v){ setContentView(R.layout.signup_page); }
 
@@ -173,12 +236,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Refresh each list.
-    public void refreshAllLists(View view) {
-        refreshList(universityAdapter ,universityNames, "universities/" + );
-        refreshList(courseAdapter, courseNames, "courses/" + getCurrentlyLoggedIn());
+    public void refreshSessionCreationList(View view) {
+        refreshList(universityAdapter ,universityNames, "universities");
+        refreshList(courseAdapter, courseNames, "universities/");
         refreshList(courseOfferingAdapter, courseOfferingNames, "events");
         refreshList(tutorAdapter, tutorNames, "events");
         refreshList(availabilityAdapter, availabilityNames, "events");
+    }
+
+    public void refreshSessionList(View view){
         refreshList(sessionAdapter, sessionNames, "events");
     }
 
@@ -188,7 +254,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                names.clear();
+
+
+                /*names.clear();
                 names.add("Please select...");
                 for( int i = 0; i < response.length(); i++){
                     try {
@@ -198,7 +266,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     refreshErrorMessage();
                 }
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
+
+
             }
 
             @Override

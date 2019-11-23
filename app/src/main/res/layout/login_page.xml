@@ -72,6 +72,7 @@
         android:layout_height="50dp"
         android:background="@drawable/loginbutton"
         android:text="Login"
+        android:onClick="login"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
