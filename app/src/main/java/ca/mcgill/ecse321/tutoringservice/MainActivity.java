@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +37,17 @@ public class MainActivity extends AppCompatActivity {
     private List<String> courseNames = new ArrayList<>();
     private ArrayAdapter<String> courseAdapter;
 
+    private List<String> courseOfferingNames = new ArrayList<>();
+    private ArrayAdapter<String> courseOfferingAdapter;
+
+    private List<String> tutorNames = new ArrayList<>();
+    private ArrayAdapter<String> tutorAdapter;
+
+    private List<String> availabilityNames = new ArrayList<>();
+    private ArrayAdapter<String> availabilityAdapter;
+
+    private List<String> sessionNames = new ArrayList<>();
+    private ArrayAdapter<String> sessionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +107,9 @@ public class MainActivity extends AppCompatActivity {
     //updates dashboard
     public void login(View v) {
 
-
+        error = "";
+        final TextView username = (TextView) findViewById(R.id.loginusername);
+        final TextView password = (TextView) findViewById(R.id.loginpassword);
 
 
         setContentView(R.layout.dashboard_page);
@@ -122,5 +136,46 @@ public class MainActivity extends AppCompatActivity {
         } else {
             tvError.setVisibility(View.VISIBLE);
         }
+    }
+
+    //Refresh each list.
+    public void refreshAllLists(View view) {
+        refreshList(universityAdapter ,universityNames, "people");
+        refreshList(courseAdapter, courseNames, "events");
+        refreshList(courseOfferingAdapter, courseOfferingNames, "events");
+        refreshList(tutorAdapter, tutorNames, "events");
+        refreshList(availabilityAdapter, availabilityNames, "events");
+        refreshList(sessionAdapter, sessionNames, "events");
+    }
+
+    //Refreshes and updates the list.
+    private void refreshList(final ArrayAdapter<String> adapter, final List<String> names, final String restFunctionName) {
+        HttpsUtils.get(restFunctionName, new RequestParams(), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                names.clear();
+                names.add("Please select...");
+                for( int i = 0; i < response.length(); i++){
+                    try {
+                        names.add(response.getJSONObject(i).getString("name"));
+                    } catch (Exception e) {
+                        error += e.getMessage();
+                    }
+                    refreshErrorMessage();
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    error += errorResponse.get("message").toString();
+                } catch (JSONException e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
+        });
     }
 }
