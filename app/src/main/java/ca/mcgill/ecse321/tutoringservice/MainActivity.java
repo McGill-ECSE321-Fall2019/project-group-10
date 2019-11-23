@@ -19,25 +19,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button signupPage= (Button) findViewById(R.id.getstarted);
-        Button loginPage= (Button) findViewById(R.id.loginbutton);
-
-        signupPage.setOnClickListener(new View.OnClickListener() {
-
-
-            public void onClick(View view){
-                setContentView(R.layout.signup_page);
-            }
-        });
-
-        loginPage.setOnClickListener(new View.OnClickListener() {
-
-
-            public void onClick(View view){
-                setContentView(R.layout.login_page);
-            }
-        });
     }
+
+    public void goToSignUp(View v){
+        setContentView(R.layout.signup_page);
+    }
+
+    public void goToLogin(View v){
+        setContentView(R.layout.login_page);
+    }
+
+    public void goBack(View v){
+        setContentView(R.layout.activity_main);
+    }
+
 
 
 
