@@ -6,7 +6,7 @@ import com.loopj.android.http.RequestParams;
 
 public class HttpsUtils {
 
-    public static final String DEFAULT_BASE_URL = "https://eventregistration-backend-123.herokuapp.com/";
+    public static final String DEFAULT_BASE_URL = "127.0.0.1:8080";
 
     private static String baseUrl;
     private static AsyncHttpClient client = new AsyncHttpClient();
