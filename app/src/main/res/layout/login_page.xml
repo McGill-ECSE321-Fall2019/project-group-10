@@ -42,7 +42,7 @@
         app:layout_constraintVertical_bias="0.011" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/loginpassword"
         android:layout_width="341dp"
         android:layout_height="52dp"
         android:ems="10"
@@ -55,7 +55,7 @@
         app:layout_constraintVertical_bias="0.614" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText2"
+        android:id="@+id/loginusername"
         android:layout_width="341dp"
         android:layout_height="52dp"
         android:hint="username"

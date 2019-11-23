@@ -92,6 +92,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //updates dashboard
+    public void login(View v) {
+
+
+
+
+        setContentView(R.layout.dashboard_page);
+    }
+
     public String getCurrentlyLoggedIn (){ return this.username; }
 
     public void goToSignUp(View v){ setContentView(R.layout.signup_page); }
