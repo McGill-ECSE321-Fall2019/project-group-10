@@ -32,7 +32,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>19</td>
     <td>53</td>
     <td>20</td>
-    <td>[tbd]</td>
+    <td>20</td>
   </tr>
 
   <tr>
@@ -41,7 +41,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>20</td>
     <td>50</td>
     <td>40</td>
-    <td>[tbd]</td>
+    <td>7</td>
   </tr>
 
   <tr>
@@ -50,7 +50,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>19</td>
     <td>58</td>
     <td>27</td>
-    <td>[tbd]</td>
+    <td>2</td>
   </tr>
 
   <tr>
@@ -59,7 +59,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>11</td>
     <td>49</td>
     <td>40</td>
-    <td>[tbd]</td>
+    <td>20</td>
   </tr>
 
   <tr>
@@ -68,7 +68,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>17</td>
     <td>51</td>
     <td>10</td>
-    <td>[tbd]</td>
+    <td>2</td>
   </tr>
 </table>
 
@@ -125,6 +125,36 @@ Below can be found the role of each member and the number of hours spent on each
         <li> Created Heroku frontend application </li>
         <li> Responsible for debugging file system/structural errors</li>
         <li> Set up automated email notifications (check spam)</li>
+    </ul>
+    </li>
+</ul>
+<h3>Sprint 4</h3>
+<ul>
+  <li>Alex:
+  <ul>
+      <li> Human detection algorithm integration </li>
+      <li> Android backend integration</li>
+    </ul>
+  </li>
+  <li>Chelsea:
+    <ul>
+      <li> Responsible for meeting minutes and creating templates for the wiki pages and general documentation upkeep</li>
+    </ul>
+  </li>
+  <li>Taylor:
+    <ul>
+      <li> Code cleanup and comments for Android </li>
+    </ul>
+  </li>
+  <li>Anas:
+      <ul>
+        <li> Android views</li>
+        <li> Android backend integration</li>
+    </ul>
+    </li>
+  <li>Yoan:
+      <ul>
+        <li> Fixing heroku deploy </li>
     </ul>
     </li>
 </ul>
