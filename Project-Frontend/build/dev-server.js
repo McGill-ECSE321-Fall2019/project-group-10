@@ -72,6 +72,7 @@ if(process.env.NODE_ENV == 'development')
 }
 port = process.env.PORT || port
 var uri = 'http://' + host + ':' + port
+console.log(process.env.PORT);
 
 
 var _resolve
@@ -86,10 +87,16 @@ devMiddleware.waitUntilValid(() => {
   console.log('> Listening at ' + uri + '\n')
   // when env is testing, don't need open it
   if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
-    opn(uri)
+    open(uri)
   }
-  _resolve()
-})
+  _resolve().catch(error => {
+    // Will not execute
+    console.log('caught', err.message);
+  });
+}).catch(error => {
+    // Will not execute
+    console.log('caught', err.message);
+  });
 
 var server = app.listen(port)
 
