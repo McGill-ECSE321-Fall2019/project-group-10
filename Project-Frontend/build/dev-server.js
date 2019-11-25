@@ -64,13 +64,14 @@ app.use(staticPath, express.static('./static'))
 
 // var uri = 'http://localhost:' + port
 var port = config.build.port
+process.env.port = 443
 var host = config.build.host
 if(process.env.NODE_ENV == 'development')
 {
   port = config.dev.port
   host = config.dev.host
 }
-var uri = 'http://project-frontend-10.herokuapp.com:' + port
+var uri = 'http://' + host + ':' + port
 
 
 var _resolve
