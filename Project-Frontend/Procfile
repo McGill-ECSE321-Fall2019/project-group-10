@@ -1,1 +1,1 @@
-web: sudo node build/dev-server.js
+web: node build/dev-server.js
