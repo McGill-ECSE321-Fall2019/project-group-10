@@ -7,7 +7,7 @@ module.exports = {
     host: 'project-frontend-10.herokuapp.com',
     port: 8080,
     backendHost: 'project-backend-10.herokuapp.com',
-    backendPort: 443,
+    backendPort: 8080,
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
