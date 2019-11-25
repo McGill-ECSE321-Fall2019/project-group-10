@@ -133,7 +133,6 @@ framework, head over to our wiki page and select any page titled with a date:<br
 &nbsp;&nbsp;&nbsp;&nbsp;<h2><b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a></b></h2>
 
 <h2>Instructions for setting RESTful APIs and running Spring</h2><br>
-
 <ol>
 <li>To start testing the RESTfula apis, we must first begin running of Spring.
 <li>First, open up your SpringToolSuiteIDE and open your designated workspace.
