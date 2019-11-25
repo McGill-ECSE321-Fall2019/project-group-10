@@ -63,15 +63,16 @@ var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsS
 app.use(staticPath, express.static('./static'))
 
 // var uri = 'http://localhost:' + port
-var portS = config.build.port
+var port = config.build.port
 var host = config.build.host
 if(process.env.NODE_ENV == 'development')
 {
-  portS = config.dev.port
+  port = config.dev.port
   host = config.dev.host
 }
-var PORT = process.env.PORT || 5000;
-var uri = 'http://' + host + ':' + PORT
+var uri = 'http://' + host + ':' + port
+console.log(uri);
+console.log(process.env.port);
 
 
 var _resolve
