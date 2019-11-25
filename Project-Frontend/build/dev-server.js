@@ -70,7 +70,7 @@ if(process.env.NODE_ENV == 'development')
   port = config.dev.port
   host = config.dev.host
 }
-var uri = 'http://' + host + ':' + port
+var uri = 'http://project-frontend-10.herokuapp.com:' + port
 
 
 var _resolve
