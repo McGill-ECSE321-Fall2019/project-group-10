@@ -71,7 +71,6 @@ if(process.env.NODE_ENV == 'development')
   host = config.dev.host
 }
 var uri = 'http://' + host + ':' + port
-console.log(uri);
 console.log(process.env.port);
 
 
