@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onCreateDashboardSessions() {
 
-        setContentView(R.layout.dashboard_page);
-
         final TextView date = (TextView) findViewById(R.id.date);
         final TextView time = (TextView) findViewById(R.id.time);
         final TextView tutor = (TextView) findViewById(R.id.tutor);
@@ -150,7 +148,13 @@ public class MainActivity extends AppCompatActivity {
         //Store for use for username later.
         this.currentlySelectedUsername = username.getText().toString();
 
-        HttpsUtils.post("createuser2?userName=" + username.getText().toString() +
+        if (email.getText() == null || username.getText() == null || password.getText() == null || name.getText() == null || age.getText() == null || phoneNumber.getText().toString() == "")
+        {
+            email.setText("test");// = "Please input something";
+            return;
+        }
+
+        HttpsUtils.post("/createuser2?userName=" + username.getText().toString() +
                 "&userPassword=" + password.getText().toString() +
                 "&userEmail=" + email.getText().toString() +
                 "&age=" + age.getText().toString() +
@@ -183,19 +187,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //updates dashboard
-    public void login(View v) {
+    public void loginUser(View v) {
 
         error = "";
         final TextView username = (TextView) findViewById(R.id.loginusername);
         final TextView password = (TextView) findViewById(R.id.loginpassword);
 
-        HttpsUtils.post("login?username=" + username.getText().toString() +
-                "&password=" + password.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
+        if (username.getText().toString() == "" || password.getText().toString() == "" )
+        {
+            error = "Please input something";
+            return;
+        }
+
+        username.setText("ifiwduqwbpdiuwbdifbdqiubdq");
+
+        HttpsUtils.post("/login?username=c&password=p", new RequestParams(), new JsonHttpResponseHandler() {
+                //login?username=" + username.getText().toString() + "&password=" + password.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 //Setup dashboard info and load page
-                onCreateDashboardSessions();
+                //onCreateDashboardSessions();
+
+                setContentView(R.layout.dashboard_page);
+
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
