@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean createSession = true;
 
     private String selectedUni = "";
+    private String courseString = "";
+    private String idAvail = "";
+
     private String selectedCourseOfferingId = "";
     private String selectedTutor = "";
     private String selectedTutorHR = "";
@@ -86,9 +89,10 @@ public class MainActivity extends AppCompatActivity {
         //Store for use for username later.
         this.currentlySelectedUsername = username.getText().toString();
 
-        if (email.getText() == null || username.getText() == null || password.getText() == null || name.getText() == null || age.getText() == null || phoneNumber.getText().toString() == "")
+        if (email.getText().toString().matches("") || username.getText().toString().matches("") || password.getText().toString().matches("") || name.getText().toString().matches("")|| age.getText().toString().matches("") || phoneNumber.getText().toString().matches(""))
         {
-            email.setText("test");// = "Please input something";
+            error = "Please fill out all fields.";
+            refreshErrorMessage();
             return;
         }
 
@@ -131,9 +135,10 @@ public class MainActivity extends AppCompatActivity {
         final TextView username = (TextView) findViewById(R.id.loginusername);
         final TextView password = (TextView) findViewById(R.id.loginpassword);
 
-        if (username.getText().toString() == "" || password.getText().toString() == "" )
+        if (username.getText().toString().matches("") || password.getText().toString().matches(""))
         {
-            error = "Please input something";
+            error = "Please fill out all fields.";
+            refreshErrorMessage();
             return;
         }
 
@@ -161,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
                     username.setText("");
                     password.setText("");
 
-                    error += responseString;
+                    // change error message.
+                    error = "Incorrect information";
                     refreshErrorMessage();
                 }
             }
@@ -307,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     Object course = parentView.getItemAtPosition(position);
-                    String courseString = course.toString();
+                    courseString = course.toString();
                     refreshCourseOfferingList(courseOfferingAdapter, courseOfferingNames, courseString, selectedUni);
                 }
             }
@@ -378,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
                     createAvailability = false;
                 }
                 else {
-                    String idAvail = parentView.getItemAtPosition(position).toString();
+                    idAvail = parentView.getItemAtPosition(position).toString();
                     String[] sp = idAvail.split(" ");
                     selectedAvailabilityDate = sp[0];
                     selectedAvailabilityTime = sp[1];
@@ -396,6 +402,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createSession(View v){
+
+        if(this.selectedTutor == "" || this.selectedTutor == null || this.currentlySelectedUsername == "" || this.currentlySelectedUsername == null || this.selectedAvailabilityDate == "" || this.selectedAvailabilityDate == null || this.selectedAvailabilityTime == "" || this.selectedAvailabilityTime == null|| this.selectedCourseOfferingId == "" || this.selectedCourseOfferingId == null || this.selectedTutorHR == "" || this.selectedTutorHR == null){
+
+            error = "Please select all fields before creating a session!";
+            refreshErrorMessage();
+            return;
+        }
+
         HttpsUtils.post("/session?tutor_name=" + this.selectedTutor + "&student_name=" + this.currentlySelectedUsername
                 + "&booking_date=" + this.selectedAvailabilityDate + "&booking_time=" + this.selectedAvailabilityTime
                 + "&course_offering_id=" + this.selectedCourseOfferingId + "&amount_paid=" + this.selectedTutorHR, new RequestParams(), new JsonHttpResponseHandler() {
@@ -429,6 +443,7 @@ public class MainActivity extends AppCompatActivity {
 
     //We want to regresh last thus put it at the end
     private void refreshErrorMessage() {
+
         // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
