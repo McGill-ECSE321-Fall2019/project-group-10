@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private String selectedUni = "";
     private String selectedCourseOfferingId = "";
     private String selectedTutor = "";
+    private String selectedTutorHR = "";
     private String selectedAvailabilityDate = "";
     private String selectedAvailabilityTime = "";
     private String currentlySelectedUsername = "";
@@ -211,11 +212,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        //username.setText("ifiwduqwbpdiuwbdifbdqiubdq");
-
-        String usernameString = username.getText().toString();
-        String passwordString = password.getText().toString();
-
         HttpsUtils.post("/login?username=" + username.getText().toString() + "&password="
                 + password.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
 
@@ -233,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
                 //Set all texts field to empty
                 if(responseString.equals("true")){
                     setContentView(R.layout.dashboard_page);
+                    currentlySelectedUsername = username.getText().toString();
                 }
                 else {
                     username.setText("");
@@ -346,6 +343,16 @@ public class MainActivity extends AppCompatActivity {
                     String username = parentView.getItemAtPosition(position).toString();
                     String[] sp = username.split(" ");
                     selectedTutor = sp[0];
+
+                    // get the hourly rate from the text rate:$##/hour
+                    int startPos = 6;
+                    int endPos = sp[1].indexOf('/');
+                    StringBuilder sb = new StringBuilder();
+                    for(int i=startPos; i < endPos; i++){
+                        char nextDigit = sp[1].charAt(i);
+                        sb.append(nextDigit);
+                    }
+                    selectedTutorHR = sb.toString();
                     refreshAvailabilityList(availabilityAdapter, availabilityNames, selectedTutor);
                 }
             }
@@ -379,6 +386,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         refreshUniversityList(this.getCurrentFocus());
+    }
+
+    public void createSession(View v){
+        HttpsUtils.post("/session?tutor_name=" + this.selectedTutor + "&student_name=" + this.currentlySelectedUsername
+                + "&booking_date=" + this.selectedAvailabilityDate + "&booking_time=" + this.selectedAvailabilityTime
+                + "&course_offering_id=" + this.selectedCourseOfferingId + "&amount_paid=" + this.selectedTutorHR, new RequestParams(), new JsonHttpResponseHandler() {
+
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                setContentView(R.layout.dashboard_page);
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+                try {
+                    error += errorResponse.get("message").toString();
+                } catch (JSONException e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
+        });
     }
 
     public void goToSignUp(View v){ setContentView(R.layout.signup_page); }
