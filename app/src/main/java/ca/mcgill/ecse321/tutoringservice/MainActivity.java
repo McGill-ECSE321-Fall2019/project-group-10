@@ -39,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean createAvailability = true;
 
     private String selectedUni = "";
-    private int selectedCourseOfferingId = 0;
-
+    private String selectedCourseOfferingId = "";
+    private String selectedTutor = "";
+    private String selectedAvailabilityDate = "";
+    private String selectedAvailabilityTime = "";
     private String currentlySelectedUsername = "";
 
     private List<String> universityNames = new ArrayList<>();
@@ -322,8 +324,50 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     String courseOffering = parentView.getItemAtPosition(position).toString();
                     String[] sp = courseOffering.split(" ");
-                    String courseOfferingString = sp[2];
-                    refreshTutorList(tutorAdapter, tutorNames, courseOfferingString);
+                    selectedCourseOfferingId = sp[3];
+                    refreshTutorList(tutorAdapter, tutorNames, selectedCourseOfferingId);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        tutorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(createTutor == true){
+                    createTutor = false;
+                }
+                else {
+                    String username = parentView.getItemAtPosition(position).toString();
+                    String[] sp = username.split(" ");
+                    selectedTutor = sp[0];
+                    refreshAvailabilityList(availabilityAdapter, availabilityNames, selectedTutor);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        availabilitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(createAvailability == true){
+                    createAvailability = false;
+                }
+                else {
+                    String idAvail = parentView.getItemAtPosition(position).toString();
+                    String[] sp = idAvail.split(" ");
+                    selectedAvailabilityDate = sp[0];
+                    selectedAvailabilityTime = sp[1];
                 }
             }
 
@@ -425,7 +469,7 @@ public class MainActivity extends AppCompatActivity {
                         String courseIdentifier = response.getJSONObject(i).getString("term");
                         courseIdentifier = courseIdentifier + " ";
                         courseIdentifier = courseIdentifier.concat(response.getJSONObject(i).getString("year"));
-                        courseIdentifier = courseIdentifier + " ";
+                        courseIdentifier = courseIdentifier + " id: ";
                         courseIdentifier = courseIdentifier.concat(response.getJSONObject(i).getString("id"));
                         names.add(courseIdentifier);
                     } catch (Exception e) {
@@ -455,8 +499,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
-
                 names.clear();
                 names.add("Please select...");
                 for( int i = 0; i < response.length(); i++){
@@ -472,6 +514,49 @@ public class MainActivity extends AppCompatActivity {
                     //refreshErrorMessage();
                 }
                 adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    error += errorResponse.get("message").toString();
+                } catch (JSONException e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
+        });
+    }
+
+    //Availability needs its own refresh method since it requires multiple items to be displayed
+    private void refreshAvailabilityList(final ArrayAdapter<String> adapter, final List<String> names,
+                                  final String tutorName) {
+        HttpsUtils.get("/tutor/"+tutorName, new RequestParams(), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                try {
+                    JSONArray tutorAvails = response.getJSONArray("avails");
+
+                    names.clear();
+                    names.add("Please select...");
+                    for (int i = 0; i < tutorAvails.length(); i++) {
+                        try {
+                            String availIdentifier = tutorAvails.getJSONObject(i).getString("date");
+                            availIdentifier = availIdentifier + " ";
+                            availIdentifier = availIdentifier.concat(tutorAvails.getJSONObject(i).getString("time"));
+                            names.add(availIdentifier);
+                        } catch (Exception e) {
+                            error += e.getMessage();
+                        }
+                        //refreshErrorMessage();
+                    }
+                    adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    error += e.getMessage();
+                }
+
             }
 
             @Override
