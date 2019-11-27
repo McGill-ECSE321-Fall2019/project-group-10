@@ -414,30 +414,36 @@ public class MainActivity extends AppCompatActivity {
 
             error = "Please select all fields before creating a session!";
             refreshErrorMessage();
-            return;
         }
+        else {
+            HttpsUtils.post("/session?tutor_name=" + this.selectedTutor + "&student_name=" + this.currentlySelectedUsername
+                    + "&booking_date=" + this.selectedAvailabilityDate + "&booking_time=" + this.selectedAvailabilityTime
+                    + "&course_offering_id=" + this.selectedCourseOfferingId + "&amount_paid=" + this.selectedTutorHR, new RequestParams(), new JsonHttpResponseHandler() {
 
-        HttpsUtils.post("/session?tutor_name=" + this.selectedTutor + "&student_name=" + this.currentlySelectedUsername
-                + "&booking_date=" + this.selectedAvailabilityDate + "&booking_time=" + this.selectedAvailabilityTime
-                + "&course_offering_id=" + this.selectedCourseOfferingId + "&amount_paid=" + this.selectedTutorHR, new RequestParams(), new JsonHttpResponseHandler() {
 
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                createSession = true;
-                goToDashboard();
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-
-                try {
-                    error += errorResponse.get("message").toString();
-                } catch (JSONException e) {
-                    error += e.getMessage();
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    createSession = true;
+                    selectedCourseOfferingId = "";
+                    selectedTutor = "";
+                    selectedTutorHR = "";
+                    selectedAvailabilityDate = "";
+                    selectedAvailabilityTime = "";
+                    goToDashboard();
                 }
-                refreshErrorMessage();
-            }
-        });
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+                    try {
+                        error += errorResponse.get("message").toString();
+                    } catch (JSONException e) {
+                        error += e.getMessage();
+                    }
+                    refreshErrorMessage();
+                }
+            });
+        }
     }
 
     public void goToSignUp(View v){ setContentView(R.layout.signup_page); }
