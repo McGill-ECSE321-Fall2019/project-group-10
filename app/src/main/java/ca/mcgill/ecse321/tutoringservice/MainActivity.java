@@ -417,7 +417,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
+                createSession = true;
                 goToDashboard();
             }
             @Override
