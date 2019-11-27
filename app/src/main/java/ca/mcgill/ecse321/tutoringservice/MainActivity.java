@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        createSession = true;
         setContentView(R.layout.activity_main);
 
         //onCreateSessionBooking(savedInstanceState);
@@ -176,6 +177,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToDashboard(){
         setContentView(R.layout.dashboard_page);
+
+        createUni = true;
+        createCourse = true;
+        createCourseOffering = true;
+        createTutor = true;
+        createAvailability = true;
 
         Spinner sessionSpinner = (Spinner) findViewById(R.id.session_spinner);
         sessionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sessionNames);
