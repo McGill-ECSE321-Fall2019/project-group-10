@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -30,6 +31,15 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
 
     private String error = null;
+
+    private boolean createUni = true;
+    private boolean createCourse = true;
+    private boolean createCourseOffering = true;
+    private boolean createTutor = true;
+    private boolean createAvailability = true;
+
+    private String selectedUni = "";
+    private int selectedCourseOfferingId = 0;
 
     private String currentlySelectedUsername = "";
 
@@ -56,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // onCreateSessionBooking(savedInstanceState);
+        //onCreateSessionBooking(savedInstanceState);
     }
 
     protected void onCreateDashboardSessions() {
@@ -98,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onCreateSessionBooking(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        //super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.booksession_page);
+        //setContentView(R.layout.booksession_page);
 
         Spinner uniSpinner = (Spinner) findViewById(R.id.session_spinner);
         Spinner courseSpinner = (Spinner) findViewById(R.id.course_spinner);
@@ -129,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         availabilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         availabilitySpinner.setAdapter(availabilityAdapter);
 
-        refreshSessionCreationList(this.getCurrentFocus());
+        //refreshUniversityList(this.getCurrentFocus());
         //refreshErrorMessage();
     }
 
@@ -199,13 +209,16 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        username.setText("ifiwduqwbpdiuwbdifbdqiubdq");
+        //username.setText("ifiwduqwbpdiuwbdifbdqiubdq");
 
-        HttpsUtils.post("/login?username=c&password=p", new RequestParams(), new JsonHttpResponseHandler() {
-                //login?username=" + username.getText().toString() + "&password=" + password.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
+        String usernameString = username.getText().toString();
+        String passwordString = password.getText().toString();
+
+        HttpsUtils.post("/login?username=" + username.getText().toString() + "&password="
+                + password.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onSuccess(int statusCode, Header[] headers, String response) {
                 //Setup dashboard info and load page
                 //onCreateDashboardSessions();
 
@@ -213,20 +226,115 @@ public class MainActivity extends AppCompatActivity {
 
             }
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
                 //Set all texts field to empty
-                username.setText("");
-                password.setText("");
-
-                try {
-                    error += errorResponse.get("message").toString();
-                } catch (JSONException e) {
-                    error += e.getMessage();
+                if(responseString.equals("true")){
+                    setContentView(R.layout.dashboard_page);
                 }
-                refreshErrorMessage();
+                else {
+                    username.setText("");
+                    password.setText("");
+
+                    error += responseString;
+                    refreshErrorMessage();
+                }
             }
         });
+    }
+
+    public void goToSessionPage(View v){
+        setContentView(R.layout.booksession_page);
+
+        Spinner uniSpinner = (Spinner) findViewById(R.id.uni_spinner);
+        Spinner courseSpinner = (Spinner) findViewById(R.id.course_spinner);
+        Spinner courseOfferingSpinner = (Spinner) findViewById(R.id.courseoffering_spinner);
+        Spinner tutorSpinner = (Spinner) findViewById(R.id.tutor_spinner);
+        Spinner availabilitySpinner = (Spinner) findViewById(R.id.availability_spinner);
+
+        //Update each list
+        universityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, universityNames);
+        universityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        uniSpinner.setAdapter(universityAdapter);
+
+        courseAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, courseNames);
+        courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        courseSpinner.setAdapter(courseAdapter);
+
+        courseOfferingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, courseOfferingNames);
+        courseOfferingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        courseOfferingSpinner.setAdapter(courseOfferingAdapter);
+
+        tutorAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tutorNames);
+        tutorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tutorSpinner.setAdapter(tutorAdapter);
+
+        availabilityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, availabilityNames);
+        availabilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        availabilitySpinner.setAdapter(availabilityAdapter);
+
+        uniSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(createUni == true){
+                    createUni = false;
+                }
+                else {
+                    Object uni = parentView.getItemAtPosition(position);
+                    selectedUni = uni.toString();
+                    refreshList(courseAdapter, courseNames, "/universities/" + selectedUni, "courseName");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(createCourse == true){
+                    createCourse = false;
+                }
+                else {
+                    Object course = parentView.getItemAtPosition(position);
+                    String courseString = course.toString();
+                    refreshCourseOfferingList(courseOfferingAdapter, courseOfferingNames, courseString, selectedUni);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        courseOfferingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(createCourseOffering == true){
+                    createCourseOffering = false;
+                }
+                else {
+                    String courseOffering = parentView.getItemAtPosition(position).toString();
+                    String[] sp = courseOffering.split(" ");
+                    String courseOfferingString = sp[2];
+                    refreshTutorList(tutorAdapter, tutorNames, courseOfferingString);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        refreshUniversityList(this.getCurrentFocus());
     }
 
     public void goToSignUp(View v){ setContentView(R.layout.signup_page); }
@@ -250,40 +358,120 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void refreshUniversityList(View view) {
+        refreshList(universityAdapter, universityNames, "/universities", "name");
+    }
+
     //Refresh each list.
     public void refreshSessionCreationList(View view) {
-        refreshList(universityAdapter ,universityNames, "universities");
-        refreshList(courseAdapter, courseNames, "universities/");
-        refreshList(courseOfferingAdapter, courseOfferingNames, "events");
-        refreshList(tutorAdapter, tutorNames, "events");
-        refreshList(availabilityAdapter, availabilityNames, "events");
+        refreshList(universityAdapter ,universityNames, "/universities", "name");
+        refreshList(courseAdapter, courseNames, "/universities/", "courseName");
+        refreshList(courseOfferingAdapter, courseOfferingNames, "events", "term");
+        refreshList(tutorAdapter, tutorNames, "events", "username");
+        refreshList(availabilityAdapter, availabilityNames, "events", "time");
     }
 
     public void refreshSessionList(View view){
-        refreshList(sessionAdapter, sessionNames, "events");
+        refreshList(sessionAdapter, sessionNames, "events", "sessionId");
     }
 
     //Refreshes and updates the list.
-    private void refreshList(final ArrayAdapter<String> adapter, final List<String> names, final String restFunctionName) {
+    private void refreshList(final ArrayAdapter<String> adapter, final List<String> names,
+                             final String restFunctionName, final String identifier) {
         HttpsUtils.get(restFunctionName, new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
 
-                /*names.clear();
+                names.clear();
                 names.add("Please select...");
                 for( int i = 0; i < response.length(); i++){
                     try {
-                        names.add(response.getJSONObject(i).getString("name"));
+                        names.add(response.getJSONObject(i).getString(identifier));
                     } catch (Exception e) {
                         error += e.getMessage();
                     }
-                    refreshErrorMessage();
+                    //refreshErrorMessage();
                 }
-                adapter.notifyDataSetChanged();*/
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    error += errorResponse.get("message").toString();
+                } catch (JSONException e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
+        });
+    }
+
+    //Course Offering needs its own refresh method since it requires multiple items to be displayed
+    private void refreshCourseOfferingList(final ArrayAdapter<String> adapter, final List<String> names,
+                             final String courseName, final String uniName) {
+        HttpsUtils.get("/courses/"+uniName+"/"+courseName, new RequestParams(), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
 
+                names.clear();
+                names.add("Please select...");
+                for( int i = 0; i < response.length(); i++){
+                    try {
+                        String courseIdentifier = response.getJSONObject(i).getString("term");
+                        courseIdentifier = courseIdentifier + " ";
+                        courseIdentifier = courseIdentifier.concat(response.getJSONObject(i).getString("year"));
+                        courseIdentifier = courseIdentifier + " ";
+                        courseIdentifier = courseIdentifier.concat(response.getJSONObject(i).getString("id"));
+                        names.add(courseIdentifier);
+                    } catch (Exception e) {
+                        error += e.getMessage();
+                    }
+                    //refreshErrorMessage();
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    error += errorResponse.get("message").toString();
+                } catch (JSONException e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
+        });
+    }
+
+    //Tutor needs its own refresh method since it requires multiple items to be displayed
+    private void refreshTutorList(final ArrayAdapter<String> adapter, final List<String> names,
+                                           final String courseOfferingId) {
+        HttpsUtils.get("/courseoffering/"+courseOfferingId, new RequestParams(), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+
+                names.clear();
+                names.add("Please select...");
+                for( int i = 0; i < response.length(); i++){
+                    try {
+                        String tutorIdentifier = response.getJSONObject(i).getString("username");
+                        tutorIdentifier = tutorIdentifier + " rate:$";
+                        tutorIdentifier = tutorIdentifier.concat(response.getJSONObject(i).getString("hourlyRate"));
+                        tutorIdentifier = tutorIdentifier + "/hour";
+                        names.add(tutorIdentifier);
+                    } catch (Exception e) {
+                        error += e.getMessage();
+                    }
+                    //refreshErrorMessage();
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
