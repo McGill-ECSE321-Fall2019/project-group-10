@@ -73,44 +73,6 @@ public class MainActivity extends AppCompatActivity {
         //onCreateSessionBooking(savedInstanceState);
     }
 
-    protected void onCreateDashboardSessions() {
-
-        final TextView date = (TextView) findViewById(R.id.date);
-        final TextView time = (TextView) findViewById(R.id.time);
-        final TextView tutor = (TextView) findViewById(R.id.tutor);
-        final TextView course = (TextView) findViewById(R.id.course);
-        final TextView courseOffering = (TextView) findViewById(R.id.courseOffering);
-
-        Spinner sessionSpinner = (Spinner) findViewById(R.id.session_spinner);
-
-        sessionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sessionNames);
-        sessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sessionSpinner.setAdapter(sessionAdapter);
-
-        //Fill in the table with session informtaion.
-        if(sessionSpinner.getSelectedItem() != null) {
-            //Get all session information from second call.
-            int sessionId = (int) sessionSpinner.getSelectedItem();
-
-            HttpsUtils.get("session?session_id=" + sessionId, new RequestParams(), new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    //Read response.
-                    //date.setText(response.getJSONObject("date").getString("name").toString());
-
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    error = "";
-                }
-            });
-        }
-        //refreshes the list of sessions if new one was added.
-        //refreshSessionList(this.getCurrentFocus());
-    }
-
     public void goToLoginFromRegister(View v) {
         error = "";
 
@@ -184,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 //onCreateDashboardSessions();
 
                 setContentView(R.layout.dashboard_page);
+                currentlySelectedUsername = username.getText().toString();
 
             }
             @Override
@@ -191,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //Set all texts field to empty
                 if(responseString.equals("true")){
-                    goToDashboard();
                     currentlySelectedUsername = username.getText().toString();
+                    goToDashboard();
                 }
                 else {
                     username.setText("");
@@ -207,12 +170,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToDashboard(){
         setContentView(R.layout.dashboard_page);
+
         Spinner sessionSpinner = (Spinner) findViewById(R.id.session_spinner);
-        sessionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, universityNames);
+        sessionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sessionNames);
         sessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sessionSpinner.setAdapter(sessionAdapter);
-
-        refreshList(sessionAdapter, sessionNames, "/sessionbystudent?student_name="+this.currentlySelectedUsername, "sessionId");
 
         sessionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -233,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        refreshList(sessionAdapter, sessionNames,
+                "/sessionbystudent?student_name="+currentlySelectedUsername, "sessionid");
     }
 
     public void refreshSessionDashboard(String sessionId){
@@ -250,12 +215,12 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     date.setText(response.getString("date"));
                     time.setText(response.getString("time"));
-                    tutor.setText(response.getJSONObject("tutor").getString("username"));
-                    String coInfo = response.getJSONObject("courseOffering").getString("courseName");
-                    coInfo.concat(" ");
-                    coInfo = coInfo.concat(response.getJSONObject("courseOffering").getString("term"));
-                    coInfo.concat(" ");
-                    coInfo = coInfo.concat(response.getJSONObject("courseOffering").getString("year"));
+                    tutor.setText(response.getJSONObject("tutorDTO").getString("username"));
+                    String coInfo = response.getJSONObject("courseOfferingDTO").getString("courseName");
+                    coInfo = coInfo.concat(" ");
+                    coInfo = coInfo.concat(response.getJSONObject("courseOfferingDTO").getString("term"));
+                    coInfo = coInfo.concat(" ");
+                    coInfo = coInfo.concat(response.getJSONObject("courseOfferingDTO").getString("year"));
                     course.setText(coInfo);
                     courseOffering.setText(response.getString("amountPaid"));
 
@@ -439,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
-                setContentView(R.layout.dashboard_page);
+                goToDashboard();
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -482,11 +447,11 @@ public class MainActivity extends AppCompatActivity {
     //Refreshes and updates the list.
     private void refreshList(final ArrayAdapter<String> adapter, final List<String> names,
                              final String restFunctionName, final String identifier) {
+        String fcn = restFunctionName;
         HttpsUtils.get(restFunctionName, new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
 
                 names.clear();
                 names.add("Please select...");
