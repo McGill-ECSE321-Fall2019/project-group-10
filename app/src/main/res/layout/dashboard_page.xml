@@ -184,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="18dp"
-                android:text="Course Offering"
+                android:text="Amount Due"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
 

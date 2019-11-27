@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean createCourseOffering = true;
     private boolean createTutor = true;
     private boolean createAvailability = true;
+    private boolean createSession = true;
 
     private String selectedUni = "";
     private String selectedCourseOfferingId = "";
@@ -107,46 +108,8 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         //refreshes the list of sessions if new one was added.
-        refreshSessionList(this.getCurrentFocus());
+        //refreshSessionList(this.getCurrentFocus());
     }
-
-    protected void onCreateSessionBooking(Bundle savedInstanceState) {
-        //super.onCreate(savedInstanceState);
-
-        //setContentView(R.layout.booksession_page);
-
-        Spinner uniSpinner = (Spinner) findViewById(R.id.session_spinner);
-        Spinner courseSpinner = (Spinner) findViewById(R.id.course_spinner);
-        Spinner courseOfferingSpinner = (Spinner) findViewById(R.id.courseoffering_spinner);
-        Spinner tutorSpinner = (Spinner) findViewById(R.id.tutor_spinner);
-        Spinner availabilitySpinner = (Spinner) findViewById(R.id.availability_spinner);
-
-        //Update each list
-        universityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, universityNames);
-        universityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        uniSpinner.setAdapter(universityAdapter);
-
-        courseAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, courseNames);
-        courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        courseSpinner.setAdapter(courseAdapter);
-
-        courseOfferingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, courseOfferingNames);
-        courseOfferingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        courseOfferingSpinner.setAdapter(courseOfferingAdapter);
-
-        tutorAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tutorNames);
-        tutorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tutorSpinner.setAdapter(tutorAdapter);
-
-        availabilityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, availabilityNames);
-        availabilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        availabilitySpinner.setAdapter(availabilityAdapter);
-
-        //refreshUniversityList(this.getCurrentFocus());
-        //refreshErrorMessage();
-    }
-
-    public void goToDashBoard (View v) { }
 
     public void goToLoginFromRegister(View v) {
         error = "";
@@ -228,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Set all texts field to empty
                 if(responseString.equals("true")){
-                    setContentView(R.layout.dashboard_page);
+                    goToDashboard();
                     currentlySelectedUsername = username.getText().toString();
                 }
                 else {
@@ -240,6 +203,85 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void goToDashboard(){
+        setContentView(R.layout.dashboard_page);
+        Spinner sessionSpinner = (Spinner) findViewById(R.id.session_spinner);
+        sessionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, universityNames);
+        sessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sessionSpinner.setAdapter(sessionAdapter);
+
+        refreshList(sessionAdapter, sessionNames, "/sessionbystudent?student_name="+this.currentlySelectedUsername, "sessionId");
+
+        sessionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(createSession == true){
+                    createSession = false;
+                }
+                else {
+                    Object session = parentView.getItemAtPosition(position);
+                    String selectedSession = session.toString();
+                    refreshSessionDashboard(selectedSession);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+    }
+
+    public void refreshSessionDashboard(String sessionId){
+        final TextView date = (TextView) findViewById(R.id.date);
+        final TextView time = (TextView) findViewById(R.id.time);
+        final TextView tutor = (TextView) findViewById(R.id.tutor);
+        final TextView course = (TextView) findViewById(R.id.course);
+        final TextView courseOffering = (TextView) findViewById(R.id.courseOffering);
+
+        HttpsUtils.get("/session?session_id="+sessionId, new RequestParams(), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                try {
+                    date.setText(response.getString("date"));
+                    time.setText(response.getString("time"));
+                    tutor.setText(response.getJSONObject("tutor").getString("username"));
+                    String coInfo = response.getJSONObject("courseOffering").getString("courseName");
+                    coInfo.concat(" ");
+                    coInfo = coInfo.concat(response.getJSONObject("courseOffering").getString("term"));
+                    coInfo.concat(" ");
+                    coInfo = coInfo.concat(response.getJSONObject("courseOffering").getString("year"));
+                    course.setText(coInfo);
+                    courseOffering.setText(response.getString("amountPaid"));
+
+                } catch (Exception e) {
+                    error += e.getMessage();
+                    date.setText("");
+                    time.setText("");
+                    tutor.setText("");
+                    course.setText("");
+                    courseOffering.setText("");
+                    refreshErrorMessage();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    error += errorResponse.get("message").toString();
+                } catch (JSONException e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
+        });
+
     }
 
     public void goToSessionPage(View v){
@@ -435,19 +477,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshUniversityList(View view) {
         refreshList(universityAdapter, universityNames, "/universities", "name");
-    }
-
-    //Refresh each list.
-    public void refreshSessionCreationList(View view) {
-        refreshList(universityAdapter ,universityNames, "/universities", "name");
-        refreshList(courseAdapter, courseNames, "/universities/", "courseName");
-        refreshList(courseOfferingAdapter, courseOfferingNames, "events", "term");
-        refreshList(tutorAdapter, tutorNames, "events", "username");
-        refreshList(availabilityAdapter, availabilityNames, "events", "time");
-    }
-
-    public void refreshSessionList(View view){
-        refreshList(sessionAdapter, sessionNames, "events", "sessionId");
     }
 
     //Refreshes and updates the list.
