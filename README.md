@@ -32,7 +32,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>19</td>
     <td>53</td>
     <td>20</td>
-    <td>20</td>
+    <td>21</td>
   </tr>
 
   <tr>
@@ -41,7 +41,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>20</td>
     <td>50</td>
     <td>40</td>
-    <td>7</td>
+    <td>19</td>
   </tr>
 
   <tr>
@@ -138,7 +138,8 @@ Below can be found the role of each member and the number of hours spent on each
   </li>
   <li>Chelsea:
     <ul>
-      <li> Responsible for meeting minutes and creating templates for the wiki pages and general documentation upkeep</li>
+      <li> Responsible for meeting minutes and general documentation upkeep as well as user web and Android documentation</li>
+      <li> Android backend integration and comments </li>
     </ul>
   </li>
   <li>Taylor:
@@ -154,7 +155,7 @@ Below can be found the role of each member and the number of hours spent on each
     </li>
   <li>Yoan:
       <ul>
-        <li> Fixing heroku deploy </li>
+        <li> Fixing heroku backend deploy </li>
     </ul>
     </li>
 </ul>
@@ -162,6 +163,12 @@ Below can be found the role of each member and the number of hours spent on each
 <br>To see our meeting minutes, including key design decisions and architecture
 framework, head over to our wiki page and select any page titled with a date:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<h2><b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a></b></h2>
+<h2>Instructions for setting up Android</h2><br>
+<ol>
+  <li>Run the Spring backend by going to https://project-backend-10.herokuapp.com.</li>
+  <li>Run the Android application using a Pixel 2 emulator.</li>
+  <li>To test Android with test objects, follow step 2 below for creating test objects for the web service. Do this only after running the Spring backend on Heroku but before running the Android emulator. To check the creation, go to the /students endpoint which should display a student with the username "cmc" and password "dogs".</li>
+</ol>
 
 <h2>Instructions for setting up objects to test the frontend web service</h2><br>
 <ol>
