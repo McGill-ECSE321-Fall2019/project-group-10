@@ -182,9 +182,10 @@ framework, head over to our wiki page and select any page titled with a date:<br
       <li> Once the picture is taken, an algorithm runs to look at the image taken and attempts to find all objects in the picture.
       <li> Once complete, a file called -> prediction.txt will be generated. In this file will write everything the algorithm detected. 
   </ol>
-  <li> Once this is done, in the front end, after making your way to the home screen, click on sign up. (Make sure you run ->> npm run dev in the face_recog branch).
+  <li> Once this is done, in the front end, after making your way to the home screen, click on sign up. (Make sure you run -> npm run dev in the face_recog branch).
   <li> The algorithm is meant to detect individuals who are signing up to make sure they are human.
-  <li> The button -> confirm identity, will run the script in the future (issues with running pythons script form java). If you press the button, it will read from the prediction.txt file and see what objects were detected. If you are a more than 65% human, you will be detected and you will be able to sign up for an account once all information is added.
+  <li> The button -> confirm identity, will run the script in the future (issues with running pythons script form java). If you press the button now, a restful api call will be sent to the service class and will read from the prediction.txt file and see what objects were detected. 
+  <li> If you are more than 65% human, you will be detected and you will be able to sign up for an account once all information is added.
 </ol>
   
 <h2>Instructions for testing and setting up email on Eclipse</h2><br>
