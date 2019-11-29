@@ -179,12 +179,12 @@ framework, head over to our wiki page and select any page titled with a date:<br
     <ol>
       <li> To start the script, make your way into the facial_recognition folder. Here, you will have to run the script runScript.py (very original name) with the command -> python runScript.py. Python must be installed in order for you to run this. If it is not installed, click <a href="https://www.codecademy.com/articles/install-python">here</a> for instructions.
       <li> A prompt will be shown asking to access your computer. The algorithm will use your camera to take a picture of you to check to see if you are a human. Give the script access.
-      <li> Once the picture is taken, an algorithm runs to look at the image taken and attempts to find all objects in the picture.
-      <li> Once complete, a file called -> prediction.txt will be generated. In this file will write everything the algorithm detected. 
+      <li> Once the picture is taken, an algorithm runs on the image taken and attempts to find all objects in the picture.
+      <li> Once complete, a file called -> prediction.txt will be generated. In this file will be written everything the algorithm detected. 
   </ol>
   <li> Once this is done, in the front end, after making your way to the home screen, click on sign up. (Make sure you run -> npm run dev in the face_recog branch).
   <li> The algorithm is meant to detect individuals who are signing up to make sure they are human.
-  <li> The button -> confirm identity, will run the script in the future (issues with running pythons script form java). If you press the button now, a restful api call will be sent to the service class and will read from the prediction.txt file and see what objects were detected. 
+  <li> The button -> confirm identity, will run the script in the future (issues with running pythons script form java). If you press the button now (after running the script), a restful api call will be sent to the service class and will read from the prediction.txt file and see what objects were detected. 
   <li> If you are more than 65% human, you will be detected and you will be able to sign up for an account once all information is added.
 </ol>
   
@@ -199,7 +199,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
   <li>
     <ol>
       <li> First, we must change the email location. Make your way into the file JavaEmail.java with this path -> /Project-Backend/src/test/java/ca/mcgill/ecse321/project/service/TestObjects.java
-      <li> Open the file and make your way to line 96. This is where the tutor is created and a random email is set. Replace the dummy email with your own, save the file, rerun the spring server and then run the testObject test as seen in the instructions below.
+      <li> Open the file and make your way to line 51. This is where the tutor email is set. Replace the dummy email with your own, save the file, rerun the spring server and then run the testObject test as seen in the instructions below.
       <li> You have now created a tutor with your email. Run the appliction Frontend as instructed below. Sign in with username: cmc and password: dogs (quick access opposed to making a new account), click on create session and choose the tutor who's email you just changed. Confirm session creation and you should receive an email from project-group-10.
     </ol>
   </li>
