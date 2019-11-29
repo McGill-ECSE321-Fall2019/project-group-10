@@ -177,7 +177,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
   <li> Make your way into the face_recog branch by running -> git checkout face_recog on the cmdline. Here you will find one additional folder called -> facial_recognition where all scripts are held.
   <li> To provide a quick explanation how it works:
     <ol>
-      <li> To start the script, make your way into the facial_recognition folder. Here, you will have to run the script runScript.py (very original name) with the command -> python runScript.py. Python must be installed in order for you to run this. If it is not installed, click <a href=""https://www.codecademy.com/articles/install-python">here</a> for instructions.
+      <li> To start the script, make your way into the facial_recognition folder. Here, you will have to run the script runScript.py (very original name) with the command -> python runScript.py. Python must be installed in order for you to run this. If it is not installed, click <a href="https://www.codecademy.com/articles/install-python">here</a> for instructions.
       <li> A prompt will be shown asking to access your computer. The algorithm will use your camera to take a picture of you to check to see if you are a human. Give the script access.
       <li> Once the picture is taken, an algorithm runs to look at the image taken and attempts to find all objects in the picture.
       <li> Once complete, a file called -> prediction.txt will be generated. In this file will write everything the algorithm detected. 
