@@ -163,7 +163,15 @@ Below can be found the role of each member and the number of hours spent on each
 <br>To see our meeting minutes, including key design decisions and architecture
 framework, head over to our wiki page and select any page titled with a date:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<h2><b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a></b></h2>
-<h2>Instructions for setting up Android</h2><br>
+
+<h2>Extra Features</h2><br>
+<ol>
+  <li>Machine learning face recognition for signing up. Click here for setup.
+  <li>Email notification upon session creation. See below for email setup.
+</ol>
+
+
+<h2>Instructions for setting up Android and Heroku</h2><br>
 <ol>
   <li>Run the Spring backend by going to https://project-backend-10.herokuapp.com.</li>
   <li>Run the Android application using a Pixel 2 emulator.</li>
