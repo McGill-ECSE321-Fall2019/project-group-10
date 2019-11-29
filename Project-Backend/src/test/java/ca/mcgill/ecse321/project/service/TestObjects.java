@@ -93,8 +93,8 @@ public class TestObjects {
 //		service.createRoom(3);
 		
 		// create a tutor
-		service.createUser("aName", "tutor.tester@mcgill.ca", 22, "5145555555");
-		Tutor t = service.createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
+		service.createUser("aName", "alexander.gruenwald19@gmail.com", 22, "5145555555");
+		Tutor t = service.createTutor("agruenwald", "password", "alexander.gruenwald19@gmail.com", 12, 3, Education.highschool);
 		List<CourseOffering> tutoredCourses = new ArrayList<>();
 		tutoredCourses.add(c1);
 		tutoredCourses.add(c2);
@@ -106,8 +106,8 @@ public class TestObjects {
 		c3.addTutor(t);
 		c4.addTutor(t);
 		
-		service.createAvailability(AVAILABILITY_DATE, AVAILABILITY_TIME, "username");
-		service.createAvailability(AVAILABILITY_DATE2, AVAILABILITY_TIME2, "username");
+		service.createAvailability(AVAILABILITY_DATE, AVAILABILITY_TIME, "agruenwald");
+		service.createAvailability(AVAILABILITY_DATE2, AVAILABILITY_TIME2, "agruenwald");
 		
 //		// create a student
 		service.createUser("Student", "student.tester@mcgill.ca", 24, "5145555552");
@@ -118,13 +118,13 @@ public class TestObjects {
 		service.createRoom(1);
 		
 //		// create a session
-		service.createSession(c1.getCourseOfferingID(), AVAILABILITY_DATE, AVAILABILITY_TIME, 12.0, "cmc", "username");
+		service.createSession(c1.getCourseOfferingID(), AVAILABILITY_DATE, AVAILABILITY_TIME, 12.0, "cmc", "agruenwald");
 		
 		// create some reviews
-		service.createText("Best tutor ever", true, "username", c1.getCourseOfferingID());
-		service.createRating(5, "username", c1.getCourseOfferingID());
-		service.createText("Worst tutor ever", true, "username", c2.getCourseOfferingID());
-		service.createRating(1, "username", c3.getCourseOfferingID());
+		service.createText("Best tutor ever", true, "agruenwald", c1.getCourseOfferingID());
+		service.createRating(5, "agruenwald", c1.getCourseOfferingID());
+		service.createText("Worst tutor ever", true, "agruenwald", c2.getCourseOfferingID());
+		service.createRating(1, "agruenwald", c3.getCourseOfferingID());
 		
 		courseOfferingRepository.save(c1);
 		courseOfferingRepository.save(c2);
