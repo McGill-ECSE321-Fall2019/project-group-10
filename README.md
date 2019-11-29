@@ -171,7 +171,17 @@ framework, head over to our wiki page and select any page titled with a date:<br
 </ol>
 <br>
 
-<h2>Instructions for email on Eclipse</h2><br>
+<h2>Instructions for testing Machine Learning algorithm</h2><br>
+<ol>
+  <li> The machine learning extension is only added to the face_recog branch as we did not want the software to interfere with basic front end testing for the reviewer. This branch should only be used to test the algorithm.
+  <li> Make your way into the face_recog branch by running -> git checkout face_recog on the cmdline. Here you will find one additional folder called -> facial_recognition where all scripts are held.
+  <li> To provide a quick explanation how it works:
+    <ol>
+      <li> To start the script, make your way into the facial_recognition folder. Here, you will have to run the script 
+    </ol>
+<ol>
+  
+<h2>Instructions for testing and setting up email on Eclipse</h2><br>
 <ol>
   <li> If the email class poses erorrs on Eclipse do the following on the git repo on command line: </li>
   <li> gradle cleanEclipse </li>
