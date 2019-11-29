@@ -689,17 +689,6 @@ public class TutoringServiceRestController {
 						
 		}
 	
-	@PostMapping(value = {"/testobjects", "/testobjects/"})
-	public boolean createTestObjects() {
-		try {
-			service.deleteAll();
-			service.createObjects();
-			return true;
-		}
-		catch(Exception e) {
-			return false;
-		}
-	}
 	
 //========================================= DTO =======================================\\
   
