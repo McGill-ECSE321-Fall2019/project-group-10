@@ -166,10 +166,27 @@ framework, head over to our wiki page and select any page titled with a date:<br
 
 <h2>Extra Features</h2><br>
 <ol>
-  <li>Machine learning face recognition for signing up. Click here for setup.
+  <li>Machine learning face recognition for signing up. See below for ML setup.
   <li>Email notification upon session creation. See below for email setup.
 </ol>
+<br>
 
+<h2>Instructions for email on Eclipse</h2><br>
+<ol>
+  <li> If the email class poses erorrs on Eclipse do the following on the git repo on command line: </li>
+  <li> gradle cleanEclipse </li>
+  <li> gradle Eclipse </li>
+  <li> gradle build -x test </li>
+  <li> Once running the commands as seen above, the email is ready to be used.
+  <li> The email will only be sent to a registered tutor upon session creation. If you would like to test it, change one line in the code, run the program by running the tesObjects test to set up mock varaibles as seen below, and then create a session.
+  <li>
+    <ol>
+      <li> First, we must change the email location. Make your way into the file JavaEmail.java with this path -> /Project-Backend/src/test/java/ca/mcgill/ecse321/project/service/TestObjects.java
+      <li> Open the file and make your way to line 96. This is where the tutor is created and a random email is set. Replace the dummy email with your own, save the file, rerun the spring server and then run the testObject test as seen in the instructions below.
+      <li> You have now created a tutor with your email. Run the appliction Frontend as instructed below. Sign in with username: cmc and password: dogs (quick access opposed to making a new account), click on create session and choose the tutor who's email you just changed. Confirm session creation and you should receive an email from project-group-10.
+    </ol>
+  </li>
+</ol>
 
 <h2>Instructions for setting up Android and Heroku</h2><br>
 <ol>
@@ -202,14 +219,6 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <li>We have chosen to test our RESTful api tests using Postman.
 <li>Once in the wiki page, follow the steps for setting up the mock database to actually test the PUT and GET queries / statements.
 <li>Click on <b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki/RESTful-API-Tests-using-a-Client-(Postman)">here</a></b> to access this page.
-</ol>
-
-<h2>Instructions for email on Eclipse</h2><br>
-<ol>
-  <li> If the email class poses erorrs on Eclipse do the following on the git repo on command line: </li>
-  <li> gradle cleanEclipse </li>
-  <li> gradle Eclipse </li>
-  <li> gradle build -x test </li>
 </ol>
 
 <h2>Instructions for setting up the tests</h2><br>
