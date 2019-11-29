@@ -48,6 +48,7 @@ public class TestObjects {
 	private static final Time AVAILABILITY_TIME = Time.valueOf("11:30:00");
 	private static final Date AVAILABILITY_DATE2 = Date.valueOf(LocalDate.now().plusDays(4));
 	private static final Time AVAILABILITY_TIME2 = Time.valueOf("12:30:00");
+	private static final String TUTOR_EMAIL = "test.test@test.ca";
 	
 	@Test
 	public void runApplication() {
@@ -93,8 +94,8 @@ public class TestObjects {
 //		service.createRoom(3);
 		
 		// create a tutor
-		service.createUser("aName", "alexander.gruenwald19@gmail.com", 22, "5145555555");
-		Tutor t = service.createTutor("agruenwald", "password", "alexander.gruenwald19@gmail.com", 12, 3, Education.highschool);
+		service.createUser("aName", TUTOR_EMAIL, 22, "5145555555");
+		Tutor t = service.createTutor("agruenwald", "password", TUTOR_EMAIL, 12, 3, Education.highschool);
 		List<CourseOffering> tutoredCourses = new ArrayList<>();
 		tutoredCourses.add(c1);
 		tutoredCourses.add(c2);
