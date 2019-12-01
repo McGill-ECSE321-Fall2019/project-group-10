@@ -36,6 +36,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.044" />
 
+
     <TextView
         android:id="@+id/sessionDetails"
         android:layout_width="wrap_content"
@@ -45,10 +46,10 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.174" />
+        app:layout_constraintVertical_bias="0.146" />
 
 
     <View
@@ -56,9 +57,8 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:background="@android:color/darker_gray"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="152dp" />
-
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="139dp" />
 
     <TextView
         android:id="@+id/idSelect"
@@ -69,10 +69,9 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.306" />
+        app:layout_constraintVertical_bias="0.228" />
 
     <Spinner
         android:id="@+id/session_spinner"
@@ -82,7 +81,6 @@
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.671"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
