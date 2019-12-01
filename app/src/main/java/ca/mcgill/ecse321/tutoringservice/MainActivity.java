@@ -669,4 +669,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //        Has all the go-back codes
+    public void goBackToDashboard(View v){
+        setContentView(R.layout.dashboard_page);
+    }
+
+
 }
