@@ -103,11 +103,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // sent the HTTP request to create a user
+        // send the HTTP request to create a user
+        Integer ageInt = Integer.parseInt(age.getText().toString());
         HttpsUtils.post("/createuser2?userName=" + username.getText().toString() +
                 "&userPassword=" + password.getText().toString() +
                 "&userEmail=" + email.getText().toString() +
-                "&age=" + age.getText().toString() +
+                "&age=" + ageInt +
                 "&phoneNum=" + phoneNumber.getText().toString() +
                 "&name=" + name.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
 
@@ -487,6 +488,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void logout(View v){
+        HttpsUtils.post("/logout?username=" + this.currentlySelectedUsername, new RequestParams(), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                // reset the dropdown boolean
+                createSession = true;
+                setContentView(R.layout.activity_main);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                error = responseString;
+                if(responseString == "" || responseString.isEmpty()){
+                    createSession = true;
+                    currentlySelectedUsername = "";
+                    setContentView(R.layout.activity_main);
+                }
+                //refreshErrorMessage();
+            }
+        });
+    }
     // called from the startup page, go to the register page
     public void goToSignUp(View v){ setContentView(R.layout.signup_page); }
 
@@ -543,7 +566,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     error += e.getMessage();
                 }
-                refreshErrorMessage();
+                //refreshErrorMessage();
             }
         });
     }
@@ -672,7 +695,8 @@ public class MainActivity extends AppCompatActivity {
 
     //        Has all the go-back codes
     public void goBackToDashboard(View v){
-        setContentView(R.layout.dashboard_page);
+        createSession = true;
+        goToDashboard();
     }
 
 
