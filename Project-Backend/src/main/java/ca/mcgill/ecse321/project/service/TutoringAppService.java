@@ -80,15 +80,15 @@ public class TutoringAppService {
 		availability.setTime(time);
 		availability.setDate(date);
 		
-		checkAvailabilityUniqueForTutor(t, availability);
+		//checkAvailabilityUniqueForTutor(t, availability);
 		
 		availability.setTutor(t);
 		availabilityRepository.save(availability);
 		
 		
 		//t.getAvailability().add(availability);
-		t.addAvailability(availability);
-		tutorRepository.save(t);
+		//t.addAvailability(availability);
+		//tutorRepository.save(t);
 		return availability;
 	}
 
@@ -363,16 +363,33 @@ public class TutoringAppService {
 		if(tutorRepository.findTutorByUsername(revieweeUsername) == null)
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);
 	
-		if(tutorRepository.findTutorByUsername(revieweeUsername) != null)
+		if(tutorRepository.findTutorByUsername(revieweeUsername) != null) {
 			text.setWrittenAbout(tutorRepository.findTutorByUsername(revieweeUsername));
+		}
 		else if (studentRepository.findStudentByUsername(revieweeUsername) != null)
 			text.setWrittenAbout(studentRepository.findStudentByUsername(revieweeUsername));
 		else {
 			throw new IllegalArgumentException(ErrorStrings.Invalid_Text_Reviewee);}
+		Tutor writtenAbout = tutorRepository.findTutorByUsername(revieweeUsername);
+		tutorRepository.save((Tutor)text.getWrittenAbout());
 		text.setDescription(description);
 		text.setIsAllowed(isAllowed);
 		text.setCourseOffering(c);
+		
 		textRepository.save(text);
+		
+		Set<Review> reviews = writtenAbout.getReview();
+		if(reviews == null) {
+			Set<Review> review = new HashSet<>();
+			review.add(text);
+			writtenAbout.setReview(review);
+		}
+		else {
+			reviews.add(text);
+			writtenAbout.setReview(reviews);
+		}
+		courseOfferingRepository.save(c);
+		tutorRepository.save(writtenAbout);
 		return (Text)text;
 	}
 
@@ -866,15 +883,15 @@ public class TutoringAppService {
 			
 			//delete the availability from the tutor
 			availabilityRepository.deleteById(tId);
-			t.getAvailability().remove(av);
+			//t.getAvailability().remove(av);
 			
 		}
-		co.getSession().add(session);
+		//co.getSession().add(session);
 		//save everything
 		
 		student1.addSession(session);
 		sessionRepository.save(session);
-		courseOfferingRepository.save(co);
+		//courseOfferingRepository.save(co);
 		studentRepository.save(student1);
 		
 		//return the created session
@@ -1582,6 +1599,95 @@ public class TutoringAppService {
 				return c;
 		}
 		return null;
+	}
+	
+	@Transactional
+	public void createObjects() {
+		
+		Date AVAILABILITY_DATE = Date.valueOf(LocalDate.now().plusDays(3));
+		Time AVAILABILITY_TIME = Time.valueOf("11:30:00");
+		Date AVAILABILITY_DATE2 = Date.valueOf(LocalDate.now().plusDays(4));
+		Time AVAILABILITY_TIME2 = Time.valueOf("12:30:00");
+		
+		// save some objects in the database to test the restful apis
+		
+		// create universities
+		createUniversity("McGill", "3040 University");
+		createUniversity("Concordia", "3040 Guy");
+		createUniversity("University of Montreal", "3040 Cote des Neiges");
+		
+		// create courses attached to universities
+		createCourse("Intro to Software","ECSE 321", getAllUniversities().get(0).getUniversityID());
+		createCourse("DPM","ECSE 211", getAllUniversities().get(0).getUniversityID());
+		createCourse("Electromagnetic Waves","ECSE 354", getAllUniversities().get(1).getUniversityID());
+		createCourse("Power","ECSE 362", getAllUniversities().get(2).getUniversityID());
+		
+		// create course offerings attached to courses 
+		CourseOffering c1 = createCourseOffering(Term.Fall, 2019, getAllCourses().get(0).getCourseID());
+		CourseOffering c2 = createCourseOffering(Term.Winter, 2020, getAllCourses().get(0).getCourseID());
+		CourseOffering c3 = createCourseOffering(Term.Fall, 2019, getAllCourses().get(1).getCourseID());
+		CourseOffering c4 = createCourseOffering(Term.Fall, 2019, getAllCourses().get(2).getCourseID());	
+		// create a tutor
+		createUser("aName", "tutor.tester@mcgill.ca", 22, "5145555555");
+		Tutor t = createTutor("username", "password", "tutor.tester@mcgill.ca", 12, 3, Education.highschool);
+		List<CourseOffering> tutoredCourses = new ArrayList<>();
+		tutoredCourses.add(c1);
+		tutoredCourses.add(c2);
+		tutoredCourses.add(c3);
+		tutoredCourses.add(c4);
+		t.setCourseOfferings(tutoredCourses);
+		c1.addTutor(t);
+		c2.addTutor(t);
+		c3.addTutor(t);
+		c4.addTutor(t);
+		tutorRepository.save(t);
+		
+		Availability a = createAvailability(AVAILABILITY_DATE, AVAILABILITY_TIME, "username");
+		Availability a2 = createAvailability(AVAILABILITY_DATE2, AVAILABILITY_TIME2, "username");
+		
+		// create a student
+		createUser("Student", "student.tester@mcgill.ca", 24, "5145555552");
+		Student s = createStudent("cmc", "dogs", "student.tester@mcgill.ca");
+		studentRepository.save(s);
+		
+		// create a room
+		createRoom(1);
+		
+		// create a session
+		Session session = createSession(c1.getCourseOfferingID(), AVAILABILITY_DATE, AVAILABILITY_TIME, 12.0, "cmc", "username");
+		
+		tutorRepository.save(t);
+		courseOfferingRepository.save(c1);
+		courseOfferingRepository.save(c2);
+		courseOfferingRepository.save(c3);
+		courseOfferingRepository.save(c4);
+		// create some reviews
+		createText("Best tutor ever", true, "username", c1.getCourseOfferingID());
+		createRating(5, "username", c1.getCourseOfferingID());
+		createText("Worst tutor ever", true, "username", c2.getCourseOfferingID());
+		createRating(1, "username", c3.getCourseOfferingID());
+		
+		courseOfferingRepository.save(c1);
+		courseOfferingRepository.save(c2);
+		courseOfferingRepository.save(c3);
+		courseOfferingRepository.save(c4);
+		tutorRepository.save(t);
+	}
+	
+	@Transactional
+	public void deleteAll() {
+		// clear in order of dependencies
+		roomRepository.deleteAll();
+		reviewRepository.deleteAll();
+		sessionRepository.deleteAll();
+		courseOfferingRepository.deleteAll();
+		courseRepository.deleteAll();
+		universityRepository.deleteAll();
+		availabilityRepository.deleteAll();
+		roleRepository.deleteAll();
+		tutorRepository.deleteAll();
+		studentRepository.deleteAll();
+		userRepository.deleteAll();
 	}
 	
 }

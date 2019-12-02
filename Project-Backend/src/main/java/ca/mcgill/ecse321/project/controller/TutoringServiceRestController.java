@@ -321,6 +321,13 @@ public class TutoringServiceRestController {
 
 // ***************************************** POST CREATE ******************************************* \\
 
+	@PostMapping(value = {"/createobjects/", "/createobjects"})
+	public boolean createObjects() throws IllegalArgumentException{
+		service.deleteAll();
+		service.createObjects();
+		return true;
+	}
+	
 //	Create room.
 	@PostMapping(value = {"/createroom", "/createroom/"})
 	public RoomDTO createRoom(@RequestParam("roomNumber") int roomNumber) throws IllegalArgumentException{

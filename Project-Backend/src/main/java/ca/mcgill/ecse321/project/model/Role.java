@@ -59,7 +59,7 @@ public abstract class Role{
 
 	private Set<Review> review;
 
-	@OneToMany(mappedBy="writtenAbout" )
+	@OneToMany(mappedBy="writtenAbout", cascade=CascadeType.ALL)
 	public Set<Review> getReview() {
 		return this.review;
 	}
