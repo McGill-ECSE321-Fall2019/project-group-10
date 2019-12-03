@@ -30,6 +30,7 @@
 
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="639dp"
         android:layout_height="461dp"
         android:alpha="0.2"
@@ -72,7 +73,7 @@
         android:layout_height="50dp"
         android:background="@drawable/loginbutton"
         android:text="Login"
-        android:onClick="login"
+        android:onClick="loginUser"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -82,19 +83,32 @@
 
     <TextView
         android:id="@+id/goback"
-        android:layout_width="42dp"
-        android:layout_height="51dp"
+        android:layout_width="68dp"
+        android:layout_height="50dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:onClick="goBack"
-        android:text="&lt;"
+        android:text="Go Back"
         android:textColor="@color/white"
-        android:textSize="40dp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.004" />
+        app:layout_constraintVertical_bias="0.023" />
+
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/loggedIn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

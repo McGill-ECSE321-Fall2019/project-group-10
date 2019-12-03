@@ -8,6 +8,21 @@
     android:orientation="vertical"
     android:background="@color/background">
 
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="74dp"
+        android:layout_height="28dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Logout"
+        android:textColor="@color/white"
+        android:onClick="logout"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.004" />
 
     <TextView
         android:id="@+id/dashboard_heading"
@@ -22,6 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.044" />
 
+
     <TextView
         android:id="@+id/sessionDetails"
         android:layout_width="wrap_content"
@@ -31,10 +47,10 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.174" />
+        app:layout_constraintVertical_bias="0.146" />
 
 
     <View
@@ -42,9 +58,8 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:background="@android:color/darker_gray"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="152dp" />
-
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="139dp" />
 
     <TextView
         android:id="@+id/idSelect"
@@ -55,15 +70,14 @@
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.306" />
+        app:layout_constraintVertical_bias="0.203" />
 
     <Spinner
         android:id="@+id/session_spinner"
-        android:layout_width="123dp"
-        android:layout_height="31dp"
+        android:layout_width="213dp"
+        android:layout_height="40dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
@@ -184,7 +198,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="18dp"
-                android:text="Course Offering"
+                android:text="Amount Due"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
 
@@ -206,9 +220,10 @@
         android:id="@+id/bookingSession"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="Book a Session"
-        android:textColor="@color/white"
         android:background="@drawable/roundedbutton"
+        android:text="Book a Session"
+        android:onClick="goToSessionPage"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

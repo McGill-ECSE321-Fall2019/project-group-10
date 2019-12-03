@@ -111,13 +111,14 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@drawable/loginbutton"
+        android:onClick="createSession"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.944" />
+        app:layout_constraintVertical_bias="0.976" />
 
     <TextView
         android:id="@+id/logout"
@@ -126,6 +127,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Logout"
+        android:onClick="logout"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,6 +136,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.004" />
 
+
+    <TextView
+        android:id="@+id/goBackToDashboard"
+        android:layout_width="74dp"
+        android:layout_height="28dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Go Back"
+        android:onClick="goBackToDashboard"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.02"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.004" />
 
     <Spinner
         android:id="@+id/tutor_spinner"
@@ -189,4 +207,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.746" />
+
+
+    <TextView
+        android:id="@+id/errorBooking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/availability_spinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>
