@@ -20,17 +20,19 @@
                     <input type="text" id="email" v-model="email" placeholder="Email">
                     <input type="text" id="age" v-model="age" placeholder="Age">
                     <input type="text" id="phonenumber" v-model="number" placeholder="Phonenumber">
-                    <input type="button" v-bind:disabled="!username || !password || !Name || !email || !age || !number" @click="signUp()" value="Sign Up">
+                    <br>
+                    <br>
+                    <input type="button" @click="runPyScript()" value="Confirm Identity">
+                    <br>
+                    <input type="button" v-bind:disabled="!username || !password || !Name || !email || !age || !number || imageValue != 'person'" @click="signUp()" value="Sign Up">
                 </div>
             </form>
-
             <div id="formFooter">
                     <a class="underlineHover">{{SignUpError}}</a>
             </div>
-
+          <b>{{mlError}}</b>
         </div>
             </div>
-    
 
 </span>
 </template>
@@ -85,6 +87,8 @@ export default {
       password: '',
       available: true,
       loggedin: false,
+      imageValue: '',
+      mlError: '',
       response: []
     }
   },
@@ -94,7 +98,17 @@ export default {
     }
   },
   methods:{
- 
+    runPyScript(){
+      AXIOS.get(`/begin_facial_recognition`, {}, {})
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.imageValue = response.data.response
+          this.mlError = response.data.errorPhrase
+        })
+        .catch(e => {
+          this.SignUpError = e.response.data.message
+        });
+    },
 
       toggleClass(){
         this.available = false;

@@ -30,6 +30,10 @@ import ca.mcgill.ecse321.project.service.*;
 
 import javax.mail.MessagingException;
 
+import java.io.*;
+
+
+
 @CrossOrigin(origins = "*")
 @RestController
 public class TutoringServiceRestController {
@@ -37,6 +41,55 @@ public class TutoringServiceRestController {
 	@Autowired
 	TutoringAppService service;
 
+	//Facial recognition
+	@GetMapping(value = {"/begin_facial_recognition", "/begin_facial_recognition/"})
+	public MLResponseDTO facialRecognition() throws RuntimeException {
+		
+		try {			
+
+			Process p = Runtime.getRuntime().exec("python /Users/alexander/Desktop/startScript.py");
+			
+			new Thread(new Runnable() {
+			    public void run() {
+			     BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			     String line = null; 
+
+			     try {
+			        while ((line = input.readLine()) != null)
+			            System.out.println(line);
+			     } catch (IOException e) {
+			            e.printStackTrace();
+			     }
+			  }
+			}).start();
+
+			p.waitFor();
+			
+		} catch(IOException ie) {
+			ie.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Read the file.
+		BufferedReader reader;
+		String line = "";
+		try {
+			reader = new BufferedReader(new FileReader("./../facial_recognition/prediction.txt"));
+			line = reader.readLine();
+			//read second line - only check largest probability
+			line = reader.readLine();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//Only return the word for checking
+		MLResponseDTO mlresponse = new MLResponseDTO(line.replaceAll("[^A-Za-z]+", ""), line.replaceAll("[^A-Za-z]+", "") + " detected");
+		return mlresponse;
+	}
+	
 // ******************************************** GET MAPPINGS ********************************************** \\
 
 	// get all users
