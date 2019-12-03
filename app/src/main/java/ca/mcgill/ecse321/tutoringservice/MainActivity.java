@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
     private List<String> sessionNames = new ArrayList<>();
     private ArrayAdapter<String> sessionAdapter;
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // called from Register page, creates user and goes to the Login page
+    /**
+     * @param v
+     */
     public void goToLoginFromRegister(View v) {
         error = "";
 
@@ -138,6 +144,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Login the User and go to the Dashboard
+    /**
+     * @param v
+     */
     public void loginUser(View v) {
 
         error = "";
@@ -194,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // called from book a session or login to load the personal dashboard
+    /**
+     * 
+     */
     public void goToDashboard(){
         setContentView(R.layout.dashboard_page);
 
@@ -236,6 +248,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // called when a session is selected and the dashboard needs to be populated with it's information
+    /**
+     * @param sessionId
+     */
     public void refreshSessionDashboard(String sessionId){
         // get the text objects by id from the view so that they can be populated
         final TextView date = (TextView) findViewById(R.id.date);
@@ -288,6 +303,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // called when Book session is pressed from the dashboard
+    /**
+     * @param v
+     */
     public void goToSessionPage(View v){
         setContentView(R.layout.booksession_page);
 
@@ -448,6 +466,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // called when the SUBMIT button is pressed on the session creation page
+    /**
+     * @param v
+     */
     public void createSession(View v){
 
         // make sure that all items are selected
@@ -488,6 +509,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param v
+     */
     public void logout(View v){
         HttpsUtils.post("/logout?username=" + this.currentlySelectedUsername, new RequestParams(), new JsonHttpResponseHandler() {
 
@@ -511,16 +535,28 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     // called from the startup page, go to the register page
+    /**
+     * @param v
+     */
     public void goToSignUp(View v){ setContentView(R.layout.signup_page); }
 
     // called from the startup page, go to the login page
+    /**
+     * @param v
+     */
     public void goToLogin(View v){ setContentView(R.layout.login_page); }
 
+    /**
+     * @param v
+     */
     public void goBack(View v){
         setContentView(R.layout.activity_main);
     }
 
     //We want to refresh last thus put it at the end
+    /**
+     * 
+     */
     private void refreshErrorMessage() {
 
         // set the error message
@@ -536,6 +572,12 @@ public class MainActivity extends AppCompatActivity {
 
     // Refreshes and updates the list. Used for university, course and session lists.
     // identifier is used to parse the JSON object to get the correct information
+    /**
+     * @param adapter
+     * @param names
+     * @param restFunctionName
+     * @param identifier
+     */
     private void refreshList(final ArrayAdapter<String> adapter, final List<String> names,
                              final String restFunctionName, final String identifier) {
         String fcn = restFunctionName;
@@ -572,6 +614,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Course Offering needs its own refresh method since it requires multiple items to be displayed
+    /**
+     * @param adapter
+     * @param names
+     * @param courseName
+     * @param uniName
+     */
     private void refreshCourseOfferingList(final ArrayAdapter<String> adapter, final List<String> names,
                              final String courseName, final String uniName) {
         HttpsUtils.get("/courses/"+uniName+"/"+courseName, new RequestParams(), new JsonHttpResponseHandler() {
@@ -611,6 +659,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Tutor needs its own refresh method since it requires multiple items to be displayed
+    /**
+     * @param adapter
+     * @param names
+     * @param courseOfferingId
+     */
     private void refreshTutorList(final ArrayAdapter<String> adapter, final List<String> names,
                                            final String courseOfferingId) {
         HttpsUtils.get("/courseoffering/"+courseOfferingId, new RequestParams(), new JsonHttpResponseHandler() {
@@ -650,6 +703,11 @@ public class MainActivity extends AppCompatActivity {
     // Availability needs its own refresh method since it requires multiple items to be displayed
     // The returned availability is also parsed differently since the HTTP request returns a tutor
     // object and the availabilities must be extracted from that
+    /**
+     * @param adapter
+     * @param names
+     * @param tutorName
+     */
     private void refreshAvailabilityList(final ArrayAdapter<String> adapter, final List<String> names,
                                   final String tutorName) {
         HttpsUtils.get("/tutor/"+tutorName, new RequestParams(), new JsonHttpResponseHandler() {
@@ -694,6 +752,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //        Has all the go-back codes
+    /**
+     * @param v
+     */
     public void goBackToDashboard(View v){
         createSession = true;
         goToDashboard();
