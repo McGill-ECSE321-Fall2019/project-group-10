@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
              * This method defines the behavior of the selection box, and describes the full 
              * extent of the operations of this method.  
              * @param parentView       The AdapterView where the selection happened 
-             * @param selectedItemView The View within the adaptar view that was clicked
+             * @param selectedItemView The View within the adapter view that was clicked
              * @param position         The position of the view in the adapter 
              * @param id               The id of the row that was selected  
              */
@@ -419,7 +419,7 @@ public class MainActivity extends AppCompatActivity {
              * This method defines the behavior of the selection box, and describes the full 
              * extent of the operations of this method.  
              * @param parentView       The AdapterView where the selection happened 
-             * @param selectedItemView The View within the adaptar view that was clicked
+             * @param selectedItemView The View within the adapter view that was clicked
              * @param position         The position of the view in the adapter 
              * @param id               The id of the row that was selected  
              */
@@ -449,7 +449,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
+            
+        	/**
+             * This method defines the behavior of the selection box, and describes the full 
+             * extent of the operations of this method.  
+             * @param parentView       The AdapterView where the selection happened 
+             * @param selectedItemView The View within the adapter view that was clicked
+             * @param position         The position of the view in the adapter 
+             * @param id               The id of the row that was selected  
+             */
+        	@Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // listener code is run twice - once at creation and once when selection is made
                 // ensures that the selection is not requested upon creation
@@ -459,18 +468,32 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     Object course = parentView.getItemAtPosition(position);
                     courseString = course.toString();
-                    // populate the course offering list based on the selected course
                     refreshCourseOfferingList(courseOfferingAdapter, courseOfferingNames, courseString, selectedUni);
                 }
             }
-
+            
+            /**
+             * This method defines the behavior when nothing is selected. Note that
+             * this method body is empty to signify that nothing is done, when nothing
+             * is selected. 
+             * @param parentView The AdapterView that now contains no selected item
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
 
         });
 
         courseOfferingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
+            
+        	/**
+             * This method defines the behavior of the selection box, and describes the full 
+             * extent of the operations of this method.  
+             * @param parentView       The AdapterView where the selection happened 
+             * @param selectedItemView The View within the adapter view that was clicked
+             * @param position         The position of the view in the adapter 
+             * @param id               The id of the row that was selected  
+             */
+        	@Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // listener code is run twice - once at creation and once when selection is made
                 // ensures that the selection is not requested upon creation
@@ -479,22 +502,34 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     String courseOffering = parentView.getItemAtPosition(position).toString();
-                    // course offering dropdown lists the TERM YEAR id: ID
-                    // must parse the string and take the 3rd element (0 index)
                     String[] sp = courseOffering.split(" ");
                     selectedCourseOfferingId = sp[3];
-                    // populate the tutor list based on the selected course offering
                     refreshTutorList(tutorAdapter, tutorNames, selectedCourseOfferingId);
                 }
             }
-
+            
+            /**
+             * This method defines the behavior when nothing is selected. Note that
+             * this method body is empty to signify that nothing is done, when nothing
+             * is selected. 
+             * @param parentView The AdapterView that now contains no selected item
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) { }
 
         });
 
         tutorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
+            
+        	/**
+             * This method defines the behavior of the selection box, and describes the full 
+             * extent of the operations of this method.  
+             * @param parentView       The AdapterView where the selection happened 
+             * @param selectedItemView The View within the adapter view that was clicked
+             * @param position         The position of the view in the adapter 
+             * @param id               The id of the row that was selected  
+             */
+        	@Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // listener code is run twice - once at creation and once when selection is made
                 // ensures that the selection is not requested upon creation
@@ -505,11 +540,6 @@ public class MainActivity extends AppCompatActivity {
                     String username = parentView.getItemAtPosition(position).toString();
                     String[] sp = username.split(" ");
                     selectedTutor = sp[0];
-
-                    // save the hourly rate for session creation
-                    // tutor list has the form USERNAME rate:$RATE/hour
-                    // the first number is in the 6th position (0 index)
-                    // the last number is right before the '/'
                     int startPos = 6;
                     int endPos = sp[1].indexOf('/');
                     StringBuilder sb = new StringBuilder();
@@ -518,19 +548,32 @@ public class MainActivity extends AppCompatActivity {
                         sb.append(nextDigit);
                     }
                     selectedTutorHR = sb.toString();
-
-                    // populate the availability list based on the selected tutor
+                    
                     refreshAvailabilityList(availabilityAdapter, availabilityNames, selectedTutor);
                 }
             }
-
+            
+            /**
+             * This method defines the behavior when nothing is selected. Note that
+             * this method body is empty to signify that nothing is done, when nothing
+             * is selected. 
+             * @param parentView The AdapterView that now contains no selected item
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
 
         });
 
         availabilitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
+        	/**
+             * This method defines the behavior of the selection box, and describes the full 
+             * extent of the operations of this method.  
+             * @param parentView       The AdapterView where the selection happened 
+             * @param selectedItemView The View within the adapter view that was clicked
+             * @param position         The position of the view in the adapter 
+             * @param id               The id of the row that was selected  
+             */
+        	@Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // listener code is run twice - once at creation and once when selection is made
                 // ensures that the selection is not requested upon creation
@@ -539,25 +582,30 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     idAvail = parentView.getItemAtPosition(position).toString();
-                    // save the selected availability date and time for session creation
-                    // parse the string into DATE and TIME components
                     String[] sp = idAvail.split(" ");
                     selectedAvailabilityDate = sp[0];
                     selectedAvailabilityTime = sp[1];
                 }
             }
-
+            
+            /**
+             * This method defines the behavior when nothing is selected. Note that
+             * this method body is empty to signify that nothing is done, when nothing
+             * is selected. 
+             * @param parentView The AdapterView that now contains no selected item
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) { }
 
         });
 
-        // university doesn't depend on anything else so can refresh the list upon page creation
+        // university doesn't depend on anything else so we can refresh the list upon page creation
         refreshList(universityAdapter, universityNames, "/universities", "name");
     }
 
     // called when the SUBMIT button is pressed on the session creation page
     /**
+     * 
      * @param v
      */
     public void createSession(View v){
