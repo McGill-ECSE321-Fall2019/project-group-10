@@ -243,29 +243,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    // called from book a session or login to load the personal dashboard
+    
     /**
-     * This method loads the student Dashboard
+     * This method loads the student Dashboard after completing the login
+     * operation or the book session operation. 
      */
     public void goToDashboard(){
         setContentView(R.layout.dashboard_page);
 
-        // need to reset booleans before going to the book a session page creation
+        //resetting all the variables to ensure they are in the correct
+        //state for calling the book session page
         createUni = true;
         createCourse = true;
         createCourseOffering = true;
         createTutor = true;
         createAvailability = true;
 
-        // set up object for the session dropdown list
+        //view available session for the student
         Spinner sessionSpinner = (Spinner) findViewById(R.id.session_spinner);
         sessionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sessionNames);
         sessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sessionSpinner.setAdapter(sessionAdapter);
-
+        
+        //Once a session was selected, the app automatically generates spinners
         sessionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
+            
+        	/**
+             * This method defines the behavior of the selection box, and describes the full 
+             * extent of the operations of this method.  
+             * @param parentView       The AdapterView where the selection happened 
+             * @param selectedItemView The View within the adaptar view that was clicked
+             * @param position         The position of the view in the adapter 
+             * @param id               The id of the row that was selected  
+             */
+        	@Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // listener code is run twice - once at creation and once when selection is made
                 // ensures that the selection is not requested upon creation
@@ -279,35 +290,49 @@ public class MainActivity extends AppCompatActivity {
                     refreshSessionDashboard(selectedSessionID);
                 }
             }
-
+        	
+        	/**
+             * This method defines the behavior when nothing is selected. Note that
+             * this method body is empty to signify that nothing is done, when nothing
+             * is selected. 
+             * @param parentView The AdapterView that now contains no selected item
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
-
-        // get all the sesisons for the currently logged in user upon dashboard page creation
+        
         refreshList(sessionAdapter, sessionNames,
                 "/sessionbystudent?student_name="+currentlySelectedUsername, "sessionid");
     }
-
-    // called when a session is selected and the dashboard needs to be populated with it's information
+    
     /**
-     * @param sessionId
+     * This method describes the behavior when a session is selected, and the 
+     * student Dashboard needs to be updated with the relevant information. This
+     * method displays the information about the selected session (identified by the 
+     * sessionId) to the screen.
+     * @param sessionId The Id of the session about which to display more information
      */
     public void refreshSessionDashboard(String sessionId){
-        // get the text objects by id from the view so that they can be populated
+        
         final TextView date = (TextView) findViewById(R.id.date);
         final TextView time = (TextView) findViewById(R.id.time);
         final TextView tutor = (TextView) findViewById(R.id.tutor);
         final TextView course = (TextView) findViewById(R.id.course);
         final TextView courseOffering = (TextView) findViewById(R.id.courseOffering);
-
-        // send the HTTP request to get the session information by its ID
+        
         HttpsUtils.get("/session?session_id="+sessionId, new RequestParams(), new JsonHttpResponseHandler() {
-
+        	
+        	/**
+             * This method defines the behavior of the successful completion of the HTTP request. 
+             * @param statusCode The status code of the response
+             * @param headers    The list of headers that are returned, if they exist
+             * @param response   A JSONObject that represents the HTTP response data  
+             */
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 try {
+                	
                     date.setText(response.getString("date"));
                     time.setText(response.getString("time"));
                     tutor.setText(response.getJSONObject("tutorDTO").getString("username"));
@@ -330,7 +355,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-
+            
+            /**
+             * This method defines the behavior of the erroneous completion of the HTTP request. 
+             * @param statusCode    The status code of the response, which will indicate what went wrong
+             * @param headers       The list of headers that are returned, if they exist
+             * @param throwable     A Throwable object that describes the underlying cause of the error
+             * @param errorResponse A JSONObject that represents the HTTP response data  
+             */
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
@@ -338,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     error += e.getMessage();
                 }
+                //no matter what is done, we will need to refresh the error messages.
                 refreshErrorMessage();
             }
         });
