@@ -93,46 +93,64 @@ public class MainActivity extends AppCompatActivity {
      * This method connects two pages of the app. The user has the chance to create an account. 
      * Immediately following their account creation, they are taken to the login page to
      * login to their new account. 
-     * @param v
+     * @param v A View object that represents a component of the UI. This is the component 
+     *          that was interacted with that caused this method to be called.
      */
     public void goToLoginFromRegister(View v) {
         error = "";
-
-        // get all the text inputs from the page by id so that the text can be retrieved
+        
+        //Transfer all the elements from the view to variables to use 
+        //later in the program, for method calls and to determine if 
+        //an error message needs to be thrown
         final TextView email = (TextView) findViewById(R.id.signupEmail);
         final TextView username = (TextView) findViewById(R.id.signupUser);
         final TextView password = (TextView) findViewById(R.id.signupPassword);
         final TextView name = (TextView) findViewById(R.id.signupName);
         final TextView age = (TextView) findViewById(R.id.signupAge);
         final TextView phoneNumber = (TextView) findViewById(R.id.signupPhoneNumber);
-
-        //Store for use for username later.
+        
         this.currentlySelectedUsername = username.getText().toString();
-
-        // prevent users from pressing Login without filling in the text boxes
+        
         if (email.getText().toString().matches("") || username.getText().toString().matches("")
                 || password.getText().toString().matches("") || name.getText().toString().matches("")
                 || age.getText().toString().matches("") || phoneNumber.getText().toString().matches(""))
         {
-            error = "Please fill out all fields.";
+            //throw an error if the user attempts to login without filling out the appropriate fields.
+        	error = "Please fill out all fields.";
             refreshErrorMessage();
             return;
         }
-
-        // send the HTTP request to create a user
+        
         Integer ageInt = Integer.parseInt(age.getText().toString());
+        //configure the relative URL with the parameters specified above
+        //Note that this ensures that the RequestParams Object can be set to
+        //the empty object. 
         HttpsUtils.post("/createuser2?userName=" + username.getText().toString() +
                 "&userPassword=" + password.getText().toString() +
                 "&userEmail=" + email.getText().toString() +
                 "&age=" + ageInt +
                 "&phoneNum=" + phoneNumber.getText().toString() +
                 "&name=" + name.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
-
+        	
+        	/**
+             * This method defines the behavior of the successful completion of the HTTP request. 
+             * @param statusCode The status code of the response
+             * @param headers    The list of headers that are returned, if they exist
+             * @param response   A JSONObject that represents the HTTP response data  
+             */
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 setContentView(R.layout.login_page);
             }
+            
+            /**
+             * This method defines the behavior of the erroneous completion of the HTTP request. 
+             * @param statusCode    The status code of the response, which will indicate what went wrong
+             * @param headers       The list of headers that are returned, if they exist
+             * @param throwable     A Throwable object that describes the underlying cause of the error
+             * @param errorResponse A JSONObject that represents the HTTP response data  
+             */
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
 
@@ -155,53 +173,62 @@ public class MainActivity extends AppCompatActivity {
 
     // Login the User and go to the Dashboard
     /**
-     * @param v
+     * This method controls the direction from the login page to the student Dashboard. This 
+     * is important as it is controls the direction from one page to another and ensures that
+     * login security is maintained.
+     * @param v A View object that represents a component of the UI. This is the component 
+     *          that was interacted with that caused this method to be called.
      */
     public void loginUser(View v) {
 
         error = "";
         final TextView username = (TextView) findViewById(R.id.loginusername);
         final TextView password = (TextView) findViewById(R.id.loginpassword);
-
-        // ensure that a user cannot login without filling in all fields
+        
         if (username.getText().toString().matches("") || password.getText().toString().matches(""))
         {
-            error = "Please fill out all fields.";
+        	//throw an error if the user attempts to login without filling out the appropriate fields.
+        	error = "Please fill out all fields.";
             refreshErrorMessage();
             return;
         }
-
-        // send the HTTP request to login the user
+        
         HttpsUtils.post("/login?username=" + username.getText().toString() + "&password="
                 + password.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
-
+        	
+        	/**
+             * This method defines the behavior of the successful completion of the HTTP request. 
+             * @param statusCode The status code of the response
+             * @param headers    The list of headers that are returned, if they exist
+             * @param response   A JSONObject that represents the HTTP response data  
+             */
             @Override
             public void onSuccess(int statusCode, Header[] headers, String response) {
-                //Setup dashboard info and load page
                 currentlySelectedUsername = username.getText().toString();
                 goToDashboard();
             }
+            
+            /**
+             * This method defines the behavior of the erroneous completion of the HTTP request. 
+             * @param statusCode    The status code of the response, which will indicate what went wrong
+             * @param headers       The list of headers that are returned, if they exist
+             * @param throwable     A Throwable object that describes the underlying cause of the error
+             * @param errorResponse A JSONObject that represents the HTTP response data  
+             */
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                //Success case
+                
                 if(responseString.equals("true")){
-                    // reset the boolean for the session dropdown list
                     createSession = true;
-                    // save the variable for later
                     currentlySelectedUsername = username.getText().toString();
-                    // head to the personal dashboard
                     goToDashboard();
                 }
-                // wrong password/username combination
                 else if(responseString.equals("false")) {
                     username.setText("");
                     password.setText("");
-
-                    // change error message.
                     error = "Incorrect information";
                     refreshErrorMessage();
                 }
-                // some other issue to report
                 else{
                     username.setText("");
                     password.setText("");
@@ -214,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
     // called from book a session or login to load the personal dashboard
     /**
-     * 
+     * This method loads the student Dashboard in the 
      */
     public void goToDashboard(){
         setContentView(R.layout.dashboard_page);
