@@ -41,7 +41,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>19</td>
     <td>53</td>
     <td>20</td>
-    <td>21</td>
+    <td>25</td>
   </tr>
 
   <tr>
@@ -50,7 +50,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>20</td>
     <td>50</td>
     <td>40</td>
-    <td>25</td>
+    <td>30</td>
   </tr>
 
   <tr>
@@ -59,7 +59,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>19</td>
     <td>58</td>
     <td>27</td>
-    <td>2</td>
+    <td>22</td>
   </tr>
 
   <tr>
