@@ -181,8 +181,12 @@ framework, head over to our wiki page and select any page titled with a date:<br
   <li> To provide a quick explanation how it works:
     <ol>
       <li> To start the script, make your way into the facial_recognition folder. Here, you will have to run the script runScript.py (very original name) with the command -> python runScript.py. Python must be installed in order for you to run this. If it is not installed, click <a href="https://www.codecademy.com/articles/install-python">here</a> for instructions.
-      <li> A prompt will be shown asking to access your computer. The algorithm will use your camera to take a picture of you to check to see if you are a human. Give the script access.
-      <li> Once the picture is taken, an algorithm runs on the image taken and attempts to find all objects in the picture.
+      <li> A prompt will be shown asking to access your computer. 
+      <li> The algorithm will use your camera to take a picture of you to check to see if you are a human. 
+      <li> You need to make sure you have set your computer's cameras permission to allow terminal access. To do so in mac, go into your system preferences > security and privacy > privacy. In the left tab select 'Camera'. Find terminal in the right tab and make sure it is checked for permissions. If it is checked, you can run the script.
+      <li> If you are using a windows system, find the link <a href="https://support.microsoft.com/en-ca/help/4468232/windows-10-camera-microphone-and-privacy">here</a> for more information on terminal permissions for accessing your camera.
+      <li> DO NOT SMILE FOR THE PICTURE.
+      <li> Once the picture is taken, an algorithm runs on the image taken and attempts to find all objects in the picture including all people.
       <li> Once complete, a file called -> prediction.txt will be generated. In this file will be written everything the algorithm detected. 
   </ol>
   <li> Once this is done, in the front end, after making your way to the home screen, click on sign up. (Make sure you run -> npm run dev in the face_recog branch).
