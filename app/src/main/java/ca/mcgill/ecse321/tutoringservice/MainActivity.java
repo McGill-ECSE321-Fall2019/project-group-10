@@ -286,7 +286,6 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     Object sessionID = parentView.getItemAtPosition(position);
                     String selectedSessionID = sessionID.toString();
-                    // populate the rest of the page
                     refreshSessionDashboard(selectedSessionID);
                 }
             }
@@ -376,21 +375,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-    // called when Book session is pressed from the dashboard
+    
     /**
-     * @param v
+     * This method controls the behavior between going from the student Dashboard
+     * to the book session views. This is called when the Book Session button is 
+     * pressed on the Android front end.  
+     * @param v A View object that represents a component of the UI. This is the component 
+     *          that was interacted with that caused this method to be called.
      */
     public void goToSessionPage(View v){
         setContentView(R.layout.booksession_page);
-
+        
+        //these select lists are required to get the information to book a session
         Spinner uniSpinner = (Spinner) findViewById(R.id.uni_spinner);
         Spinner courseSpinner = (Spinner) findViewById(R.id.course_spinner);
         Spinner courseOfferingSpinner = (Spinner) findViewById(R.id.courseoffering_spinner);
         Spinner tutorSpinner = (Spinner) findViewById(R.id.tutor_spinner);
         Spinner availabilitySpinner = (Spinner) findViewById(R.id.availability_spinner);
-
-        //Set up objects for each list
+        
         universityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, universityNames);
         universityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         uniSpinner.setAdapter(universityAdapter);
@@ -412,7 +414,16 @@ public class MainActivity extends AppCompatActivity {
         availabilitySpinner.setAdapter(availabilityAdapter);
 
         uniSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
+            
+        	/**
+             * This method defines the behavior of the selection box, and describes the full 
+             * extent of the operations of this method.  
+             * @param parentView       The AdapterView where the selection happened 
+             * @param selectedItemView The View within the adaptar view that was clicked
+             * @param position         The position of the view in the adapter 
+             * @param id               The id of the row that was selected  
+             */
+        	@Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // listener code is run twice - once at creation and once when selection is made
                 // ensures that the selection is not requested upon creation
@@ -422,11 +433,16 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     Object uni = parentView.getItemAtPosition(position);
                     selectedUni = uni.toString();
-                    // populate the course list based on the selected university
                     refreshList(courseAdapter, courseNames, "/universities/" + selectedUni, "courseName");
                 }
             }
-
+        	
+        	/**
+             * This method defines the behavior when nothing is selected. Note that
+             * this method body is empty to signify that nothing is done, when nothing
+             * is selected. 
+             * @param parentView The AdapterView that now contains no selected item
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
 
