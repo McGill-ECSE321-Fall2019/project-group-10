@@ -257,6 +257,8 @@ public class MainActivity extends AppCompatActivity {
     public void goToDashboard(){
         setContentView(R.layout.dashboard_page);
 
+        error = "";
+
         //resetting all the variables to ensure they are in the correct
         //state for calling the book session page
         createUni = true;
@@ -391,8 +393,11 @@ public class MainActivity extends AppCompatActivity {
      */
     public void goToSessionPage(View v){
         setContentView(R.layout.booksession_page);
+
+        error = "";
         
         //these select lists are required to get the information to book a session
+
         Spinner uniSpinner = (Spinner) findViewById(R.id.uni_spinner);
         Spinner courseSpinner = (Spinner) findViewById(R.id.course_spinner);
         Spinner courseOfferingSpinner = (Spinner) findViewById(R.id.courseoffering_spinner);
@@ -437,6 +442,14 @@ public class MainActivity extends AppCompatActivity {
                     createUni = false;
                 }
                 else {
+                    error = "";
+                    selectedCourseOfferingId = "";
+                    selectedTutor = "";
+                    selectedTutorHR = "";
+                    selectedAvailabilityDate = "";
+                    selectedAvailabilityTime = "";
+                    courseString = "";
+                    idAvail = "";
                     Object uni = parentView.getItemAtPosition(position);
                     selectedUni = uni.toString();
                     refreshList(courseAdapter, courseNames, "/universities/" + selectedUni, "courseName");
@@ -472,6 +485,13 @@ public class MainActivity extends AppCompatActivity {
                     createCourse = false;
                 }
                 else {
+                    error = "";
+                    selectedCourseOfferingId = "";
+                    selectedTutor = "";
+                    selectedTutorHR = "";
+                    selectedAvailabilityDate = "";
+                    selectedAvailabilityTime = "";
+                    idAvail = "";
                     Object course = parentView.getItemAtPosition(position);
                     courseString = course.toString();
                     refreshCourseOfferingList(courseOfferingAdapter, courseOfferingNames, courseString, selectedUni);
@@ -507,6 +527,12 @@ public class MainActivity extends AppCompatActivity {
                     createCourseOffering = false;
                 }
                 else {
+                    error = "";
+                    selectedTutor = "";
+                    selectedTutorHR = "";
+                    selectedAvailabilityDate = "";
+                    selectedAvailabilityTime = "";
+                    idAvail = "";
                     String courseOffering = parentView.getItemAtPosition(position).toString();
                     String[] sp = courseOffering.split(" ");
                     selectedCourseOfferingId = sp[3];
@@ -543,6 +569,10 @@ public class MainActivity extends AppCompatActivity {
                     createTutor = false;
                 }
                 else {
+                    error = "";
+                    selectedAvailabilityDate = "";
+                    selectedAvailabilityTime = "";
+                    idAvail = "";
                     String username = parentView.getItemAtPosition(position).toString();
                     String[] sp = username.split(" ");
                     selectedTutor = sp[0];
@@ -587,6 +617,7 @@ public class MainActivity extends AppCompatActivity {
                     createAvailability = false;
                 }
                 else {
+                    error = "";
                     idAvail = parentView.getItemAtPosition(position).toString();
                     String[] sp = idAvail.split(" ");
                     selectedAvailabilityDate = sp[0];
@@ -648,6 +679,9 @@ public class MainActivity extends AppCompatActivity {
                     selectedTutorHR = "";
                     selectedAvailabilityDate = "";
                     selectedAvailabilityTime = "";
+                    selectedUni = "";
+                    courseString = "";
+                    idAvail = "";
                     goToDashboard();
                 }
             	
@@ -709,6 +743,14 @@ public class MainActivity extends AppCompatActivity {
                 if(responseString == "" || responseString.isEmpty()){
                     createSession = true;
                     currentlySelectedUsername = "";
+                    selectedCourseOfferingId = "";
+                    selectedTutor = "";
+                    selectedTutorHR = "";
+                    selectedAvailabilityDate = "";
+                    selectedAvailabilityTime = "";
+                    selectedUni = "";
+                    courseString = "";
+                    idAvail = "";
                     setContentView(R.layout.activity_main);
                 }
             }
@@ -796,6 +838,9 @@ public class MainActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         error += e.getMessage();
                     }
+
+                    refreshErrorMessage();
+
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -814,6 +859,9 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     error += e.getMessage();
                 }
+
+                refreshErrorMessage();
+                
             }
         });
     }
@@ -854,6 +902,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         error += e.getMessage();
                     }
+                    refreshErrorMessage();
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -911,6 +960,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         error += e.getMessage();
                     }
+                    refreshErrorMessage();
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -972,6 +1022,7 @@ public class MainActivity extends AppCompatActivity {
                         } catch (Exception e) {
                             error += e.getMessage();
                         }
+                        refreshErrorMessage();
                     }
                     adapter.notifyDataSetChanged();
                 } catch (Exception e) {
@@ -1006,6 +1057,14 @@ public class MainActivity extends AppCompatActivity {
      */
     public void goBackToDashboard(View v){
         createSession = true;
+        selectedCourseOfferingId = "";
+        selectedTutor = "";
+        selectedTutorHR = "";
+        selectedAvailabilityDate = "";
+        selectedAvailabilityTime = "";
+        selectedUni = "";
+        courseString = "";
+        idAvail = "";
         goToDashboard();
     }
 
