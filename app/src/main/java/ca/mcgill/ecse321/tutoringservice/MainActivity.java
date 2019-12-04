@@ -170,8 +170,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    // Login the User and go to the Dashboard
+    
     /**
      * This method controls the direction from the login page to the student Dashboard. This 
      * is important as it is controls the direction from one page to another and ensures that
@@ -200,7 +199,8 @@ public class MainActivity extends AppCompatActivity {
              * This method defines the behavior of the successful completion of the HTTP request. 
              * @param statusCode The status code of the response
              * @param headers    The list of headers that are returned, if they exist
-             * @param response   A JSONObject that represents the HTTP response data  
+             * @param response   The string that describes the server's response, when no error 
+             *                   is thrown.  
              */
             @Override
             public void onSuccess(int statusCode, Header[] headers, String response) {
@@ -210,25 +210,30 @@ public class MainActivity extends AppCompatActivity {
             
             /**
              * This method defines the behavior of the erroneous completion of the HTTP request. 
-             * @param statusCode    The status code of the response, which will indicate what went wrong
-             * @param headers       The list of headers that are returned, if they exist
-             * @param throwable     A Throwable object that describes the underlying cause of the error
-             * @param errorResponse A JSONObject that represents the HTTP response data  
+             * @param statusCode     The status code of the response, which will indicate what went wrong
+             * @param headers        The list of headers that are returned, if they exist
+             * @param responseString The response String that describes the return value of the HTTP request
+             *                       that was sent when an error occurs 
+             * @param throwable      A Throwable object that describes the underlying cause of the error 
              */
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 
+            	//Check if the Username and Password match and ignore the error
+            	//as they exist in the database
                 if(responseString.equals("true")){
                     createSession = true;
                     currentlySelectedUsername = username.getText().toString();
                     goToDashboard();
                 }
+                //if the Username and password do not match, do not allow login
                 else if(responseString.equals("false")) {
                     username.setText("");
                     password.setText("");
                     error = "Incorrect information";
                     refreshErrorMessage();
                 }
+                //if there is an unspecified response - we do not know what the error was
                 else{
                     username.setText("");
                     password.setText("");
@@ -241,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
 
     // called from book a session or login to load the personal dashboard
     /**
-     * This method loads the student Dashboard in the 
+     * This method loads the student Dashboard
      */
     public void goToDashboard(){
         setContentView(R.layout.dashboard_page);
