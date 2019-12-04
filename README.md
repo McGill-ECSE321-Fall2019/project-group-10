@@ -166,7 +166,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
 
 <h2>Extra Features</h2><br>
 <ol>
-  <li>Machine learning face recognition for signing up. See below for ML setup.
+  <li>Machine learning face recognition for signing up. See below for ML setup. This algorithm was partially trained with YOLO software - License.txt seen above.
   <li>Email notification upon session creation. See below for email setup.
 </ol>
 <br>
