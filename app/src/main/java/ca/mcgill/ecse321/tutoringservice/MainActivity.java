@@ -72,7 +72,14 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> sessionAdapter;
 
     /**
-     * @param savedInstanceState
+     * This method defines the app behavior as a part of the Android Lifecycle. This method will be
+     * called when the system first creates the activity. Upon creation of this activity, 
+     * the activity will enter the created state. This method should only be called once 
+     * throughout the activities lifecycle. 
+     * @param savedInstanceState This object contains the application's previously saved state in the 
+     *                           form of a Bundle object. This parameter is used to load the previous 
+     *                           saved state into the program. Note that the object is null if there
+     *                           is no saved state.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +87,12 @@ public class MainActivity extends AppCompatActivity {
         createSession = true;
         setContentView(R.layout.activity_main);
     }
-
-    // called from Register page, creates user and goes to the Login page
+    
+    
     /**
+     * This method connects two pages of the app. The user has the chance to create an account. 
+     * Immediately following their account creation, they are taken to the login page to
+     * login to their new account. 
      * @param v
      */
     public void goToLoginFromRegister(View v) {
