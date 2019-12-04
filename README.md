@@ -7,6 +7,14 @@ Chelsea Myers-Colet<br>
 Yoan Poulmarc'k<br>
 Anas Shahid<br>
 
+<h2>Important</h2>
+For deliverable 4, there are 3 important branches that all have different pieces of the project for simplicity of testing.
+<ol>
+  <li> master : this branch contains the completed website application for marking
+  <li> android : this branch contains the completed android application for marking
+  <li> face_recog : this branch contains our facial recog extra feature and should only be used to test this feature
+</ol>
+
 <h2>Scope of Project:</h2><br>
 The goal of our project is to create the student perspective of a tutoring application.
 This will be accessible via an app on any Android device. The application
