@@ -175,6 +175,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <ol>
   <li> The machine learning extension is only added to the face_recog branch as we did not want the software to interfere with basic front end testing for the reviewer. This branch should only be used to test the algorithm.
   <li> Before starting, make sure you have opencv installed on your computer. If not, use this on your command line to install <br><b>pip install opencv-python</b>
+  <li> If you do not have pip installed, click <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fgist.github.com%2Fhaircut%2F14705555d58432a5f01f9188006a04ed%3Ffbclid%3DIwAR0tZ6RvZMkMHSFf1PW2XG3N7xpi_RnOsVgCb1BTSsT1hYG1IdFTxK3XWIk&h=AT2nhYVBVNF5dyDVCxgeKH3acaF9u-TrbBpIjVE-FH4MOcYK8Wy-KU7Uxme3irL5Ob5RlLMKN7DUUtctBysehoeyEHAfgsWHSjVWvv53po8Y5cto7V6AKktN3jBox5Q-7DinCbLD9ug">here</a> for instructions on how to download it for MacOS and how to set path.
   <li> Make your way into the face_recog branch by running -> git checkout face_recog on the cmdline. Here you will find one additional folder called -> facial_recognition where all scripts are held.
   <li> To provide a quick explanation how it works:
     <ol>
