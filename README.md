@@ -41,7 +41,7 @@ Below can be found the role of each member and the number of hours spent on each
     <td>20</td>
     <td>50</td>
     <td>40</td>
-    <td>19</td>
+    <td>25</td>
   </tr>
 
   <tr>
@@ -163,11 +163,69 @@ Below can be found the role of each member and the number of hours spent on each
 <br>To see our meeting minutes, including key design decisions and architecture
 framework, head over to our wiki page and select any page titled with a date:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<h2><b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki">Group 10 Wiki</a></b></h2>
-<h2>Instructions for setting up Android</h2><br>
+
+<h2>Extra Features</h2><br>
+<ol>
+  <li>Machine learning face recognition for signing up. See below for ML setup.
+  <li>Email notification upon session creation. See below for email setup.
+</ol>
+<br>
+
+<h2>Instructions for testing Machine Learning algorithm</h2><br>
+<ol>
+  <li> The machine learning extension is only added to the face_recog branch as we did not want the software to interfere with basic front end testing for the reviewer. This branch should only be used to test the algorithm.
+  <li> Before starting, make sure you have opencv installed on your computer. If not, use this on your command line to install <br><b>pip install opencv-python</b>
+  <li> If you do not have pip installed, click <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fgist.github.com%2Fhaircut%2F14705555d58432a5f01f9188006a04ed%3Ffbclid%3DIwAR0tZ6RvZMkMHSFf1PW2XG3N7xpi_RnOsVgCb1BTSsT1hYG1IdFTxK3XWIk&h=AT2nhYVBVNF5dyDVCxgeKH3acaF9u-TrbBpIjVE-FH4MOcYK8Wy-KU7Uxme3irL5Ob5RlLMKN7DUUtctBysehoeyEHAfgsWHSjVWvv53po8Y5cto7V6AKktN3jBox5Q-7DinCbLD9ug">here</a> for instructions on how to download it for MacOS and how to set path.
+  <li> Make your way into the face_recog branch by running -> git checkout face_recog on the cmdline. Here you will find one additional folder called -> facial_recognition where all scripts are held.
+  <li> To provide a quick explanation how it works:
+    <ol>
+      <li> To start the script, make your way into the facial_recognition folder. Here, you will have to run the script runScript.py (very original name) with the command -> python runScript.py. Python must be installed in order for you to run this. If it is not installed, click <a href="https://www.codecademy.com/articles/install-python">here</a> for instructions.
+      <li> A prompt will be shown asking to access your computer. The algorithm will use your camera to take a picture of you to check to see if you are a human. Give the script access.
+      <li> Once the picture is taken, an algorithm runs on the image taken and attempts to find all objects in the picture.
+      <li> Once complete, a file called -> prediction.txt will be generated. In this file will be written everything the algorithm detected. 
+  </ol>
+  <li> Once this is done, in the front end, after making your way to the home screen, click on sign up. (Make sure you run -> npm run dev in the face_recog branch).
+  <li> The algorithm is meant to detect individuals who are signing up to make sure they are human.
+  <li> The button -> confirm identity, will run the script in the future (issues with running pythons script form java). If you press the button now (after running the script), a restful api call will be sent to the service class and will read from the prediction.txt file and see what objects were detected. 
+  <li> If you are more than 65% human, you will be detected and you will be able to sign up for an account once all information is added.
+</ol>
+  
+<h2>Instructions for testing and setting up email on Eclipse</h2><br>
+<ol>
+  <li> If the email class poses erorrs on Eclipse do the following on the git repo on command line: </li>
+  <li> gradle cleanEclipse </li>
+  <li> gradle Eclipse </li>
+  <li> gradle build -x test </li>
+  <li> Once running the commands as seen above, the email is ready to be used.
+  <li> The email will only be sent to a registered tutor upon session creation. If you would like to test it, change one line in the code, run the program by running the tesObjects test to set up mock varaibles as seen below, and then create a session.
+  <li>
+    <ol>
+      <li> First, we must change the email location. Make your way into the file JavaEmail.java with this path -> /Project-Backend/src/test/java/ca/mcgill/ecse321/project/service/TestObjects.java
+      <li> Open the file and make your way to line 51. This is where the tutor email is set. Replace the dummy email with your own, save the file, rerun the spring server and then run the testObject test as seen in the instructions below.
+      <li> You have now created a tutor with your email. Run the appliction Frontend as instructed below. Sign in with username: cmc and password: dogs (quick access opposed to making a new account), click on create session and choose the tutor who's email you just changed. Confirm session creation and you should receive an email from project-group-10.
+    </ol>
+  </li>
+</ol>
+
+<h2>Instructions for setting up Android and Heroku</h2><br>
 <ol>
   <li>Run the Spring backend by going to https://project-backend-10.herokuapp.com.</li>
   <li>Run the Android application using a Pixel 2 emulator.</li>
-  <li>To test Android with test objects, follow step 2 below for creating test objects for the web service. Do this only after running the Spring backend on Heroku but before running the Android emulator. To check the creation, go to the /students endpoint which should display a student with the username "cmc" and password "dogs".</li>
+  <li>To test Android with test objects using the Spring Boot application, follow steps below in "Instructions for setting up objects to test the frontend web service". Do this only after running the Spring backend on Heroku but before running the Android emulator. To check the creation, go to the /students endpoint which should display a student with the username "cmc" and password "dogs" which can be used to log in. This also creates a session and a tutor will one availability for creating another session</li>
+  <li> To do all this on command line after opening the Heroku backend website: 
+    <ol> 
+      <li> Navigate to the git repository and proceed into the Project-Backend folder </li>
+      <li> Switch branches: git checkout CreateObjectsREST </li>
+      <li> Run gradle to generate the snapshot file: gralde build -xtest </li>
+      <li> Run the Spring backend: java -jar ./build/libs/Project-Backend-0.0.1-SNAPSHOT.jar </li>
+      <li> Open a new terminal into the same directory. </li>
+      <li> Create the objects using a POST command: curl -X POST http://localhost:8080/createobjects/ </li>
+      <li> Check that objects were created by going to the students endpoint on Heroku: https://project-backend-10.herokuapp.com/students </li>
+      <li> Stop running spring in terminal: Ctrl+C </li>
+      <li> Switch to the android branch: git checkout android </li>
+      <li> Now you can open Android studio and interact with the app on a Pixel 2 </li>
+    </ol>
+  </li>
 </ol>
 
 <h2>Instructions for setting up objects to test the frontend web service</h2><br>
@@ -177,6 +235,7 @@ framework, head over to our wiki page and select any page titled with a date:<br
   <li>This will create test objects which can be used to interact with the frontend.</li>
 </ol>
 <h2>Setting up frontend</h2>
+<ol>
   <li>Make your way into the Frontend directory -> cd ./project-group-10/Project-Frontend
   <li>Run "npm install"
   <li>Once the installation is complete, run "npm run dev" in the frontend directory.
@@ -194,14 +253,6 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <li>We have chosen to test our RESTful api tests using Postman.
 <li>Once in the wiki page, follow the steps for setting up the mock database to actually test the PUT and GET queries / statements.
 <li>Click on <b><a href="https://github.com/McGill-ECSE321-Fall2019/project-group-10/wiki/RESTful-API-Tests-using-a-Client-(Postman)">here</a></b> to access this page.
-</ol>
-
-<h2>Instructions for email on Eclipse</h2><br>
-<ol>
-  <li> If the email class poses erorrs on Eclipse do the following on the git repo on command line: </li>
-  <li> gradle cleanEclipse </li>
-  <li> gradle Eclipse </li>
-  <li> gradle build -x test </li>
 </ol>
 
 <h2>Instructions for setting up the tests</h2><br>
