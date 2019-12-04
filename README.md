@@ -174,14 +174,19 @@ framework, head over to our wiki page and select any page titled with a date:<br
 <h2>Instructions for testing Machine Learning algorithm</h2><br>
 <ol>
   <li> The machine learning extension is only added to the face_recog branch as we did not want the software to interfere with basic front end testing for the reviewer. This branch should only be used to test the algorithm.
-  <li> Before starting, make sure you have opencv installed on your computer. If not, use this on your command line to install <br><b>pip install opencv-python</b>
+  <li> Before starting, make sure you have opencv installed on your computer. If it is not, use this on your command line to install <br><b>pip install opencv-python</b>
+  <li> You may also use brew if that is already downloaded using this command:<br><b>brew install opencv</b>
   <li> If you do not have pip installed, click <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fgist.github.com%2Fhaircut%2F14705555d58432a5f01f9188006a04ed%3Ffbclid%3DIwAR0tZ6RvZMkMHSFf1PW2XG3N7xpi_RnOsVgCb1BTSsT1hYG1IdFTxK3XWIk&h=AT2nhYVBVNF5dyDVCxgeKH3acaF9u-TrbBpIjVE-FH4MOcYK8Wy-KU7Uxme3irL5Ob5RlLMKN7DUUtctBysehoeyEHAfgsWHSjVWvv53po8Y5cto7V6AKktN3jBox5Q-7DinCbLD9ug">here</a> for instructions on how to download it for MacOS and how to set path.
   <li> Make your way into the face_recog branch by running -> git checkout face_recog on the cmdline. Here you will find one additional folder called -> facial_recognition where all scripts are held.
   <li> To provide a quick explanation how it works:
     <ol>
       <li> To start the script, make your way into the facial_recognition folder. Here, you will have to run the script runScript.py (very original name) with the command -> python runScript.py. Python must be installed in order for you to run this. If it is not installed, click <a href="https://www.codecademy.com/articles/install-python">here</a> for instructions.
-      <li> A prompt will be shown asking to access your computer. The algorithm will use your camera to take a picture of you to check to see if you are a human. Give the script access.
-      <li> Once the picture is taken, an algorithm runs on the image taken and attempts to find all objects in the picture.
+      <li> A prompt will be shown asking to access your computer. 
+      <li> The algorithm will use your camera to take a picture of you to check to see if you are a human. 
+      <li> You need to make sure you have set your computer's cameras permission to allow terminal access. To do so in mac, go into your system preferences > security and privacy > privacy. In the left tab select 'Camera'. Find terminal in the right tab and make sure it is checked for permissions. If it is checked, you can run the script.
+      <li> If you are using a windows system, find the link <a href="https://support.microsoft.com/en-ca/help/4468232/windows-10-camera-microphone-and-privacy">here</a> for more information on terminal permissions for accessing your camera.
+      <li> DO NOT SMILE FOR THE PICTURE.
+      <li> Once the picture is taken, an algorithm runs on the image taken and attempts to find all objects in the picture including all people.
       <li> Once complete, a file called -> prediction.txt will be generated. In this file will be written everything the algorithm detected. 
   </ol>
   <li> Once this is done, in the front end, after making your way to the home screen, click on sign up. (Make sure you run -> npm run dev in the face_recog branch).
