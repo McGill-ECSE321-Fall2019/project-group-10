@@ -684,7 +684,7 @@ public class MainActivity extends AppCompatActivity {
              * This method defines the behavior of the successful completion of the HTTP request. 
              * @param statusCode The status code of the response
              * @param headers    The list of headers that are returned, if they exist
-             * @param response   The string that describes the server's response, when no error 
+             * @param responseString   The string that describes the server's response, when no error 
              *                   is thrown.  
              */
         	@Override
